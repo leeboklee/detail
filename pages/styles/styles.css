@@ -1,0 +1,605 @@
+/* 공통 스타일 */
+/* .content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+} */ /* globals.css 와 중복/유사, 제거 */
+
+/* 폼 레이아웃 */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    max-width: 500px;
+}
+
+textarea.form-control {
+    min-height: 100px;
+}
+
+/* 이미지 URL 입력 */
+.url-input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    align-items: flex-start;
+}
+
+.url-input-group .form-control {
+    flex: 1;
+    max-width: 400px;
+}
+
+.url-input-group .btn {
+    padding: 0.375rem 1rem;
+}
+
+/* 카드 스타일 */
+/* .card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eee;
+} */ /* globals.css .card 와 유사, 제거. card-header는 필요시 유지 */
+
+/* 미리보기 */
+/* .preview-container {
+    position: sticky;
+    top: 20px;
+}
+
+.preview-frame-container {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+} */ /* globals.css 와 중복/유사, 제거 */
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .form-control {
+        max-width: 100%;
+    }
+    
+    .url-input-group {
+        flex-direction: column;
+    }
+    
+    .url-input-group .btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+/* 탭 디자인 */
+.nav-tabs {
+    border-bottom: 2px solid #dee2e6;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    padding: 0.5rem 1rem;
+    color: #6c757d;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: #495057;
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom: 2px solid #0d6efd;
+    color: #0d6efd;
+}
+
+/* 버튼 스타일 */
+/* .btn-group .btn {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+/* .btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+} */ /* globals.css .btn-primary 와 중복, 제거 */
+
+/* 입력 필드 그룹 */
+.input-group-compact {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.input-group-compact .form-group {
+    margin-bottom: 0;
+}
+
+/* 
+ * 호텔 미리보기 페이지 스타일시트
+ * 편집기와 미리보기 영역의 스타일 정의
+ */
+
+/* 전역 스타일 */
+/* body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+    background-color: #f5f5f5;
+} */
+
+/* 레이아웃 */
+.container-fluid {
+    padding: 0;
+}
+
+#editor-area {
+    background-color: #fff;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#preview-area {
+    background-color: #fff;
+    height: 100vh;
+    overflow-y: auto;
+    border-left: 1px solid #ddd;
+}
+
+.iframe-container {
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* 폼 스타일 */
+/* .form-label {
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+} */
+
+/* 호텔 미리보기 스타일 */
+/* .hotel-preview-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.hotel-preview {
+    color: #333;
+}
+
+.hotel-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.hotel-name {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.hotel-address {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.stars {
+    color: #f1c40f;
+    margin-right: 5px;
+}
+
+.rating-value {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.review-count {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.hotel-description {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.hotel-features {
+    margin-bottom: 25px;
+}
+
+.hotel-features h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.hotel-features ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-left: 0;
+    list-style: none;
+}
+
+.hotel-features li {
+    background-color: #f1f3f4;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.hotel-gallery {
+    margin-bottom: 25px;
+}
+
+.main-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hotel-info-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    font-weight: 600;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eaeaea;
+}
+
+.room-card {
+    margin-bottom: 25px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.room-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.room-details {
+    padding: 15px;
+}
+
+.room-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.room-description {
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.room-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.spec-label {
+    font-weight: 600;
+    color: #7f8c8d;
+}
+
+.room-amenities {
+    margin-bottom: 15px;
+}
+
+.room-amenities h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #34495e;
+}
+
+.room-amenities ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-left: 0;
+    list-style: none;
+}
+
+.room-amenities li {
+    background-color: #f1f3f4;
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+}
+
+.room-price {
+    margin-bottom: 15px;
+}
+
+.price-label {
+    font-weight: 600;
+    color: #7f8c8d;
+}
+
+.price-value {
+    font-weight: 700;
+    color: #e67e22;
+    font-size: 1.2rem;
+}
+
+.price-note {
+    display: block;
+    font-size: 0.85rem;
+    color: #95a5a6;
+    margin-top: 5px;
+}
+
+.room-reserve-btn {
+    width: 100%;
+}
+
+.package-card {
+    margin-bottom: 25px;
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.package-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.package-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.package-details {
+    padding: 15px;
+}
+
+.package-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.package-description {
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.package-includes h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #34495e;
+}
+
+.package-includes ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.package-includes li {
+    margin-bottom: 5px;
+}
+
+.package-price {
+    margin-bottom: 10px;
+}
+
+.package-validity {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+.package-reserve-btn {
+    width: 100%;
+} */
+
+/* 가격표 스타일 */
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+
+.price-table th {
+    background-color: #f1f3f4;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.price-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.price-notes {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.price-notes ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+/* 취소 규정 스타일 */
+.cancellation-rules {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+.cancellation-rules li {
+    margin-bottom: 8px;
+}
+
+.cancellation-info {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* 공지사항 스타일 */
+.notice-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.notice-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.notice-date {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    margin-bottom: 10px;
+}
+
+.notice-content {
+    line-height: 1.5;
+}
+
+/* 푸터 스타일 */
+.footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eaeaea;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.disclaimer {
+    margin-bottom: 10px;
+}
+
+/* 디버그 콘솔 스타일 */
+#debug-console {
+    font-family: 'Consolas', monospace;
+    font-size: 0.85rem;
+}
+
+/* 서버 상태 배지 스타일 */
+#serverStatus {
+    padding: 6px 10px;
+}
+
+/* 미리보기 자리표시자 스타일 */
+#preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #ddd;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 992px) {
+    /* 호텔 상세 정보 스타일 - hotel-preview.css 로 이동됨 */
+    /* .hotel-info-details {
+        grid-template-columns: 1fr 1fr;
+    } */
+}
+
+@media (max-width: 768px) {
+    /* 호텔 상세 정보 스타일 - hotel-preview.css 로 이동됨 */
+    /* .hotel-info-details {
+        grid-template-columns: 1fr;
+    } */
+    
+    /* 스타일 중복 확인 필요 (globals.css 에도 비슷한 정의 있음) */
+    /* .hotel-name {
+        font-size: 1.8rem;
+    } */
+    
+    /* 객실 스펙 스타일 - hotel-preview.css 로 이동됨 */
+    /* .room-specs {
+        flex-direction: column;
+        gap: 8px;
+    } */
+}

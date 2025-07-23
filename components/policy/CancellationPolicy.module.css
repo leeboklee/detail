@@ -1,0 +1,201 @@
+/* CancellationPolicy.module.css */
+
+.policyEditor {
+  margin-bottom: 2rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1e40af;
+  border-bottom: 2px solid #3b82f6;
+  padding-bottom: 0.5rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+  background-color: #f0f9ff;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+}
+
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #1e40af;
+}
+
+.formGroup {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #a3bffa;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.rulesList {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ruleItem {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ruleInput {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #a3bffa;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.ruleInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.removeButton {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.removeButton:hover {
+  background-color: #dc2626;
+}
+
+.addButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.addButton:hover {
+  background-color: #2563eb;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.th {
+  background-color: #dbeafe;
+  padding: 0.5rem;
+  border: 1px solid #bfdbfe;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e40af;
+  text-align: center;
+}
+
+.td {
+  padding: 0.5rem;
+  border: 1px solid #bfdbfe;
+  font-size: 0.875rem;
+  background: white;
+}
+
+.cellInput {
+  width: 100%;
+  padding: 0.25rem;
+  border: 1px solid #a3bffa;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: white;
+}
+
+.cellInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 640px) {
+  .policyEditor {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .section {
+    padding: 0.75rem;
+  }
+
+  .sectionTitle {
+    font-size: 0.9375rem;
+  }
+
+  .table {
+    font-size: 0.75rem;
+  }
+
+  .th, .td {
+    padding: 0.25rem;
+    font-size: 0.75rem;
+  }
+
+  .cellInput {
+    padding: 0.2rem;
+    font-size: 0.75rem;
+  }
+
+  .ruleItem {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .removeButton {
+    align-self: flex-end;
+  }
+} 

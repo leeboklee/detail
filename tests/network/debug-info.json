@@ -1,0 +1,16 @@
+{
+  "windowSize": {
+    "innerWidth": 1920,
+    "innerHeight": 1080,
+    "outerWidth": 1298,
+    "outerHeight": 818
+  },
+  "documentHeight": 1100,
+  "generatedHtml": 4359,
+  "time": "2025-04-17T07:09:53.713Z",
+  "debugData": {
+    "logCount": 202,
+    "errorCount": 176,
+    "htmlResultsCount": 25
+  }
+}

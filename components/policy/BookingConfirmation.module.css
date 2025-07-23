@@ -1,0 +1,199 @@
+/* BookingConfirmation.module.css */
+
+/* 간소화된 예약 안내 CSS */
+.confirmationEditor {
+  padding: 15px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 8px;
+}
+
+.section {
+  margin-bottom: 15px;
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.itemRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.itemInput {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  min-height: 60px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.itemInput:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.removeButton {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  align-self: flex-start;
+  min-height: 44px;
+  transition: all 0.2s;
+}
+
+.removeButton:hover {
+  background: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220,53,69,0.3);
+}
+
+.addButton {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  transition: all 0.2s;
+}
+
+.addButton:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+/* 반응형 */
+@media (max-width: 640px) {
+  .confirmationEditor {
+    padding: 12px;
+  }
+  
+  .addButton {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+  
+  .removeButton {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+/* 섹션별 스타일 */
+.section:nth-child(2) {
+  background-color: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.section:nth-child(3) {
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.section:nth-child(4) {
+  background-color: #f7fee7;
+  border-color: #d9f99d;
+}
+
+.section:nth-child(5) {
+  background-color: #fefce8;
+  border-color: #fef08a;
+}
+
+/* 섹션 타이틀 색상 */
+.section:nth-child(2) .sectionTitle {
+  color: #065f46;
+}
+
+.section:nth-child(3) .sectionTitle {
+  color: #166534;
+}
+
+.section:nth-child(4) .sectionTitle {
+  color: #3f6212;
+}
+
+.section:nth-child(5) .sectionTitle {
+  color: #854d0e;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 640px) {
+  .confirmationEditor {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .section {
+    padding: 0.75rem;
+  }
+
+  .sectionTitle {
+    font-size: 0.9375rem;
+  }
+
+  .itemRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+
+  .itemInput {
+    font-size: 0.8125rem;
+  }
+
+  .removeButton {
+    align-self: flex-end;
+    margin-top: -2rem;
+  }
+} 

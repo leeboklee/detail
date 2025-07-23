@@ -1,0 +1,149 @@
+.templatesSection {
+  margin-top: 30px;
+  background-color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.templatesControls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.saveTemplate {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.templateNameInput {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333333;
+  background-color: #ffffff;
+}
+
+.templateSelect {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  min-width: 120px;
+  color: #333333;
+}
+
+.templateList h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.templateList h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.templateList ul {
+  list-style: none;
+  padding: 0;
+}
+
+.templateItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.templateItem:last-child {
+  border-bottom: none;
+}
+
+.templateItem .templateName {
+  font-size: 16px;
+  margin: 0;
+}
+
+.templateButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.templateButtons .loadButton,
+.templateButtons .deleteButton {
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.loadButton {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.loadButton:hover {
+  background-color: #059669;
+}
+
+.deleteButton {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: #dc2626;
+}
+
+.saveButton {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px 14px;
+}
+
+.saveButton:hover {
+  background-color: #2563eb;
+}
+
+@media (max-width: 768px) {
+  .saveTemplate {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* 입력 필드 스타일 */
+.templateInput {
+  color: #333333 !important;
+  background-color: #ffffff !important;
+}
+
+.inputText {
+  color: #333333 !important;
+  background-color: #ffffff !important;
+}
+
+.textField {
+  color: #333333 !important;
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db;
+  padding: 8px 12px;
+  border-radius: 4px;
+} 

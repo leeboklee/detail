@@ -1,0 +1,39 @@
+<div class="tab-pane fade" id="theme-tab-pane" role="tabpanel" tabindex="0">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title mb-3">테마 설정</h5>
+            <form id="themeForm">
+                <div class="mb-3">
+                    <label class="form-label">색상 테마</label>
+                    <div class="d-flex gap-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="colorTheme" id="lightTheme" value="light" checked>
+                            <label class="form-check-label" for="lightTheme">라이트</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="colorTheme" id="darkTheme" value="dark">
+                            <label class="form-check-label" for="darkTheme">다크</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="fontFamily" class="form-label">글꼴</label>
+                    <select class="form-select" id="fontFamily">
+                        <option value="system">시스템 기본</option>
+                        <option value="noto-sans">Noto Sans KR</option>
+                        <option value="nanum-gothic">나눔고딕</option>
+                        <option value="malgun-gothic">맑은 고딕</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="fontSize" class="form-label">기본 글자 크기</label>
+                    <select class="form-select" id="fontSize">
+                        <option value="14">14px</option>
+                        <option value="16" selected>16px</option>
+                        <option value="18">18px</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> 

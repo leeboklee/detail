@@ -1,0 +1,22 @@
+{
+  "timestamp": "2025-07-22T09:11:00+09:00",
+  "status": "정상",
+  "process": {
+    "command": "npm run dev",
+    "port": 9002,
+    "pid": null,
+    "uptime": null
+  },
+  "performance": {
+    "startup_time": null,
+    "memory_usage": null,
+    "cpu_usage": null
+  },
+  "logs": [
+    "Next.js 개발 서버 정상 기동",
+    "포트 9002에서 서비스 중",
+    "Hot reload 활성화"
+  ],
+  "errors": [],
+  "warnings": []
+} 

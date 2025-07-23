@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-07-22T09:15:00+09:00",
+  "status": "정상",
+  "server_info": {
+    "url": "http://localhost:9002",
+    "status_code": 200,
+    "response_time": "정상",
+    "content_length": 6754
+  },
+  "errors": [],
+  "logs": [
+    "서버 정상 기동 및 응답 확인",
+    "DB 연결 정상 (Prisma Client 생성 완료)",
+    "API 응답 속도 정상",
+    "/admin 페이지 정상 로드 (200 OK)",
+    "Next.js 14.2.30 정상 동작"
+  ]
+} 

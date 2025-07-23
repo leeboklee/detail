@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크린샷 테스트</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .view-btn {
+            background-color: #0078ff;
+            color: white;
+        }
+        
+        .logs-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .ai-btn {
+            background-color: #6f42c1;
+            color: white;
+        }
+        
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            min-height: 100px;
+        }
+        
+        #screenshots {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+        }
+        
+        .screenshot-item {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .screenshot-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .screenshot-item p {
+            margin: 5px 0;
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .screenshot-info {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            margin: 5% auto;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .modal-image {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .modal-details {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        
+        .tab.active {
+            background: #0078ff;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        pre {
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 10px;
+            border-radius: 4px;
+            overflow: auto;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>스크린샷 테스트</h1>
+        <p>아래 버튼을 클릭하여 스크린샷을 생성하고 결과를 확인할 수 있습니다.</p>
+        
+        <div class="button-group">
+            <button class="view-btn" onclick="puppeteerCapture()">Puppeteer 캡처</button>
+            <button class="logs-btn" onclick="captureText()">텍스트 캡처</button>
+            <button class="delete-btn" onclick="clearResult()">결과 지우기</button>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div class="button-group" style="margin-top: 30px;">
+            <button class="view-btn" onclick="loadScreenshots()">스크린샷 목록 보기</button>
+            <button class="ai-btn" onclick="analyzeLastScreenshot()">AI 분석 (마지막 스크린샷)</button>
+        </div>
+        
+        <div id="screenshots"></div>
+    </div>
+    
+    <!-- 이미지 상세 모달 -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('image')">이미지</div>
+                <div class="tab" onclick="switchTab('logs')">로그</div>
+                <div class="tab" onclick="switchTab('analysis')">분석</div>
+            </div>
+            
+            <div id="imageTab" class="tab-content active">
+                <img id="modalImage" class="modal-image" src="" alt="스크린샷">
+            </div>
+            
+            <div id="logsTab" class="tab-content">
+                <h3>콘솔 로그</h3>
+                <pre id="logContent">로그 데이터 로딩 중...</pre>
+            </div>
+            
+            <div id="analysisTab" class="tab-content">
+                <h3>요소 분석</h3>
+                <div id="elementAnalysis"></div>
+                <h3>색상 분석</h3>
+                <div id="colorAnalysis"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 결과 표시 함수
+        function showResult(message, isError = false) {
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `<div style="color: ${isError ? 'red' : 'green'}">${message}</div>`;
+            resultElement.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 결과 지우기
+        function clearResult() {
+            document.getElementById('result').innerHTML = '';
+        }
+        
+        // Puppeteer 캡처 API 호출
+        async function puppeteerCapture() {
+            try {
+                showResult('Puppeteer 캡처 중... (잠시 기다려 주세요)');
+                const response = await fetch('/api/puppeteer-capture');
+                const data = await response.json();
+                
+                if (data.success) {
+                    showResult(`
+                        <div>Puppeteer 캡처 완료!</div>
+                        <div style="margin-top:10px;">파일명: ${data.screenshot.filename}</div>
+                        <div style="margin-top:5px;">발견된 요소: 버튼 ${data.analysisData.elements.buttons}개, 이미지 ${data.analysisData.elements.images}개</div>
+                    `);
+                    // 스크린샷 목록 새로고침
+                    loadScreenshots();
+                } else {
+                    showResult(`오류 발생: ${data.error || '알 수 없는 오류'}`, true);
+                }
+            } catch (error) {
+                showResult(`API 호출 오류: ${error.message}`, true);
+            }
+        }
+        
+        // 텍스트 캡쳐 API 호출
+        async function captureText() {
+            try {
+                showResult('텍스트 캡처 중...');
+                const response = await fetch('/api/text-capture');
+                const data = await response.json();
+                
+                if (data.success) {
+                    showResult(`텍스트 캡처 완료! 파일명: ${data.filename}`);
+                } else {
+                    showResult(`오류 발생: ${data.error || '알 수 없는 오류'}`, true);
+                }
+            } catch (error) {
+                showResult(`API 호출 오류: ${error.message}`, true);
+            }
+        }
+        
+        // 스크린샷 목록 불러오기
+        async function loadScreenshots() {
+            try {
+                const screenshotsElement = document.getElementById('screenshots');
+                screenshotsElement.innerHTML = '<div style="text-align: center; width: 100%;">로딩 중...</div>';
+                
+                const response = await fetch('/api/screenshots');
+                const data = await response.json();
+                
+                if (data.success && data.screenshots && data.screenshots.length > 0) {
+                    screenshotsElement.innerHTML = '';
+                    
+                    // 최신 스크린샷 12개만 표시
+                    const screenshots = data.screenshots.slice(0, 12);
+                    
+                    screenshots.forEach(screenshot => {
+                        if (screenshot.filename.endsWith('.png')) {
+                            const item = document.createElement('div');
+                            item.className = 'screenshot-item';
+                            
+                            const img = document.createElement('img');
+                            img.src = screenshot.path;
+                            img.alt = screenshot.filename;
+                            img.onclick = () => openModal(screenshot);
+                            
+                            const p = document.createElement('p');
+                            p.textContent = screenshot.filename;
+                            
+                            const info = document.createElement('div');
+                            info.className = 'screenshot-info';
+                            
+                            // Puppeteer 캡처인지 확인
+                            const isPuppeteer = screenshot.filename.includes('puppeteer');
+                            info.textContent = isPuppeteer ? '🔍 상세 정보 & 로그 포함' : '기본 이미지';
+                            
+                            item.appendChild(img);
+                            item.appendChild(p);
+                            item.appendChild(info);
+                            screenshotsElement.appendChild(item);
+                        }
+                    });
+                } else {
+                    screenshotsElement.innerHTML = '<div style="text-align: center; width: 100%;">스크린샷이 없습니다.</div>';
+                }
+            } catch (error) {
+                document.getElementById('screenshots').innerHTML = 
+                    `<div style="text-align: center; width: 100%; color: red;">
+                        스크린샷 로딩 오류: ${error.message}
+                    </div>`;
+            }
+        }
+        
+        // 이미지 모달 열기
+        async function openModal(screenshot) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            
+            modalImage.src = screenshot.path;
+            modalImage.alt = screenshot.filename;
+            
+            // Puppeteer 캡처인 경우 로그 데이터 로드
+            if (screenshot.filename.includes('puppeteer')) {
+                const logFilename = screenshot.filename.replace('puppeteer_capture_', 'puppeteer_log_').replace('.png', '.json');
+                try {
+                    const response = await fetch(`/api/capture-logs/${logFilename}`);
+                    if (response.ok) {
+                        const logData = await response.json();
+                        
+                        // 콘솔 로그 표시
+                        document.getElementById('logContent').textContent = 
+                            JSON.stringify(logData.logs, null, 2);
+                        
+                        // 요소 분석 표시
+                        const elementAnalysis = document.getElementById('elementAnalysis');
+                        elementAnalysis.innerHTML = '';
+                        
+                        if (logData.structureInfo && logData.structureInfo.elements) {
+                            const elements = logData.structureInfo.elements;
+                            for (const [key, value] of Object.entries(elements)) {
+                                elementAnalysis.innerHTML += `<div><strong>${key}:</strong> ${value}</div>`;
+                            }
+                        } else {
+                            elementAnalysis.innerHTML = '요소 분석 데이터가 없습니다.';
+                        }
+                        
+                        // 색상 분석 표시
+                        const colorAnalysis = document.getElementById('colorAnalysis');
+                        colorAnalysis.innerHTML = '';
+                        
+                        if (logData.structureInfo && logData.structureInfo.colorInfo) {
+                            const colorInfo = logData.structureInfo.colorInfo;
+                            colorInfo.forEach(item => {
+                                const colorBox = document.createElement('div');
+                                colorBox.style.display = 'flex';
+                                colorBox.style.alignItems = 'center';
+                                colorBox.style.marginBottom = '5px';
+                                
+                                const colorSample = document.createElement('div');
+                                colorSample.style.width = '20px';
+                                colorSample.style.height = '20px';
+                                colorSample.style.backgroundColor = item.backgroundColor || '#ffffff';
+                                colorSample.style.border = '1px solid #ddd';
+                                colorSample.style.marginRight = '10px';
+                                
+                                const textSample = document.createElement('div');
+                                textSample.style.backgroundColor = '#f8f9fa';
+                                textSample.style.color = item.color || '#000000';
+                                textSample.style.padding = '2px 5px';
+                                textSample.textContent = `${item.element}${item.class ? '.' + item.class : ''}`;
+                                
+                                colorBox.appendChild(colorSample);
+                                colorBox.appendChild(textSample);
+                                colorAnalysis.appendChild(colorBox);
+                            });
+                        } else {
+                            colorAnalysis.innerHTML = '색상 분석 데이터가 없습니다.';
+                        }
+                    } else {
+                        document.getElementById('logContent').textContent = '로그 데이터를 불러올 수 없습니다.';
+                        document.getElementById('elementAnalysis').innerHTML = '요소 분석 데이터가 없습니다.';
+                        document.getElementById('colorAnalysis').innerHTML = '색상 분석 데이터가 없습니다.';
+                    }
+                } catch (error) {
+                    document.getElementById('logContent').textContent = `로그 로드 오류: ${error.message}`;
+                }
+            } else {
+                document.getElementById('logContent').textContent = '이 이미지에 대한 로그 데이터가 없습니다.';
+                document.getElementById('elementAnalysis').innerHTML = '이 이미지에 대한 요소 분석 데이터가 없습니다.';
+                document.getElementById('colorAnalysis').innerHTML = '이 이미지에 대한 색상 분석 데이터가 없습니다.';
+            }
+            
+            modal.style.display = 'block';
+            // 탭 초기화
+            switchTab('image');
+        }
+        
+        // 모달 닫기
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+        
+        // 탭 전환
+        function switchTab(tabName) {
+            // 모든 탭 비활성화
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // 선택한 탭 활성화
+            document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`${tabName}Tab`).classList.add('active');
+        }
+        
+        // 마지막 스크린샷 AI 분석
+        async function analyzeLastScreenshot() {
+            try {
+                showResult('AI 분석 중... (잠시 기다려주세요)');
+                const response = await fetch('/api/analyze-latest');
+                const data = await response.json();
+                
+                if (data.success) {
+                    // 분석 결과 표시
+                    showResult(`
+                        <div style="text-align: left; white-space: pre-wrap; font-family: monospace; padding: 10px; max-height: 400px; overflow-y: auto; background-color: #f8f9fa; border: 1px solid #ddd; border-radius: 4px;">
+                            <strong>🤖 AI 분석 결과:</strong>
+                            
+                            ${data.analysis}
+                        </div>
+                    `);
+                } else {
+                    showResult(`AI 분석 오류: ${data.error || '알 수 없는 오류'}`, true);
+                }
+            } catch (error) {
+                showResult(`API 호출 오류: ${error.message}`, true);
+            }
+        }
+        
+        // 모달 클릭 시 닫기 (모달 내부 클릭은 제외)
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+        
+        // 키보드 ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        // 페이지 로드 시 스크린샷 목록 불러오기
+        window.onload = loadScreenshots;
+    </script>
+</body>
+</html> 

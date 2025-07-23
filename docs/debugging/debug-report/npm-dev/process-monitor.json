@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-07-22T09:11:00+09:00",
+  "monitoring": {
+    "active_processes": [],
+    "port_usage": {
+      "9002": "available"
+    },
+    "memory_consumption": [],
+    "cpu_consumption": []
+  },
+  "auto_cleanup": {
+    "enabled": true,
+    "orphaned_processes": [],
+    "cleanup_actions": []
+  },
+  "health_check": {
+    "server_responding": false,
+    "last_check": null,
+    "response_time": null
+  }
+} 

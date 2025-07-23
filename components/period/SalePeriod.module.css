@@ -1,0 +1,172 @@
+.salePeriodEditor {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.salePeriodSection {
+  background: #fafafa;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.salePeriodSection h4 {
+  color: #374151;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.salePeriodSection input,
+.salePeriodSection textarea {
+  transition: all 0.2s ease;
+  border: 1px solid #d1d5db;
+}
+
+.salePeriodSection input:focus,
+.salePeriodSection textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.salePeriodSection input:hover,
+.salePeriodSection textarea:hover {
+  border-color: #9ca3af;
+}
+
+.salePeriodSection label {
+  color: #374151;
+  font-weight: 500;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .salePeriodEditor {
+    padding: 1rem;
+  }
+  
+  .salePeriodSection {
+    padding: 1rem;
+  }
+}
+
+/* 버튼 스타일 */
+.actionButtons {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.actionButton {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.actionButton:hover {
+  transform: scale(1.05);
+}
+
+.saveButton {
+  background-color: #10b981;
+  color: white;
+}
+
+.saveButton:hover {
+  background-color: #059669;
+}
+
+.loadButton {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.loadButton:hover {
+  background-color: #2563eb;
+}
+
+/* 요약 섹션 */
+.summarySection {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.summarySection h4 {
+  color: #374151;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.summaryItem {
+  color: #4b5563;
+}
+
+.summaryItem .label {
+  font-weight: 500;
+  color: #374151;
+}
+
+/* 메시지 스타일 */
+.message {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.message.success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.message.error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.message.warning {
+  background-color: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fcd34d;
+}
+
+.message.info {
+  background-color: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+} 

@@ -1,0 +1,578 @@
+<!DOCTYPE html><html lang="ko"><head><style id="react-aria-pressable-style">@layer {
+  [data-react-aria-pressable] {
+    touch-action: pan-x pan-y pinch-zoom;
+  }
+}</style><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/_next/static/chunks/app_styles_bebdf0a1._.css" data-precedence="next_static/chunks/app_styles_bebdf0a1._.css"><link rel="stylesheet" href="/_next/static/chunks/_8904c40d._.css" data-precedence="next_static/chunks/_8904c40d._.css"><link rel="preload" as="script" fetchpriority="low" href="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_c20f642f._.js"><script src="/_next/static/chunks/node_modules_next_dist_compiled_2ce9398a._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_client_8f19e6fb._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_dist_2ecbf5fa._.js" async=""></script><script src="/_next/static/chunks/ed0b0_%40swc_helpers_cjs_d9e50ee1._.js" async=""></script><script src="/_next/static/chunks/_e69f0d32._.js" async=""></script><script src="/_next/static/chunks/_b581757f._.js" async=""></script><script src="/_next/static/chunks/node_modules_d773de2d._.js" async=""></script><script src="/_next/static/chunks/app_d6a3e2c7._.js" async=""></script><script src="/_next/static/chunks/app_layout_ea9287a8.js" async=""></script><script src="/_next/static/chunks/_59c6594b._.js" async=""></script><script src="/_next/static/chunks/app_315a59f5._.js" async=""></script><script src="/_next/static/chunks/node_modules_%40react-aria_e32861c7._.js" async=""></script><script src="/_next/static/chunks/node_modules_%40react-aria_bbad8237._.js" async=""></script><script src="/_next/static/chunks/node_modules_framer-motion_dist_es_970e29a2._.js" async=""></script><script src="/_next/static/chunks/node_modules_next_f5074bf6._.js" async=""></script><script src="/_next/static/chunks/node_modules_date-fns_49adce5f._.js" async=""></script><script src="/_next/static/chunks/3ed3e_%40floating-ui_react_dist_89f69bdd._.js" async=""></script><script src="/_next/static/chunks/node_modules_react-datepicker_dist_index_es_28f28dc6.js" async=""></script><script src="/_next/static/chunks/node_modules_447ac95a._.js" async=""></script><script src="/_next/static/chunks/app_page_7c4cc607.js" async=""></script><title>Hotel Detail Page Generator</title><meta name="description" content="호텔 상세 페이지 생성기"><meta name="robots" content="index, follow"><meta name="Cache-Control" content="no-cache, no-store, must-revalidate"><meta name="Pragma" content="no-cache"><meta name="Expires" content="0"><link rel="canonical" href="http://localhost:9002"><meta property="og:title" content="Hotel Detail Page Generator"><meta property="og:description" content="호텔 상세 페이지 생성기"><meta property="og:url" content="http://localhost:9002"><meta property="og:type" content="website"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Hotel Detail Page Generator"><meta name="twitter:description" content="호텔 상세 페이지 생성기"><script>document.querySelectorAll('body link[rel="icon"], body link[rel="apple-touch-icon"]').forEach(el => document.head.appendChild(el))</script><script src="/_next/static/chunks/node_modules_next_dist_build_polyfills_polyfill-nomodule.js" nomodule=""></script><style>@font-face{font-family:'__nextjs-Geist';font-style:normal;font-weight:400 600;font-display:swap;src:url(/__nextjs_font/geist-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:'__nextjs-Geist Mono';font-style:normal;font-weight:400 600;font-display:swap;src:url(/__nextjs_font/geist-mono-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}@font-face{font-family:'__nextjs-Geist';font-style:normal;font-weight:400 600;font-display:swap;src:url(/__nextjs_font/geist-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:'__nextjs-Geist Mono';font-style:normal;font-weight:400 600;font-display:swap;src:url(/__nextjs_font/geist-mono-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style></head><body><div data-overlay-container="true"> <!-- --> <div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50"><div class="bg-white shadow-lg border-b-2 border-blue-100"><div class="max-w-7xl mx-auto px-6 py-4"><div class="flex items-center justify-between"><div><h1 class="text-2xl font-bold text-gray-900">🏨 호텔 관리자</h1><p class="text-gray-700 text-base font-medium">호텔 정보 관리 및 HTML 생성</p></div><div class="flex gap-3"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap subpixel-antialiased overflow-hidden tap-highlight-transparent data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-24 h-12 gap-3 rounded-large [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover font-bold text-base px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">👁️ 미리보기 ✅</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap subpixel-antialiased overflow-hidden tap-highlight-transparent data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-24 h-12 gap-3 rounded-large [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-warning/20 text-warning-700 dark:text-warning data-[hover=true]:opacity-hover font-bold text-base px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">🔄 순서 조정</button><button type="button" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap subpixel-antialiased overflow-hidden tap-highlight-transparent data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-24 h-12 gap-3 rounded-large [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-success text-success-foreground data-[hover=true]:opacity-hover font-bold text-base px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200" tabindex="0">🎨 HTML 생성</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap subpixel-antialiased overflow-hidden tap-highlight-transparent data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-24 h-12 gap-3 rounded-large [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-secondary text-secondary-foreground data-[hover=true]:opacity-hover font-bold text-base px-6 py-3 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">📋 HTML 복사</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-4 min-w-20 h-10 gap-2 rounded-medium [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-success text-success-foreground data-[hover=true]:opacity-hover font-semibold text-base">🗄️ DB 저장</button></div></div></div></div><div class="max-w-7xl mx-auto px-4 py-4"><div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white p-4 rounded-xl shadow-lg mb-6"><div class="flex items-center justify-between"><div class="flex items-center gap-3"><span class="text-2xl">📋</span><div><p class="text-sm text-green-100 font-medium">현재 작업 중인 템플릿</p><p class="text-lg font-bold">ID: cmckbr5ar0001ueo89jhrwe6r - 럭셔리 시티 호텔</p><p class="text-sm text-green-100">기본 PKG</p></div></div><div class="text-right"><p class="text-sm text-green-100 font-medium">마지막 생성</p><p class="text-sm font-bold">오전 8:48:36</p></div></div></div><div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">🏠</span></div><div><h3 class="text-base font-bold text-gray-800">호텔 정보</h3><p class="text-gray-600 text-sm font-medium">기본 정보</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">👥</span></div><div><h3 class="text-base font-bold text-gray-800">객실 정보</h3><p class="text-gray-600 text-sm font-medium">3개</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">⚙️</span></div><div><h3 class="text-base font-bold text-gray-800">시설 정보</h3><p class="text-gray-600 text-sm font-medium">시설</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">📄</span></div><div><h3 class="text-base font-bold text-gray-800">패키지</h3><p class="text-gray-600 text-sm font-medium">2개</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">📅</span></div><div><h3 class="text-base font-bold text-gray-800">📅 판매기간&amp;투숙일</h3><p class="text-gray-600 text-sm font-medium">판매기간&amp;투숙일</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">💰</span></div><div><h3 class="text-base font-bold text-gray-800">추가요금</h3><p class="text-gray-600 text-sm font-medium">추가요금</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">📅</span></div><div><h3 class="text-base font-bold text-gray-800">체크인/아웃</h3><p class="text-gray-600 text-sm font-medium">체크인</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">🛡️</span></div><div><h3 class="text-base font-bold text-gray-800">취소규정</h3><p class="text-gray-600 text-sm font-medium">취소규정</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">💾</span></div><div><h3 class="text-base font-bold text-gray-800">예약안내</h3><p class="text-gray-600 text-sm font-medium">예약안내</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">📄</span></div><div><h3 class="text-base font-bold text-gray-800">공지사항</h3><p class="text-gray-600 text-sm font-medium">1개</p></div></div></div></div><div class="hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer bg-white border-2 border-gray-100 hover:border-blue-300 rounded-xl shadow-sm"><div class="p-4"><div class="flex flex-col items-center text-center gap-3"><div class="p-3 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl"><span class="text-2xl">💾</span></div><div><h3 class="text-base font-bold text-gray-800">💾 템플릿 목록</h3><p class="text-gray-600 text-sm font-medium">템플릿 목록</p></div></div></div></div></div></div><div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center"><div class="bg-white rounded-lg shadow-xl max-w-6xl w-full max-h-[90vh] overflow-hidden"><div class="flex items-center justify-between p-6 border-b"><h2 class="text-xl font-bold text-gray-800">HTML 미리보기</h2><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-3 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-secondary/20 text-secondary-600 data-[hover=true]:opacity-hover">❌ 닫기</button></div><div class="overflow-y-auto max-h-[calc(90vh-120px)]"><div class="p-4"><div class="mb-4 text-sm text-gray-600 bg-gray-100 p-2 rounded">🔍 DEBUG: HTML 길이 16134자, 생성시간: 오전 8:48:36</div><iframe srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;럭셔리 시티 호텔 - 호텔 상세정보&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+            line-height: 1.5; 
+            color: #333; 
+            background: #f8f9fa; 
+            padding: 0;
+        }
+        .container { 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            background: white; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section { 
+            padding: 24px; 
+            border-bottom: 1px solid #eee;
+        }
+        .section:last-child { border-bottom: none; }
+        
+        h1 { 
+            font-size: 28px; 
+            color: #222; 
+            margin-bottom: 16px; 
+            font-weight: 700;
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 2px solid #007bff;
+        }
+        h2 { 
+            font-size: 20px; 
+            color: #333; 
+            margin-bottom: 16px; 
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 20px;
+            background: #007bff;
+            margin-right: 8px;
+        }
+        h3 { 
+            font-size: 16px; 
+            color: #444; 
+            margin-bottom: 8px; 
+            font-weight: 600;
+        }
+        p { 
+            margin-bottom: 8px; 
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* 그리드 레이아웃 - 표 형태로 변경 */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            border: 1px solid #ddd;
+        }
+        .info-table th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #ddd;
+            width: 120px;
+            color: #333;
+        }
+        .info-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+        
+        .grid { 
+            display: block;
+            margin: 16px 0; 
+        }
+        .grid-1, .grid-2 { 
+            display: block;
+        }
+        .card { 
+            border: 1px solid #e0e0e0; 
+            margin-bottom: 12px;
+            background: #fff;
+        }
+        .card h3 {
+            background: #f8f9fa;
+            padding: 12px;
+            margin: 0 0 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+            font-size: 15px;
+        }
+        .card-content {
+            padding: 12px;
+        }
+        
+        .table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 16px 0; 
+            border: 1px solid #ddd;
+        }
+        .table th, .table td { 
+            border: 1px solid #ddd; 
+            padding: 10px 12px; 
+            text-align: left; 
+            font-size: 14px;
+        }
+        .table th { 
+            background: #f8f9fa;
+            font-weight: 600; 
+            text-align: center;
+            color: #333;
+        }
+        .table td.price {
+            text-align: right;
+            font-weight: 600;
+            color: #000000;
+        }
+        .table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .highlight { 
+            background: #e7f3ff;
+            padding: 16px; 
+            border: 1px solid #b3d9ff;
+            margin: 12px 0;
+        }
+        .badge { 
+            display: inline-block; 
+            background: #6c757d;
+            color: white; 
+            padding: 3px 8px; 
+            border-radius: 3px; 
+            font-size: 12px; 
+            margin: 1px 2px;
+        }
+        
+        /* 이미지 스타일 */
+        .room-image img, .package-image img {
+            width: 100%;
+            max-width: 300px;
+            height: 180px;
+            object-fit: cover;
+            border: 1px solid #ddd;
+            margin: 8px 0;
+        }
+        
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .container { 
+                margin: 0; 
+                box-shadow: none;
+            }
+            .section { 
+                padding: 16px 12px; 
+            }
+            h1 { 
+                font-size: 22px;
+                padding: 16px 0;
+            }
+            h2 { 
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+            h3 {
+                font-size: 15px;
+            }
+            
+            /* 테이블 반응형 */
+            .info-table {
+                font-size: 13px;
+            }
+            .info-table th { 
+                width: 80px; 
+                font-size: 12px;
+                padding: 8px 6px;
+            }
+            .info-table td { 
+                font-size: 13px;
+                padding: 8px 6px;
+            }
+            
+            .table {
+                font-size: 12px;
+                overflow-x: auto;
+                display: block;
+                white-space: nowrap;
+            }
+            .table thead,
+            .table tbody,
+            .table th,
+            .table td,
+            .table tr {
+                display: block;
+            }
+            .table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            .table tr {
+                border: 1px solid #ddd;
+                margin-bottom: 10px;
+                display: block;
+                padding: 8px;
+            }
+            .table td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50% !important;
+                white-space: normal;
+                text-align: left !important;
+            }
+            .table td:before {
+                content: attr(data-label) &quot;: &quot;;
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+                color: #333;
+            }
+            
+            /* 카드 반응형 */
+            .card {
+                margin-bottom: 8px;
+            }
+            .card h3 {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .card-content {
+                padding: 10px;
+            }
+            
+            /* 이미지 반응형 */
+            .room-image img, .package-image img {
+                height: 150px;
+                margin: 6px 0;
+            }
+            
+            /* 하이라이트 반응형 */
+            .highlight {
+                padding: 12px;
+                margin: 8px 0;
+                font-size: 13px;
+            }
+            
+            /* 배지 반응형 */
+            .badge {
+                font-size: 11px;
+                padding: 2px 6px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .section {
+                padding: 12px 8px;
+            }
+            h1 {
+                font-size: 20px;
+                padding: 12px 0;
+            }
+            h2 {
+                font-size: 16px;
+            }
+            .info-table th {
+                width: 70px;
+                font-size: 11px;
+                padding: 6px 4px;
+            }
+            .info-table td {
+                font-size: 12px;
+                padding: 6px 4px;
+            }
+            .room-image img, .package-image img {
+                height: 120px;
+            }
+        }
+        
+        /* 상세 정보를 표 형태로 표시 */
+        .detail-row {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .detail-label {
+            display: table-cell;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            font-weight: 600;
+            width: 120px;
+            vertical-align: top;
+        }
+        .detail-value {
+            display: table-cell;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h1&gt;럭셔리 시티 호텔&lt;/h1&gt;
+            &lt;table class=&quot;info-table&quot;&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;주소&lt;/th&gt;
+                    &lt;td&gt;서울특별시 강남구 테헤란로 123&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;전화번호&lt;/th&gt;
+                    &lt;td&gt;02-1234-5678&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;체크인&lt;/th&gt;
+                    &lt;td&gt;15:00&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;체크아웃&lt;/th&gt;
+                    &lt;td&gt;11:00&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;호텔 소개&lt;/th&gt;
+                    &lt;td&gt;도심 속 최고급 호텔로 편안한 휴식과 최상의 서비스를 제공합니다.&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;객실 정보&lt;/h2&gt;
+            
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;h3&gt;객실&lt;/h3&gt;
+                    
+                    &lt;div class=&quot;card-content&quot;&gt;
+                        &lt;table class=&quot;info-table&quot;&gt;
+                            
+                            
+                            
+                            &lt;tr&gt;
+                                &lt;th&gt;침대 정보&lt;/th&gt;
+                                &lt;td&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;기준 인원&lt;/th&gt;
+                                &lt;td&gt;-명&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;최대 인원&lt;/th&gt;
+                                &lt;td&gt;-명&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;객실 설명&lt;/th&gt;
+                                &lt;td&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;h3&gt;객실&lt;/h3&gt;
+                    
+                    &lt;div class=&quot;card-content&quot;&gt;
+                        &lt;table class=&quot;info-table&quot;&gt;
+                            
+                            
+                            
+                            &lt;tr&gt;
+                                &lt;th&gt;침대 정보&lt;/th&gt;
+                                &lt;td&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;기준 인원&lt;/th&gt;
+                                &lt;td&gt;-명&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;최대 인원&lt;/th&gt;
+                                &lt;td&gt;-명&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;객실 설명&lt;/th&gt;
+                                &lt;td&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;h3&gt;객실&lt;/h3&gt;
+                    
+                    &lt;div class=&quot;card-content&quot;&gt;
+                        &lt;table class=&quot;info-table&quot;&gt;
+                            
+                            
+                            
+                            &lt;tr&gt;
+                                &lt;th&gt;침대 정보&lt;/th&gt;
+                                &lt;td&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;기준 인원&lt;/th&gt;
+                                &lt;td&gt;-명&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;최대 인원&lt;/th&gt;
+                                &lt;td&gt;-명&lt;/td&gt;
+                            &lt;/tr&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;객실 설명&lt;/th&gt;
+                                &lt;td&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                        &lt;/table&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;시설 정보&lt;/h2&gt;
+            &lt;table class=&quot;info-table&quot;&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;일반 시설&lt;/th&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;비즈니스 시설&lt;/th&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;레저 시설&lt;/th&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;다이닝&lt;/th&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;패키지 정보&lt;/h2&gt;
+            
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;h3&gt;패키지&lt;/h3&gt;
+                    
+                    &lt;div class=&quot;card-content&quot;&gt;
+                        &lt;table class=&quot;info-table&quot;&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;패키지 구성&lt;/th&gt;
+                                &lt;td style=&quot;white-space: pre-line;&quot;&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                            
+                            
+                            &lt;tr&gt;
+                                &lt;th&gt;가격&lt;/th&gt;
+                                &lt;td&gt;&lt;strong&gt;200,000원&lt;/strong&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            
+                            
+                            
+                            
+                        &lt;/table&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;h3&gt;패키지&lt;/h3&gt;
+                    
+                    &lt;div class=&quot;card-content&quot;&gt;
+                        &lt;table class=&quot;info-table&quot;&gt;
+                            &lt;tr&gt;
+                                &lt;th&gt;패키지 구성&lt;/th&gt;
+                                &lt;td style=&quot;white-space: pre-line;&quot;&gt;-&lt;/td&gt;
+                            &lt;/tr&gt;
+                            
+                            
+                            &lt;tr&gt;
+                                &lt;th&gt;가격&lt;/th&gt;
+                                &lt;td&gt;&lt;strong&gt;220,000원&lt;/strong&gt;&lt;/td&gt;
+                            &lt;/tr&gt;
+                            
+                            
+                            
+                            
+                        &lt;/table&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;체크인/아웃 안내&lt;/h2&gt;
+            &lt;table class=&quot;info-table&quot;&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;체크인 시간&lt;/th&gt;
+                    &lt;td&gt;15:00&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;체크아웃 시간&lt;/th&gt;
+                    &lt;td&gt;11:00&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;추가 안내사항&lt;/th&gt;
+                    &lt;td&gt;-&lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;취소/환불 규정&lt;/h2&gt;
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;예약 안내&lt;/h2&gt;
+            &lt;div class=&quot;grid grid-1&quot;&gt;
+                
+                
+                
+                
+                
+                
+                
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;추가요금&lt;/h2&gt;
+            
+            
+            
+                &lt;div class=&quot;card&quot;&gt;
+                    &lt;h3&gt;등록된 요금표가 없습니다&lt;/h3&gt;
+                    &lt;p&gt;가격 유형 관리에서 요금표를 설정해주세요.&lt;/p&gt;
+                &lt;/div&gt;
+            
+        &lt;/div&gt;
+        &lt;div class=&quot;section&quot;&gt;
+            &lt;h2&gt;공지사항&lt;/h2&gt;
+            &lt;div class=&quot;grid grid-2&quot;&gt;
+                
+                    &lt;div class=&quot;card&quot;&gt;
+                        &lt;h3&gt;공지사항&lt;/h3&gt;
+                        &lt;p&gt;&lt;/p&gt;
+                        &lt;p&gt;&lt;span class=&quot;badge&quot;&gt;info&lt;/span&gt;&lt;/p&gt;
+                    &lt;/div&gt;
+                
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;" class="w-full border-2 border-gray-200 rounded-lg" title="HTML 미리보기" style="height: 70vh; min-height: 500px;"></iframe></div></div></div></div><div class="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center"><div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden"><div class="flex items-center justify-between p-6 border-b"><h2 class="text-xl font-bold text-gray-800">🔄 미리보기 순서 조정</h2><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-3 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-secondary/20 text-secondary-600 data-[hover=true]:opacity-hover">❌ 닫기</button></div><div class="p-6 overflow-y-auto max-h-[calc(90vh-180px)]"><div class="mb-4 text-sm text-gray-600">📋 미리보기에서 섹션이 표시되는 순서를 조정할 수 있습니다.</div><div class="space-y-3"><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">🏠</span><div><h4 class="font-semibold">호텔 정보</h4><p class="text-sm text-gray-500">순서: 1</p></div></div><div class="flex gap-2"><button type="button" disabled="" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">👥</span><div><h4 class="font-semibold">객실 정보</h4><p class="text-sm text-gray-500">순서: 2</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">⚙️</span><div><h4 class="font-semibold">시설 정보</h4><p class="text-sm text-gray-500">순서: 3</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">📄</span><div><h4 class="font-semibold">패키지</h4><p class="text-sm text-gray-500">순서: 4</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">📅</span><div><h4 class="font-semibold">📅 판매기간&amp;투숙일</h4><p class="text-sm text-gray-500">순서: 5</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">📅</span><div><h4 class="font-semibold">체크인/아웃</h4><p class="text-sm text-gray-500">순서: 6</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">🛡️</span><div><h4 class="font-semibold">취소규정</h4><p class="text-sm text-gray-500">순서: 7</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">💾</span><div><h4 class="font-semibold">예약안내</h4><p class="text-sm text-gray-500">순서: 8</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">💰</span><div><h4 class="font-semibold">추가요금</h4><p class="text-sm text-gray-500">순서: 9</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div><div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg border"><div class="flex items-center gap-3"><span class="text-2xl">📄</span><div><h4 class="font-semibold">공지사항</h4><p class="text-sm text-gray-500">순서: 10</p></div></div><div class="flex gap-2"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↑</button><button type="button" disabled="" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 min-w-16 h-8 text-tiny gap-2 rounded-small [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-primary/20 text-primary-600 data-[hover=true]:opacity-hover px-3 py-2">↓</button></div></div></div><div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200"><p class="text-sm text-blue-700 font-medium">💡 팁: 순서를 변경한 후 "HTML 생성" 버튼을 눌러 변경사항을 적용하세요.</p></div></div><div class="flex justify-end gap-3 p-6 border-t bg-gray-50"><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-4 min-w-20 h-10 text-small gap-2 rounded-medium [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-success text-success-foreground data-[hover=true]:opacity-hover">순서 적용 &amp; HTML 생성</button><button type="button" tabindex="0" data-react-aria-pressable="true" class="z-0 group relative inline-flex items-center justify-center box-border appearance-none select-none whitespace-nowrap font-normal subpixel-antialiased overflow-hidden tap-highlight-transparent transform-gpu data-[pressed=true]:scale-[0.97] outline-none data-[focus-visible=true]:z-10 data-[focus-visible=true]:outline-2 data-[focus-visible=true]:outline-focus data-[focus-visible=true]:outline-offset-2 px-4 min-w-20 h-10 text-small gap-2 rounded-medium [&amp;&gt;svg]:max-w-[theme(spacing.8)] transition-transform-colors-opacity motion-reduce:transition-none bg-default/40 text-default-700 data-[hover=true]:opacity-hover">닫기</button></div></div></div></div><!--$--><!--/$--><!--$--><!--/$--> <!-- --> </div><script src="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_c20f642f._.js" async=""></script><script>(self.__next_f=self.__next_f||[]).push([0])</script><script>self.__next_f.push([1,"3:\"$Sreact.fragment\"\n5:I[\"[project]/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"default\"]\n6:I[\"[project]/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"default\"]\n8:I[\"[project]/app/providers.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"Providers\"]\n9:I[\"[project]/app/context/AppContext.jsx [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"AppContextProvider\"]\nd:I[\"[project]/node_modules/next/dist/client/script.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"\"]\ne:I[\"[project]/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"ClientPageRoot\"]\nf:I[\"[project]/app/page.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\",\"/_next/static/chunks/_59c6594b._.js\",\"/_next/static/chunks/app_315a59f5._.js\",\"/_next/static/chunks/node_modules_%40react-aria_e32861c7._.js\",\"/_next/static/chunks/node_modules_%40react-aria_bbad8237._.js\",\"/_next/static/chunks/node_modules_framer-motion_dist_es_970e29a2._.js\",\"/_next/static/chunks/node_modules_next_f5074bf6._.js\",\"/_next/static/chunks/node_modules_date-fns_49adce5f._.js\",\"/_nex"])</script><script>self.__next_f.push([1,"t/static/chunks/3ed3e_%40floating-ui_react_dist_89f69bdd._.js\",\"/_next/static/chunks/node_modules_react-datepicker_dist_index_es_28f28dc6.js\",\"/_next/static/chunks/node_modules_447ac95a._.js\",\"/_next/static/chunks/app_page_7c4cc607.js\"],\"default\"]\n13:I[\"[project]/node_modules/next/dist/client/components/metadata/metadata-boundary.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"MetadataBoundary\"]\n16:I[\"[project]/node_modules/next/dist/client/components/metadata/metadata-boundary.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"OutletBoundary\"]\n1d:I[\"[project]/node_modules/next/dist/client/components/metadata/async-metadata.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"AsyncMetadataOutlet\"]\n23:I[\"[project]/node_modules/next/dist/client/components/metadata/metadata-boundary.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"ViewportBoundary\"]\n29:I[\"[project]/node_modules/next/dist/client/components/error-boundary.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"default\"]\n2a:\"$Sreact.suspense\"\n2b:I[\"[project]/node_modules/next/dist/client/components/metadata/async-metadata.js [app-client] (ecmascript)\",[\"/_next/static/chunks/node_modules_d773de2d._.js\",\"/_next/static/chunks/app_d6a3e2c7._.js\",\"/_next/static/chunks/app_layout_ea9287a8.js\"],\"AsyncMetadata\"]\n:HL[\"/_next/static/chunks/app_styles_bebdf0a1._.css\",\"style\"]\n:HL[\"/_next/static/chunks/_8904c40d._.css\",\"style\"]\n2:{\"name\":\"Preloads\",\"env\":\"Server\",\"key\":null,\"owner\":"])</script><script>self.__next_f.push([1,"null,\"stack\":[],\"props\":{\"preloadCallbacks\":[\"$E(()=\u003e{ctx.componentMod.preloadStyle(fullHref,ctx.renderOpts.crossOrigin,ctx.nonce)})\",\"$E(()=\u003e{ctx.componentMod.preloadStyle(fullHref,ctx.renderOpts.crossOrigin,ctx.nonce)})\"]}}\n1:D\"$2\"\n1:null\n7:{\"name\":\"RootLayout\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{\"children\":[\"$\",\"$L5\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$3\",null,{\"children\":[\"$\",\"$L6\",null,{},null,[],1]},null,[],0],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":\"$Y\",\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"},null,[],1],\"params\":\"$Y\"}}\n4:D\"$7\"\nb:{\"name\":\"NotFound\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{}}\na:D\"$b\"\nc:{\"name\":\"HTTPAccessErrorFallback\",\"env\":\"Server\",\"key\":null,\"owner\":\"$b\",\"stack\":[],\"props\":{\"status\":404,\"message\":\"This page could not be found.\"}}\na:D\"$c\"\na:[[\"$\",\"title\",null,{\"children\":\"404: This page could not be found.\"},\"$c\",[],1],[\"$\",\"div\",null,{\"style\":{\"fontFamily\":\"system-ui,\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif,\\\"Apple Color Emoji\\\",\\\"Segoe UI Emoji\\\"\",\"height\":\"100vh\",\"textAlign\":\"center\",\"display\":\"flex\",\"flexDirection\":\"column\",\"alignItems\":\"center\",\"justifyContent\":\"center\"},\"children\":[\"$\",\"div\",null,{\"children\":[[\"$\",\"style\",null,{\"dangerouslySetInnerHTML\":{\"__html\":\"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}\"}},\"$c\",[],1],[\"$\",\"h1\",null,{\"className\":\"next-error-h1\",\"style\":{\"display\":\"inline-block\",\"margin\":\"0 20px 0 0\",\"padding\":\"0 23px 0 0\",\"fontSize\":24,\"fontWeight\":500,\"verticalAlign\":\"top\",\"lineHeight\":\"49px\"},\"children\":404},\"$c\",[],1],[\"$\",\"div\",null,{\"style\":{\"display\":\"inline-block\"},\"children\":[\"$\",\"h2\",null,{\"style\":{\"fontSize\":14,\"fontWeight\":400,\"lineHeight\":\"49px\",\"margin\":0},\"children\":\"This page could not be f"])</script><script>self.__next_f.push([1,"ound.\"},\"$c\",[],1]},\"$c\",[],1]]},\"$c\",[],1]},\"$c\",[],1]]\n4:[\"$\",\"html\",null,{\"lang\":\"ko\",\"children\":[[\"$\",\"head\",null,{},\"$7\",[[\"RootLayout\",\"C:\\\\Users\\\\comjo\\\\OneDrive\\\\바탕 화면\\\\codist\\\\detail\\\\.next\\\\server\\\\chunks\\\\ssr\\\\_5ad03e1e._.js\",148,264]],1],[\"$\",\"body\",null,{\"children\":[[\"$\",\"$L8\",null,{\"children\":[\" \",[\"$\",\"$L9\",null,{\"children\":[\" \",[\"$\",\"$L5\",null,{\"parallelRouterKey\":\"children\",\"error\":\"$undefined\",\"errorStyles\":\"$undefined\",\"errorScripts\":\"$undefined\",\"template\":[\"$\",\"$L6\",null,{},null,[],1],\"templateStyles\":\"$undefined\",\"templateScripts\":\"$undefined\",\"notFound\":[\"$a\",[]],\"forbidden\":\"$undefined\",\"unauthorized\":\"$undefined\"},null,[],1],\" \",\" \"]},\"$7\",[[\"RootLayout\",\"C:\\\\Users\\\\comjo\\\\OneDrive\\\\바탕 화면\\\\codist\\\\detail\\\\.next\\\\server\\\\chunks\\\\ssr\\\\_5ad03e1e._.js\",158,280]],1]]},\"$7\",[[\"RootLayout\",\"C:\\\\Users\\\\comjo\\\\OneDrive\\\\바탕 화면\\\\codist\\\\detail\\\\.next\\\\server\\\\chunks\\\\ssr\\\\_5ad03e1e._.js\",155,272]],1],[\"$\",\"$Ld\",null,{\"src\":\"/js/Common.js\",\"strategy\":\"lazyOnload\"},\"$7\",[[\"RootLayout\",\"C:\\\\Users\\\\comjo\\\\OneDrive\\\\바탕 화면\\\\codist\\\\detail\\\\.next\\\\server\\\\chunks\\\\ssr\\\\_5ad03e1e._.js\",176,272]],1]]},\"$7\",[[\"RootLayout\",\"C:\\\\Users\\\\comjo\\\\OneDrive\\\\바탕 화면\\\\codist\\\\detail\\\\.next\\\\server\\\\chunks\\\\ssr\\\\_5ad03e1e._.js\",153,264]],1]]},\"$7\",[[\"RootLayout\",\"C:\\\\Users\\\\comjo\\\\OneDrive\\\\바탕 화면\\\\codist\\\\detail\\\\.next\\\\server\\\\chunks\\\\ssr\\\\_5ad03e1e._.js\",145,263]],1]\n11:{\"name\":\"\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{}}\n10:D\"$11\"\n12:{\"name\":\"MetadataTree\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{}}\n10:D\"$12\"\n15:{\"name\":\"__next_metadata_boundary__\",\"env\":\"Server\",\"key\":null,\"owner\":\"$12\",\"stack\":[],\"props\":{}}\n14:D\"$15\"\n10:[\"$\",\"$L13\",null,{\"children\":\"$L14\"},\"$12\",[],1]\n18:{\"name\":\"__next_outlet_boundary__\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{\"ready\":\"$E(async function getViewportReady() {\\n        await viewport();\\n        return undefined;\\n    })\"}}\n17:D\"$18\"\n1a:{\"name\":\"__next_outlet_boundary__\",\"env\":\"Ser"])</script><script>self.__next_f.push([1,"ver\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{\"ready\":\"$E(async function getMetadataReady() {\\n        // Only warm up metadata() call when it's blocking metadata,\\n        // otherwise it will be fully managed by AsyncMetadata component.\\n        if (!serveStreamingMetadata) {\\n            await metadata();\\n        }\\n        return undefined;\\n    })\"}}\n19:D\"$1a\"\n1c:{\"name\":\"StreamingMetadataOutlet\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{}}\n1b:D\"$1c\"\n1b:[\"$\",\"$L1d\",null,{\"promise\":\"$@1e\"},\"$1c\",[],1]\n20:{\"name\":\"NonIndex\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{\"pagePath\":\"/\",\"statusCode\":200,\"isPossibleServerAction\":false}}\n1f:D\"$20\"\n1f:null\n22:{\"name\":\"ViewportTree\",\"env\":\"Server\",\"key\":\"dhfEvKoH8w5IZHUwYxxBi\",\"owner\":null,\"stack\":[],\"props\":{}}\n21:D\"$22\"\n25:{\"name\":\"__next_viewport_boundary__\",\"env\":\"Server\",\"key\":null,\"owner\":\"$22\",\"stack\":[],\"props\":{}}\n24:D\"$25\"\n21:[\"$\",\"$3\",\"dhfEvKoH8w5IZHUwYxxBi\",{\"children\":[[\"$\",\"$L23\",null,{\"children\":\"$L24\"},\"$22\",[],1],null]},null,null,0]\n27:{\"name\":\"\",\"env\":\"Server\",\"key\":null,\"owner\":null,\"stack\":[],\"props\":{}}\n26:D\"$27\"\n26:null\n28:[]\n"])</script><script>self.__next_f.push([1,"0:{\"P\":\"$1\",\"b\":\"development\",\"p\":\"\",\"c\":[\"\",\"\"],\"i\":false,\"f\":[[[\"\",{\"children\":[\"__PAGE__\",{}]},\"$undefined\",\"$undefined\",true],[\"\",[\"$\",\"$3\",\"c\",{\"children\":[[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/app_styles_bebdf0a1._.css\",\"precedence\":\"next_static/chunks/app_styles_bebdf0a1._.css\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/node_modules_d773de2d._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/app_d6a3e2c7._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-2\",{\"src\":\"/_next/static/chunks/app_layout_ea9287a8.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0]],\"$4\"]},null,[],0],{\"children\":[\"__PAGE__\",[\"$\",\"$3\",\"c\",{\"children\":[[\"$\",\"$Le\",null,{\"Component\":\"$f\",\"searchParams\":{},\"params\":{}},null,[],1],\"$10\",[[\"$\",\"link\",\"0\",{\"rel\":\"stylesheet\",\"href\":\"/_next/static/chunks/_8904c40d._.css\",\"precedence\":\"next_static/chunks/_8904c40d._.css\",\"crossOrigin\":\"$undefined\",\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-0\",{\"src\":\"/_next/static/chunks/_59c6594b._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-1\",{\"src\":\"/_next/static/chunks/app_315a59f5._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-2\",{\"src\":\"/_next/static/chunks/node_modules_%40react-aria_e32861c7._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-3\",{\"src\":\"/_next/static/chunks/node_modules_%40react-aria_bbad8237._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-4\",{\"src\":\"/_next/static/chunks/node_modules_framer-motion_dist_es_970e29a2._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-5\",{\"src\":\"/_next/static/chunks/node_modules_next_f5074bf6._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-6\",{\"src\":\"/_next/static/chunks/node_modules_date-fns_49adce5f._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-7\",{\"src\":\"/_next/static/chunks/3ed3e_%40floating-ui_react_dist_89f69bdd._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-8\",{\"src\":\"/_next/static/chunks/node_modules_react-datepicker_dist_index_es_28f28dc6.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-9\",{\"src\":\"/_next/static/chunks/node_modules_447ac95a._.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0],[\"$\",\"script\",\"script-10\",{\"src\":\"/_next/static/chunks/app_page_7c4cc607.js\",\"async\":true,\"nonce\":\"$undefined\"},null,[],0]],[\"$\",\"$L16\",null,{\"children\":[\"$L17\",\"$L19\",\"$1b\"]},null,[],1]]},null,[],0],{},null,false]},null,false],[\"$\",\"$3\",\"h\",{\"children\":[\"$1f\",\"$21\",\"$26\"]},null,[],0],false]],\"m\":\"$W28\",\"G\":[\"$29\",\"$undefined\"],\"s\":false,\"S\":false}\n"])</script><script>self.__next_f.push([1,"14:[\"$\",\"$2a\",null,{\"fallback\":null,\"children\":[\"$\",\"$L2b\",null,{\"promise\":\"$@2c\"},\"$15\",[],1]},\"$15\",[],1]\n19:null\n24:[[\"$\",\"meta\",\"0\",{\"charSet\":\"utf-8\"},\"$18\",[],0],[\"$\",\"meta\",\"1\",{\"name\":\"viewport\",\"content\":\"width=device-width, initial-scale=1\"},\"$18\",[],0]]\n17:null\n2c:{\"metadata\":[[\"$\",\"title\",\"0\",{\"children\":\"Hotel Detail Page Generator\"},\"$15\",[],0],[\"$\",\"meta\",\"1\",{\"name\":\"description\",\"content\":\"호텔 상세 페이지 생성기\"},\"$15\",[],0],[\"$\",\"meta\",\"2\",{\"name\":\"robots\",\"content\":\"index, follow\"},\"$15\",[],0],[\"$\",\"meta\",\"3\",{\"name\":\"Cache-Control\",\"content\":\"no-cache, no-store, must-revalidate\"},\"$15\",[],0],[\"$\",\"meta\",\"4\",{\"name\":\"Pragma\",\"content\":\"no-cache\"},\"$15\",[],0],[\"$\",\"meta\",\"5\",{\"name\":\"Expires\",\"content\":\"0\"},\"$15\",[],0],[\"$\",\"link\",\"6\",{\"rel\":\"canonical\",\"href\":\"http://localhost:9002\"},\"$15\",[],0],[\"$\",\"meta\",\"7\",{\"property\":\"og:title\",\"content\":\"Hotel Detail Page Generator\"},\"$15\",[],0],[\"$\",\"meta\",\"8\",{\"property\":\"og:description\",\"content\":\"호텔 상세 페이지 생성기\"},\"$15\",[],0],[\"$\",\"meta\",\"9\",{\"property\":\"og:url\",\"content\":\"http://localhost:9002\"},\"$15\",[],0],[\"$\",\"meta\",\"10\",{\"property\":\"og:type\",\"content\":\"website\"},\"$15\",[],0],[\"$\",\"meta\",\"11\",{\"name\":\"twitter:card\",\"content\":\"summary\"},\"$15\",[],0],[\"$\",\"meta\",\"12\",{\"name\":\"twitter:title\",\"content\":\"Hotel Detail Page Generator\"},\"$15\",[],0],[\"$\",\"meta\",\"13\",{\"name\":\"twitter:description\",\"content\":\"호텔 상세 페이지 생성기\"},\"$15\",[],0]],\"error\":null,\"digest\":\"$undefined\"}\n1e:{\"metadata\":\"$2c:metadata\",\"error\":null,\"digest\":\"$undefined\"}\n"])</script><next-route-announcer style="position: absolute;"></next-route-announcer><nextjs-portal></nextjs-portal><script src="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_61dcf9ba._.js"></script><script src="/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_3cd0d838._.js"></script><script src="/js/Common.js" data-nscript="lazyOnload"></script><script src="/_next/static/chunks/app_utils_validators_validators_42c7e627.js"></script><script src="/_next/static/chunks/app_utils_validators_validators_51a1207b.js"></script><script src="/_next/static/chunks/node_modules_33cbb787._.js"></script><script src="/_next/static/chunks/node_modules_%40heroui_dom-animation_dist_index_mjs_51a1207b._.js"></script></body></html>

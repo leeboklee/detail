@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상세 페이지 디자인 에디터</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <!-- 디버그 초기화 스크립트 -->
+    <script src="/static/scripts/debug-init.js"></script>
+    <script src="/static/scripts/error-logger.js"></script>
+    <script src="/static/scripts/screenshot-logger.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -15px;
+            margin-bottom: 20px;
+        }
+        .col-md-6 {
+            padding: 0 15px;
+            box-sizing: border-box;
+            width: 50%;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        textarea.form-control {
+            min-height: 150px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .preview-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .code-container {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            overflow: auto;
+            max-height: 500px;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+        .detail-template {
+            font-family: 'Noto Sans KR', sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        .hotel-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .hotel-address {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .main-image {
+            width: 100%;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .room-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .room-type {
+            flex: 1;
+            min-width: 200px;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 4px;
+        }
+        .room-type h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .room-type p {
+            margin: 5px 0;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            color: #666;
+        }
+        .tab:hover {
+            color: #0056b3;
+        }
+        .tab.active {
+            border-bottom: 2px solid #0056b3;
+            font-weight: 700;
+            color: #0056b3;
+        }
+        .notification {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+        .log-container {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+        .log-entry {
+            margin: 2px 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 2px;
+        }
+        .log-error { color: red; }
+        .log-warning { color: orange; }
+        .log-info { color: blue; }
+        .log-success { color: green; }
+        
+        @media (max-width: 768px) {
+            .col-md-6 {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .row {
+                flex-direction: column;
+            }
+        }
+        .editable-field {
+            padding: 5px;
+            border: 1px dashed #ccc;
+            margin: 2px 0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .editable-field:hover {
+            background-color: #f0f8ff;
+        }
+        .edit-mode {
+            border: 1px solid #007bff;
+            background-color: #e6f3ff;
+        }
+        .edit-button-container {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .field-editor {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+        }
+        .field-editor label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .field-editor input, .field-editor textarea {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .image-upload-container {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            text-align: center;
+        }
+        .image-upload-container input {
+            display: block;
+            margin: 10px auto;
+        }
+        .btn-group {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .tools-panel {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .tools-panel button {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .ck-editor__editable {
+            min-height: 200px;
+        }
+        
+        /* 리조트 카드 스타일 */
+        .resort-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+            margin-bottom: 20px;
+            background: white;
+        }
+        .resort-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .resort-card:hover img {
+            transform: scale(1.05);
+        }
+        .resort-card .card-body {
+            padding: 15px;
+        }
+        .resort-card h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+        
+        /* 기본 템플릿 선택 */
+        #templateSelector {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        /* 기본값으로 소노벨 변산 리조트 선택 */
+        option[value="소노벨 변산 리조트"] {
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>상세 페이지 디자인 에디터</h1>
+        
+        <div class="tabs">
+            <div class="tab active" data-tab="editor">에디터</div>
+            <div class="tab" data-tab="html">HTML 코드</div>
+        </div>
+        
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="templateSelector">템플릿 선택</label>
+                    <select id="templateSelector" class="form-control">
+                        <option value="소노벨 변산 리조트" selected>소노벨 변산 리조트</option>
+                        <option value="hotel">기본 호텔 템플릿</option>
+                        <option value="resort">리조트 템플릿</option>
+                        </select>
+                    </div>
+                    
+                <button id="applyTemplate" class="btn btn-primary">템플릿 적용</button>
+                
+                <div id="editor-container" class="form-group">
+                    <label for="htmlEditor">HTML 코드 편집</label>
+                        <textarea id="htmlEditor" class="form-control"></textarea>
+                    </div>
+                    
+                <div class="form-group">
+                    <button id="updateHtmlBtn" class="btn btn-success">미리보기 업데이트</button>
+                    <button id="copyHtmlBtn" class="btn btn-secondary">HTML 복사</button>
+                    </div>
+                    
+                    <div id="notification" class="notification"></div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="preview-container">
+                    <h2>미리보기</h2>
+                    <div id="previewContent" class="detail-template">
+                        <!-- 미리보기 내용이 여기에 표시됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="code-container" style="display:none;">
+            <h2>생성된 HTML 코드</h2>
+            <pre id="codeOutput"></pre>
+        </div>
+        
+        <div class="log-container">
+            <h3>로그</h3>
+            <div id="logOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        // 기본 템플릿 데이터
+        function getTemplates() {
+            return {
+                '소노벨 변산 리조트': `
+                <div class="detail-template">
+    <h2 class="hotel-name">소노벨 변산 리조트</h2>
+    <p class="hotel-address">전북특별자치도 부안군 변산면 변산해변로 51</p>
+    
+    <div class="section">
+                        <img src="https://via.placeholder.com/1200x600/0056b3/ffffff?text=소노벨+변산+리조트" alt="리조트 전경" class="main-image">
+    </div>
+    
+                    <h3>객실 정보</h3>
+                    
+        <div class="room-types">
+            <div class="room-type">
+                <h4>패밀리 타입</h4>
+                <p>구조: 침실2개</p>
+                <p>면적: 33㎡ (약 10평+4평)</p>
+                <p>인원: 4인(최대 6인)</p>
+                <p>침대: 퀸베드(가로 150cm×세로 200cm) 2개</p>
+            </div>
+                        
+            <div class="room-type">
+                <h4>스위트 타입</h4>
+                <p>구조: 침실2개</p>
+                <p>면적: 53㎡ (약 16평)</p>
+                <p>인원: 4인(최대 8인)</p>
+                <p>침대: 킹베드(가로 180cm×세로 200cm) 1개 + 퀸베드 1개</p>
+        </div>
+    </div>
+    
+                    <h3>부대시설 정보</h3>
+        <ul>
+            <li>아쿠아월드 / 실내수영장</li>
+                        <li>키즈시설</li>
+        </ul>
+                    
+                    <h3>예약/이용 배경</h3>
+                    <ul>
+                        <li>최소 2인 이상만 예약 사용 가능</li>
+                        <li>객실별 특성상 최대 수용 인원 조정 불가</li>
+        </ul>
+                    
+                    <h3>투숙객 혜택</h3>
+                    <ul>
+                        <li>체크인/체크아웃 시간 테마파크 입장권 제공</li>
+                        <li>기준금액이 적용 객실에 한하여 1인당 주중이용권 증정</li>
+        </ul>
+    </div>
+                `,
+                'hotel': `<div class="detail-template">
+                    <h2 class="hotel-name">그랜드 호텔</h2>
+                    <p class="hotel-address">서울특별시 중구 명동로 123</p>
+                    <!-- 나머지 기본 호텔 템플릿 내용 -->
+                </div>`,
+                'resort': `<div class="detail-template">
+                    <h2 class="hotel-name">해변 리조트</h2>
+                    <p class="hotel-address">제주도 서귀포시 중문관광로 72번길</p>
+                    <!-- 나머지 리조트 템플릿 내용 -->
+</div>`
+            };
+        }
+        
+        // 페이지 로드 시 소노벨 변산 리조트 템플릿을 기본으로 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            const templates = getTemplates();
+            document.getElementById('htmlEditor').value = templates['소노벨 변산 리조트'];
+            document.getElementById('previewContent').innerHTML = templates['소노벨 변산 리조트'];
+            
+            // 탭 전환 기능
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (this.dataset.tab === 'editor') {
+                        document.querySelector('.code-container').style.display = 'none';
+                        document.getElementById('editor-container').style.display = 'block';
+                    } else {
+                        document.querySelector('.code-container').style.display = 'block';
+                        document.getElementById('editor-container').style.display = 'none';
+                        document.getElementById('codeOutput').textContent = document.getElementById('htmlEditor').value;
+                    }
+                });
+            });
+            
+            // 템플릿 선택 및 적용
+            document.getElementById('templateSelector').addEventListener('change', function() {
+                const selectedTemplate = this.value;
+                document.getElementById('htmlEditor').value = templates[selectedTemplate];
+            });
+            
+            document.getElementById('applyTemplate').addEventListener('click', function() {
+                const selectedTemplate = document.getElementById('templateSelector').value;
+                document.getElementById('htmlEditor').value = templates[selectedTemplate];
+                document.getElementById('previewContent').innerHTML = templates[selectedTemplate];
+                showNotification('템플릿이 적용되었습니다.', 'success');
+            });
+            
+            // HTML 업데이트
+            document.getElementById('updateHtmlBtn').addEventListener('click', function() {
+                const htmlCode = document.getElementById('htmlEditor').value;
+                document.getElementById('previewContent').innerHTML = htmlCode;
+                document.getElementById('codeOutput').textContent = htmlCode;
+                showNotification('미리보기가 업데이트되었습니다.', 'success');
+            });
+            
+            // HTML 복사
+            document.getElementById('copyHtmlBtn').addEventListener('click', function() {
+                const htmlCode = document.getElementById('htmlEditor').value;
+                navigator.clipboard.writeText(htmlCode)
+                    .then(() => showNotification('HTML이 클립보드에 복사되었습니다.', 'success'))
+                    .catch(err => {
+                        console.error('클립보드 복사 실패:', err);
+                        showNotification('클립보드 복사 실패', 'error');
+                    });
+            });
+        });
+        
+        // 알림 표시 함수
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 로그 출력 함수
+        function logMessage(message, type = 'info') {
+            const logOutput = document.getElementById('logOutput');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            
+            const timestamp = new Date().toLocaleTimeString();
+            logEntry.textContent = `[${timestamp}] ${message}`;
+            
+            logOutput.appendChild(logEntry);
+            logOutput.scrollTop = logOutput.scrollHeight;
+        }
+        
+        // 콘솔 로그 오버라이드
+        const originalConsole = {
+            log: console.log,
+            info: console.info,
+            warn: console.warn,
+            error: console.error
+        };
+        
+        console.log = function(...args) {
+            originalConsole.log.apply(console, args);
+            logMessage(args.join(' '), 'info');
+        };
+        
+        console.info = function(...args) {
+            originalConsole.info.apply(console, args);
+            logMessage(args.join(' '), 'info');
+        };
+        
+        console.warn = function(...args) {
+            originalConsole.warn.apply(console, args);
+            logMessage(args.join(' '), 'warning');
+        };
+        
+        console.error = function(...args) {
+            originalConsole.error.apply(console, args);
+            logMessage(args.join(' '), 'error');
+        };
+            
+            // 초기 로그
+        console.log('디자인 에디터가 준비되었습니다.');
+    </script>
+    <script src="/static/scripts/utils.js"></script>
+    <script src="/static/scripts/html-generators.js"></script>
+    <script src="/static/scripts/form-helpers.js"></script>
+    <script src="/static/scripts/template-manager.js"></script>
+    <script src="/static/scripts/generator-main.js"></script>
+</body>
+</html> 

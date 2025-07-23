@@ -1,0 +1,126 @@
+.hotelForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inputGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #1a365d;
+}
+
+.input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #a4c5f9;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background-color: #ffffff;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #a4c5f9;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  min-height: 100px;
+  resize: vertical;
+  background-color: #ffffff;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.preview {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background-color: #eff6ff;
+}
+
+.preview h2 {
+  font-size: 20px;
+  margin-bottom: 8px;
+  color: #1e40af;
+}
+
+.preview p {
+  margin-bottom: 16px;
+  color: #334155;
+}
+
+.preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #bfdbfe;
+}
+
+.hotelInfoContainer {
+  margin-bottom: 1.5rem;
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.formGroup {
+  margin-bottom: 1.25rem;
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+.ratingContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.ratingItem {
+  display: flex;
+  align-items: center;
+  background-color: #dbeafe;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+}
+
+.ratingInput {
+  margin-right: 0.5rem;
+  accent-color: #3b82f6;
+}
+
+.ratingLabel {
+  margin: 0;
+  cursor: pointer;
+  font-weight: 500;
+  color: #1e40af;
+} 

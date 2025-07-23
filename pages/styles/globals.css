@@ -1,0 +1,335 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --primary-color: #0056b3;
+    --secondary-color: #6c757d;
+    --accent-color: #0056b3;
+    --font-family: 'Noto Sans KR', sans-serif;
+    --base-font-size: 14px;
+    --button-radius: 4px;
+    --card-shadow: 0 3px 6px rgba(0,0,0,0.12);
+    --card-border: 1px solid #eee;
+
+    /* 추가된 변수 정의 */
+    --text-primary: #333;
+    --text-secondary: #343a40;
+    --success-color: #198754;
+    --success-dark-color: #157347; /* hover 용 */
+    --code-bg-color: #f8f9fa;
+    --code-border-color: 1px solid #dee2e6;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--base-font-size);
+    background-color: #f8f9fa;
+}
+
+.btn {
+    border-radius: var(--button-radius);
+    transition: all 0.2s ease;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.card {
+    box-shadow: var(--card-shadow);
+    border: var(--card-border);
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.section-title {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+a {
+    color: var(--primary-color);
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #f0f8ff;
+    color: #0d6efd;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.hotel-detail {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+}
+
+.hotel-detail h1 {
+    color: var(--text-primary, #333);
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.hotel-detail h2 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1.75rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.hotel-detail h3 {
+    color: var(--text-secondary, #343a40);
+    font-size: 1.25rem;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.hotel-detail p {
+    color: var(--secondary-color, #6c757d);
+    line-height: 1.6;
+}
+
+.hotel-detail .address {
+    color: var(--secondary-color, #6c757d);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.hotel-detail .card {
+    border: var(--card-border, 1px solid #e9ecef);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.notice-info, .reservation-info, .additional-info {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.handle {
+    cursor: move;
+}
+
+.card-img-wrapper {
+    position: relative;
+}
+
+.image-actions {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.image-card {
+    margin-bottom: 1rem;
+}
+
+#htmlCode {
+    height: 300px;
+    overflow-y: auto;
+    background-color: var(--code-bg-color, #f8f9fa);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    border: var(--code-border-color, 1px solid #dee2e6);
+    white-space: pre-wrap;
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+.btn-outline-secondary {
+    color: var(--secondary-color, #6c757d);
+    border-color: var(--secondary-color, #6c757d);
+}
+
+.btn-outline-secondary:hover {
+    color: #fff;
+    background-color: var(--secondary-color, #6c757d);
+    border-color: var(--secondary-color, #6c757d);
+}
+
+.apply-btn {
+    margin-top: 1rem;
+    background-color: var(--success-color, #198754);
+    border-color: var(--success-color, #198754);
+}
+
+.apply-btn:hover {
+    background-color: var(--success-dark-color, #157347);
+    border-color: var(--success-dark-color, #146c43);
+}
+
+.preview-container {
+    position: sticky;
+    top: 20px;
+}
+
+.preview-frame-container {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    box-shadow: var(--card-shadow);
+}
+
+#previewFrame {
+    width: 100%;
+    height: 500px;
+    border: none;
+    overflow: hidden;
+}
+
+/* 고정 버튼들 z-index 조정 */
+.sticky-bottom {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100; /* 모달보다 낮게 설정 */
+    display: flex;
+    gap: 10px;
+}
+
+/* 복사 성공 알림 z-index 조정 */
+.copy-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 5px 10px;
+    border-radius: 4px;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100; /* 모달보다 높게 설정 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    animation: fadeOut 2s forwards;
+    animation-delay: 1s;
+}
+
+/* 코드 복사 버튼 z-index 조정 */
+.copy-code-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10; /* 기본 요소 레벨 */
+}
+
+/* 반응형 디자인 개선 */
+@media (max-width: 768px) {
+    .sticky-bottom {
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .sticky-bottom .btn {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .hotel-detail h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hotel-detail h2 {
+        font-size: 1.25rem;
+    }
+}
+
+/* 애니메이션 효과 */
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* 버튼 강조 효과 */
+.btn-apply-all {
+    animation: pulse 2s infinite;
+    font-weight: bold;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(25, 135, 84, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+    }
+}
+
+/* 소스 코드 복사 관련 스타일 */
+.copy-code-container {
+    position: relative;
+}
+
+.room-type {
+    flex: 1;
+    min-width: 200px;
+    background: #f9f9f9;
+    padding: 18px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease;
+}
+
+.room-type:hover {
+    transform: translateY(-3px);
+}
+
+.room-type h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.preview-controls {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

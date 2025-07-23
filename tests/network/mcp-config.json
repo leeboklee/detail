@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@executeautomation/playwright-mcp-server"
+      ]
+    },
+    "browser-tools": {
+      "command": "node",
+      "args": [
+        "tests/mcp-browser-tools-test.js"
+      ],
+      "autoStart": true
+    }
+  }
+} 

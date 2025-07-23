@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한글 입력 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>🇰🇷 한글 입력 테스트</h1>
+    <p>아래 입력 필드에 한글을 입력하고 테스트 버튼을 클릭하세요.</p>
+    
+    <div class="test-container">
+        <h3>테스트 입력 필드</h3>
+        <input type="text" id="testInput" placeholder="여기에 한글을 입력하세요 (예: 디럭스 트윈룸)" />
+        <div id="inputResult" class="result">입력값이 여기에 표시됩니다.</div>
+        
+        <button onclick="runTest()">🧪 테스트 실행</button>
+        <button onclick="clearTest()">🗑️ 초기화</button>
+    </div>
+    
+    <div class="test-container">
+        <h3>자동 테스트 케이스</h3>
+        <button onclick="runAutoTests()">🚀 자동 테스트 실행</button>
+        <div id="autoResults"></div>
+    </div>
+
+    <script>
+        // 입력 이벤트 로깅
+        const testInput = document.getElementById('testInput');
+        let isComposing = false;
+        
+        testInput.addEventListener('compositionstart', (e) => {
+            console.log('🇰🇷 조합 시작:', e.target.value);
+            isComposing = true;
+        });
+        
+        testInput.addEventListener('compositionupdate', (e) => {
+            console.log('🇰🇷 조합 업데이트:', e.target.value);
+        });
+        
+        testInput.addEventListener('compositionend', (e) => {
+            console.log('🇰🇷 조합 종료:', e.target.value);
+            isComposing = false;
+            updateResult();
+        });
+        
+        testInput.addEventListener('input', (e) => {
+            console.log('📝 입력 이벤트:', e.target.value, 'isComposing:', isComposing);
+            if (!isComposing) {
+                updateResult();
+            }
+        });
+        
+        function updateResult() {
+            const value = testInput.value;
+            const resultDiv = document.getElementById('inputResult');
+            resultDiv.textContent = `현재 값: "${value}" (길이: ${value.length})`;
+            resultDiv.className = value ? 'result success' : 'result';
+        }
+        
+        function runTest() {
+            const value = testInput.value;
+            const resultDiv = document.getElementById('inputResult');
+            
+            if (!value) {
+                resultDiv.textContent = '❌ 입력값이 없습니다.';
+                resultDiv.className = 'result error';
+                return;
+            }
+            
+            resultDiv.innerHTML = `
+                <strong>✅ 테스트 결과:</strong><br>
+                입력값: "${value}"<br>
+                길이: ${value.length}자<br>
+                한글 포함: ${/[가-힣]/.test(value) ? '예' : '아니오'}
+            `;
+            resultDiv.className = 'result success';
+        }
+        
+        function clearTest() {
+            testInput.value = '';
+            updateResult();
+        }
+        
+        async function runAutoTests() {
+            const testCases = [
+                '디럭스 트윈룸',
+                '더블베드',
+                '킹사이즈 베드',
+                '35평',
+                'City View'
+            ];
+            
+            const resultsDiv = document.getElementById('autoResults');
+            resultsDiv.innerHTML = '<h4>자동 테스트 진행 중...</h4>';
+            
+            let results = [];
+            
+            for (let i = 0; i < testCases.length; i++) {
+                const testValue = testCases[i];
+                console.log(`테스트 ${i + 1}: "${testValue}"`);
+                
+                // 입력 필드 초기화
+                testInput.value = '';
+                testInput.focus();
+                
+                // 한 글자씩 입력 시뮬레이션
+                for (let char of testValue) {
+                    testInput.value += char;
+                    testInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+                
+                // 입력 완료 대기
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                const finalValue = testInput.value;
+                const success = finalValue === testValue;
+                
+                results.push({
+                    input: testValue,
+                    output: finalValue,
+                    success: success
+                });
+                
+                console.log(`결과: "${testValue}" → "${finalValue}" (${success ? '성공' : '실패'})`);
+            }
+            
+            // 결과 표시
+            let html = '<h4>자동 테스트 결과</h4>';
+            let successCount = 0;
+            
+            results.forEach((result, index) => {
+                const statusClass = result.success ? 'success' : 'error';
+                const statusIcon = result.success ? '✅' : '❌';
+                
+                html += `
+                    <div class="result ${statusClass}">
+                        ${statusIcon} 테스트 ${index + 1}: "${result.input}"<br>
+                        결과: "${result.output}"<br>
+                        상태: ${result.success ? '성공' : '실패'}
+                    </div>
+                `;
+                
+                if (result.success) successCount++;
+            });
+            
+            const successRate = (successCount / results.length) * 100;
+            html += `
+                <div class="result ${successRate === 100 ? 'success' : 'error'}">
+                    <strong>최종 성공률: ${successCount}/${results.length} (${successRate}%)</strong>
+                </div>
+            `;
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        // 페이지 로드 시 초기화
+        updateResult();
+    </script>
+</body>
+</html> 

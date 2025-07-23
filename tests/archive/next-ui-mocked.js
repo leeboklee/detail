@@ -1,0 +1,88 @@
+// Mock module for NextUI components
+const React = require('react');
+
+// Mock NextUI components
+const mockComponent = (name) => {
+  return React.forwardRef((props, ref) => {
+    return React.createElement('div', { 
+      ...props, 
+      ref,
+      'data-component': name,
+      className: `mock-${name.toLowerCase()} ${props.className || ''}`
+    }, props.children);
+  });
+};
+
+// Mocked NextUI components for webpack compatibility
+module.exports = {
+  Accordion: () => null,
+  AccordionItem: () => null,
+  Button: () => null,
+  Card: () => null,
+  CardBody: () => null,
+  CardHeader: () => null,
+  Input: () => null,
+  Textarea: () => null,
+  Select: () => null,
+  SelectItem: () => null,
+  Tab: () => null,
+  Tabs: () => null,
+  Modal: () => null,
+  ModalContent: () => null,
+  ModalHeader: () => null,
+  ModalBody: () => null,
+  ModalFooter: () => null,
+  useDisclosure: () => ({ isOpen: false, onOpen: () => {}, onClose: () => {} }),
+  NextUIProvider: ({ children }) => children,
+  Spinner: mockComponent('Spinner'),
+  Chip: mockComponent('Chip'),
+  Avatar: mockComponent('Avatar'),
+  Divider: mockComponent('Divider'),
+  Spacer: mockComponent('Spacer'),
+  Progress: mockComponent('Progress'),
+  Skeleton: mockComponent('Skeleton'),
+  Image: mockComponent('Image'),
+  Link: mockComponent('Link'),
+  Navbar: mockComponent('Navbar'),
+  NavbarBrand: mockComponent('NavbarBrand'),
+  NavbarContent: mockComponent('NavbarContent'),
+  NavbarItem: mockComponent('NavbarItem'),
+  NavbarMenu: mockComponent('NavbarMenu'),
+  NavbarMenuItem: mockComponent('NavbarMenuItem'),
+  NavbarMenuToggle: mockComponent('NavbarMenuToggle'),
+  Dropdown: mockComponent('Dropdown'),
+  DropdownTrigger: mockComponent('DropdownTrigger'),
+  DropdownMenu: mockComponent('DropdownMenu'),
+  DropdownItem: mockComponent('DropdownItem'),
+  Popover: mockComponent('Popover'),
+  PopoverTrigger: mockComponent('PopoverTrigger'),
+  PopoverContent: mockComponent('PopoverContent'),
+  Tooltip: mockComponent('Tooltip'),
+  Badge: mockComponent('Badge'),
+  CheckboxGroup: mockComponent('CheckboxGroup'),
+  Checkbox: mockComponent('Checkbox'),
+  RadioGroup: mockComponent('RadioGroup'),
+  Radio: mockComponent('Radio'),
+  Switch: mockComponent('Switch'),
+  Slider: mockComponent('Slider'),
+  DatePicker: mockComponent('DatePicker'),
+  TimeInput: mockComponent('TimeInput'),
+  DateInput: mockComponent('DateInput'),
+  DateRangePicker: mockComponent('DateRangePicker'),
+  Table: mockComponent('Table'),
+  TableHeader: mockComponent('TableHeader'),
+  TableBody: mockComponent('TableBody'),
+  TableColumn: mockComponent('TableColumn'),
+  TableRow: mockComponent('TableRow'),
+  TableCell: mockComponent('TableCell'),
+  Pagination: mockComponent('Pagination'),
+  Breadcrumbs: mockComponent('Breadcrumbs'),
+  BreadcrumbItem: mockComponent('BreadcrumbItem'),
+  Code: mockComponent('Code'),
+  Snippet: mockComponent('Snippet'),
+  User: mockComponent('User'),
+  Listbox: mockComponent('Listbox'),
+  ListboxItem: mockComponent('ListboxItem'),
+  ScrollShadow: mockComponent('ScrollShadow'),
+  CircularProgress: mockComponent('CircularProgress')
+}; 

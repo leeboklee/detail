@@ -1,0 +1,884 @@
+[
+  {
+    "index": 1,
+    "text": "저장",
+    "id": "no-id",
+    "class": "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 2,
+    "text": "불러오기",
+    "id": "no-id",
+    "class": "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 3,
+    "text": "호텔 대표 이미지",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 4,
+    "text": "호텔 기본 정보",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 5,
+    "text": "객실 정보",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 6,
+    "text": "시설 정보",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 7,
+    "text": "체크인/아웃",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 8,
+    "text": "패키지 기간",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 9,
+    "text": "요금 정보",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 10,
+    "text": "취소/환불 규정",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 11,
+    "text": "예약 안내",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 12,
+    "text": "안내사항",
+    "id": "no-id",
+    "class": "px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 13,
+    "text": "편집",
+    "id": "no-id",
+    "class": "bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-medium py-1 px-3 rounded",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 14,
+    "text": "추가",
+    "id": "no-id",
+    "class": "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 15,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 16,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 17,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 18,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 19,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 20,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 21,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "RoomInfoEditor_removeButton____T33",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 22,
+    "text": "+ 객실 추가",
+    "id": "no-id",
+    "class": "RoomInfoEditor_addButton__usCsy",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 23,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 24,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 25,
+    "text": "+ 부대시설 추가",
+    "id": "no-id",
+    "class": "btn btn-primary mt-2",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 26,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 27,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 28,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 29,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 30,
+    "text": "패키지 추가",
+    "id": "no-id",
+    "class": "Package_addButton__ok4Aj",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": false
+  },
+  {
+    "index": 31,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 32,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 33,
+    "text": "객실 추가",
+    "id": "no-id",
+    "class": "PriceTable_addRoomButton__je4Op",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 34,
+    "text": "×",
+    "id": "no-id",
+    "class": "PriceTable_removeButton__Bn2x_",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 35,
+    "text": "×",
+    "id": "no-id",
+    "class": "PriceTable_removeButton__Bn2x_",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 36,
+    "text": "×",
+    "id": "no-id",
+    "class": "PriceTable_removeButton__Bn2x_",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 37,
+    "text": "전망 추가",
+    "id": "no-id",
+    "class": "PriceTable_smallButton__L_piJ",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 38,
+    "text": "호텔 추가",
+    "id": "no-id",
+    "class": "PriceTable_primaryButton__dznAz",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 39,
+    "text": "가격 유형 관리",
+    "id": "no-id",
+    "class": "PriceTable_secondaryButton___02zw",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 40,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 41,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 42,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 43,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 44,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 45,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 46,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 47,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 48,
+    "text": "+ 규정 추가",
+    "id": "no-id",
+    "class": "CancellationPolicy_addButton__D0n6r",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 49,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 50,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 51,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 52,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 53,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 54,
+    "text": "+ 항목 추가",
+    "id": "no-id",
+    "class": "CancellationPolicy_addButton__D0n6r",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 55,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 56,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 57,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 58,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 59,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "CancellationPolicy_removeButton__l6Lsc",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 60,
+    "text": "+ 항목 추가",
+    "id": "no-id",
+    "class": "CancellationPolicy_addButton__D0n6r",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 61,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 62,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 63,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 64,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 65,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 66,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 67,
+    "text": "+ 항목 추가",
+    "id": "no-id",
+    "class": "BookingConfirmation_addButton__skTrK",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 68,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 69,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 70,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 71,
+    "text": "+ 항목 추가",
+    "id": "no-id",
+    "class": "BookingConfirmation_addButton__skTrK",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 72,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 73,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 74,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 75,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 76,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 77,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 78,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 79,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 80,
+    "text": "+ 항목 추가",
+    "id": "no-id",
+    "class": "BookingConfirmation_addButton__skTrK",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 81,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 82,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 83,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 84,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 85,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 86,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 87,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 88,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 89,
+    "text": "삭제",
+    "id": "no-id",
+    "class": "BookingConfirmation_removeButton__Tj8Ya",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 90,
+    "text": "+ 항목 추가",
+    "id": "no-id",
+    "class": "BookingConfirmation_addButton__skTrK",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 91,
+    "text": "위로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 92,
+    "text": "아래로",
+    "id": "no-id",
+    "class": "text-sm text-gray-500 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded px-2 py-1",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 93,
+    "text": "+추가",
+    "id": "no-id",
+    "class": "Notice_addButton__cVAba",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 94,
+    "text": "HTML 생성",
+    "id": "no-id",
+    "class": "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+    "testId": "preview-generate-html-button",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 95,
+    "text": "에디터 보기",
+    "id": "no-id",
+    "class": "bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 96,
+    "text": "코드 복사",
+    "id": "no-id",
+    "class": "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 97,
+    "text": "다운로드",
+    "id": "no-id",
+    "class": "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  },
+  {
+    "index": 98,
+    "text": "HTML 생성하기",
+    "id": "no-id",
+    "class": "no-class",
+    "testId": "no-testid",
+    "isVisible": true,
+    "isEnabled": true
+  }
+]

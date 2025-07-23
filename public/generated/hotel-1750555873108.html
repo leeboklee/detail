@@ -1,0 +1,184 @@
+
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>호텔 상세 페이지</title>
+        <meta charset="utf-8">
+        <style>
+          body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+          }
+          .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+          }
+          .hotel-title { 
+            font-size: 32px; 
+            margin-bottom: 10px; 
+            color: #2c3e50;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+          }
+          .hotel-desc { color: #666; margin-bottom: 30px; font-size: 18px; }
+          .section {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #667eea;
+          }
+          .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+          .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+          }
+          .info-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e6ed;
+          }
+          .info-label {
+            font-weight: 600;
+            color: #34495e;
+            margin-bottom: 5px;
+          }
+          .info-value {
+            color: #2c3e50;
+          }
+          .highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 14px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1 class="hotel-title">테스트 호텔</h1>
+          <p class="hotel-desc">이 호텔은 테스트 목적으로 생성된 페이지입니다.</p>
+          
+          
+          <div class="section">
+            <h2 class="section-title">📅 판매기간 & 투숙일</h2>
+            
+            
+            <div style="margin-bottom: 20px;">
+              <h3 style="color: #e74c3c; margin-bottom: 10px;">🛒 판매기간</h3>
+              <div class="info-grid">
+                
+                <div class="info-item">
+                  <div class="info-label">판매 시작일</div>
+                  <div class="info-value">2024-02-01</div>
+                </div>
+                
+                <div class="info-item">
+                  <div class="info-label">판매 종료일</div>
+                  <div class="info-value">2024-02-29</div>
+                </div>
+                
+                <div class="info-item">
+                  <div class="info-label">얼리버드 할인</div>
+                  <div class="info-value"><span class="highlight">30일 전 예약 시 10% 할인</span></div>
+                </div>
+                
+              </div>
+              
+              
+            </div>
+            
+            
+            <div>
+              <h3 style="color: #e74c3c; margin-bottom: 10px;">🏨 투숙일</h3>
+              <div class="info-grid">
+                
+                <div class="info-item">
+                  <div class="info-label">투숙 시작일</div>
+                  <div class="info-value">2024-03-01</div>
+                </div>
+                
+                <div class="info-item">
+                  <div class="info-label">투숙 종료일</div>
+                  <div class="info-value">2024-03-31</div>
+                </div>
+                
+                <div class="info-item">
+                  <div class="info-label">체크인 시간</div>
+                  <div class="info-value">15:00</div>
+                </div>
+                
+                <div class="info-item">
+                  <div class="info-label">체크아웃 시간</div>
+                  <div class="info-value">11:00</div>
+                </div>
+                
+                
+              </div>
+              
+              
+              
+              
+              
+            </div>
+          </div>
+          
+          <div class="section">
+            <h2 class="section-title">🏨 기본 정보</h2>
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">주소</div>
+                <div class="info-value">서울시 테스트구 테스트로 123</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">전화번호</div>
+                <div class="info-value">02-123-4567</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">기본 체크인</div>
+                <div class="info-value">15:00</div>
+              </div>
+              <div class="info-item">
+                <div class="info-label">기본 체크아웃</div>
+                <div class="info-value">11:00</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="section">
+            <h2 class="section-title">🛏️ 객실 정보</h2>
+            <div class="info-item">
+              <h3 style="margin-bottom: 10px;">디럭스 킹룸</h3>
+              <p style="margin-bottom: 10px;">킹 사이즈 침대 1개가 있는 넓은 객실입니다.</p>
+              <div class="info-label">가격: <span class="highlight">₩150,000 / 1박</span></div>
+            </div>
+          </div>
+          
+          <div style="text-align: center; margin-top: 30px; color: #666; font-size: 14px;">
+            생성일: 2025. 6. 22. 오전 10:31:13
+          </div>
+        </div>
+      </body>
+      </html>
+    

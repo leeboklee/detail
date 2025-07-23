@@ -1,0 +1,34 @@
+{
+  "event_id": "string",
+  "timestamp": "ISO8601 string",
+  "level": "error|warning|info",
+  "message": "string",
+  "exception": {
+    "type": "string",
+    "value": "string",
+    "stacktrace": [
+      {
+        "filename": "string",
+        "function": "string",
+        "lineno": 0,
+        "colno": 0
+      }
+    ]
+  },
+  "user": {
+    "id": "string",
+    "ip_address": "string"
+  },
+  "request": {
+    "url": "string",
+    "method": "string",
+    "headers": {},
+    "body": "string"
+  },
+  "tags": {
+    "env": "dev|prod|test",
+    "browser": "string",
+    "os": "string"
+  },
+  "extra": {}
+} 

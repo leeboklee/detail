@@ -1,0 +1,45 @@
+{
+  "last_updated": "2025-07-22T09:50:00+09:00",
+  "version": "1.1.0",
+  "sections": {
+    "정책": {
+      "file_retention_policy": {
+        "trace_zip": "생성 후 1시간 경과 시 자동 삭제, 또는 다음번 실행 시 1시간 이전 파일 자동 삭제",
+        "보안": "대용량 파일은 외부 접근 차단, 필요시 암호화 저장, 접근 로그 기록"
+      }
+    },
+    "실행 메뉴얼": {
+      "automation_menu": [
+        "1. headless 모드로 E2E 테스트 실행 (trace on)",
+        "2. trace.zip 파일 자동 생성 및 저장",
+        "3. npx playwright show-trace playwright-report/trace.zip 명령으로 시각적 분석",
+        "4. 모든 결과/이력 docs/debugging/debug-report/에 자동 문서화",
+        "5. AI가 오류 감지·분석·수정 루프 반복"
+      ]
+    },
+    "개선사항": {
+      "최신": [
+        "이력 버전 관리 필드 추가 (version, last_updated)",
+        "정책/실행 메뉴얼/개선사항 섹션 분리로 가독성 향상",
+        "오래된 이력 자동 요약 및 중복 제거"
+      ],
+      "자동 요약": "이전 개선/이력은 30일 단위로 요약 및 보관, 최신 10건만 상세 유지"
+    }
+  },
+  "log_format": {
+    "standard": "ISO8601 timestamp, level, message, section, details, error_code(optional)",
+    "example": "2025-07-22T10:00:00+09:00, info, '객실 정보 저장 성공', 'rooms', {roomCount:3}"
+  },
+  "dashboard": {
+    "enabled": true,
+    "url": "http://localhost:9002/debug-dashboard",
+    "auto_refresh_sec": 10,
+    "fields": ["timestamp", "level", "section", "message", "details"]
+  },
+  "history": [
+    "2025-07-22T09:50:00+09:00: 문서 구조 개선(버전 관리, 섹션 분리, 자동 요약) 적용",
+    "2025-07-22T10:00:00+09:00: 로그 포맷 표준화 및 실시간 대시보드 연동 구조 개선",
+    "2025-07-22T10:10:00+09:00: 시설정보 key 에러(No key found for item) 발생 → TableRow key를 name+category+index로 수정하여 해결, 실시간 반영 테스트 통과",
+    "2025-07-22T10:40:00+09:00: 디자인(시각적) 자동화 테스트 미존재 확인, visual-regression-test.js 신규 생성 및 결과 문서화 구조 개선"
+  ]
+} 

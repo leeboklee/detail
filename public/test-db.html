@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB 동기화 테스트</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: #f9f9f9;
+        }
+        .test-section h3 {
+            margin: 0 0 15px 0;
+            color: #555;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .error {
+            background: #ffe6e6;
+            border-left-color: #f44336;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        .data-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .data-form > div {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗄️ DB 동기화 테스트</h1>
+        
+        <!-- 1. 기존 데이터 확인 -->
+        <div class="test-section">
+            <h3>1️⃣ 기존 호텔 데이터 확인</h3>
+            <button onclick="loadExistingHotels()">호텔 목록 불러오기</button>
+            <div id="hotelList" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- 2. 새 데이터 입력 -->
+        <div class="test-section">
+            <h3>2️⃣ 새 호텔 데이터 입력</h3>
+            <div class="data-form">
+                <div>
+                    <label>호텔명:</label>
+                    <input type="text" id="hotelName" value="테스트 호텔" placeholder="호텔명을 입력하세요">
+                </div>
+                <div>
+                    <label>주소:</label>
+                    <input type="text" id="hotelAddress" value="서울시 강남구 테스트로 123" placeholder="주소를 입력하세요">
+                </div>
+                <div>
+                    <label>전화번호:</label>
+                    <input type="text" id="hotelPhone" value="02-1234-5678" placeholder="전화번호를 입력하세요">
+                </div>
+                <div>
+                    <label>설명:</label>
+                    <textarea id="hotelDescription" placeholder="호텔 설명을 입력하세요">편안하고 모던한 호텔입니다.</textarea>
+                </div>
+                <div>
+                    <label>판매 시작일:</label>
+                    <input type="date" id="saleStartDate" value="2024-01-01">
+                </div>
+                <div>
+                    <label>판매 종료일:</label>
+                    <input type="date" id="saleEndDate" value="2024-12-31">
+                </div>
+                <div>
+                    <label>투숙 시작일:</label>
+                    <input type="date" id="stayStartDate" value="2024-02-01">
+                </div>
+                <div>
+                    <label>투숙 종료일:</label>
+                    <input type="date" id="stayEndDate" value="2024-11-30">
+                </div>
+                <div>
+                    <label>무료 취소 정책:</label>
+                    <textarea id="freeCancellation" placeholder="무료 취소 정책을 입력하세요">체크인 3일 전까지 무료 취소 가능</textarea>
+                </div>
+                <div>
+                    <label>취소 수수료:</label>
+                    <textarea id="cancellationFee" placeholder="취소 수수료 정책을 입력하세요">체크인 1일 전: 50% 환불</textarea>
+                </div>
+            </div>
+            <button onclick="saveNewHotel()">새 호텔로 저장</button>
+            <div id="saveResult" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- 3. 기존 데이터 업데이트 -->
+        <div class="test-section">
+            <h3>3️⃣ 기존 호텔 업데이트</h3>
+            <div>
+                <label>업데이트할 호텔 ID:</label>
+                <input type="number" id="updateHotelId" placeholder="호텔 ID 입력" min="1">
+                <button onclick="loadHotelForUpdate()">호텔 데이터 불러오기</button>
+            </div>
+            <button onclick="updateExistingHotel()" id="updateBtn" disabled>호텔 정보 업데이트</button>
+            <div id="updateResult" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- 4. 세션 저장/불러오기 -->
+        <div class="test-section">
+            <h3>4️⃣ 세션 저장 & 불러오기</h3>
+            <button onclick="saveSession()">현재 데이터를 세션에 저장</button>
+            <button onclick="loadSession()">세션에서 데이터 불러오기</button>
+            <div>
+                <label>세션 ID:</label>
+                <input type="text" id="sessionId" placeholder="세션 ID (자동 생성됨)">
+            </div>
+            <div id="sessionResult" class="result" style="display:none;"></div>
+        </div>
+
+        <!-- 5. 새로고침 테스트 -->
+        <div class="test-section">
+            <h3>5️⃣ 새로고침 테스트</h3>
+            <p>데이터를 입력하고 저장한 후, 브라우저를 새로고침하여 데이터가 유지되는지 확인하세요.</p>
+            <button onclick="location.reload()">🔄 페이지 새로고침</button>
+            <button onclick="checkLocalStorage()">localStorage 확인</button>
+            <div id="refreshResult" class="result" style="display:none;"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentHotelData = null;
+
+        // 1. 기존 호텔 목록 불러오기
+        async function loadExistingHotels() {
+            const resultDiv = document.getElementById('hotelList');
+            resultDiv.style.display = 'block';
+            resultDiv.textContent = '로딩 중...';
+            
+            try {
+                const response = await fetch('/api/hotels');
+                const data = await response.json();
+                
+                if (data.success && data.hotels) {
+                    resultDiv.textContent = `✅ 호텔 ${data.hotels.length}개 발견:\n\n`;
+                    data.hotels.forEach((hotel, index) => {
+                        resultDiv.textContent += `${index + 1}. ID: ${hotel.id} | 이름: ${hotel.name}\n`;
+                        resultDiv.textContent += `   주소: ${hotel.address || '주소 없음'}\n`;
+                        resultDiv.textContent += `   전화: ${hotel.phone || '전화번호 없음'}\n`;
+                        resultDiv.textContent += `   생성일: ${hotel.createdAt || '정보 없음'}\n\n`;
+                    });
+                    
+                    // 첫 번째 호텔 ID를 업데이트 필드에 자동 입력
+                    if (data.hotels.length > 0) {
+                        document.getElementById('updateHotelId').value = data.hotels[data.hotels.length - 1].id;
+                    }
+                } else {
+                    resultDiv.textContent = '❌ 호텔 데이터를 불러올 수 없습니다.';
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ 오류: ' + error.message;
+            }
+        }
+
+        // 2. 새 호텔 저장
+        async function saveNewHotel() {
+            const resultDiv = document.getElementById('saveResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = '저장 중...';
+            
+            const hotelData = {
+                name: document.getElementById('hotelName').value,
+                address: document.getElementById('hotelAddress').value,
+                phone: document.getElementById('hotelPhone').value,
+                description: document.getElementById('hotelDescription').value,
+                
+                // 통합된 period 데이터
+                period: {
+                    saleStartDate: document.getElementById('saleStartDate').value,
+                    saleEndDate: document.getElementById('saleEndDate').value,
+                    stayStartDate: document.getElementById('stayStartDate').value,
+                    stayEndDate: document.getElementById('stayEndDate').value,
+                    checkInTime: '15:00',
+                    checkOutTime: '11:00',
+                    minStayDays: '1',
+                    maxStayDays: '30'
+                },
+                
+                // 취소 정책
+                cancelPolicy: {
+                    freeCancellation: document.getElementById('freeCancellation').value,
+                    cancellationFee: document.getElementById('cancellationFee').value,
+                    noShow: '노쇼 시 100% 취소수수료',
+                    modificationPolicy: '변경은 1회까지 무료'
+                },
+                
+                rooms: [{
+                    type: '스탠다드',
+                    name: '스탠다드룸',
+                    view: '시티뷰',
+                    amenities: ['Wi-Fi', '에어컨', 'TV'],
+                    bedType: '퀸 베드 1개',
+                    maxCapacity: 2
+                }],
+                
+                packages: [{
+                    name: '기본 패키지',
+                    description: '조식 포함',
+                    price: 100000,
+                    options: ['조식', 'Wi-Fi']
+                }],
+                
+                isTemplate: true
+            };
+            
+            try {
+                const response = await fetch('/api/hotels', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(hotelData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    resultDiv.textContent = `✅ 호텔 저장 성공!\nID: ${result.hotel.id}\n이름: ${result.hotel.name}`;
+                    currentHotelData = result.hotel;
+                    
+                    // 업데이트 필드에 새 호텔 ID 설정
+                    document.getElementById('updateHotelId').value = result.hotel.id;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ 저장 실패: ' + (result.message || '알 수 없는 오류');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ 오류: ' + error.message;
+            }
+        }
+
+        // 3. 업데이트용 호텔 데이터 불러오기
+        async function loadHotelForUpdate() {
+            const hotelId = document.getElementById('updateHotelId').value;
+            if (!hotelId) {
+                alert('호텔 ID를 입력하세요.');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('updateResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = '불러오는 중...';
+            
+            try {
+                const response = await fetch(`/api/hotels/${hotelId}`);
+                const hotel = await response.json();
+                
+                if (response.ok) {
+                    currentHotelData = hotel;
+                    
+                    // 폼에 데이터 채우기
+                    document.getElementById('hotelName').value = hotel.name || '';
+                    document.getElementById('hotelAddress').value = hotel.address || '';
+                    document.getElementById('hotelPhone').value = hotel.phone || '';
+                    document.getElementById('hotelDescription').value = hotel.description || '';
+                    
+                    if (hotel.period) {
+                        document.getElementById('saleStartDate').value = hotel.period.saleStartDate || '';
+                        document.getElementById('saleEndDate').value = hotel.period.saleEndDate || '';
+                        document.getElementById('stayStartDate').value = hotel.period.stayStartDate || '';
+                        document.getElementById('stayEndDate').value = hotel.period.stayEndDate || '';
+                    }
+                    
+                    if (hotel.cancelPolicy) {
+                        document.getElementById('freeCancellation').value = hotel.cancelPolicy.freeCancellation || '';
+                        document.getElementById('cancellationFee').value = hotel.cancelPolicy.cancellationFee || '';
+                    }
+                    
+                    resultDiv.textContent = `✅ 호텔 데이터 불러오기 성공!\n이름: ${hotel.name}\n주소: ${hotel.address}`;
+                    document.getElementById('updateBtn').disabled = false;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ 호텔을 찾을 수 없습니다.';
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ 오류: ' + error.message;
+            }
+        }
+
+        // 3. 기존 호텔 업데이트
+        async function updateExistingHotel() {
+            if (!currentHotelData) {
+                alert('먼저 호텔 데이터를 불러오세요.');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('updateResult');
+            resultDiv.className = 'result';
+            resultDiv.textContent = '업데이트 중...';
+            
+            const updateData = {
+                ...currentHotelData,
+                name: document.getElementById('hotelName').value,
+                address: document.getElementById('hotelAddress').value,
+                phone: document.getElementById('hotelPhone').value,
+                description: document.getElementById('hotelDescription').value,
+                
+                period: {
+                    ...currentHotelData.period,
+                    saleStartDate: document.getElementById('saleStartDate').value,
+                    saleEndDate: document.getElementById('saleEndDate').value,
+                    stayStartDate: document.getElementById('stayStartDate').value,
+                    stayEndDate: document.getElementById('stayEndDate').value
+                },
+                
+                cancelPolicy: {
+                    ...currentHotelData.cancelPolicy,
+                    freeCancellation: document.getElementById('freeCancellation').value,
+                    cancellationFee: document.getElementById('cancellationFee').value
+                },
+                
+                updatedAt: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch(`/api/hotels/${currentHotelData.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updateData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.success) {
+                    resultDiv.textContent = `✅ 호텔 업데이트 성공!\n${result.message}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ 업데이트 실패: ' + (result.message || '알 수 없는 오류');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ 오류: ' + error.message;
+            }
+        }
+
+        // 4. 세션 저장
+        async function saveSession() {
+            const resultDiv = document.getElementById('sessionResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = '세션 저장 중...';
+            
+            const sessionData = {
+                period: {
+                    saleStartDate: document.getElementById('saleStartDate').value,
+                    saleEndDate: document.getElementById('saleEndDate').value,
+                    stayStartDate: document.getElementById('stayStartDate').value,
+                    stayEndDate: document.getElementById('stayEndDate').value,
+                    checkInTime: '15:00',
+                    checkOutTime: '11:00'
+                },
+                cancel: {
+                    freeCancellation: document.getElementById('freeCancellation').value,
+                    cancellationFee: document.getElementById('cancellationFee').value
+                },
+                hotel: {
+                    name: document.getElementById('hotelName').value,
+                    address: document.getElementById('hotelAddress').value,
+                    phone: document.getElementById('hotelPhone').value
+                }
+            };
+            
+            try {
+                const response = await fetch('/api/saveSession', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(sessionData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.sessionId) {
+                    document.getElementById('sessionId').value = result.sessionId;
+                    resultDiv.textContent = `✅ 세션 저장 성공!\n세션 ID: ${result.sessionId}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ 세션 저장 실패: ' + (result.message || '알 수 없는 오류');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ 오류: ' + error.message;
+            }
+        }
+
+        // 4. 세션 불러오기
+        async function loadSession() {
+            const sessionId = document.getElementById('sessionId').value;
+            if (!sessionId) {
+                alert('세션 ID를 입력하세요.');
+                return;
+            }
+            
+            const resultDiv = document.getElementById('sessionResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.textContent = '세션 불러오는 중...';
+            
+            try {
+                const response = await fetch(`/api/saveSession?sessionId=${sessionId}`);
+                const data = await response.json();
+                
+                if (response.ok && data) {
+                    // 폼에 데이터 채우기
+                    if (data.hotel) {
+                        document.getElementById('hotelName').value = data.hotel.name || '';
+                        document.getElementById('hotelAddress').value = data.hotel.address || '';
+                        document.getElementById('hotelPhone').value = data.hotel.phone || '';
+                    }
+                    
+                    if (data.period) {
+                        document.getElementById('saleStartDate').value = data.period.saleStartDate || '';
+                        document.getElementById('saleEndDate').value = data.period.saleEndDate || '';
+                        document.getElementById('stayStartDate').value = data.period.stayStartDate || '';
+                        document.getElementById('stayEndDate').value = data.period.stayEndDate || '';
+                    }
+                    
+                    if (data.cancel) {
+                        document.getElementById('freeCancellation').value = data.cancel.freeCancellation || '';
+                        document.getElementById('cancellationFee').value = data.cancel.cancellationFee || '';
+                    }
+                    
+                    resultDiv.textContent = `✅ 세션 불러오기 성공!\n호텔: ${data.hotel?.name}\n기간: ${data.period?.saleStartDate} ~ ${data.period?.saleEndDate}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ 세션을 찾을 수 없습니다.';
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ 오류: ' + error.message;
+            }
+        }
+
+        // 5. localStorage 확인
+        function checkLocalStorage() {
+            const resultDiv = document.getElementById('refreshResult');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            
+            const lastWorkingData = localStorage.getItem('lastWorkingHotelData');
+            const lastWorkingTimestamp = localStorage.getItem('lastWorkingTimestamp');
+            
+            if (lastWorkingData && lastWorkingTimestamp) {
+                try {
+                    const data = JSON.parse(lastWorkingData);
+                    const timestamp = new Date(parseInt(lastWorkingTimestamp));
+                    
+                    resultDiv.textContent = `✅ localStorage에 데이터 있음!\n저장 시간: ${timestamp.toLocaleString()}\n호텔명: ${data.hotel?.name}\n주소: ${data.hotel?.address}`;
+                } catch (error) {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ localStorage 데이터 파싱 오류: ' + error.message;
+                }
+            } else {
+                resultDiv.textContent = '⚠️ localStorage에 저장된 데이터가 없습니다.';
+            }
+        }
+
+        // 페이지 로드 시 localStorage 확인
+        window.addEventListener('load', () => {
+            checkLocalStorage();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,309 @@
+import React, { useState } from 'react';
+import { useAppContext } from '../context/AppContext';
+
+// 템플릿별 섹션 순서 정의
+const getTemplateSections = (hotelName) => {
+  const defaultSections = [
+    { id: 'hotel', title: '호텔 정보', visible: true },
+    { id: 'rooms', title: '객실 정보', visible: true },
+    { id: 'facilities', title: '부대시설', visible: true },
+    { id: 'packages', title: '패키지', visible: true },
+    { id: 'checkin', title: '체크인/아웃', visible: true },
+    { id: 'period', title: '성수기/비수기', visible: true },
+    { id: 'cancel', title: '취소/환불', visible: true },
+    { id: 'booking', title: '예약 안내', visible: true },
+    { id: 'notices', title: '공지사항', visible: true },
+    { id: 'pricing', title: '요금 정보', visible: true }
+  ];
+
+  // 비발디파크 전용 섹션 순서
+  if (hotelName && hotelName.includes('비발디파크')) {
+    return [
+      { id: 'hotel', title: '호텔 정보', visible: true },
+      { id: 'rooms', title: '객실 정보', visible: true },
+      { id: 'packages', title: '패키지', visible: true },
+      { id: 'period', title: '성수기/비수기', visible: true },
+      { id: 'facilities', title: '부대시설', visible: true },
+      { id: 'checkin', title: '체크인/아웃', visible: true },
+      { id: 'cancel', title: '취소/환불', visible: true },
+      { id: 'booking', title: '예약 안내', visible: true },
+      { id: 'notices', title: '공지사항', visible: true },
+      { id: 'pricing', title: '요금 정보', visible: true }
+    ];
+  }
+
+  return defaultSections;
+};
+
+const DatabaseManager = ({ onClose, onLoad }) => {
+  const { templateList, setHotelData, updateHotelDataDirectly } = useAppContext();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  console.log('🔄 DatabaseManager: 렌더링 시작');
+  console.log('📊 DatabaseManager: AppContext로부터 받은 템플릿 개수:', templateList.length);
+
+  // 검색 필터링된 템플릿 목록
+  const filteredTemplates = templateList.filter(template => 
+    template.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    template.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  console.log('🔍 DatabaseManager: 필터링된 템플릿 개수:', filteredTemplates.length);
+
+  // 템플릿 불러오기 함수
+  const loadTemplate = async (templateId) => {
+    setIsLoading(true);
+    console.log('🔄 DatabaseManager: 템플릿 불러오기 시작. ID:', templateId);
+
+    try {
+      // 개별 호텔 데이터 API 호출
+      const response = await fetch(`/api/hotels/${templateId}`);
+      if (!response.ok) {
+        throw new Error(`템플릿 로드 실패: ${response.status}`);
+      }
+
+      const templateData = await response.json();
+      console.log('✅ DatabaseManager: 템플릿 데이터 로드 성공:', templateData.name);
+
+      // AppContext의 hotelData 구조에 맞게 변환
+      const transformedData = {
+        hotel: {
+          id: templateData.id || '',
+          name: templateData.name || '',
+          address: templateData.address || '',
+          description: templateData.description || '',
+          phone: templateData.phone || '',
+          imageUrl: templateData.imageUrl || templateData.image_url || '',
+          checkin_time: templateData.checkInTime || templateData.checkin_time || '15:00',
+          checkout_time: templateData.checkout_time || '11:00'
+        },
+        rooms: (templateData.rooms || []).map(room => ({
+          roomType: room.type || room.name || '',
+          view: room.view || '',
+          amenities: room.amenities || [],
+          bedInfo: room.bedType || '',
+          maxOccupancy: room.maxCapacity || 0,
+          description: room.description || '',
+          imageUrl: room.image || '',
+          name: room.name || ''
+        })),
+        facilities: templateData.facilities || {
+          general: [],
+          business: [],
+          leisure: [],
+          dining: []
+        },
+        packages: (templateData.packages || []).map(pkg => ({
+          name: pkg.name || '',
+          description: pkg.description || '',
+          price: pkg.price || '',
+          includes: pkg.options || [],
+          additionalDescription: pkg.additionalDescription || '',
+          imageUrl: pkg.imageUrl || '',
+          saleStartDate: pkg.saleStartDate || '',
+          saleEndDate: pkg.saleEndDate || ''
+        })),
+        checkin: {
+          checkInTime: templateData.checkIn?.checkInTime || '15:00',
+          checkOutTime: templateData.checkIn?.checkOutTime || '11:00',
+          earlyCheckIn: templateData.checkIn?.earlyCheckIn || '',
+          lateCheckOut: templateData.checkIn?.lateCheckOut || '',
+        },
+        period: templateData.period || {
+          packageName: '',
+          checkInDate: '',
+          checkOutDate: '',
+          price: '',
+          currency: 'KRW',
+          notes: '',
+          isPackageIncluded: false,
+          peakSeason: '',
+          offSeason: '',
+          specialEvents: [],
+          saleStartDate: '',
+          saleEndDate: '',
+          stayStartDate: '',
+          stayEndDate: '',
+          checkInTime: '',
+          checkOutTime: '',
+          earlyBirdDiscount: '',
+          lastMinuteDiscount: '',
+          specialBenefits: '',
+          saleRestrictions: '',
+          minStayDays: null,
+          maxStayDays: null,
+          blackoutDates: [],
+          seasonalRates: [],
+          weekendSurcharge: null,
+          holidaySurcharge: null,
+          cancellationPolicy: ''
+        },
+        cancel: templateData.cancel || {
+          description: '',
+          offSeasonTitle: '',
+          highSeasonTitle: '',
+          policies: [
+            { period: '', refund: '' },
+            { period: '', refund: '' },
+            { period: '', refund: '' }
+          ],
+          freeCancellation: '',
+          cancellationFee: '',
+          noShow: '',
+          modificationPolicy: ''
+        },
+        pricing: templateData.pricing || {
+          basePrice: '',
+          currency: 'KRW',
+          taxRate: '',
+          serviceCharge: '',
+          totalPrice: '',
+          priceIncludes: [],
+          notes: '',
+          additionalChargesInfo: '',
+          lodges: [],
+          dayTypes: [],
+          headerLabels: []
+        },
+        booking: templateData.booking || {
+          contactInfo: {
+            phone: '',
+            email: '',
+            website: ''
+          },
+          policies: [],
+          notes: '',
+          reservationMethod: '',
+          paymentMethods: [],
+          confirmationTime: '',
+          specialRequests: ''
+        },
+        notices: (templateData.notices || []).map(notice => ({
+          title: notice.title || '',
+          content: notice.content || '',
+          additionalNotes: notice.additionalNotes || '',
+          type: notice.type || ''
+        })),
+        salePeriod: templateData.salePeriod || '',
+        stayPeriod: templateData.stayPeriod || '',
+        sections: templateData.sections || {
+          hotel: true, rooms: true, facilities: true, packages: true, period: true,
+          cancel: true, pricing: true, booking: true, notice: true
+        },
+        htmlPreviewData: templateData.htmlPreviewData || '',
+        selectedTab: 'hotel'
+      };
+
+      // AppContext의 hotelData 업데이트
+      updateHotelDataDirectly(transformedData);
+      console.log('✅ DatabaseManager: transformedData가 AppContext에 전달됨. 호텔 이름:', transformedData.hotel.name);
+
+      // 섹션 순서 업데이트
+      const sections = getTemplateSections(templateData.name);
+      console.log('🔧 DatabaseManager: 섹션 순서 업데이트:', sections.map(s => s.title));
+
+      // 로컬 스토리지에 저장
+      localStorage.setItem('hotelData', JSON.stringify(transformedData));
+      localStorage.setItem('lastWorkingHotelData', JSON.stringify(transformedData));
+      localStorage.setItem('lastWorkingTimestamp', Date.now().toString());
+
+      console.log('✅ DatabaseManager: 템플릿 불러오기 완료');
+      
+      // if (onLoad) {
+      //   onLoad(transformedData);
+      // }
+      
+      // 모달 닫기
+      if (onClose) {
+        onClose();
+      }
+
+    } catch (error) {
+      console.error('❌ DatabaseManager: 템플릿 불러오기 실패:', error);
+      alert(`템플릿 불러오기 실패: ${error.message}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold">템플릿 목록</h2>
+        <button
+          onClick={onClose}
+          className="text-gray-500 hover:text-gray-700 text-xl font-bold"
+        >
+          ×
+        </button>
+      </div>
+
+      {/* 검색 입력 */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="템플릿 검색..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      {/* 로딩 상태 */}
+      {isLoading && (
+        <div className="text-center py-4">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <p className="mt-2 text-gray-600">템플릿을 불러오는 중...</p>
+        </div>
+      )}
+
+      {/* 템플릿 목록 */}
+      <div className="space-y-3 max-h-96 overflow-y-auto">
+        {filteredTemplates.length === 0 ? (
+          <div className="text-center py-8 text-gray-500">
+            {templateList.length === 0 ? '저장된 템플릿이 없습니다.' : '검색 결과가 없습니다.'}
+          </div>
+        ) : (
+          filteredTemplates.map((template) => (
+            <div
+              key={template.id}
+              className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors"
+            >
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    {template.name || '이름 없음'}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    ID: {template.id}
+                  </p>
+                  {template.createdAt && (
+                    <p className="text-xs text-gray-500 mt-2">
+                      생성일: {new Date(template.createdAt).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={() => loadTemplate(template.id)}
+                  disabled={isLoading}
+                  className="ml-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  불러오기
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* 하단 정보 */}
+      <div className="text-sm text-gray-500 text-center pt-4 border-t">
+        총 {templateList.length}개의 템플릿이 있습니다.
+        {searchTerm && ` (${filteredTemplates.length}개 검색됨)`}
+      </div>
+    </div>
+  );
+};
+
+export default DatabaseManager;
