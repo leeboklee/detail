@@ -18,63 +18,68 @@ const sampleBookingInfo = {
   - 현장에서 체크인 시 전액 결제 또는 카드 승인이 진행됩니다.`
 };
 
-export default async function handler(req, res) {
-  const { method } = req;
-
-  switch (method) {
-    case 'GET':
-      try {
-        const { format } = req.query;
-        
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`API bookingInfo GET - 응답 데이터 준비 완료 (format: ${format || 'default'})`);
+export async function GET(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const format = searchParams.get('format');
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`API bookingInfo GET - 응답 데이터 준비 완료 (format: ${format || 'default'})`);
+    }
+    
+    if (format === 'html') {
+      const htmlContent = `
+        <div class="booking-info">
+          <h2 class="info-title">예약 안내</h2>
+          <div class="booking-content">
+            <p>${sampleBookingInfo.content.replace(/\n/g, '<br>')}</p>
+          </div>
+        </div>
+      `;
+      return new Response(htmlContent, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8'
         }
-        
-        if (format === 'html') {
-          const htmlContent = `
-            <div class="booking-info">
-              <h2 class="info-title">예약 안내</h2>
-              <div class="booking-content">
-                <p>${sampleBookingInfo.content.replace(/\n/g, '<br>')}</p>
-              </div>
-            </div>
-          `;
-          res.setHeader('Content-Type', 'text/html; charset=utf-8').status(200).send(htmlContent);
-        } else {
-          res.status(200).json(sampleBookingInfo);
-        }
-      } catch (error) {
-        console.error('API bookingInfo GET Error:', error);
-        res.status(500).json({ error: '예약 안내를 불러오는 중 오류가 발생했습니다.', details: error.message });
-      }
-      break;
+      });
+    } else {
+      return Response.json(sampleBookingInfo);
+    }
+  } catch (error) {
+    console.error('API bookingInfo GET Error:', error);
+    return Response.json(
+      { error: '예약 안내를 불러오는 중 오류가 발생했습니다.', details: error.message },
+      { status: 500 }
+    );
+  }
+}
 
-    case 'POST':
-      try {
-        const { content } = req.body;
+export async function POST(request) {
+  try {
+    const body = await request.json();
+    const { content } = body;
 
-        if (!content) {
-            return res.status(400).json({ error: '필수 필드 누락: content' });
-        }
-        
-        if (process.env.NODE_ENV === 'development') {
-          console.log('API bookingInfo POST - 요청 처리 완료');
-        }
-        
-        res.status(200).json({ 
-          success: true, 
-          message: '예약 안내가 성공적으로 저장되었습니다.',
-          data: { content }
-        });
-      } catch (error) {
-        console.error('API bookingInfo POST Error:', error);
-        res.status(500).json({ error: '예약 안내 저장 중 오류가 발생했습니다.', details: error.message });
-      }
-      break;
-
-    default:
-      res.setHeader('Allow', ['GET', 'POST']);
-      res.status(405).end(`Method ${method} Not Allowed`);
-      break;
+    if (!content) {
+      return Response.json(
+        { error: '필수 필드 누락: content' },
+        { status: 400 }
+      );
+    }
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('API bookingInfo POST - 요청 처리 완료');
+    }
+    
+    return Response.json({ 
+      success: true, 
+      message: '예약 안내가 성공적으로 저장되었습니다.',
+      data: { content }
+    });
+  } catch (error) {
+    console.error('API bookingInfo POST Error:', error);
+    return Response.json(
+      { error: '예약 안내 저장 중 오류가 발생했습니다.', details: error.message },
+      { status: 500 }
+    );
   }
 } 

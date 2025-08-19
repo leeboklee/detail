@@ -99,64 +99,65 @@ function convertCancelInfoToHtml(cancelInfo) {
     return html;
   } catch (error) {
     console.error('HTML 변환 오류:', error);
-    return '<div class="alert alert-danger">취소 규정 HTML 변환 중 오류가 발생했습니다.</div>';
+    return '<div class="alert alert-danger">취소 규정을 표시하는 중 오류가 발생했습니다.</div>';
   }
 }
 
-export default async function handler(req, res) {
-  const { method } = req;
+export async function GET(request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const format = searchParams.get('format');
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`API cancel GET - 응답 데이터 준비 완료 (format: ${format || 'default'})`);
+    }
+    
+    if (format === 'html') {
+      const htmlContent = convertCancelInfoToHtml(sampleCancelData);
+      return new Response(htmlContent, {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8'
+        }
+      });
+    } else {
+      return Response.json(sampleCancelData);
+    }
+  } catch (error) {
+    console.error('API cancel GET Error:', error);
+    return Response.json(
+      { error: '취소 규정을 불러오는 중 오류가 발생했습니다.', details: error.message },
+      { status: 500 }
+    );
+  }
+}
 
-  switch (method) {
-    case 'GET':
-      try {
-        const { format } = req.query;
-        
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`API cancel GET - 응답 데이터 준비 완료 (format: ${format || 'default'})`);
-        }
-        
-        if (format === 'html') {
-          const htmlContent = convertCancelInfoToHtml(sampleCancelData);
-          res.setHeader('Content-Type', 'text/html; charset=utf-8').status(200).send(htmlContent);
-        } else {
-          res.status(200).json(sampleCancelData);
-        }
-      } catch (error) {
-        console.error('API cancel GET Error:', error);
-        res.status(500).json({ error: '취소 규정을 불러오는 중 오류가 발생했습니다.', details: error.message });
-      }
-      break;
+export async function POST(request) {
+  try {
+    const body = await request.json();
+    const { cancelData } = body;
 
-    case 'POST':
-      try {
-        const body = req.body;
-        
-        if (process.env.NODE_ENV === 'development') {
-          console.log('API cancel POST - 요청 처리 완료');
-        }
-        
-        if (!body.beforeCheckIn && !body.afterCheckIn) {
-          return res.status(400).json({ 
-            success: false, 
-            message: '체크인 전 또는 체크인 후 취소 규정 정보가 필요합니다.',
-            status: 'VALIDATION_ERROR'
-          });
-        }
-        
-        res.status(200).json({ 
-          success: true, 
-          message: '취소 규정이 성공적으로 저장되었습니다.',
-          data: body
-        });
-      } catch (error) {
-        console.error('API cancel POST Error:', error);
-        res.status(500).json({ error: '취소 규정 저장 중 오류가 발생했습니다.', details: error.message });
-      }
-      break;
-
-    default:
-      res.setHeader('Allow', ['GET', 'POST']);
-      res.status(405).end(`Method ${method} Not Allowed`);
-      break;
+    if (!cancelData) {
+      return Response.json(
+        { error: '필수 필드 누락: cancelData' },
+        { status: 400 }
+      );
+    }
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('API cancel POST - 요청 처리 완료');
+    }
+    
+    return Response.json({ 
+      success: true, 
+      message: '취소 규정이 성공적으로 저장되었습니다.',
+      data: { cancelData }
+    });
+  } catch (error) {
+    console.error('API cancel POST Error:', error);
+    return Response.json(
+      { error: '취소 규정 저장 중 오류가 발생했습니다.', details: error.message },
+      { status: 500 }
+    );
   }
 } 

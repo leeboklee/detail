@@ -1251,10 +1251,11 @@ const MemoizedHome = React.memo(function Home() {
               />
             </div>
             <Suspense fallback={<LoadingSpinner />}>
-              <InlineCheckInOutInfo
+              {/* <InlineCheckInOutInfo
                 checkin={data.checkin}
                 onCheckinChange={(checkin) => updateData('checkin', checkin)}
-              />
+              /> */}
+              <div>체크인/아웃 정보 편집기</div>
             </Suspense>
           </div>
         )
@@ -1336,10 +1337,11 @@ const MemoizedHome = React.memo(function Home() {
         return (
           <div className="space-y-4">
             <Suspense fallback={<LoadingSpinner />}>
-              <InlineCancelPolicy
+              {/* <InlineCancelPolicy
                 cancel={data.cancel}
                 onCancelChange={(cancel) => updateData('cancel', cancel)}
-              />
+              /> */}
+              <div>취소 정책 편집기</div>
             </Suspense>
           </div>
         )
@@ -1348,10 +1350,11 @@ const MemoizedHome = React.memo(function Home() {
         return (
           <div className="space-y-4">
             <Suspense fallback={<LoadingSpinner />}>
-              <InlineBookingConfirmation
+              {/* <InlineBookingConfirmation
                 booking={data.booking}
                 onBookingChange={(booking) => updateData('booking', booking)}
-              />
+              /> */}
+              <div>예약 확인 편집기</div>
             </Suspense>
           </div>
         )
