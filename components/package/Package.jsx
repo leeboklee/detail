@@ -541,7 +541,7 @@ export default function Package({ value = [], onChange }) {
               value={editingPackage?.name || ''}
               onChange={(e) => handleFieldChange('name', e.target.value)}
               classNames={{
-                input: "text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
+                input: "text-overlap-fix text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
                 label: "text-gray-700 font-medium mb-3 text-sm sm:text-base block",
                 inputWrapper: "h-10 sm:h-12"
               }}
@@ -554,7 +554,7 @@ export default function Package({ value = [], onChange }) {
               onChange={(e) => handleFieldChange('description', e.target.value)}
               minRows={3}
               classNames={{
-                input: "text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
+                input: "text-overlap-fix text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
                 label: "text-gray-700 font-medium mb-3 text-sm sm:text-base block",
                 inputWrapper: "min-h-[80px]"
               }}
@@ -657,7 +657,7 @@ export default function Package({ value = [], onChange }) {
                 onChange={(e) => handleFieldChange('productComposition', e.target.value)}
                 minRows={3}
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
+                  input: "text-overlap-fix text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
                   label: "text-gray-700 font-medium mb-3 text-sm sm:text-base block",
                   inputWrapper: "min-h-[80px]"
                 }}
