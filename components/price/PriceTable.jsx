@@ -99,11 +99,11 @@ export default function PriceTable({ value = {}, onChange }) {
           id: 'standard',
           name: '새 타입',
           dayNames: {
-            friday: '금요일',
-            saturday: '토요일'
+            day1: '토요일',
+            day2: '10.4'
           },
           prices: {
-            weekdays: { friday: '', saturday: '' }
+            weekdays: { day1: '', day2: '' }
           }
         }
       ]
@@ -316,7 +316,7 @@ export default function PriceTable({ value = {}, onChange }) {
             <table className="w-full border-collapse border border-gray-300">
               <thead>
                 <tr className="bg-blue-600 text-white">
-                  <th className="border border-gray-300 p-3 text-center">평형</th>
+                  <th className="border border-gray-300 p-3 text-center">룸타입</th>
                   <th className="border border-gray-300 p-3 text-center">타입</th>
                   <th className="border border-gray-300 p-3 text-center">요일별 추가요금</th>
                 </tr>
@@ -339,7 +339,7 @@ export default function PriceTable({ value = {}, onChange }) {
                               onChange?.(updated);
                             }}
                             className="text-center"
-                            placeholder="평형명"
+                            placeholder="룸타입명"
                             size="sm"
                             classNames={{
                               input: "text-gray-800 bg-white border-gray-300 text-center"
@@ -366,15 +366,16 @@ export default function PriceTable({ value = {}, onChange }) {
                       </td>
                       <td className="border border-gray-300 p-3">
                         <div className="space-y-3">
-                          {/* 요일별 추가요금 입력 */}
-                          <div className="grid grid-cols-2 gap-2">
+                          {/* 요일별 추가요금 입력 - 확장된 구조 */}
+                          <div className="grid grid-cols-2 gap-3">
+                            {/* 첫 번째 요일 */}
                             <div className="space-y-2">
                               <Input
                                 label="요일명"
                                 size="sm"
-                                value={type.dayNames?.friday || '금요일'}
-                                onChange={(e) => updateRoomTypeDayName(roomIndex, typeIndex, 'friday', e.target.value)}
-                                placeholder="금요일"
+                                value={type.dayNames?.day1 || '토요일'}
+                                onChange={(e) => updateRoomTypeDayName(roomIndex, typeIndex, 'day1', e.target.value)}
+                                placeholder="예: 토요일, 10.3"
                                 classNames={{
                                   input: "text-gray-800 bg-white border-gray-300",
                                   label: "text-xs text-gray-600"
@@ -384,8 +385,8 @@ export default function PriceTable({ value = {}, onChange }) {
                                 label="추가요금"
                                 size="sm"
                                 type="number"
-                                value={type.prices?.weekdays?.friday || ''}
-                                onChange={(e) => updateRoomTypePrice(roomIndex, typeIndex, 'weekdays', 'friday', e.target.value)}
+                                value={type.prices?.weekdays?.day1 || ''}
+                                onChange={(e) => updateRoomTypePrice(roomIndex, typeIndex, 'weekdays', 'day1', e.target.value)}
                                 placeholder="추가요금 입력"
                                 endContent={<span className="text-xs text-gray-600">원</span>}
                                 classNames={{
@@ -393,13 +394,14 @@ export default function PriceTable({ value = {}, onChange }) {
                                 }}
                               />
                             </div>
+                            {/* 두 번째 요일 */}
                             <div className="space-y-2">
                               <Input
                                 label="요일명"
                                 size="sm"
-                                value={type.dayNames?.saturday || '토요일'}
-                                onChange={(e) => updateRoomTypeDayName(roomIndex, typeIndex, 'saturday', e.target.value)}
-                                placeholder="토요일"
+                                value={type.dayNames?.day2 || '10.4'}
+                                onChange={(e) => updateRoomTypeDayName(roomIndex, typeIndex, 'day2', e.target.value)}
+                                placeholder="예: 10.4, 일요일"
                                 classNames={{
                                   input: "text-gray-800 bg-white border-gray-300",
                                   label: "text-xs text-gray-600"
@@ -409,8 +411,8 @@ export default function PriceTable({ value = {}, onChange }) {
                                 label="추가요금"
                                 size="sm"
                                 type="number"
-                                value={type.prices?.weekdays?.saturday || ''}
-                                onChange={(e) => updateRoomTypePrice(roomIndex, typeIndex, 'weekdays', 'saturday', e.target.value)}
+                                value={type.prices?.weekdays?.day2 || ''}
+                                onChange={(e) => updateRoomTypePrice(roomIndex, typeIndex, 'weekdays', 'day2', e.target.value)}
                                 placeholder="추가요금 입력"
                                 endContent={<span className="text-xs text-gray-600">원</span>}
                                 classNames={{
@@ -419,6 +421,18 @@ export default function PriceTable({ value = {}, onChange }) {
                               />
                             </div>
                           </div>
+                          {/* 추가 요일 버튼 */}
+                          <Button 
+                            size="sm" 
+                            variant="flat" 
+                            color="secondary"
+                            onPress={() => {
+                              // 추가 요일 로직 구현
+                              console.log('추가 요일 추가');
+                            }}
+                          >
+                            + 요일 추가
+                          </Button>
                         </div>
                       </td>
                     </tr>

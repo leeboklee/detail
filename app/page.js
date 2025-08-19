@@ -240,7 +240,7 @@ const MemoizedHome = React.memo(function Home() {
 
   // 데이터 업데이트 함수
   const updateData = useCallback((key, newData) => {
-    console.log('🔧 updateData 호출:', { key, newData, currentData: data[key] });
+    console.log('🔧 updateData 호출:', { key, newData });
     setData(prev => {
       const updated = {
         ...prev,
@@ -249,7 +249,7 @@ const MemoizedHome = React.memo(function Home() {
       console.log('🔧 데이터 업데이트 완료:', { key, oldValue: prev[key], newValue: updated[key] });
       return updated;
     })
-  }, [data])
+  }, [])
 
   // 탭 순서 변경 함수
   const moveTab = useCallback((fromIndex, toIndex) => {
