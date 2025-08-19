@@ -1,7 +1,7 @@
-const puppeteer = require('puppeteer');
+﻿const puppeteer = require('puppeteer');
 
 async function testFunctionality() {
-    console.log('🚀 기능 테스트 시작...');
+    console.log('?? 湲곕뒫 ?뚯뒪???쒖옉...');
     
     const browser = await puppeteer.launch({ 
         headless: false, 
@@ -12,18 +12,18 @@ async function testFunctionality() {
     const page = await browser.newPage();
     
     try {
-        // 페이지 로드
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        // ?섏씠吏 濡쒕뱶
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await new Promise(resolve => setTimeout(resolve, 3000));
         
-        console.log('✅ 페이지 로드 완료');
+        console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
         
-        // 1. 템플릿 기능 테스트
-        console.log('\n=== 1. 템플릿 기능 테스트 ===');
+        // 1. ?쒗뵆由?湲곕뒫 ?뚯뒪??
+        console.log('\n=== 1. ?쒗뵆由?湲곕뒫 ?뚯뒪??===');
         
-        // 템플릿 목록 버튼 찾기
+        // ?쒗뵆由?紐⑸줉 踰꾪듉 李얘린
         const templateButtons = await page.$$eval('button', buttons => 
-            buttons.filter(btn => btn.textContent.includes('💾 템플릿 목록'))
+            buttons.filter(btn => btn.textContent.includes('?뮶 ?쒗뵆由?紐⑸줉'))
                    .map(btn => ({
                        text: btn.textContent.trim(),
                        visible: btn.offsetParent !== null,
@@ -31,27 +31,27 @@ async function testFunctionality() {
                    }))
         );
         
-        console.log('템플릿 버튼들:', templateButtons);
+        console.log('?쒗뵆由?踰꾪듉??', templateButtons);
         
         if (templateButtons.length > 0 && templateButtons[0].visible && !templateButtons[0].disabled) {
-            // 템플릿 모달 열기
+            // ?쒗뵆由?紐⑤떖 ?닿린
             await page.evaluate(() => {
                 const btn = Array.from(document.querySelectorAll('button')).find(b => 
-                    b.textContent.includes('💾 템플릿 목록')
+                    b.textContent.includes('?뮶 ?쒗뵆由?紐⑸줉')
                 );
                 if (btn) btn.click();
             });
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            // 템플릿 모달 내용 확인
+            // ?쒗뵆由?紐⑤떖 ?댁슜 ?뺤씤
             const modalContent = await page.evaluate(() => {
                 const modal = document.querySelector('[role="dialog"], .modal, [class*="modal"]');
                 if (modal) {
                     const saveBtn = Array.from(modal.querySelectorAll('button')).find(btn => 
-                        btn.textContent.includes('새로 저장')
+                        btn.textContent.includes('?덈줈 ???)
                     );
                     const loadBtns = Array.from(modal.querySelectorAll('button')).filter(btn => 
-                        btn.textContent.includes('불러오기')
+                        btn.textContent.includes('遺덈윭?ㅺ린')
                     );
                     
                     return {
@@ -64,26 +64,26 @@ async function testFunctionality() {
                 return { modalFound: false };
             });
             
-            console.log('템플릿 모달 상태:', modalContent);
+            console.log('?쒗뵆由?紐⑤떖 ?곹깭:', modalContent);
             
-            // 모달 닫기
+            // 紐⑤떖 ?リ린
             await page.keyboard.press('Escape');
             await new Promise(resolve => setTimeout(resolve, 500));
         }
         
-        // 2. 섹션별 추가 버튼 테스트
-        console.log('\n=== 2. 섹션별 추가 버튼 테스트 ===');
+        // 2. ?뱀뀡蹂?異붽? 踰꾪듉 ?뚯뒪??
+        console.log('\n=== 2. ?뱀뀡蹂?異붽? 踰꾪듉 ?뚯뒪??===');
         
         const sections = [
-            { name: '패키지', buttonId: 'addPackageBtn' },
-            { name: '공지사항', buttonId: 'addNoticeBtn' },  
-            { name: '시설 정보', buttonId: 'addFacilityBtn' }
+            { name: '?⑦궎吏', buttonId: 'addPackageBtn' },
+            { name: '怨듭??ы빆', buttonId: 'addNoticeBtn' },  
+            { name: '?쒖꽕 ?뺣낫', buttonId: 'addFacilityBtn' }
         ];
         
         for (const section of sections) {
-            console.log(`\n--- ${section.name} 섹션 테스트 ---`);
+            console.log(`\n--- ${section.name} ?뱀뀡 ?뚯뒪??---`);
             
-            // 섹션 버튼 클릭하여 모달 열기
+            // ?뱀뀡 踰꾪듉 ?대┃?섏뿬 紐⑤떖 ?닿린
             const sectionButtonFound = await page.evaluate((sectionName) => {
                 const btn = Array.from(document.querySelectorAll('button')).find(b => 
                     b.textContent.includes(sectionName)
@@ -98,7 +98,7 @@ async function testFunctionality() {
             if (sectionButtonFound) {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 
-                // 추가 버튼 상태 확인
+                // 異붽? 踰꾪듉 ?곹깭 ?뺤씤
                 const addButtonStatus = await page.evaluate((buttonId) => {
                     const btn = document.getElementById(buttonId);
                     if (btn) {
@@ -114,51 +114,51 @@ async function testFunctionality() {
                     return { found: false };
                 }, section.buttonId);
                 
-                console.log(`${section.name} 추가 버튼 상태:`, addButtonStatus);
+                console.log(`${section.name} 異붽? 踰꾪듉 ?곹깭:`, addButtonStatus);
                 
-                // 추가 버튼 클릭 테스트
+                // 異붽? 踰꾪듉 ?대┃ ?뚯뒪??
                 if (addButtonStatus.found && addButtonStatus.visible && addButtonStatus.enabled) {
                     try {
                         await page.click(`#${section.buttonId}`);
                         await new Promise(resolve => setTimeout(resolve, 500));
-                        console.log(`✅ ${section.name} 추가 버튼 클릭 성공`);
+                        console.log(`??${section.name} 異붽? 踰꾪듉 ?대┃ ?깃났`);
                         
-                        // 추가된 항목 확인
+                        // 異붽?????ぉ ?뺤씤
                         const itemCount = await page.evaluate((sectionName) => {
-                            if (sectionName === '패키지') {
+                            if (sectionName === '?⑦궎吏') {
                                 return document.querySelectorAll('[class*="package"], [id*="package"]').length;
-                            } else if (sectionName === '공지사항') {
+                            } else if (sectionName === '怨듭??ы빆') {
                                 return document.querySelectorAll('[class*="notice"], [id*="notice"]').length;
-                            } else if (sectionName === '시설 정보') {
+                            } else if (sectionName === '?쒖꽕 ?뺣낫') {
                                 return document.querySelectorAll('[class*="facility"], [id*="facility"]').length;
                             }
                             return 0;
                         }, section.name);
                         
-                        console.log(`${section.name} 항목 개수:`, itemCount);
+                        console.log(`${section.name} ??ぉ 媛쒖닔:`, itemCount);
                         
                     } catch (error) {
-                        console.log(`❌ ${section.name} 추가 버튼 클릭 실패:`, error.message);
+                        console.log(`??${section.name} 異붽? 踰꾪듉 ?대┃ ?ㅽ뙣:`, error.message);
                     }
                 } else {
-                    console.log(`❌ ${section.name} 추가 버튼 클릭 불가`);
+                    console.log(`??${section.name} 異붽? 踰꾪듉 ?대┃ 遺덇?`);
                 }
                 
-                // 모달 닫기
+                // 紐⑤떖 ?リ린
                 await page.keyboard.press('Escape');
                 await new Promise(resolve => setTimeout(resolve, 500));
             } else {
-                console.log(`❌ ${section.name} 섹션 버튼을 찾을 수 없음`);
+                console.log(`??${section.name} ?뱀뀡 踰꾪듉??李얠쓣 ???놁쓬`);
             }
         }
         
-        // 3. 추가요금 필드 확인
-        console.log('\n=== 3. 추가요금 필드 확인 ===');
+        // 3. 異붽??붽툑 ?꾨뱶 ?뺤씤
+        console.log('\n=== 3. 異붽??붽툑 ?꾨뱶 ?뺤씤 ===');
         
-        // 판매기간&투숙일 섹션 열기
+        // ?먮ℓ湲곌컙&?ъ닕???뱀뀡 ?닿린
         const periodButtonFound = await page.evaluate(() => {
             const btn = Array.from(document.querySelectorAll('button')).find(b => 
-                b.textContent.includes('📅 판매기간&투숙일')
+                b.textContent.includes('?뱟 ?먮ℓ湲곌컙&?ъ닕??)
             );
             if (btn) {
                 btn.click();
@@ -170,12 +170,12 @@ async function testFunctionality() {
         if (periodButtonFound) {
             await new Promise(resolve => setTimeout(resolve, 1000));
             
-            // 추가요금 필드들 확인
+            // 異붽??붽툑 ?꾨뱶???뺤씤
             const additionalFeeFields = await page.evaluate(() => {
                 const fields = [
-                    { name: '주말 추가요금', selector: 'input[name*="weekend"], input[placeholder*="주말"]' },
-                    { name: '성수기 추가요금', selector: 'input[name*="peak"], input[placeholder*="성수기"]' },
-                    { name: '공휴일 추가요금', selector: 'input[name*="holiday"], input[placeholder*="공휴일"]' }
+                    { name: '二쇰쭚 異붽??붽툑', selector: 'input[name*="weekend"], input[placeholder*="二쇰쭚"]' },
+                    { name: '?깆닔湲?異붽??붽툑', selector: 'input[name*="peak"], input[placeholder*="?깆닔湲?]' },
+                    { name: '怨듯쑕??異붽??붽툑', selector: 'input[name*="holiday"], input[placeholder*="怨듯쑕??]' }
                 ];
                 
                 return fields.map(field => {
@@ -189,25 +189,25 @@ async function testFunctionality() {
                 });
             });
             
-            console.log('추가요금 필드들:', additionalFeeFields);
+            console.log('異붽??붽툑 ?꾨뱶??', additionalFeeFields);
             
-            // 모달 닫기
+            // 紐⑤떖 ?リ린
             await page.keyboard.press('Escape');
             await new Promise(resolve => setTimeout(resolve, 500));
         }
         
-        // 최종 스크린샷
+        // 理쒖쥌 ?ㅽ겕由곗꺑
         await page.screenshot({ path: 'functional-test-result.png', fullPage: true });
-        console.log('\n📸 최종 스크린샷 저장: functional-test-result.png');
+        console.log('\n?벝 理쒖쥌 ?ㅽ겕由곗꺑 ??? functional-test-result.png');
         
     } catch (error) {
-        console.error('❌ 테스트 중 오류 발생:', error);
+        console.error('???뚯뒪??以??ㅻ쪟 諛쒖깮:', error);
         await page.screenshot({ path: 'error-screenshot.png', fullPage: true });
     } finally {
         await browser.close();
-        console.log('\n✅ 기능 테스트 완료');
+        console.log('\n??湲곕뒫 ?뚯뒪???꾨즺');
     }
 }
 
-// 스크립트 실행
+// ?ㅽ겕由쏀듃 ?ㅽ뻾
 testFunctionality().catch(console.error); 

@@ -1,0 +1,28 @@
+# 실제로 사용하지 않는 도커 설정 (참고용)
+# 프로젝트는 npm run dev:basic으로 직접 실행
+services:
+  app:
+    image: node:20-alpine
+    container_name: detail-app
+    ports:
+      - "3900:3900"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+      - PORT=3900
+      - NODE_OPTIONS=--max-old-space-size=4096
+    # 포그라운드 실행으로 변경
+    stdin_open: true
+    tty: true
+    # 백그라운드 관련 설정 제거
+    # restart: unless-stopped
+    # 메모리 제한 제거 (개발 환경 최적화)
+    # mem_limit: 512m
+    # mem_reservation: 256m
+    # CPU 제한 제거
+    # cpus: 0.5
+    command: sh -c "npm install && npm run dev:basic" 

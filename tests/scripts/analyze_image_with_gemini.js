@@ -1,44 +1,44 @@
-require('dotenv').config({ path: '.env.local' }); // .env.local ?�일 로드
+﻿require('dotenv').config({ path: '.env.local' }); // .env.local ?뚯씪 濡쒕뱶
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 
-// --- ?�정 --- 
-// API ?? ?�경 변??GEMINI_API_KEY ?�서 ?�어??(dotenv�?로드)
+// --- ?ㅼ젙 --- 
+// API ?? ?섍꼍 蹂??GEMINI_API_KEY ?먯꽌 ?쎌뼱??(dotenv濡?濡쒕뱶)
 const API_KEY = process.env.GEMINI_API_KEY;
-// 결과 ?�??경로
+// 寃곌낵 ???寃쎈줈
 const outputDir = path.join(__dirname, 'analysis');
 const outputFilePath = path.join(outputDir, 'vision_analysis.txt');
-// 분석???��?지 ?�일 경로 (명령�??�수�?받음)
+// 遺꾩꽍???대?吏 ?뚯씪 寃쎈줈 (紐낅졊以??몄닔濡?諛쏆쓬)
 const imagePath = process.argv[2]; 
-// --- ?�정 ??---
+// --- ?ㅼ젙 ??---
 
-// ?�일 경로 ?�효??검??
+// ?뚯씪 寃쎈줈 ?좏슚??寃??
 if (!imagePath) {
-  console.error('?�류: 분석???��?지 ?�일 경로�?명령�??�수�??�공?�야 ?�니??');
-  console.error('?�시: node analyze_image_with_gemini.js screenshots/main-page.png');
+  console.error('?ㅻ쪟: 遺꾩꽍???대?吏 ?뚯씪 寃쎈줈瑜?紐낅졊以??몄닔濡??쒓났?댁빞 ?⑸땲??');
+  console.error('?덉떆: node analyze_image_with_gemini.js screenshots/main-page.png');
   process.exit(1);
 }
 
 if (!fs.existsSync(imagePath)) {
-  console.error(`?�류: ?��?지 ?�일??찾을 ???�습?�다 - ${imagePath}`);
+  console.error(`?ㅻ쪟: ?대?吏 ?뚯씪??李얠쓣 ???놁뒿?덈떎 - ${imagePath}`);
   process.exit(1);
 }
 
-// API ???�인
+// API ???뺤씤
 if (!API_KEY) {
-  console.error('?�류: GEMINI_API_KEY ?�경 변?��? .env.local ?�일?�서 ?�어?��? 못했거나 ?�정?��? ?�았?�니??');
-  console.error('API ?��? ?�인?�고 ?�시 ?�도?�세??');
+  console.error('?ㅻ쪟: GEMINI_API_KEY ?섍꼍 蹂?섎? .env.local ?뚯씪?먯꽌 ?쎌뼱?ㅼ? 紐삵뻽嫄곕굹 ?ㅼ젙?섏? ?딆븯?듬땲??');
+  console.error('API ?ㅻ? ?뺤씤?섍퀬 ?ㅼ떆 ?쒕룄?섏꽭??');
   process.exit(1);
 }
 
-// 결과 ?�렉?�리 ?�성 (?�으�?
+// 寃곌낵 ?붾젆?좊━ ?앹꽦 (?놁쑝硫?
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
-// ?��?지 ?�일??Base64�??�코?�하???�수
+// ?대?吏 ?뚯씪??Base64濡??몄퐫?⑺븯???⑥닔
 function fileToGenerativePart(filePath, mimeType) {
   return {
     inlineData: {
@@ -49,38 +49,38 @@ function fileToGenerativePart(filePath, mimeType) {
 }
 
 async function runAnalysis() {
-  console.log(`?��?지 분석 ?�작: ${imagePath}`);
+  console.log(`?대?吏 遺꾩꽍 ?쒖옉: ${imagePath}`);
   try {
     const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // ?�롬?�트 ?�정: ?�이?�웃, 미리보기 ?�널 ?�치/?�두�? ?�류 메시지 ?�무�?명확??질문
-    const prompt = `?�음 질문???�해주세??
-1. ?????�이지???�체?�인 ?�이?�웃 구조??무엇?��??? (?? 좌우 분할, ?�하 분할, ?�일 ?�역 ??
-2. ?�이지 ?�른�??�단 근처??주황???�두리�? ?�는 별도??미리보기 ?�널??보이?�요? 만약 보인?�면, �??�치?� ?�기�??�?�적?�로 ?�명?�주?�요.
-3. ?�이지???�에 ?�는 ?�류 메시지??모달 창이 ?�시?�어 ?�나??
-4. ?��????�소가 ?�다�?구체?�으�??�떤 ?�태?� ?�치?��???`;
+    // ?꾨＼?꾪듃 ?섏젙: ?덉씠?꾩썐, 誘몃━蹂닿린 ?⑤꼸 ?꾩튂/?뚮몢由? ?ㅻ쪟 硫붿떆吏 ?좊Т瑜?紐낇솗??吏덈Ц
+    const prompt = `?ㅼ쓬 吏덈Ц???듯빐二쇱꽭??
+1. ?????섏씠吏???꾩껜?곸씤 ?덉씠?꾩썐 援ъ“??臾댁뾿?멸??? (?? 醫뚯슦 遺꾪븷, ?곹븯 遺꾪븷, ?⑥씪 ?곸뿭 ??
+2. ?섏씠吏 ?ㅻⅨ履??곷떒 洹쇱쿂??二쇳솴???뚮몢由ш? ?덈뒗 蹂꾨룄??誘몃━蹂닿린 ?⑤꼸??蹂댁씠?섏슂? 留뚯빟 蹂댁씤?ㅻ㈃, 洹??꾩튂? ?ш린瑜???듭쟻?쇰줈 ?ㅻ챸?댁＜?몄슂.
+3. ?섏씠吏???덉뿉 ?꾨뒗 ?ㅻ쪟 硫붿떆吏??紐⑤떖 李쎌씠 ?쒖떆?섏뼱 ?덈굹??
+4. ?뚮????붿냼媛 ?덈떎硫?援ъ껜?곸쑝濡??대뼡 ?뺥깭? ?꾩튂?멸???`;
 
     const imageParts = [fileToGenerativePart(imagePath, "image/png")];
 
-    console.log('Gemini Vision API ?�출 �?..');
+    console.log('Gemini Vision API ?몄텧 以?..');
     const result = await model.generateContent([prompt, ...imageParts]);
     const response = await result.response;
     const analysisText = response.text();
 
-    console.log('API 분석 ?�료.');
+    console.log('API 遺꾩꽍 ?꾨즺.');
     fs.writeFileSync(outputFilePath, analysisText);
-    console.log(`분석 결과 ?�???�료: ${outputFilePath}`);
-    console.log('--- 분석 결과 미리보기 ---');
-    console.log(analysisText.substring(0, 500) + (analysisText.length > 500 ? '...' : '')); // 미리보기 길이 ?�한
+    console.log(`遺꾩꽍 寃곌낵 ????꾨즺: ${outputFilePath}`);
+    console.log('--- 遺꾩꽍 寃곌낵 誘몃━蹂닿린 ---');
+    console.log(analysisText.substring(0, 500) + (analysisText.length > 500 ? '...' : '')); // 誘몃━蹂닿린 湲몄씠 ?쒗븳
     console.log('------------------------');
 
   } catch (error) {
-    console.error('Gemini Vision API 분석 �??�류 발생:', error);
-    // ?�류 발생 ??결과 ?�일?�도 기록
+    console.error('Gemini Vision API 遺꾩꽍 以??ㅻ쪟 諛쒖깮:', error);
+    // ?ㅻ쪟 諛쒖깮 ??寃곌낵 ?뚯씪?먮룄 湲곕줉
     const errorMessage = `Error during analysis: ${error.message}\n${error.stack || ''}`;
     fs.writeFileSync(outputFilePath, errorMessage);
-    console.log(`?�류 ?�보 ?�???�료: ${outputFilePath}`);
+    console.log(`?ㅻ쪟 ?뺣낫 ????꾨즺: ${outputFilePath}`);
   }
 }
 

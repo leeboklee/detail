@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -7,16 +7,16 @@ async function debugChargesTest() {
   const page = await browser.newPage();
   
   try {
-    console.log('📄 페이지 로드...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle' });
+    console.log('?뱞 ?섏씠吏 濡쒕뱶...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle' });
     await delay(3000);
     
-    console.log('🧪 추가요금 모달 열기...');
+    console.log('?㎦ 異붽??붽툑 紐⑤떖 ?닿린...');
     
-    // 추가요금 섹션 클릭
+    // 異붽??붽툑 ?뱀뀡 ?대┃
     await page.evaluate(() => {
       const elements = Array.from(document.querySelectorAll('*')).filter(el => 
-        el.textContent && el.textContent.includes('추가요금') && 
+        el.textContent && el.textContent.includes('異붽??붽툑') && 
         (el.tagName === 'DIV' || el.tagName === 'BUTTON' || el.tagName === 'SPAN')
       );
       
@@ -42,9 +42,9 @@ async function debugChargesTest() {
     });
     
     await delay(3000);
-    console.log('✅ 추가요금 모달 열림');
+    console.log('??異붽??붽툑 紐⑤떖 ?대┝');
     
-    // 모달 안의 모든 버튼 찾기
+    // 紐⑤떖 ?덉쓽 紐⑤뱺 踰꾪듉 李얘린
     const buttons = await page.$$eval('button', buttons => 
       buttons.map(btn => ({
         text: btn.textContent.trim(),
@@ -53,57 +53,57 @@ async function debugChargesTest() {
       }))
     );
     
-    console.log('🔍 모달 안의 모든 버튼:');
+    console.log('?뵇 紐⑤떖 ?덉쓽 紐⑤뱺 踰꾪듉:');
     buttons.forEach((btn, index) => {
-      console.log(`${index + 1}. "${btn.text}" (${btn.visible ? '보임' : '숨김'}) - ${btn.className}`);
+      console.log(`${index + 1}. "${btn.text}" (${btn.visible ? '蹂댁엫' : '?④?'}) - ${btn.className}`);
     });
     
-    // 저장 관련 버튼 찾기
+    // ???愿??踰꾪듉 李얘린
     const saveButtons = buttons.filter(btn => 
-      btn.text.includes('저장') || 
-      btn.text.includes('💾') ||
-      btn.text.includes('추가요금')
+      btn.text.includes('???) || 
+      btn.text.includes('?뮶') ||
+      btn.text.includes('異붽??붽툑')
     );
     
-    console.log('\n💾 저장 관련 버튼:');
+    console.log('\n?뮶 ???愿??踰꾪듉:');
     saveButtons.forEach((btn, index) => {
-      console.log(`${index + 1}. "${btn.text}" (${btn.visible ? '보임' : '숨김'})`);
+      console.log(`${index + 1}. "${btn.text}" (${btn.visible ? '蹂댁엫' : '?④?'})`);
     });
     
-    // 실제 저장 버튼 클릭 시도
-    console.log('\n🎯 저장 버튼 클릭 시도...');
+    // ?ㅼ젣 ???踰꾪듉 ?대┃ ?쒕룄
+    console.log('\n?렞 ???踰꾪듉 ?대┃ ?쒕룄...');
     
     const saveResult = await page.evaluate(() => {
       const saveButtons = Array.from(document.querySelectorAll('button')).filter(btn => 
-        btn.textContent.includes('💾 추가요금 저장')
+        btn.textContent.includes('?뮶 異붽??붽툑 ???)
       );
       
-      console.log('찾은 저장 버튼 수:', saveButtons.length);
+      console.log('李얠? ???踰꾪듉 ??', saveButtons.length);
       
       if (saveButtons.length > 0) {
         const saveButton = saveButtons[0];
         const rect = saveButton.getBoundingClientRect();
         const isVisible = rect.width > 0 && rect.height > 0;
         
-        console.log('버튼 위치:', rect);
-        console.log('버튼 표시 여부:', isVisible);
+        console.log('踰꾪듉 ?꾩튂:', rect);
+        console.log('踰꾪듉 ?쒖떆 ?щ?:', isVisible);
         
         if (isVisible) {
           saveButton.click();
           return { success: true, buttonText: saveButton.textContent };
         } else {
-          return { success: false, reason: '버튼이 보이지 않음' };
+          return { success: false, reason: '踰꾪듉??蹂댁씠吏 ?딆쓬' };
         }
       }
-      return { success: false, reason: '저장 버튼을 찾을 수 없음' };
+      return { success: false, reason: '???踰꾪듉??李얠쓣 ???놁쓬' };
     });
     
-    console.log('저장 결과:', saveResult);
+    console.log('???寃곌낵:', saveResult);
     
     await delay(3000);
     
   } catch (error) {
-    console.error('❌ 테스트 중 오류:', error);
+    console.error('???뚯뒪??以??ㅻ쪟:', error);
   } finally {
     await browser.close();
   }

@@ -1,52 +1,49 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
 const SECTIONS = [
-  { key: 'hotel', label: '호텔 정보' },
-  { key: 'rooms', label: '객실 정보' },
-  { key: 'facilities', label: '시설 정보' },
-  { key: 'checkin', label: '체크인/아웃' },
-  { key: 'packages', label: '패키지' },
-  { key: 'pricing', label: '요금표' },
-  { key: 'cancel', label: '취소규정' },
-  { key: 'booking', label: '예약안내' },
-  { key: 'notices', label: '공지사항' },
+  { key: 'hotel', label: '?명뀛 ?뺣낫' },
+  { key: 'rooms', label: '媛앹떎 ?뺣낫' },
+  { key: 'facilities', label: '?쒖꽕 ?뺣낫' },
+  { key: 'checkin', label: '泥댄겕???꾩썐' },
+  { key: 'packages', label: '?⑦궎吏' },
+  { key: 'pricing', label: '?붽툑?? },
+  { key: 'cancel', label: '痍⑥냼洹쒖젙' },
+  { key: 'booking', label: '?덉빟?덈궡' },
+  { key: 'notices', label: '怨듭??ы빆' },
 ];
 
-test.describe('Admin 섹션 E2E', () => {
-  test('각 섹션 카드 클릭 → 팝업/입력/저장 동작', async ({ page }, testInfo) => {
-    await page.goto('http://localhost: {process.env.PORT || 34343}/admin');
+test.describe('Admin ?뱀뀡 E2E', () => {
+  test('媛??뱀뀡 移대뱶 ?대┃ ???앹뾽/?낅젰/????숈옉', async ({ page }, testInfo) => {
+    await page.goto(`http://localhost:${process.env.PORT || 3900}/admin`);
     
-    // 페이지 로드 대기
-    await page.waitForLoadState('networkidle');
+    // ?섏씠吏 濡쒕뱶 ?湲?    await page.waitForLoadState('networkidle');
     
     for (const section of SECTIONS) {
-      // 탭 클릭으로 해당 섹션 활성화
-      const tab = page.locator(`button:has-text("${section.label}")`).first();
+      // ???대┃?쇰줈 ?대떦 ?뱀뀡 ?쒖꽦??      const tab = page.locator(`button:has-text("${section.label}")`).first();
       await expect(tab).toBeVisible();
       await tab.click();
       await page.waitForTimeout(1000);
       
-      // Card 컴포넌트 클릭 (실제 구조에 맞게 수정)
+      // Card 而댄룷?뚰듃 ?대┃ (?ㅼ젣 援ъ“??留욊쾶 ?섏젙)
       const card = page.locator('div[role="button"], button, [data-pressable="true"]').filter({ hasText: section.label }).first();
       await expect(card).toBeVisible();
       await card.click();
       
-      // Modal 대기 및 확인 (HeroUI Modal 구조)
+      // Modal ?湲?諛??뺤씤 (HeroUI Modal 援ъ“)
       const modal = page.locator('[role="dialog"], [data-slot="base"], .modal, [aria-modal="true"]').first();
       await modal.waitFor({ state: 'visible', timeout: 15000 });
       await expect(modal).toBeVisible();
       
-      // 저장 버튼 확인
-      const saveBtn = modal.getByRole('button', { name: /저장/ });
+      // ???踰꾪듉 ?뺤씤
+      const saveBtn = modal.getByRole('button', { name: /??? });
       await expect(saveBtn).toBeVisible();
       
-      // 완료 버튼으로 모달 닫기
-      const closeBtn = modal.getByRole('button', { name: /완료/ });
+      // ?꾨즺 踰꾪듉?쇰줈 紐⑤떖 ?リ린
+      const closeBtn = modal.getByRole('button', { name: /?꾨즺/ });
       await expect(closeBtn).toBeVisible();
       await closeBtn.click();
       
-      // 모달이 닫힐 때까지 대기
-      await modal.waitFor({ state: 'hidden', timeout: 5000 });
+      // 紐⑤떖???ロ옄 ?뚭퉴吏 ?湲?      await modal.waitFor({ state: 'hidden', timeout: 5000 });
     }
   });
 }); 

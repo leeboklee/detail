@@ -1,27 +1,27 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function individualSaveTest() {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
   
   try {
-    console.log('📄 페이지 로드...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle' });
+    console.log('?뱞 ?섏씠吏 濡쒕뱶...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle' });
     await page.waitForTimeout(3000);
     
-    // 콘솔 로그 수집
+    // 肄섏넄 濡쒓렇 ?섏쭛
     const logs = [];
     page.on('console', msg => {
       logs.push(`${new Date().toISOString()} ${msg.type()}: ${msg.text()}`);
     });
     
-    // alert 대화상자 처리
+    // alert ??붿긽??泥섎━
     page.on('dialog', async dialog => {
-      console.log('🚨 Alert 메시지:', dialog.message());
+      console.log('?슚 Alert 硫붿떆吏:', dialog.message());
       await dialog.accept();
     });
     
-    // 네트워크 요청 모니터링
+    // ?ㅽ듃?뚰겕 ?붿껌 紐⑤땲?곕쭅
     const responses = [];
     page.on('response', response => {
       if (response.url().includes('/api/')) {
@@ -34,40 +34,40 @@ async function individualSaveTest() {
       }
     });
     
-    console.log('🏨 호텔 정보 모달 열기...');
+    console.log('?룳 ?명뀛 ?뺣낫 紐⑤떖 ?닿린...');
     
-    // 호텔 정보 카드 클릭 (DIV 형태)
-    await page.click('div:has-text("호텔 정보")');
+    // ?명뀛 ?뺣낫 移대뱶 ?대┃ (DIV ?뺥깭)
+    await page.click('div:has-text("?명뀛 ?뺣낫")');
     await page.waitForTimeout(2000);
     
-    console.log('📝 호텔 정보 입력...');
+    console.log('?뱷 ?명뀛 ?뺣낫 ?낅젰...');
     
-    // 호텔 정보 입력
-    await page.fill('input[name="name"]', '테스트 호텔');
-    await page.fill('input[name="address"]', '서울시 강남구');
-    await page.fill('textarea[name="description"]', '테스트 설명');
+    // ?명뀛 ?뺣낫 ?낅젰
+    await page.fill('input[name="name"]', '?뚯뒪???명뀛');
+    await page.fill('input[name="address"]', '?쒖슱??媛뺣궓援?);
+    await page.fill('textarea[name="description"]', '?뚯뒪???ㅻ챸');
     
-    console.log('💾 호텔 정보 저장 버튼 클릭...');
+    console.log('?뮶 ?명뀛 ?뺣낫 ???踰꾪듉 ?대┃...');
     
-    // 호텔 정보 저장 버튼 클릭
-    await page.click('button:has-text("🗄️ DB 저장")');
+    // ?명뀛 ?뺣낫 ???踰꾪듉 ?대┃
+    await page.click('button:has-text("?뾼截?DB ???)');
     await page.waitForTimeout(5000);
     
-    console.log('\n📋 콘솔 로그:');
+    console.log('\n?뱥 肄섏넄 濡쒓렇:');
     logs.forEach(log => console.log(log));
     
-    console.log('\n🌐 API 요청:');
+    console.log('\n?뙋 API ?붿껌:');
     responses.forEach(res => {
       console.log(`${res.time} ${res.method} ${res.url} - ${res.status}`);
     });
     
-    // 스크린샷
+    // ?ㅽ겕由곗꺑
     await page.screenshot({ path: 'debug/individual-save-test.png' });
     
-    console.log('✅ 개별 저장 테스트 완료');
+    console.log('??媛쒕퀎 ????뚯뒪???꾨즺');
     
   } catch (error) {
-    console.error('❌ 테스트 오류:', error);
+    console.error('???뚯뒪???ㅻ쪟:', error);
   } finally {
     await browser.close();
   }

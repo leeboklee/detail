@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCallback } from 'react';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../AppContext.Context';
 
 /**
  * 섹션 순서 버튼 컴포넌트

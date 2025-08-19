@@ -1,26 +1,6 @@
 {
-  "logs": [
-    "info: %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold",
-    "log: [HMR] connected"
-  ],
-  "requests": [
-    "GET http://localhost:9002/admin",
-    "GET http://localhost:9002/_next/static/chunks/webpack.js",
-    "GET http://localhost:9002/_next/static/chunks/main.js",
-    "GET http://localhost:9002/_next/static/chunks/pages/_app.js",
-    "GET http://localhost:9002/_next/static/chunks/pages/admin.js",
-    "GET http://localhost:9002/_next/static/development/_buildManifest.js",
-    "GET http://localhost:9002/_next/static/development/_ssgManifest.js",
-    "GET http://localhost:9002/_next/static/chunks/react-refresh.js",
-    "GET https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap",
-    "GET https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap",
-    "GET http://localhost:9002/_next/static/development/_devMiddlewareManifest.json",
-    "GET https://fonts.gstatic.com/s/inter/v19/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2",
-    "GET https://fonts.gstatic.com/s/notosanskr/v37/PbykFmXiEBPT4ITbgNA5Cgm20xz64px_1hVWr0wuPNGmlQNMEfD4.119.woff2",
-    "GET https://fonts.gstatic.com/s/notosanskr/v37/PbykFmXiEBPT4ITbgNA5Cgm20xz64px_1hVWr0wuPNGmlQNMEfD4.118.woff2",
-    "GET https://fonts.gstatic.com/s/notosanskr/v37/PbykFmXiEBPT4ITbgNA5Cgm20xz64px_1hVWr0wuPNGmlQNMEfD4.117.woff2",
-    "GET https://fonts.gstatic.com/s/notosanskr/v37/PbykFmXiEBPT4ITbgNA5Cgm20xz64px_1hVWr0wuPNGmlQNMEfD4.113.woff2",
-    "GET http://localhost:9002/api/hotels?templates=true",
-    "GET http://localhost:9002/js/Common.js"
-  ]
+  "timestamp": "2025-07-26T08:36:02.669Z",
+  "url": "http://localhost:3900/",
+  "consoleLogs": [],
+  "screenshotPath": "C:\\codist\\detail\\auto-debug-screenshot.png"
 }

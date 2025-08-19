@@ -1,73 +1,73 @@
-const { test, expect } = require('@playwright/test');
+﻿const { test, expect } = require('@playwright/test');
 
-test('모달 디버깅 테스트', async ({ page }) => {
-  console.log('🚀 페이지 로딩 시작...');
-  await page.goto('http://localhost: {process.env.PORT || 34343}/admin');
-  console.log('✅ 페이지 로딩 완료');
+test('紐⑤떖 ?붾쾭源??뚯뒪??, async ({ page }) => {
+  console.log('?? ?섏씠吏 濡쒕뵫 ?쒖옉...');
+  await page.goto('http://localhost: {process.env.PORT || 3900}/admin');
+  console.log('???섏씠吏 濡쒕뵫 ?꾨즺');
   
-  // 페이지 제목 확인
+  // ?섏씠吏 ?쒕ぉ ?뺤씤
   const title = await page.title();
-  console.log('📄 페이지 제목:', title);
+  console.log('?뱞 ?섏씠吏 ?쒕ぉ:', title);
   
-  // 호텔 정보 탭 찾기
-  const hotelTab = page.locator('text=호텔 정보');
+  // ?명뀛 ?뺣낫 ??李얘린
+  const hotelTab = page.locator('text=?명뀛 ?뺣낫');
   const isHotelTabVisible = await hotelTab.isVisible();
-  console.log('🏨 호텔 정보 탭 보임:', isHotelTabVisible);
+  console.log('?룳 ?명뀛 ?뺣낫 ??蹂댁엫:', isHotelTabVisible);
   
   if (isHotelTabVisible) {
-    console.log('🖱️ 호텔 정보 탭 클릭...');
+    console.log('?뼮截??명뀛 ?뺣낫 ???대┃...');
     await hotelTab.click();
-    console.log('✅ 호텔 정보 탭 클릭 완료');
+    console.log('???명뀛 ?뺣낫 ???대┃ ?꾨즺');
     
-    // 2초 대기
+    // 2珥??湲?
     await page.waitForTimeout(2000);
     
-    // 모달 존재 확인
+    // 紐⑤떖 議댁옱 ?뺤씤
     const modal = page.locator('[role="dialog"]');
     const isModalVisible = await modal.isVisible();
-    console.log('📋 모달 보임:', isModalVisible);
+    console.log('?뱥 紐⑤떖 蹂댁엫:', isModalVisible);
     
     if (isModalVisible) {
-      console.log('✅ 모달이 열렸습니다!');
+      console.log('??紐⑤떖???대졇?듬땲??');
       
-      // 모달 내부 요소들 확인
+      // 紐⑤떖 ?대? ?붿냼???뺤씤
       const inputs = await page.locator('[role="dialog"] input').count();
-      console.log('📝 모달 내 입력 필드 개수:', inputs);
+      console.log('?뱷 紐⑤떖 ???낅젰 ?꾨뱶 媛쒖닔:', inputs);
       
-      // 호텔 이름 입력 필드 확인
-      const hotelNameInput = page.locator('[role="dialog"] input[placeholder="호텔 이름을 입력하세요"]');
+      // ?명뀛 ?대쫫 ?낅젰 ?꾨뱶 ?뺤씤
+      const hotelNameInput = page.locator('[role="dialog"] input[placeholder="?명뀛 ?대쫫???낅젰?섏꽭??]');
       const isHotelNameInputVisible = await hotelNameInput.isVisible();
-      console.log('🏨 호텔 이름 입력 필드 보임:', isHotelNameInputVisible);
+      console.log('?룳 ?명뀛 ?대쫫 ?낅젰 ?꾨뱶 蹂댁엫:', isHotelNameInputVisible);
       
       if (isHotelNameInputVisible) {
-        console.log('✅ 호텔 이름 입력 필드 발견!');
-        await hotelNameInput.fill('테스트 호텔');
-        console.log('✅ 호텔 이름 입력 완료');
+        console.log('???명뀛 ?대쫫 ?낅젰 ?꾨뱶 諛쒓껄!');
+        await hotelNameInput.fill('?뚯뒪???명뀛');
+        console.log('???명뀛 ?대쫫 ?낅젰 ?꾨즺');
       }
       
-      // 스크린샷 촬영
+      // ?ㅽ겕由곗꺑 珥ъ쁺
       await page.screenshot({ path: 'debug-modal-open.png', fullPage: true });
-      console.log('📸 모달 열린 상태 스크린샷 저장');
+      console.log('?벝 紐⑤떖 ?대┛ ?곹깭 ?ㅽ겕由곗꺑 ???);
       
     } else {
-      console.log('❌ 모달이 열리지 않았습니다.');
+      console.log('??紐⑤떖???대━吏 ?딆븯?듬땲??');
       
-      // 인라인 폼 확인
-      const inlineInputs = await page.locator('input[placeholder="호텔 이름을 입력하세요"]').count();
-      console.log('📝 인라인 입력 필드 개수:', inlineInputs);
+      // ?몃씪?????뺤씤
+      const inlineInputs = await page.locator('input[placeholder="?명뀛 ?대쫫???낅젰?섏꽭??]').count();
+      console.log('?뱷 ?몃씪???낅젰 ?꾨뱶 媛쒖닔:', inlineInputs);
       
       if (inlineInputs > 0) {
-        console.log('✅ 인라인 폼에서 호텔 이름 입력 필드 발견!');
+        console.log('???몃씪???쇱뿉???명뀛 ?대쫫 ?낅젰 ?꾨뱶 諛쒓껄!');
       }
       
-      // 스크린샷 촬영
+      // ?ㅽ겕由곗꺑 珥ъ쁺
       await page.screenshot({ path: 'debug-no-modal.png', fullPage: true });
-      console.log('📸 모달 없는 상태 스크린샷 저장');
+      console.log('?벝 紐⑤떖 ?녿뒗 ?곹깭 ?ㅽ겕由곗꺑 ???);
     }
   } else {
-    console.log('❌ 호텔 정보 탭을 찾을 수 없습니다.');
+    console.log('???명뀛 ?뺣낫 ??쓣 李얠쓣 ???놁뒿?덈떎.');
     await page.screenshot({ path: 'debug-no-tab.png', fullPage: true });
   }
   
-  console.log('🏁 디버깅 테스트 완료');
+  console.log('?뢾 ?붾쾭源??뚯뒪???꾨즺');
 }); 

@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 const fs = require('fs').promises;
 
 class ComprehensiveDesignTester {
@@ -10,16 +10,16 @@ class ComprehensiveDesignTester {
   }
 
   async start() {
-    console.log('🔍 종합 디자인 테스터 시작...');
+    console.log('?뵇 醫낇빀 ?붿옄???뚯뒪???쒖옉...');
     
     this.browser = await chromium.launch({ 
       headless: false,
-      slowMo: 1000 // 1초씩 천천히 실행해서 실제로 볼 수 있게
+      slowMo: 1000 // 1珥덉뵫 泥쒖쿇???ㅽ뻾?댁꽌 ?ㅼ젣濡?蹂????덇쾶
     });
     
     this.page = await this.browser.newPage();
     
-    // 다양한 화면 크기에서 테스트
+    // ?ㅼ뼇???붾㈃ ?ш린?먯꽌 ?뚯뒪??
     const viewports = [
       { width: 1920, height: 1080, name: 'Desktop Large' },
       { width: 1366, height: 768, name: 'Desktop Medium' },
@@ -29,37 +29,37 @@ class ComprehensiveDesignTester {
 
     for (const viewport of viewports) {
       await this.testViewport(viewport);
-      await this.sleep(4000); // 4초로 변경
+      await this.sleep(4000); // 4珥덈줈 蹂寃?
     }
 
     await this.generateReport();
     await this.browser.close();
     
-    console.log('🎯 종합 디자인 테스트 완료!');
-    console.log(`📊 발견된 문제: ${this.issues.length}개`);
-    console.log(`📁 리포트: reports/design-test-report-${this.timestamp}.json`);
+    console.log('?렞 醫낇빀 ?붿옄???뚯뒪???꾨즺!');
+    console.log(`?뱤 諛쒓껄??臾몄젣: ${this.issues.length}媛?);
+    console.log(`?뱚 由ы룷?? reports/design-test-report-${this.timestamp}.json`);
   }
 
   async testViewport(viewport) {
-    console.log(`\n🖥️ ${viewport.name} (${viewport.width}x${viewport.height}) 테스트 중...`);
+    console.log(`\n?뼢截?${viewport.name} (${viewport.width}x${viewport.height}) ?뚯뒪??以?..`);
     
     try {
       await this.page.setViewportSize({ width: viewport.width, height: viewport.height });
-      await this.page.goto('http://localhost: {process.env.PORT || 34343}/', { waitUntil: 'networkidle', timeout: 30000 });
+      await this.page.goto('http://localhost: {process.env.PORT || 3900}/', { waitUntil: 'networkidle', timeout: 30000 });
       
-      // 스크린샷 저장
+      // ?ㅽ겕由곗꺑 ???
       await this.page.screenshot({ 
         path: `screenshots/design-test-${viewport.name.toLowerCase().replace(' ', '-')}-${this.timestamp}.png`,
         fullPage: true
       });
       
-      // 디자인 문제 감지
+      // ?붿옄??臾몄젣 媛먯?
       await this.detectDesignIssues(viewport);
       
-      console.log(`✅ ${viewport.name} 테스트 완료`);
+      console.log(`??${viewport.name} ?뚯뒪???꾨즺`);
       
     } catch (error) {
-      console.log(`❌ ${viewport.name} 테스트 실패:`, error.message);
+      console.log(`??${viewport.name} ?뚯뒪???ㅽ뙣:`, error.message);
       this.issues.push({
         viewport: viewport.name,
         type: 'critical',
@@ -71,7 +71,7 @@ class ComprehensiveDesignTester {
   }
 
   async detectDesignIssues(viewport) {
-    // 버튼 크기 체크
+    // 踰꾪듉 ?ш린 泥댄겕
     const buttons = await this.page.$$('button');
     for (const button of buttons) {
       const box = await button.boundingBox();
@@ -82,7 +82,7 @@ class ComprehensiveDesignTester {
           viewport: viewport.name,
           type: 'medium',
           issue: 'Small Click Target',
-          description: `버튼 "${text}" 크기가 ${Math.round(box.width)}x${Math.round(box.height)}px로 권장 크기(44x44px)보다 작음`,
+          description: `踰꾪듉 "${text}" ?ш린媛 ${Math.round(box.width)}x${Math.round(box.height)}px濡?沅뚯옣 ?ш린(44x44px)蹂대떎 ?묒쓬`,
           element: text,
           size: `${Math.round(box.width)}x${Math.round(box.height)}px`,
           timestamp: new Date().toISOString()
@@ -90,9 +90,9 @@ class ComprehensiveDesignTester {
       }
     }
 
-    // 텍스트 가독성 체크
+    // ?띿뒪??媛?낆꽦 泥댄겕
     const elements = await this.page.$$('*');
-    for (const element of elements.slice(0, 50)) { // 처음 50개만 체크
+    for (const element of elements.slice(0, 50)) { // 泥섏쓬 50媛쒕쭔 泥댄겕
       try {
         const styles = await element.evaluate(el => {
           const computed = window.getComputedStyle(el);
@@ -103,7 +103,7 @@ class ComprehensiveDesignTester {
           };
         });
         
-        // 폰트 크기가 너무 작은지 체크
+        // ?고듃 ?ш린媛 ?덈Т ?묒?吏 泥댄겕
         const fontSize = parseInt(styles.fontSize);
         if (fontSize < 12) {
           const text = await element.textContent();
@@ -112,18 +112,18 @@ class ComprehensiveDesignTester {
               viewport: viewport.name,
               type: 'low',
               issue: 'Small Font Size',
-              description: `텍스트 크기가 ${fontSize}px로 너무 작음 (최소 12px 권장)`,
+              description: `?띿뒪???ш린媛 ${fontSize}px濡??덈Т ?묒쓬 (理쒖냼 12px 沅뚯옣)`,
               element: text.substring(0, 50),
               timestamp: new Date().toISOString()
             });
           }
         }
       } catch (e) {
-        // 스타일 체크 실패는 무시
+        // ?ㅽ???泥댄겕 ?ㅽ뙣??臾댁떆
       }
     }
 
-    // 레이아웃 오버플로우 체크
+    // ?덉씠?꾩썐 ?ㅻ쾭?뚮줈??泥댄겕
     const overflowElements = await this.page.$$eval('*', elements => {
       return elements.filter(el => {
         const rect = el.getBoundingClientRect();
@@ -136,7 +136,7 @@ class ComprehensiveDesignTester {
         viewport: viewport.name,
         type: 'medium',
         issue: 'Layout Overflow',
-        description: `${overflowElements}개 요소가 화면 밖으로 넘침`,
+        description: `${overflowElements}媛??붿냼媛 ?붾㈃ 諛뽰쑝濡??섏묠`,
         timestamp: new Date().toISOString()
       });
     }
@@ -154,7 +154,7 @@ class ComprehensiveDesignTester {
       issues: this.issues
     };
 
-    // reports 폴더 생성
+    // reports ?대뜑 ?앹꽦
     try {
       await fs.mkdir('reports', { recursive: true });
     } catch (e) {}
@@ -170,6 +170,6 @@ class ComprehensiveDesignTester {
   }
 }
 
-// 실행
+// ?ㅽ뻾
 const tester = new ComprehensiveDesignTester();
 tester.start().catch(console.error); 

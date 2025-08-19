@@ -1,0 +1,107 @@
+{
+  "timestamp": "2025-08-02T08:02:41.155Z",
+  "totalTabs": 3,
+  "results": [
+    {
+      "tab": "객실 정보",
+      "screenshot": "mcp-analysis-객실-정보.png",
+      "domAnalysis": {
+        "headers": [
+          "객실명",
+          "유형",
+          "수용인원",
+          "베드",
+          "편의시설",
+          "관리"
+        ],
+        "rows": 3,
+        "cells": 1,
+        "styles": {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "borderColor": "rgb(229, 231, 235)",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "fontFamily": "Inter, \"Noto Sans KR\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "fontSize": "16px"
+        },
+        "buttons": {
+          "add": true,
+          "edit": 0,
+          "delete": 0
+        },
+        "classes": {
+          "enhancedTable": true,
+          "nextUITable": false
+        }
+      },
+      "improvements": {
+        "tableExists": true,
+        "enhancedTableClass": true,
+        "nextUIComponents": false,
+        "properStyling": false,
+        "actionButtons": false,
+        "tableStructure": true
+      },
+      "successRate": "50.0%"
+    },
+    {
+      "tab": "패키지",
+      "screenshot": "mcp-analysis-패키지.png",
+      "domAnalysis": null,
+      "improvements": {
+        "tableExists": false,
+        "enhancedTableClass": false,
+        "nextUIComponents": false,
+        "properStyling": true,
+        "tableStructure": false
+      },
+      "successRate": "16.7%"
+    },
+    {
+      "tab": "공지사항",
+      "screenshot": "mcp-analysis-공지사항.png",
+      "domAnalysis": {
+        "headers": [
+          "제목",
+          "카테고리",
+          "내용",
+          "등록일",
+          "관리"
+        ],
+        "rows": 3,
+        "cells": 1,
+        "styles": {
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "borderColor": "rgb(229, 231, 235)",
+          "borderRadius": "0px",
+          "boxShadow": "none",
+          "fontFamily": "Inter, \"Noto Sans KR\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "fontSize": "16px"
+        },
+        "buttons": {
+          "add": true,
+          "edit": 0,
+          "delete": 0
+        },
+        "classes": {
+          "enhancedTable": true,
+          "nextUITable": false
+        }
+      },
+      "improvements": {
+        "tableExists": true,
+        "enhancedTableClass": true,
+        "nextUIComponents": false,
+        "properStyling": false,
+        "actionButtons": false,
+        "tableStructure": true
+      },
+      "successRate": "50.0%"
+    }
+  ],
+  "summary": {
+    "averageSuccessRate": "38.9%",
+    "totalImprovements": 7,
+    "totalChecks": 18
+  }
+}

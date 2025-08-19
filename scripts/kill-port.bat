@@ -1,20 +1,7 @@
 @echo off
-set PORT=%1
-if "%PORT%"=="" (
-  echo Port number is required. Example: kill-port.bat 4200
-  exit /b 1
+echo Killing processes on port 3900...
+for /f "tokens=5" %%a in ('netstat -aon ^| findstr :3900') do (
+    echo Killing process %%a
+    taskkill /f /pid %%a 2>nul
 )
-
-echo Finding process on port %PORT%...
-FOR /F "tokens=5" %%P IN ('netstat -ano ^| findstr /R ":%PORT% .*LISTENING"') DO (
-  echo Found process PID: %%P
-  taskkill /F /PID %%P
-  if errorlevel 0 (
-    echo Process terminated
-  ) else (
-    echo Failed to terminate process
-  )
-  exit /b 0
-)
-
-echo No process found on port %PORT% 
+echo Port 3900 cleared

@@ -1,17 +1,17 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function checkPageStructure() {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
   
   try {
-    console.log('📄 페이지 로드...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle' });
+    console.log('?뱞 ?섏씠吏 濡쒕뱶...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle' });
     await page.waitForTimeout(3000);
     
-    console.log('🔍 페이지 구조 확인...');
+    console.log('?뵇 ?섏씠吏 援ъ“ ?뺤씤...');
     
-    // 모든 클릭 가능한 요소 찾기
+    // 紐⑤뱺 ?대┃ 媛?ν븳 ?붿냼 李얘린
     const clickableElements = await page.$$eval('*[onclick], button, a, [role="button"], div[class*="card"], div[class*="section"]', elements => {
       return elements.map(el => ({
         tagName: el.tagName,
@@ -23,15 +23,15 @@ async function checkPageStructure() {
       }));
     });
     
-    console.log('📋 클릭 가능한 요소들:');
+    console.log('?뱥 ?대┃ 媛?ν븳 ?붿냼??');
     clickableElements.forEach((el, index) => {
       console.log(`${index + 1}. ${el.tagName} - ${el.className} - "${el.textContent}"`);
     });
     
-    // 호텔 관련 요소 찾기
+    // ?명뀛 愿???붿냼 李얘린
     const hotelElements = await page.$$eval('*', elements => {
       return elements.filter(el => 
-        el.textContent?.includes('호텔') || 
+        el.textContent?.includes('?명뀛') || 
         el.textContent?.includes('Hotel') ||
         el.className?.includes('hotel') ||
         el.id?.includes('hotel')
@@ -43,18 +43,18 @@ async function checkPageStructure() {
       }));
     });
     
-    console.log('\n🏨 호텔 관련 요소들:');
+    console.log('\n?룳 ?명뀛 愿???붿냼??');
     hotelElements.forEach((el, index) => {
       console.log(`${index + 1}. ${el.tagName} - ${el.className} - "${el.textContent}"`);
     });
     
-    // 스크린샷
+    // ?ㅽ겕由곗꺑
     await page.screenshot({ path: 'debug/page-structure.png' });
     
-    console.log('✅ 페이지 구조 확인 완료');
+    console.log('???섏씠吏 援ъ“ ?뺤씤 ?꾨즺');
     
   } catch (error) {
-    console.error('❌ 오류:', error);
+    console.error('???ㅻ쪟:', error);
   } finally {
     await browser.close();
   }

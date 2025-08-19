@@ -1,6 +1,6 @@
-const http = require('http');
+﻿const http = require('http');
 
-// 서버 상태 확인 함수
+// ?쒕쾭 ?곹깭 ?뺤씤 ?⑥닔
 function checkServer(port, callback) {
   const options = {
     hostname: 'localhost',
@@ -11,8 +11,8 @@ function checkServer(port, callback) {
   };
 
   const req = http.request(options, (res) => {
-    console.log(`✓ 서버 응답: ${res.statusCode}`);
-    console.log(`✓ 헤더:`, res.headers);
+    console.log(`???쒕쾭 ?묐떟: ${res.statusCode}`);
+    console.log(`???ㅻ뜑:`, res.headers);
     
     let data = '';
     res.on('data', (chunk) => {
@@ -20,19 +20,19 @@ function checkServer(port, callback) {
     });
     
     res.on('end', () => {
-      console.log(`✓ 응답 크기: ${data.length} bytes`);
-      console.log(`✓ 첫 100자: ${data.substring(0, 100)}...`);
+      console.log(`???묐떟 ?ш린: ${data.length} bytes`);
+      console.log(`??泥?100?? ${data.substring(0, 100)}...`);
       callback(null, { status: res.statusCode, data: data.substring(0, 200) });
     });
   });
 
   req.on('error', (err) => {
-    console.log(`✗ 서버 접속 실패:`, err.message);
+    console.log(`???쒕쾭 ?묒냽 ?ㅽ뙣:`, err.message);
     callback(err, null);
   });
 
   req.on('timeout', () => {
-    console.log(`✗ 서버 응답 타임아웃`);
+    console.log(`???쒕쾭 ?묐떟 ??꾩븘??);
     req.destroy();
     callback(new Error('Timeout'), null);
   });
@@ -40,7 +40,7 @@ function checkServer(port, callback) {
   req.end();
 }
 
-// API 엔드포인트 확인
+// API ?붾뱶?ъ씤???뺤씤
 function checkAPI(port, path, callback) {
   const options = {
     hostname: 'localhost',
@@ -57,25 +57,25 @@ function checkAPI(port, path, callback) {
     });
     
     res.on('end', () => {
-      console.log(`✓ API ${path}: ${res.statusCode}`);
+      console.log(`??API ${path}: ${res.statusCode}`);
       try {
         const json = JSON.parse(data);
-        console.log(`✓ API 응답:`, json);
+        console.log(`??API ?묐떟:`, json);
         callback(null, json);
       } catch (e) {
-        console.log(`✗ API 응답 파싱 실패:`, e.message);
+        console.log(`??API ?묐떟 ?뚯떛 ?ㅽ뙣:`, e.message);
         callback(e, null);
       }
     });
   });
 
   req.on('error', (err) => {
-    console.log(`✗ API ${path} 실패:`, err.message);
+    console.log(`??API ${path} ?ㅽ뙣:`, err.message);
     callback(err, null);
   });
 
   req.on('timeout', () => {
-    console.log(`✗ API ${path} 타임아웃`);
+    console.log(`??API ${path} ??꾩븘??);
     req.destroy();
     callback(new Error('Timeout'), null);
   });
@@ -83,22 +83,22 @@ function checkAPI(port, path, callback) {
   req.end();
 }
 
-console.log('🔍 서버 상태 확인 시작...');
+console.log('?뵇 ?쒕쾭 ?곹깭 ?뺤씤 ?쒖옉...');
 
-// 메인 페이지 확인
-checkServer( {process.env.PORT || 34343}, (err, result) => {
+// 硫붿씤 ?섏씠吏 ?뺤씤
+checkServer( {process.env.PORT || 3900}, (err, result) => {
   if (err) {
-    console.log('❌ 메인 서버 문제 감지');
+    console.log('??硫붿씤 ?쒕쾭 臾몄젣 媛먯?');
   } else {
-    console.log('✅ 메인 서버 정상');
+    console.log('??硫붿씤 ?쒕쾭 ?뺤긽');
     
-    // API 엔드포인트들 확인
-    checkAPI( {process.env.PORT || 34343}, '/api/debug-env', (err, result) => {
-      if (!err) console.log('✅ debug-env API 정상');
+    // API ?붾뱶?ъ씤?몃뱾 ?뺤씤
+    checkAPI( {process.env.PORT || 3900}, '/api/debug-env', (err, result) => {
+      if (!err) console.log('??debug-env API ?뺤긽');
     });
     
-    checkAPI( {process.env.PORT || 34343}, '/api/hotels', (err, result) => {
-      if (!err) console.log('✅ hotels API 정상');
+    checkAPI( {process.env.PORT || 3900}, '/api/hotels', (err, result) => {
+      if (!err) console.log('??hotels API ?뺤긽');
     });
   }
 }); 

@@ -1,3 +1,4 @@
+﻿import React from 'react';
 // Mock module for NextUI components
 const React = require('react');
 

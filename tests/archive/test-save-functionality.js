@@ -1,134 +1,134 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
-// 대기 함수
+// ?湲??⑥닔
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// 안전한 클릭 함수
+// ?덉쟾???대┃ ?⑥닔
 async function safeClick(page, element, description = '') {
   try {
     await element.scrollIntoViewIfNeeded();
     await wait(500);
     await element.click();
     await wait(1000);
-    console.log(`✅ ${description} 클릭 성공`);
+    console.log(`??${description} ?대┃ ?깃났`);
     return true;
   } catch (error) {
-    console.log(`❌ ${description} 클릭 실패: ${error.message}`);
+    console.log(`??${description} ?대┃ ?ㅽ뙣: ${error.message}`);
     try {
       await element.evaluate(el => el.click());
       await wait(1000);
-      console.log(`✅ ${description} 강제 클릭 성공`);
+      console.log(`??${description} 媛뺤젣 ?대┃ ?깃났`);
       return true;
     } catch (e) {
-      console.log(`❌ ${description} 강제 클릭도 실패: ${e.message}`);
+      console.log(`??${description} 媛뺤젣 ?대┃???ㅽ뙣: ${e.message}`);
       return false;
     }
   }
 }
 
-// 저장 기능 테스트
+// ???湲곕뒫 ?뚯뒪??
 async function testSaveFunction() {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
   
   try {
-    console.log('🌐 페이지 로딩...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle' });
+    console.log('?뙋 ?섏씠吏 濡쒕뵫...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle' });
     await wait(3000);
     
-    console.log('🔍 호텔 정보 카드 찾기...');
+    console.log('?뵇 ?명뀛 ?뺣낫 移대뱶 李얘린...');
     const hotelCards = await page.locator('div.cursor-pointer').all();
     
     let hotelCard = null;
     for (const card of hotelCards) {
       const text = await card.textContent();
-      if (text.includes('호텔 정보') || text.includes('🏠')) {
+      if (text.includes('?명뀛 ?뺣낫') || text.includes('?룧')) {
         hotelCard = card;
-        console.log(`✅ 호텔 정보 카드 발견: "${text}"`);
+        console.log(`???명뀛 ?뺣낫 移대뱶 諛쒓껄: "${text}"`);
         break;
       }
     }
     
     if (!hotelCard) {
-      console.log('❌ 호텔 정보 카드를 찾을 수 없음');
+      console.log('???명뀛 ?뺣낫 移대뱶瑜?李얠쓣 ???놁쓬');
       return;
     }
     
-    console.log('🏠 호텔 정보 카드 클릭...');
-    await safeClick(page, hotelCard, '호텔 정보 카드');
+    console.log('?룧 ?명뀛 ?뺣낫 移대뱶 ?대┃...');
+    await safeClick(page, hotelCard, '?명뀛 ?뺣낫 移대뱶');
     
-    console.log('⏳ 모달 로딩 대기...');
+    console.log('??紐⑤떖 濡쒕뵫 ?湲?..');
     await wait(3000);
     
-    console.log('📝 입력 필드 찾기...');
+    console.log('?뱷 ?낅젰 ?꾨뱶 李얘린...');
     const nameInput = page.locator('input[name="name"]').first();
     const addressInput = page.locator('input[name="address"]').first();
     const descriptionInput = page.locator('textarea[name="description"]').first();
     
-    // 테스트 데이터 입력
-    console.log('📝 테스트 데이터 입력...');
-    await nameInput.fill('테스트 호텔 ' + Date.now());
-    await addressInput.fill('서울시 강남구 테스트로 123');
-    await descriptionInput.fill('저장 기능 테스트용 호텔입니다.');
+    // ?뚯뒪???곗씠???낅젰
+    console.log('?뱷 ?뚯뒪???곗씠???낅젰...');
+    await nameInput.fill('?뚯뒪???명뀛 ' + Date.now());
+    await addressInput.fill('?쒖슱??媛뺣궓援??뚯뒪?몃줈 123');
+    await descriptionInput.fill('???湲곕뒫 ?뚯뒪?몄슜 ?명뀛?낅땲??');
     
-    console.log('💾 DB 저장 버튼 찾기...');
-    const saveButton = page.locator('button:has-text("🗄️ DB 저장")').first();
+    console.log('?뮶 DB ???踰꾪듉 李얘린...');
+    const saveButton = page.locator('button:has-text("?뾼截?DB ???)').first();
     
     if (await saveButton.count() > 0) {
-      console.log('💾 DB 저장 버튼 클릭...');
-      await safeClick(page, saveButton, 'DB 저장 버튼');
+      console.log('?뮶 DB ???踰꾪듉 ?대┃...');
+      await safeClick(page, saveButton, 'DB ???踰꾪듉');
       
-      console.log('⏳ 저장 완료 대기...');
+      console.log('??????꾨즺 ?湲?..');
       await wait(5000);
       
-      // 성공 메시지 확인
-      const successMessage = await page.locator('div:has-text("저장되었습니다")').first();
+      // ?깃났 硫붿떆吏 ?뺤씤
+      const successMessage = await page.locator('div:has-text("??λ릺?덉뒿?덈떎")').first();
       if (await successMessage.count() > 0) {
-        console.log('✅ 저장 성공 메시지 확인됨');
+        console.log('??????깃났 硫붿떆吏 ?뺤씤??);
       } else {
-        console.log('❌ 저장 성공 메시지 없음');
+        console.log('??????깃났 硫붿떆吏 ?놁쓬');
       }
     } else {
-      console.log('❌ DB 저장 버튼을 찾을 수 없음');
+      console.log('??DB ???踰꾪듉??李얠쓣 ???놁쓬');
     }
     
-    console.log('🔄 모달 닫기...');
-    const closeButton = page.locator('button:has-text("×")').first();
+    console.log('?봽 紐⑤떖 ?リ린...');
+    const closeButton = page.locator('button:has-text("횞")').first();
     if (await closeButton.count() > 0) {
-      await safeClick(page, closeButton, '모달 닫기 버튼');
+      await safeClick(page, closeButton, '紐⑤떖 ?リ린 踰꾪듉');
     }
     
-    console.log('⏳ 잠시 대기...');
+    console.log('???좎떆 ?湲?..');
     await wait(3000);
     
-    console.log('🔄 다시 호텔 정보 카드 클릭하여 값 확인...');
-    await safeClick(page, hotelCard, '호텔 정보 카드 재클릭');
+    console.log('?봽 ?ㅼ떆 ?명뀛 ?뺣낫 移대뱶 ?대┃?섏뿬 媛??뺤씤...');
+    await safeClick(page, hotelCard, '?명뀛 ?뺣낫 移대뱶 ?ы겢由?);
     
-    console.log('⏳ 모달 재로딩 대기...');
+    console.log('??紐⑤떖 ?щ줈???湲?..');
     await wait(3000);
     
-    console.log('🔍 저장된 값 확인...');
+    console.log('?뵇 ??λ맂 媛??뺤씤...');
     const savedName = await nameInput.inputValue();
     const savedAddress = await addressInput.inputValue();
     const savedDescription = await descriptionInput.inputValue();
     
-    console.log(`📊 저장된 값들:`);
-    console.log(`  - 호텔명: "${savedName}"`);
-    console.log(`  - 주소: "${savedAddress}"`);
-    console.log(`  - 설명: "${savedDescription}"`);
+    console.log(`?뱤 ??λ맂 媛믩뱾:`);
+    console.log(`  - ?명뀛紐? "${savedName}"`);
+    console.log(`  - 二쇱냼: "${savedAddress}"`);
+    console.log(`  - ?ㅻ챸: "${savedDescription}"`);
     
-    if (savedName.includes('테스트 호텔') && savedAddress.includes('테스트로')) {
-      console.log('🎉 저장 기능이 정상적으로 작동함!');
+    if (savedName.includes('?뚯뒪???명뀛') && savedAddress.includes('?뚯뒪?몃줈')) {
+      console.log('?럦 ???湲곕뒫???뺤긽?곸쑝濡??묐룞??');
     } else {
-      console.log('❌ 저장된 값이 원래대로 돌아감');
+      console.log('????λ맂 媛믪씠 ?먮옒?濡??뚯븘媛?);
     }
     
   } catch (error) {
-    console.error('❌ 테스트 오류:', error);
+    console.error('???뚯뒪???ㅻ쪟:', error);
   } finally {
     await browser.close();
   }
 }
 
-// 테스트 실행
+// ?뚯뒪???ㅽ뻾
 testSaveFunction().catch(console.error); 

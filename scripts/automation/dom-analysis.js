@@ -12,7 +12,7 @@ async function analyzeDOMStructure() {
     const page = await browser.newPage();
     
     try {
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await new Promise(resolve => setTimeout(resolve, 3000));
         
         console.log('✅ 페이지 로드 완료');

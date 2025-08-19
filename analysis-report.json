@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-08-02T02:04:25.923Z",
+  "domAnalysis": null,
+  "ocrText": "5B] SE AF           고\n[=] 오일 상세페이지 관리자                                             설정   미리보기  [mas |\n호텔 정보를 관리하고 HTMLES 생성하세요\n0) suze 시설정보 [이] dager [win § 요금표 © 취소규정 [deed [ 공지사항\n호텔 정보\n0  기본 정보 관리\n편집 가능\n",
+  "improvements": {
+    "enhancedTable": false,
+    "nextUIComponents": true,
+    "properStyling": true,
+    "textContent": false
+  },
+  "summary": {
+    "totalImprovements": 2,
+    "totalChecks": 5,
+    "successRate": "40.0%"
+  }
+}

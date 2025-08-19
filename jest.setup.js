@@ -1,3 +1,4 @@
+import React from 'react';
 import '@testing-library/jest-dom';
 
 // Jest DOM 확장 라이브러리 추가 (필요시)

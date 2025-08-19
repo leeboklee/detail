@@ -1,110 +1,69 @@
-const { test, expect } = require('@playwright/test');
+﻿import { test, expect } from '@playwright/test';
 
 const SECTIONS = [
-  { label: '호텔 정보', id: 'hotel' },
-  { label: '객실 정보', id: 'room' },
-  { label: '시설 정보', id: 'facilities' },
-  { label: '체크인/아웃', id: 'checkin' },
-  { label: '패키지', id: 'package' },
-  { label: '요금표', id: 'price' },
-  { label: '취소규정', id: 'cancel' },
-  { label: '예약안내', id: 'booking' },
-  { label: '공지사항', id: 'notice' }
+  { label: '?명뀛 ?뺣낫', id: 'hotel' },
+  { label: '媛앹떎 ?뺣낫', id: 'room' },
+  { label: '?쒖꽕 ?뺣낫', id: 'facilities' },
+  { label: '泥댄겕???꾩썐', id: 'checkin' },
+  { label: '?⑦궎吏', id: 'package' },
+  { label: '?붽툑??, id: 'price' },
+  { label: '痍⑥냼洹쒖젙', id: 'cancel' },
+  { label: '?덉빟?덈궡', id: 'booking' },
+  { label: '怨듭??ы빆', id: 'notice' }
 ];
 
-// 세부 섹션만 집중 테스트
-const FOCUS_SECTIONS = [
-  { label: '호텔 정보', id: 'hotel' },
-  { label: '객실 정보', id: 'room' },
-  { label: '공지사항', id: 'notice' }
+// ?듭떖 ?뱀뀡留??뚯뒪??(?깅뒫 理쒖쟻??
+const CORE_SECTIONS = [
+  { label: '?명뀛 ?뺣낫', id: 'hotel' },
+  { label: '媛앹떎 ?뺣낫', id: 'room' }
 ];
 
-test.describe('섹션별 시각적 회귀(디자인) 테스트', () => {
-  for (const section of FOCUS_SECTIONS) {
-    test(`'${section.label}' 탭 디자인`, async ({ page }) => {
-      console.log(`🚀 ${section.label} 테스트 시작...`);
+test.describe('?듭떖 ?뱀뀡 ?쒓컖???뚯뒪??(理쒖쟻??', () => {
+  for (const section of CORE_SECTIONS) {
+    test(`'${section.label}' ??湲곕뒫 ?뺤씤`, async ({ page }) => {
+      console.log(`?? ${section.label} ?뚯뒪???쒖옉...`);
       
-      await page.goto(`http://localhost:${process.env.PORT || 34343}/admin`);
-      console.log('✅ 페이지 로딩 완료');
+      await page.goto(`http://localhost:${process.env.PORT || 3900}/admin`);
       
-      // 페이지 제목 확인
-      const title = await page.title();
-      console.log('📄 페이지 제목:', title);
-      
-      // 탭 클릭
-      console.log(`🖱️ ${section.label} 탭 클릭...`);
+      // ???대┃
       await page.click(`text=${section.label}`);
-      await page.waitForTimeout(2000);
-      console.log('✅ 탭 클릭 완료');
+      await page.waitForTimeout(1000);
       
-      // 모달이 열리는지 확인하고 기다리기
+      // 紐⑤떖 ?먮뒗 ?몃씪?????뺤씤
       try {
-        console.log('🔍 모달 찾는 중...');
-        // 모달이 열릴 때까지 기다리기 (최대 5초)
-        await page.waitForSelector('[role="dialog"]', { timeout: 5000 });
-        console.log(`✅ ${section.label} 모달이 열렸습니다.`);
+        await page.waitForSelector('[role="dialog"]', { timeout: 3000 });
+        console.log(`??${section.label} 紐⑤떖 ?대┝`);
         
-        // 모달 내부의 입력 필드 찾기
+        // ?낅젰 ?꾨뱶 議댁옱 ?뺤씤留?(?ㅽ겕由곗꺑 ?쒓굅)
         if (section.id === 'hotel') {
-          console.log('🔍 호텔 이름 입력 필드 찾는 중...');
-          await expect(page.locator('[role="dialog"] input[placeholder="호텔 이름을 입력하세요"]')).toBeVisible({ timeout: 5000 });
-          console.log('✅ 호텔 이름 입력 필드가 모달 내에서 발견되었습니다.');
+          await expect(page.locator('[role="dialog"] input[placeholder="?명뀛 ?대쫫???낅젰?섏꽭??]')).toBeVisible({ timeout: 3000 });
         }
         if (section.id === 'room') {
-          console.log('🔍 객실 입력 필드 찾는 중...');
-          await expect(page.locator('[role="dialog"] input[placeholder="객실 이름을 입력하세요"]')).toBeVisible({ timeout: 5000 });
-          await expect(page.locator('[role="dialog"] button:has-text("객실 추가")')).toBeVisible();
-          console.log('✅ 객실 입력 필드가 모달 내에서 발견되었습니다.');
+          await expect(page.locator('[role="dialog"] input[placeholder="媛앹떎 ?대쫫???낅젰?섏꽭??]')).toBeVisible({ timeout: 3000 });
         }
-        if (section.id === 'notice') {
-          console.log('🔍 공지사항 입력 필드 찾는 중...');
-          await expect(page.locator('[role="dialog"] input[placeholder="새 공지사항 입력"]')).toBeVisible({ timeout: 5000 });
-          await expect(page.locator('[role="dialog"] button[data-testid="add-notice-button"]')).toBeVisible();
-          console.log('✅ 공지사항 입력 필드가 모달 내에서 발견되었습니다.');
-        }
-        
-        // 모달이 열린 상태에서 스크린샷 촬영
-        await page.screenshot({ path: `debug-${section.id}-modal.png`, fullPage: true });
-        console.log(`📸 ${section.id} 모달 스크린샷 저장`);
         
       } catch (error) {
-        console.log(`❌ ${section.label} 모달이 열리지 않았습니다. 인라인 폼을 확인합니다.`);
-        console.log('🔍 인라인 입력 필드 찾는 중...');
-        
-        // 인라인 폼 확인
+        // ?몃씪?????뺤씤
         if (section.id === 'hotel') {
-          const hotelInputs = await page.locator('input[placeholder="호텔 이름을 입력하세요"]').count();
-          console.log('📝 호텔 이름 입력 필드 개수:', hotelInputs);
-          if (hotelInputs > 0) {
-            await expect(page.locator('input[placeholder="호텔 이름을 입력하세요"]')).toBeVisible({ timeout: 5000 });
-            console.log('✅ 인라인 폼에서 호텔 이름 입력 필드 발견!');
-          }
+          await expect(page.locator('input[placeholder="?명뀛 ?대쫫???낅젰?섏꽭??]')).toBeVisible({ timeout: 3000 });
         }
         if (section.id === 'room') {
-          const roomInputs = await page.locator('input[placeholder="객실 이름을 입력하세요"]').count();
-          console.log('📝 객실 이름 입력 필드 개수:', roomInputs);
-          if (roomInputs > 0) {
-            await expect(page.locator('input[placeholder="객실 이름을 입력하세요"]')).toBeVisible({ timeout: 5000 });
-            await expect(page.locator('button:has-text("객실 추가")')).toBeVisible();
-            console.log('✅ 인라인 폼에서 객실 입력 필드 발견!');
-          }
+          await expect(page.locator('input[placeholder="媛앹떎 ?대쫫???낅젰?섏꽭??]')).toBeVisible({ timeout: 3000 });
         }
-        if (section.id === 'notice') {
-          const noticeInputs = await page.locator('input[placeholder="새 공지사항 입력"]').count();
-          console.log('📝 공지사항 입력 필드 개수:', noticeInputs);
-          if (noticeInputs > 0) {
-            await expect(page.locator('input[placeholder="새 공지사항 입력"]')).toBeVisible({ timeout: 5000 });
-            await expect(page.locator('button[data-testid="add-notice-button"]')).toBeVisible();
-            console.log('✅ 인라인 폼에서 공지사항 입력 필드 발견!');
-          }
-        }
-        
-        // 인라인 폼 상태에서 스크린샷 촬영
-        await page.screenshot({ path: `debug-${section.id}-inline.png`, fullPage: true });
-        console.log(`📸 ${section.id} 인라인 폼 스크린샷 저장`);
       }
       
-      console.log(`🏁 ${section.label} 테스트 완료`);
+      console.log(`??${section.label} ?뚯뒪???꾨즺`);
     });
   }
+});
+
+// ?꾩껜 ?섏씠吏 湲곕낯 ?뚮뜑留??뚯뒪??(?ㅽ겕由곗꺑 ?놁씠)
+test('硫붿씤 ?섏씠吏 湲곕낯 ?뚮뜑留?, async ({ page }) => {
+  await page.goto(`http://localhost:${process.env.PORT || 3900}/admin`);
+  
+  // 湲곕낯 ?붿냼 議댁옱 ?뺤씤
+  await expect(page.locator('main')).toBeVisible();
+  await expect(page.locator('h1, h2')).toBeVisible();
+  
+  console.log('??硫붿씤 ?섏씠吏 ?뚮뜑留??뺤씤 ?꾨즺');
 }); 

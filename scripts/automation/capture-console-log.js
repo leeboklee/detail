@@ -14,8 +14,8 @@ const { chromium } = require('playwright');
   });
 
   try {
-    console.log('Navigating to http://localhost: {process.env.PORT || 34343} ...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'domcontentloaded' });
+    console.log('Navigating to http://localhost: {process.env.PORT || 3900} ...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'domcontentloaded' });
     console.log('Navigation successful.');
 
     // Give some time for async operations to complete

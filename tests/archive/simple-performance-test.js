@@ -1,7 +1,7 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function simplePerformanceTest() {
-    console.log('🔍 간단한 성능 테스트 시작');
+    console.log('?뵇 媛꾨떒???깅뒫 ?뚯뒪???쒖옉');
     
     const browser = await chromium.launch({ 
         headless: false,
@@ -11,17 +11,17 @@ async function simplePerformanceTest() {
     try {
         const page = await browser.newPage();
         
-        console.log('📄 페이지 로딩...');
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        console.log('?뱞 ?섏씠吏 濡쒕뵫...');
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await page.waitForLoadState('networkidle');
         await page.waitForTimeout(3000);
         
-        // 모든 클릭 가능한 요소 찾기
-        console.log('🔍 클릭 가능한 요소들 찾기...');
+        // 紐⑤뱺 ?대┃ 媛?ν븳 ?붿냼 李얘린
+        console.log('?뵇 ?대┃ 媛?ν븳 ?붿냼??李얘린...');
         const clickableElements = await page.evaluate(() => {
             const elements = Array.from(document.querySelectorAll('*')).filter(el => {
                 const text = el.textContent?.trim();
-                return text && text.includes('호텔') && el.offsetParent !== null;
+                return text && text.includes('?명뀛') && el.offsetParent !== null;
             });
             return elements.map(el => ({
                 text: el.textContent?.trim().substring(0, 50),
@@ -30,23 +30,23 @@ async function simplePerformanceTest() {
             }));
         });
         
-        console.log(`📋 찾은 요소들 (${clickableElements.length}개):`);
+        console.log(`?뱥 李얠? ?붿냼??(${clickableElements.length}媛?:`);
         clickableElements.forEach((el, idx) => {
             console.log(`  ${idx + 1}. [${el.tag}] ${el.text} (${el.class})`);
         });
         
-        // 첫 번째 호텔 관련 요소 클릭
+        // 泥?踰덉㎏ ?명뀛 愿???붿냼 ?대┃
         if (clickableElements.length > 0) {
-            console.log('\n🖱️ 호텔 정보 섹션 클릭 시도...');
+            console.log('\n?뼮截??명뀛 ?뺣낫 ?뱀뀡 ?대┃ ?쒕룄...');
             
             try {
-                // 다양한 셀렉터로 시도
+                // ?ㅼ뼇????됲꽣濡??쒕룄
                 const selectors = [
-                    'text=호텔 정보',
+                    'text=?명뀛 ?뺣낫',
                     '[class*="hotel"]',
-                    'div:has-text("호텔")',
-                    'button:has-text("호텔")',
-                    'span:has-text("호텔")'
+                    'div:has-text("?명뀛")',
+                    'button:has-text("?명뀛")',
+                    'span:has-text("?명뀛")'
                 ];
                 
                 let clicked = false;
@@ -55,24 +55,24 @@ async function simplePerformanceTest() {
                         const element = page.locator(selector).first();
                         if (await element.isVisible()) {
                             await element.click();
-                            console.log(`✅ 클릭 성공: ${selector}`);
+                            console.log(`???대┃ ?깃났: ${selector}`);
                             clicked = true;
                             break;
                         }
                     } catch (e) {
-                        // 다음 셀렉터 시도
+                        // ?ㅼ쓬 ??됲꽣 ?쒕룄
                     }
                 }
                 
                 if (!clicked) {
-                    console.log('⚠️ 호텔 섹션 클릭 실패 - 직접 찾기 시도');
-                    const hotelCards = await page.locator('*').filter({ hasText: '호텔' });
+                    console.log('?좑툘 ?명뀛 ?뱀뀡 ?대┃ ?ㅽ뙣 - 吏곸젒 李얘린 ?쒕룄');
+                    const hotelCards = await page.locator('*').filter({ hasText: '?명뀛' });
                     const count = await hotelCards.count();
-                    console.log(`🔍 '호텔' 텍스트가 포함된 요소: ${count}개`);
+                    console.log(`?뵇 '?명뀛' ?띿뒪?멸? ?ы븿???붿냼: ${count}媛?);
                     
                     if (count > 0) {
                         await hotelCards.first().click();
-                        console.log('✅ 첫 번째 호텔 요소 클릭됨');
+                        console.log('??泥?踰덉㎏ ?명뀛 ?붿냼 ?대┃??);
                         clicked = true;
                     }
                 }
@@ -80,74 +80,74 @@ async function simplePerformanceTest() {
                 if (clicked) {
                     await page.waitForTimeout(2000);
                     
-                    // 입력 필드들 찾기
-                    console.log('\n📝 입력 필드 찾기...');
+                    // ?낅젰 ?꾨뱶??李얘린
+                    console.log('\n?뱷 ?낅젰 ?꾨뱶 李얘린...');
                     const inputs = await page.locator('input, textarea').all();
-                    console.log(`🔍 찾은 입력 필드: ${inputs.length}개`);
+                    console.log(`?뵇 李얠? ?낅젰 ?꾨뱶: ${inputs.length}媛?);
                     
                     if (inputs.length > 0) {
                         const firstInput = inputs[0];
                         const placeholder = await firstInput.getAttribute('placeholder');
-                        console.log(`📝 첫 번째 입력 필드: ${placeholder}`);
+                        console.log(`?뱷 泥?踰덉㎏ ?낅젰 ?꾨뱶: ${placeholder}`);
                         
-                        // 성능 측정 시작
-                        console.log('\n⏱️ 성능 측정 시작...');
+                        // ?깅뒫 痢≪젙 ?쒖옉
+                        console.log('\n?깍툘 ?깅뒫 痢≪젙 ?쒖옉...');
                         
                         await firstInput.focus();
                         await page.waitForTimeout(100);
                         
-                        // 10번의 짧은 입력으로 성능 측정
+                        // 10踰덉쓽 吏㏃? ?낅젰?쇰줈 ?깅뒫 痢≪젙
                         const results = [];
                         for (let i = 0; i < 10; i++) {
                             const startTime = Date.now();
                             await page.keyboard.type('a');
-                            await page.waitForTimeout(50); // 자동저장 트리거 대기
+                            await page.waitForTimeout(50); // ?먮룞????몃━嫄??湲?
                             const endTime = Date.now();
                             const duration = endTime - startTime;
                             results.push(duration);
-                            console.log(`  테스트 ${i + 1}: ${duration}ms`);
+                            console.log(`  ?뚯뒪??${i + 1}: ${duration}ms`);
                         }
                         
-                        // 통계 계산
+                        // ?듦퀎 怨꾩궛
                         const avg = results.reduce((a, b) => a + b, 0) / results.length;
                         const min = Math.min(...results);
                         const max = Math.max(...results);
                         
-                        console.log('\n📊 성능 통계:');
-                        console.log(`  평균: ${avg.toFixed(1)}ms`);
-                        console.log(`  최소: ${min}ms`);
-                        console.log(`  최대: ${max}ms`);
+                        console.log('\n?뱤 ?깅뒫 ?듦퀎:');
+                        console.log(`  ?됯퇏: ${avg.toFixed(1)}ms`);
+                        console.log(`  理쒖냼: ${min}ms`);
+                        console.log(`  理쒕?: ${max}ms`);
                         
-                        // 분석
+                        // 遺꾩꽍
                         if (avg > 500) {
-                            console.log('🚨 심각한 성능 문제 확인됨!');
+                            console.log('?슚 ?ш컖???깅뒫 臾몄젣 ?뺤씤??');
                         } else if (avg > 200) {
-                            console.log('⚠️ 성능 문제 있음');
+                            console.log('?좑툘 ?깅뒫 臾몄젣 ?덉쓬');
                         } else {
-                            console.log('✅ 성능 양호');
+                            console.log('???깅뒫 ?묓샇');
                         }
                         
-                        // 현재 값 확인
+                        // ?꾩옱 媛??뺤씤
                         const currentValue = await firstInput.inputValue();
-                        console.log(`📝 현재 입력값: "${currentValue}"`);
+                        console.log(`?뱷 ?꾩옱 ?낅젰媛? "${currentValue}"`);
                         
                     } else {
-                        console.log('❌ 입력 필드를 찾을 수 없음');
+                        console.log('???낅젰 ?꾨뱶瑜?李얠쓣 ???놁쓬');
                     }
                 } else {
-                    console.log('❌ 호텔 섹션을 찾을 수 없음');
+                    console.log('???명뀛 ?뱀뀡??李얠쓣 ???놁쓬');
                 }
                 
             } catch (error) {
-                console.error('❌ 클릭 오류:', error.message);
+                console.error('???대┃ ?ㅻ쪟:', error.message);
             }
         }
         
-        console.log('\n📝 브라우저를 5초간 유지...');
+        console.log('\n?뱷 釉뚮씪?곗?瑜?5珥덇컙 ?좎?...');
         await page.waitForTimeout(5000);
         
     } catch (error) {
-        console.error('❌ 테스트 오류:', error);
+        console.error('???뚯뒪???ㅻ쪟:', error);
     } finally {
         await browser.close();
     }

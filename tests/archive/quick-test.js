@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function quickTest() {
   const browser = await chromium.launch({ 
@@ -9,22 +9,22 @@ async function quickTest() {
   try {
     const page = await browser.newPage();
     
-    console.log('🚀 페이지 로딩 시작...');
+    console.log('?? ?섏씠吏 濡쒕뵫 ?쒖옉...');
     const startTime = Date.now();
     
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { 
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { 
       waitUntil: 'networkidle',
       timeout: 60000 
     });
     
     const loadTime = Date.now() - startTime;
-    console.log(`✅ 페이지 로딩 완료: ${loadTime}ms`);
+    console.log(`???섏씠吏 濡쒕뵫 ?꾨즺: ${loadTime}ms`);
     
-    // 페이지 제목 확인
+    // ?섏씠吏 ?쒕ぉ ?뺤씤
     const title = await page.title();
-    console.log(`📄 페이지 제목: ${title}`);
+    console.log(`?뱞 ?섏씠吏 ?쒕ぉ: ${title}`);
     
-    // 기본 요소들 확인
+    // 湲곕낯 ?붿냼???뺤씤
     const elements = await page.evaluate(() => {
       return {
         buttons: document.querySelectorAll('button').length,
@@ -34,20 +34,20 @@ async function quickTest() {
       };
     });
     
-    console.log('📊 페이지 요소 현황:');
-    console.log(`  - 버튼: ${elements.buttons}개`);
-    console.log(`  - 입력필드: ${elements.inputs}개`);
-    console.log(`  - DIV: ${elements.divs}개`);
-    console.log(`  - 모달: ${elements.modals}개`);
+    console.log('?뱤 ?섏씠吏 ?붿냼 ?꾪솴:');
+    console.log(`  - 踰꾪듉: ${elements.buttons}媛?);
+    console.log(`  - ?낅젰?꾨뱶: ${elements.inputs}媛?);
+    console.log(`  - DIV: ${elements.divs}媛?);
+    console.log(`  - 紐⑤떖: ${elements.modals}媛?);
     
-    // 스크린샷 촬영
+    // ?ㅽ겕由곗꺑 珥ъ쁺
     await page.screenshot({ path: 'quick-test-result.png' });
-    console.log('📸 스크린샷 저장됨: quick-test-result.png');
+    console.log('?벝 ?ㅽ겕由곗꺑 ??λ맖: quick-test-result.png');
     
     await page.waitForTimeout(5000);
     
   } catch (error) {
-    console.error('❌ 테스트 실패:', error.message);
+    console.error('???뚯뒪???ㅽ뙣:', error.message);
   } finally {
     await browser.close();
   }

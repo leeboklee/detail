@@ -1,7 +1,5 @@
 generator client {
   provider        = "prisma-client-js"
-  output          = "../generated/prisma"
-  previewFeatures = ["jsonProtocol"]
 }
 
 datasource db {
@@ -38,7 +36,7 @@ model Room {
   id           String   @id @default(cuid())
   hotelId      String
   roomType     String
-  price        Decimal  @db.Decimal(10, 2)
+  price        Float
   maxOccupancy Int
   description  String?
   images       Json?    @default("[]")
@@ -75,8 +73,8 @@ model Package {
   hotelId       String
   title         String
   description   String?
-  price         Decimal   @db.Decimal(10, 2)
-  originalPrice Decimal?  @db.Decimal(10, 2)
+  price        Float
+  originalPrice Float?
   images        Json?     @default("[]")
   features      Json?     @default("[]")
   terms         String?
@@ -109,6 +107,64 @@ model Notice {
   @@index([isActive])
   @@map("notices")
 }
+
+model PackageTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  packages  Json     // 패키지 배열을 JSON으로 저장
+  hotelId   String   @default("default")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hotelId])
+  @@index([isActive])
+  @@map("package_templates")
+}
+
+model RoomTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  rooms     Json     // 객실 배열을 JSON으로 저장
+  hotelId   String   @default("default")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hotelId])
+  @@index([isActive])
+  @@map("room_templates")
+}
+
+model NoticeTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  notices   Json     // 공지사항 배열을 JSON으로 저장
+  hotelId   String   @default("default")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hotelId])
+  @@index([isActive])
+  @@map("notice_templates")
+}
+
+model PriceTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  template  Json     // 요금표 데이터를 JSON으로 저장
+  hotelId   String   @default("default")
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hotelId])
+  @@index([isActive])
+  @@map("price_templates")
+}
+
+
 
 model Session {
   id          String    @id @default(cuid())

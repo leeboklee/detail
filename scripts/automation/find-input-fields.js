@@ -15,7 +15,7 @@ async function findInputFields() {
   const page = await browser.newPage();
   
   try {
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'domcontentloaded' });
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'domcontentloaded' });
     console.log('✅ 페이지 로드 완료');
     
     await delay(3000);

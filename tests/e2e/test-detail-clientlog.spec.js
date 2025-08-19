@@ -1,18 +1,18 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
-// 서버로 로그 전송 함수
+// ?쒕쾭濡?濡쒓렇 ?꾩넚 ?⑥닔
 async function sendLog(log) {
-  await fetch('http://localhost: {process.env.PORT || 34343}/api/log-error', {
+  await fetch(`http://localhost:${process.env.PORT || 3900}/api/log-error`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(log)
   });
 }
 
-test('test-detail 페이지 클라이언트 로그 자동 수집 및 서버 전송', async ({ page }) => {
+test('test-detail ?섏씠吏 ?대씪?댁뼵??濡쒓렇 ?먮룞 ?섏쭛 諛??쒕쾭 ?꾩넚', async ({ page }) => {
   const logs = [];
 
-  // 콘솔 오류/로그 수집
+  // 肄섏넄 ?ㅻ쪟/濡쒓렇 ?섏쭛
   page.on('console', msg => {
     if (msg.type() === 'error' || msg.type() === 'warning' || msg.type() === 'log') {
       logs.push({
@@ -24,7 +24,7 @@ test('test-detail 페이지 클라이언트 로그 자동 수집 및 서버 전�
     }
   });
 
-  // 페이지 오류 수집
+  // ?섏씠吏 ?ㅻ쪟 ?섏쭛
   page.on('pageerror', error => {
     logs.push({
       type: 'page_error',
@@ -34,7 +34,7 @@ test('test-detail 페이지 클라이언트 로그 자동 수집 및 서버 전�
     });
   });
 
-  // 네트워크 오류 수집
+  // ?ㅽ듃?뚰겕 ?ㅻ쪟 ?섏쭛
   page.on('response', response => {
     if (response.status() >= 400) {
       logs.push({
@@ -47,37 +47,40 @@ test('test-detail 페이지 클라이언트 로그 자동 수집 및 서버 전�
     }
   });
 
-  // /test-detail 페이지 진입
-  await page.goto('http://localhost: {process.env.PORT || 34343}/test-detail');
+  // /test-detail ?섏씠吏 吏꾩엯
+  await page.goto(`http://localhost:${process.env.PORT || 3900}/test-detail`);
   await page.waitForLoadState('networkidle');
 
-  // '테스트 시작' 버튼 클릭
-  const startBtn = page.locator('button:has-text("테스트 시작")');
+  // '?뚯뒪???쒖옉' 踰꾪듉 ?대┃
+  const startBtn = page.locator('button:has-text("?뚯뒪???쒖옉")');
   await expect(startBtn).toBeVisible();
   await startBtn.click();
 
-  // 5초간 로그 수집
+  // 5珥덇컙 濡쒓렇 ?섏쭛
   await page.waitForTimeout(5000);
 
-  // 서버로 로그 전송
+  // ?쒕쾭濡?濡쒓렇 ?꾩넚
   for (const log of logs) {
     await page.evaluate(sendLog, log);
   }
 
-  // 결과 요약 출력
+  // 寃곌낵 ?붿빟 異쒕젰
   if (logs.length > 0) {
-    console.log('\n🚨 감지된 클라이언트 로그:');
+    console.log('\n?슚 媛먯????대씪?댁뼵??濡쒓렇:');
     logs.forEach((log, idx) => {
       console.log(`\n${idx + 1}. ${log.type}:`);
-      console.log('   메시지:', log.message || log.text);
+      console.log('   硫붿떆吏:', log.message || log.text);
       if (log.url) console.log('   URL:', log.url);
-      if (log.stack) console.log('   스택:', log.stack);
-      console.log('   시간:', log.timestamp);
+      if (log.stack) console.log('   ?ㅽ깮:', log.stack);
+      console.log('   ?쒓컙:', log.timestamp);
     });
   } else {
-    console.log('✅ 오류/로그 없음');
+    console.log('???ㅻ쪟/濡쒓렇 ?놁쓬');
   }
 
-  // 오류가 있으면 테스트 실패
+  // ?ㅻ쪟媛 ?덉쑝硫??뚯뒪???ㅽ뙣
   expect(logs.filter(l => l.type === 'error' || l.type === 'page_error' || l.type === 'network_error').length).toBe(0);
+
+  // ?ㅽ겕由곗꺑 鍮꾧탳
+  await expect(page).toHaveScreenshot('test-detail-page.png', { maxDiffPixels: 100 });
 }); 

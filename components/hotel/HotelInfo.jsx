@@ -6,7 +6,7 @@ import SimpleInput from '../room/SimpleInput';
 
 const HotelInfo = React.memo(({ hotel, update }) => {
   const hotelInfo = hotel || {
-    hotelName: '',
+    name: '',
     address: '',
     description: '',
     imageUrl: '',
@@ -37,9 +37,9 @@ const HotelInfo = React.memo(({ hotel, update }) => {
     <div className="space-y-4 p-1">
       <SimpleInput
         label="호텔 이름"
-        id="hotelName"
-        name="hotelName"
-        value={hotelInfo.hotelName || ''}
+        id="name"
+        name="name"
+        value={hotelInfo.name || ''}
         onChange={handleSimpleInputChange}
         placeholder="호텔의 전체 이름을 입력하세요"
       />

@@ -1,46 +1,25 @@
+import React, { Suspense, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import React, { Suspense } from 'react';
+import { useAppContext } from './AppContext.Context';
 
-// 로딩 컴포넌트
+// 로딩 스피너 컴포넌트
 const LoadingSpinner = () => (
   <div className="flex items-center justify-center p-8">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+    <div className="spinner"></div>
     <span className="ml-2 text-gray-600">로딩 중...</span>
   </div>
 );
 
-// 에러 바운더리 컴포넌트
-const ErrorFallback = ({ error, resetError }) => (
-  <div className="p-4 border-l-4 border-red-500 bg-red-50">
-    <div className="flex">
-      <div className="ml-3">
-        <h3 className="text-sm font-medium text-red-800">
-          컴포넌트 로딩 오류
-        </h3>
-        <p className="mt-2 text-sm text-red-700">
-          {error?.message || '알 수 없는 오류가 발생했습니다.'}
-        </p>
-        <button
-          onClick={resetError}
-          className="mt-2 text-sm bg-red-100 text-red-800 px-3 py-1 rounded hover:bg-red-200"
-        >
-          다시 시도
-        </button>
-      </div>
-    </div>
-  </div>
-);
-
-// Lazy Loading 컴포넌트들 정의
-export const LazyHotelInfo = dynamic(
+// 동적 컴포넌트들 - 기본 방식으로 단순화
+const LazyHotelInfo = dynamic(
   () => import('./hotel/HotelInfo'),
   {
     loading: () => <LoadingSpinner />,
-    ssr: false // 서버사이드 렌더링 비활성화로 성능 향상
+    ssr: false
   }
 );
 
-export const LazyRoomInfoEditor = dynamic(
+const LazyRoomInfo = dynamic(
   () => import('./room/RoomInfoEditor'),
   {
     loading: () => <LoadingSpinner />,
@@ -48,39 +27,7 @@ export const LazyRoomInfoEditor = dynamic(
   }
 );
 
-export const LazyFacilitiesInfo = dynamic(
-  () => import('./facilities/FacilitiesInfo'),
-  {
-    loading: () => <LoadingSpinner />,
-    ssr: false
-  }
-);
-
-export const LazyPackage = dynamic(
-  () => import('./package/Package'),
-  {
-    loading: () => <LoadingSpinner />,
-    ssr: false
-  }
-);
-
-export const LazySalePeriod = dynamic(
-  () => import('./period/SalePeriod'),
-  {
-    loading: () => <LoadingSpinner />,
-    ssr: false
-  }
-);
-
-export const LazyChargesInfo = dynamic(
-  () => import('./charges/ChargesInfo'),
-  {
-    loading: () => <LoadingSpinner />,
-    ssr: false
-  }
-);
-
-export const LazyPriceTable = dynamic(
+const LazyPriceTable = dynamic(
   () => import('./price/PriceTable'),
   {
     loading: () => <LoadingSpinner />,
@@ -88,15 +35,15 @@ export const LazyPriceTable = dynamic(
   }
 );
 
-export const LazyCheckInOutInfo = dynamic(
-  () => import('./checkin/CheckInOutInfo'),
+const LazyPackage = dynamic(
+  () => import('./package/Package'),
   {
     loading: () => <LoadingSpinner />,
     ssr: false
   }
 );
 
-export const LazyCancelPolicy = dynamic(
+const LazyCancelPolicy = dynamic(
   () => import('./cancel/CancelPolicy'),
   {
     loading: () => <LoadingSpinner />,
@@ -104,7 +51,7 @@ export const LazyCancelPolicy = dynamic(
   }
 );
 
-export const LazyBookingInfo = dynamic(
+const LazyBookingInfo = dynamic(
   () => import('./booking/BookingInfo'),
   {
     loading: () => <LoadingSpinner />,
@@ -112,7 +59,7 @@ export const LazyBookingInfo = dynamic(
   }
 );
 
-export const LazyNotice = dynamic(
+const LazyNotice = dynamic(
   () => import('./notice/Notice'),
   {
     loading: () => <LoadingSpinner />,
@@ -120,95 +67,124 @@ export const LazyNotice = dynamic(
   }
 );
 
-export const LazyAllTemplateManager = dynamic(
-  () => import('./template/AllTemplateManager'),
+const LazyCheckInOutInfo = dynamic(
+  () => import('./checkin/CheckInOutInfo'),
   {
     loading: () => <LoadingSpinner />,
     ssr: false
   }
 );
 
-// HOC: 에러 바운더리가 포함된 Lazy 컴포넌트 래퍼
-export const withLazyLoading = (LazyComponent, componentName = 'Component') => {
-  return function LazyWrapper(props) {
-    return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <ErrorBoundary
-          fallback={ErrorFallback}
-          onError={(error) => {
-            console.error(`${componentName} 로딩 오류:`, error);
-          }}
-        >
-          <LazyComponent {...props} />
-        </ErrorBoundary>
-      </Suspense>
-    );
+const LazyPeriodInfo = dynamic(
+  () => import('./period/PeriodInfo'),
+  {
+    loading: () => <LoadingSpinner />,
+    ssr: false
+  }
+);
+
+// 메인 LazyComponents 컴포넌트
+export default function LazyComponents() {
+  const { hotelInfo, setHotelInfo, sections, isHydrated } = useAppContext();
+  const [activeTab, setActiveTab] = useState(null);
+
+  const handleHotelUpdate = (name, value) => {
+    console.log('호텔 정보 업데이트:', name, value);
+    setHotelInfo(name, value);
   };
-};
 
-// 간단한 에러 바운더리 클래스 컴포넌트
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-    if (this.props.onError) {
-      this.props.onError(error, errorInfo);
+  // 하이드레이션 완료 후 첫 번째 활성 탭 설정
+  useEffect(() => {
+    if (isHydrated && sections && sections.length > 0) {
+      const firstVisibleTab = sections.find((section) => section.visible);
+      if (firstVisibleTab) {
+        setActiveTab(firstVisibleTab.id);
+      }
     }
+  }, [isHydrated, sections]);
+
+  const handleTabChange = (tabId) => {
+    setActiveTab(tabId);
+  };
+
+  // 하이드레이션 중이거나 섹션이 없는 경우 처리
+  if (!isHydrated) {
+    return <div className="w-full p-4 text-center text-gray-500">로딩 중...</div>;
   }
 
-  render() {
-    if (this.state.hasError) {
-      const resetError = () => {
-        this.setState({ hasError: false, error: null });
-      };
+  if (!sections || sections.length === 0) {
+    return <div className="w-full p-4 text-center text-gray-500">탭 데이터가 없습니다.</div>;
+  }
+
+  // 보이는 섹션만 필터링
+  const visibleSections = sections.filter((section) => section.visible);
+
+  if (visibleSections.length === 0) {
+    return <div className="w-full p-4 text-center text-gray-500">표시할 섹션이 없습니다.</div>;
+  }
+
+  // 탭별 컴포넌트 매핑
+  const getTabComponent = (tabId) => {
+    switch (tabId) {
+      case 'hotel':
+        return <LazyHotelInfo hotel={hotelInfo} update={handleHotelUpdate} />;
+      case 'room':
+        return <LazyRoomInfo />;
+      case 'price':
+        return <LazyPriceTable />;
+      case 'package':
+        return <LazyPackage />;
+      case 'cancel':
+        return <LazyCancelPolicy />;
+      case 'booking':
+        return <LazyBookingInfo />;
+      case 'notice':
+        return <LazyNotice />;
+      case 'checkin':
+        return <LazyCheckInOutInfo />;
+      case 'period':
+        return <LazyPeriodInfo />;
+      default:
+        return <div className="p-4 text-center text-gray-500">섹션 내용이 준비 중입니다.</div>;
+    }
+  };
+
+  return (
+    <div className="w-full h-full flex flex-col">
+      {/* 탭 네비게이션 */}
+      <div className="border-b border-gray-200 bg-white">
+        <nav className="-mb-px flex space-x-4 overflow-x-auto" aria-label="Tabs">
+          {visibleSections.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => handleTabChange(section.id)}
+              className={`
+                px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap
+                ${activeTab === section.id 
+                  ? 'border-b-2 border-indigo-500 text-indigo-600' 
+                  : 'border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}
+              `}
+            >
+              {section.label}
+            </button>
+          ))}
+        </nav>
+      </div>
       
-      return this.props.fallback 
-        ? this.props.fallback({ error: this.state.error, resetError })
-        : <div>Something went wrong.</div>;
-    }
-
-    return this.props.children;
-  }
-}
-
-// 래핑된 컴포넌트들 (에러 바운더리 포함)
-export const SafeLazyHotelInfo = withLazyLoading(LazyHotelInfo, 'HotelInfo');
-export const SafeLazyRoomInfoEditor = withLazyLoading(LazyRoomInfoEditor, 'RoomInfoEditor');
-export const SafeLazyFacilitiesInfo = withLazyLoading(LazyFacilitiesInfo, 'FacilitiesInfo');
-export const SafeLazyPackage = withLazyLoading(LazyPackage, 'Package');
-export const SafeLazySalePeriod = withLazyLoading(LazySalePeriod, 'SalePeriod');
-export const SafeLazyChargesInfo = withLazyLoading(LazyChargesInfo, 'ChargesInfo');
-export const SafeLazyPriceTable = withLazyLoading(LazyPriceTable, 'PriceTable');
-export const SafeLazyCheckInOutInfo = withLazyLoading(LazyCheckInOutInfo, 'CheckInOutInfo');
-export const SafeLazyCancelPolicy = withLazyLoading(LazyCancelPolicy, 'CancelPolicy');
-export const SafeLazyBookingInfo = withLazyLoading(LazyBookingInfo, 'BookingInfo');
-export const SafeLazyNotice = withLazyLoading(LazyNotice, 'Notice');
-export const SafeLazyAllTemplateManager = withLazyLoading(LazyAllTemplateManager, 'AllTemplateManager');
-
-// 프리로딩 함수들 (선택적으로 사용)
-export const preloadComponents = {
-  hotelInfo: () => import('./hotel/HotelInfo'),
-  roomInfo: () => import('./room/RoomInfoEditor'),
-  facilities: () => import('./facilities/FacilitiesInfo'),
-  package: () => import('./package/Package'),
-  salePeriod: () => import('./period/SalePeriod'),
-  charges: () => import('./charges/ChargesInfo'),
-  checkin: () => import('./checkin/CheckInOutInfo'),
-  cancel: () => import('./cancel/CancelPolicy'),
-  booking: () => import('./booking/BookingInfo'),
-  notice: () => import('./notice/Notice'),
-  template: () => import('./template/AllTemplateManager')
-};
-
-// 모든 컴포넌트 프리로드 (옵션)
-export const preloadAllComponents = () => {
-  return Promise.all(Object.values(preloadComponents).map(loader => loader()));
-}; 
+      {/* 탭 콘텐츠 */}
+      <div className="flex-1 overflow-y-auto">
+        {visibleSections.map((section) => (
+          <div
+            key={section.id}
+            className={`
+              ${activeTab === section.id ? 'block' : 'hidden'}
+              transition-opacity duration-300 ease-in-out h-full
+            `}
+          >
+            {getTabComponent(section.id)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+} 

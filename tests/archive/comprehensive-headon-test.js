@@ -1,6 +1,6 @@
-/**
- * 🔍 전체 섹션 종합 테스트 스크립트 (헤드온 모드)
- * 실제 브라우저 창을 열어서 시각적으로 확인하며 모든 버튼을 테스트
+﻿/**
+ * ?뵇 ?꾩껜 ?뱀뀡 醫낇빀 ?뚯뒪???ㅽ겕由쏀듃 (?ㅻ뱶??紐⑤뱶)
+ * ?ㅼ젣 釉뚮씪?곗? 李쎌쓣 ?댁뼱???쒓컖?곸쑝濡??뺤씤?섎ŉ 紐⑤뱺 踰꾪듉???뚯뒪??
  * Created: 2025-07-03
  */
 
@@ -8,31 +8,31 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
-// 테스트 설정
+// ?뚯뒪???ㅼ젙
 const TEST_CONFIG = {
-    url: 'http://localhost: {process.env.PORT || 34343}',
-    waitTime: 3000, // 헤드온 모드에서는 더 길게 대기
+    url: 'http://localhost: {process.env.PORT || 3900}',
+    waitTime: 3000, // ?ㅻ뱶??紐⑤뱶?먯꽌????湲멸쾶 ?湲?
     screenshotDir: 'screenshots/headon-test',
     resultFile: 'headon-test-results.json',
-    headless: false, // 헤드온 모드
+    headless: false, // ?ㅻ뱶??紐⑤뱶
     timeout: 60000,
-    slowMo: 500 // 액션 간격을 느리게
+    slowMo: 500 // ?≪뀡 媛꾧꺽???먮━寃?
 };
 
-// 모든 탭 정보
+// 紐⑤뱺 ???뺣낫
 const ALL_TABS = [
-    { key: 'hotel', label: '호텔 정보', icon: '🏠' },
-    { key: 'rooms', label: '객실 정보', icon: '👥' },
-    { key: 'facilities', label: '시설 정보', icon: '⚙️' },
-    { key: 'packages', label: '패키지', icon: '📄' },
-    { key: 'period', label: '📅 판매기간&투숙일', icon: '📅' },
-    { key: 'pricing', label: '💰 추가요금', icon: '💰' },
-    { key: 'charges', label: '🏷️ 요금 항목', icon: '🏷️' },
-    { key: 'checkin', label: '체크인/아웃', icon: '📅' },
-    { key: 'cancel', label: '취소규정', icon: '🛡️' },
-    { key: 'booking', label: '예약안내', icon: '💾' },
-    { key: 'notices', label: '공지사항', icon: '📄' },
-    { key: 'database', label: '💾 템플릿 목록', icon: '💾' }
+    { key: 'hotel', label: '?명뀛 ?뺣낫', icon: '?룧' },
+    { key: 'rooms', label: '媛앹떎 ?뺣낫', icon: '?뫁' },
+    { key: 'facilities', label: '?쒖꽕 ?뺣낫', icon: '?숋툘' },
+    { key: 'packages', label: '?⑦궎吏', icon: '?뱞' },
+    { key: 'period', label: '?뱟 ?먮ℓ湲곌컙&?ъ닕??, icon: '?뱟' },
+    { key: 'pricing', label: '?뮥 異붽??붽툑', icon: '?뮥' },
+    { key: 'charges', label: '?뤇截??붽툑 ??ぉ', icon: '?뤇截? },
+    { key: 'checkin', label: '泥댄겕???꾩썐', icon: '?뱟' },
+    { key: 'cancel', label: '痍⑥냼洹쒖젙', icon: '?썳截? },
+    { key: 'booking', label: '?덉빟?덈궡', icon: '?뮶' },
+    { key: 'notices', label: '怨듭??ы빆', icon: '?뱞' },
+    { key: 'database', label: '?뮶 ?쒗뵆由?紐⑸줉', icon: '?뮶' }
 ];
 
 class HeadOnTestRunner {
@@ -51,14 +51,14 @@ class HeadOnTestRunner {
             screenshots: []
         };
 
-        // 스크린샷 디렉토리 생성
+        // ?ㅽ겕由곗꺑 ?붾젆?좊━ ?앹꽦
         if (!fs.existsSync(TEST_CONFIG.screenshotDir)) {
             fs.mkdirSync(TEST_CONFIG.screenshotDir, { recursive: true });
         }
     }
 
     async init() {
-        console.log('🚀 헤드온 브라우저 초기화 중...');
+        console.log('?? ?ㅻ뱶??釉뚮씪?곗? 珥덇린??以?..');
         
         this.browser = await puppeteer.launch({
             headless: false,
@@ -68,20 +68,20 @@ class HeadOnTestRunner {
                 '--disable-setuid-sandbox',
                 '--start-maximized'
             ],
-            defaultViewport: null, // 전체 화면 사용
-            devtools: true // 개발자 도구 자동 열기
+            defaultViewport: null, // ?꾩껜 ?붾㈃ ?ъ슜
+            devtools: true // 媛쒕컻???꾧뎄 ?먮룞 ?닿린
         });
 
         const pages = await this.browser.pages();
         this.page = pages[0] || await this.browser.newPage();
         
-        // 개발자 도구에서 콘솔 탭을 활성화
+        // 媛쒕컻???꾧뎄?먯꽌 肄섏넄 ??쓣 ?쒖꽦??
         await this.page.bringToFront();
         
-        // 콘솔 로그 캡처 및 출력
+        // 肄섏넄 濡쒓렇 罹≪쿂 諛?異쒕젰
         this.page.on('console', msg => {
             const logMessage = `[${msg.type().toUpperCase()}] ${msg.text()}`;
-            console.log('🖥️  브라우저:', logMessage);
+            console.log('?뼢截? 釉뚮씪?곗?:', logMessage);
             this.results.detailedLogs.push({
                 type: msg.type(),
                 message: msg.text(),
@@ -90,10 +90,10 @@ class HeadOnTestRunner {
         });
 
         await this.page.goto(TEST_CONFIG.url, { waitUntil: 'networkidle2' });
-        console.log('✅ 페이지 로드 완료 - 개발자 도구에서 콘솔을 확인하세요');
+        console.log('???섏씠吏 濡쒕뱶 ?꾨즺 - 媛쒕컻???꾧뎄?먯꽌 肄섏넄???뺤씤?섏꽭??);
         
-        // 사용자에게 준비 시간 제공
-        console.log('⏳ 5초 후 테스트를 시작합니다. 브라우저 창을 확인하세요...');
+        // ?ъ슜?먯뿉寃?以鍮??쒓컙 ?쒓났
+        console.log('??5珥????뚯뒪?몃? ?쒖옉?⑸땲?? 釉뚮씪?곗? 李쎌쓣 ?뺤씤?섏꽭??..');
         await this.page.waitForTimeout(5000);
     }
 
@@ -108,21 +108,21 @@ class HeadOnTestRunner {
                 filename,
                 timestamp: new Date().toISOString()
             });
-            console.log(`📸 스크린샷 저장: ${filename} ${description ? `(${description})` : ''}`);
+            console.log(`?벝 ?ㅽ겕由곗꺑 ??? ${filename} ${description ? `(${description})` : ''}`);
         } catch (error) {
-            console.error('스크린샷 저장 실패:', error.message);
+            console.error('?ㅽ겕由곗꺑 ????ㅽ뙣:', error.message);
         }
     }
 
     async interactiveClick(selector, description, tabKey) {
-        console.log(`\n🖱️  클릭 시도: ${description}`);
-        console.log(`   선택자: ${selector}`);
+        console.log(`\n?뼮截? ?대┃ ?쒕룄: ${description}`);
+        console.log(`   ?좏깮?? ${selector}`);
         
         try {
-            // 요소 존재 확인
+            // ?붿냼 議댁옱 ?뺤씤
             await this.page.waitForSelector(selector, { timeout: 5000 });
             
-            // 요소 하이라이트 (시각적 확인용)
+            // ?붿냼 ?섏씠?쇱씠??(?쒓컖???뺤씤??
             await this.page.evaluate((sel) => {
                 const element = document.querySelector(sel);
                 if (element) {
@@ -134,11 +134,11 @@ class HeadOnTestRunner {
             
             await this.page.waitForTimeout(1000);
             
-            // 클릭 실행
+            // ?대┃ ?ㅽ뻾
             await this.page.click(selector);
-            console.log(`   ✅ 클릭 성공: ${description}`);
+            console.log(`   ???대┃ ?깃났: ${description}`);
             
-            // 하이라이트 제거
+            // ?섏씠?쇱씠???쒓굅
             await this.page.evaluate((sel) => {
                 const element = document.querySelector(sel);
                 if (element) {
@@ -161,7 +161,7 @@ class HeadOnTestRunner {
             return true;
             
         } catch (error) {
-            console.error(`   ❌ 클릭 실패: ${description}`, error.message);
+            console.error(`   ???대┃ ?ㅽ뙣: ${description}`, error.message);
             this.results.failedInteractions++;
             this.results.detailedLogs.push({
                 type: 'interaction_error',
@@ -177,14 +177,14 @@ class HeadOnTestRunner {
     }
 
     async interactiveInput(selector, value, description, tabKey) {
-        console.log(`\n⌨️  입력 시도: ${description}`);
-        console.log(`   선택자: ${selector}`);
-        console.log(`   값: ${value}`);
+        console.log(`\n?⑨툘  ?낅젰 ?쒕룄: ${description}`);
+        console.log(`   ?좏깮?? ${selector}`);
+        console.log(`   媛? ${value}`);
         
         try {
             await this.page.waitForSelector(selector, { timeout: 5000 });
             
-            // 요소 하이라이트
+            // ?붿냼 ?섏씠?쇱씠??
             await this.page.evaluate((sel) => {
                 const element = document.querySelector(sel);
                 if (element) {
@@ -196,7 +196,7 @@ class HeadOnTestRunner {
             
             await this.page.waitForTimeout(1000);
             
-            // 기존 값 삭제 후 새 값 입력
+            // 湲곗〈 媛???젣 ????媛??낅젰
             await this.page.click(selector);
             await this.page.keyboard.down('Control');
             await this.page.keyboard.press('KeyA');
@@ -204,9 +204,9 @@ class HeadOnTestRunner {
             await this.page.keyboard.press('Delete');
             await this.page.type(selector, value);
             
-            console.log(`   ✅ 입력 성공: ${description}`);
+            console.log(`   ???낅젰 ?깃났: ${description}`);
             
-            // 하이라이트 제거
+            // ?섏씠?쇱씠???쒓굅
             await this.page.evaluate((sel) => {
                 const element = document.querySelector(sel);
                 if (element) {
@@ -230,7 +230,7 @@ class HeadOnTestRunner {
             return true;
             
         } catch (error) {
-            console.error(`   ❌ 입력 실패: ${description}`, error.message);
+            console.error(`   ???낅젰 ?ㅽ뙣: ${description}`, error.message);
             this.results.failedInteractions++;
             this.results.detailedLogs.push({
                 type: 'interaction_error',
@@ -247,23 +247,23 @@ class HeadOnTestRunner {
     }
 
     async testTabInteractively(tab) {
-        console.log(`\n🎯 ${tab.icon} ${tab.label} 섹션 테스트 시작`);
+        console.log(`\n?렞 ${tab.icon} ${tab.label} ?뱀뀡 ?뚯뒪???쒖옉`);
         
-        // 탭 클릭
+        // ???대┃
         const tabClickSuccess = await this.interactiveClick(
             `[data-key="${tab.key}"]`,
-            `${tab.label} 탭 클릭`,
+            `${tab.label} ???대┃`,
             tab.key
         );
         
         if (!tabClickSuccess) {
-            console.log(`⏭️ 탭 ${tab.key} 건너뜀`);
+            console.log(`??툘 ??${tab.key} 嫄대꼫?`);
             return;
         }
         
-        await this.takeScreenshot(`tab_${tab.key}_opened`, `${tab.label} 탭 열림`);
+        await this.takeScreenshot(`tab_${tab.key}_opened`, `${tab.label} ???대┝`);
         
-        // 각 섹션별로 주요 인터랙션 수행
+        // 媛??뱀뀡蹂꾨줈 二쇱슂 ?명꽣?숈뀡 ?섑뻾
         switch (tab.key) {
             case 'hotel':
                 await this.testHotelSection(tab.key);
@@ -303,122 +303,122 @@ class HeadOnTestRunner {
                 break;
         }
         
-        await this.takeScreenshot(`tab_${tab.key}_completed`, `${tab.label} 섹션 테스트 완료`);
-        console.log(`✅ ${tab.icon} ${tab.label} 섹션 테스트 완료\n`);
+        await this.takeScreenshot(`tab_${tab.key}_completed`, `${tab.label} ?뱀뀡 ?뚯뒪???꾨즺`);
+        console.log(`??${tab.icon} ${tab.label} ?뱀뀡 ?뚯뒪???꾨즺\n`);
     }
 
     async testHotelSection(tabKey) {
-        console.log('🏨 호텔 정보 섹션 테스트');
-        await this.interactiveInput('input[placeholder*="호텔"], input[name*="name"]', '테스트 호텔', '호텔명 입력', tabKey);
-        await this.interactiveInput('textarea', '테스트 호텔 설명입니다.', '호텔 설명 입력', tabKey);
+        console.log('?룳 ?명뀛 ?뺣낫 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveInput('input[placeholder*="?명뀛"], input[name*="name"]', '?뚯뒪???명뀛', '?명뀛紐??낅젰', tabKey);
+        await this.interactiveInput('textarea', '?뚯뒪???명뀛 ?ㅻ챸?낅땲??', '?명뀛 ?ㅻ챸 ?낅젰', tabKey);
     }
 
     async testRoomsSection(tabKey) {
-        console.log('🏠 객실 정보 섹션 테스트');
-        // 객실 추가 버튼은 일반적으로 찾기 어려우므로 여러 선택자 시도
+        console.log('?룧 媛앹떎 ?뺣낫 ?뱀뀡 ?뚯뒪??);
+        // 媛앹떎 異붽? 踰꾪듉? ?쇰컲?곸쑝濡?李얘린 ?대젮?곕?濡??щ윭 ?좏깮???쒕룄
         const addRoomSelectors = [
-            'button:has-text("객실 추가")',
-            'button:has-text("추가")',
+            'button:has-text("媛앹떎 異붽?")',
+            'button:has-text("異붽?")',
             '[data-testid*="add"]',
             '.add-room'
         ];
         
         for (const selector of addRoomSelectors) {
-            const success = await this.interactiveClick(selector, '객실 추가 버튼', tabKey);
+            const success = await this.interactiveClick(selector, '媛앹떎 異붽? 踰꾪듉', tabKey);
             if (success) break;
         }
     }
 
     async testFacilitiesSection(tabKey) {
-        console.log('🏢 시설 정보 섹션 테스트');
-        await this.interactiveClick('[data-testid="add-facility-button"]', '시설 추가 버튼', tabKey);
-        await this.interactiveInput('input[type="text"]', '테스트 시설', '시설명 입력', tabKey);
+        console.log('?룫 ?쒖꽕 ?뺣낫 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('[data-testid="add-facility-button"]', '?쒖꽕 異붽? 踰꾪듉', tabKey);
+        await this.interactiveInput('input[type="text"]', '?뚯뒪???쒖꽕', '?쒖꽕紐??낅젰', tabKey);
     }
 
     async testPackagesSection(tabKey) {
-        console.log('📦 패키지 섹션 테스트');
-        await this.interactiveClick('[data-testid="add-package-button"]', '패키지 추가 버튼', tabKey);
-        await this.interactiveInput('input[type="text"]', '테스트 패키지', '패키지명 입력', tabKey);
-        await this.interactiveInput('input[type="number"]', '150000', '패키지 가격 입력', tabKey);
+        console.log('?벀 ?⑦궎吏 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('[data-testid="add-package-button"]', '?⑦궎吏 異붽? 踰꾪듉', tabKey);
+        await this.interactiveInput('input[type="text"]', '?뚯뒪???⑦궎吏', '?⑦궎吏紐??낅젰', tabKey);
+        await this.interactiveInput('input[type="number"]', '150000', '?⑦궎吏 媛寃??낅젰', tabKey);
     }
 
     async testPeriodSection(tabKey) {
-        console.log('📅 판매기간&투숙일 섹션 테스트');
-        await this.interactiveInput('input[type="date"]', '2025-12-31', '날짜 입력', tabKey);
-        await this.interactiveClick('button:has-text("저장")', '저장 버튼', tabKey);
+        console.log('?뱟 ?먮ℓ湲곌컙&?ъ닕???뱀뀡 ?뚯뒪??);
+        await this.interactiveInput('input[type="date"]', '2025-12-31', '?좎쭨 ?낅젰', tabKey);
+        await this.interactiveClick('button:has-text("???)', '???踰꾪듉', tabKey);
     }
 
     async testPricingSection(tabKey) {
-        console.log('💰 추가요금 섹션 테스트');
-        await this.interactiveClick('button:has-text("🔍 테스트")', '테스트 버튼', tabKey);
-        await this.interactiveClick('button:has-text("숙박시설 추가")', '숙박시설 추가 버튼', tabKey);
-        await this.interactiveClick('button:has-text("요금 계산기")', '요금 계산기 버튼', tabKey);
-        await this.interactiveInput('input[type="number"]', '50000', '추가요금 입력', tabKey);
+        console.log('?뮥 異붽??붽툑 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('button:has-text("?뵇 ?뚯뒪??)', '?뚯뒪??踰꾪듉', tabKey);
+        await this.interactiveClick('button:has-text("?숇컯?쒖꽕 異붽?")', '?숇컯?쒖꽕 異붽? 踰꾪듉', tabKey);
+        await this.interactiveClick('button:has-text("?붽툑 怨꾩궛湲?)', '?붽툑 怨꾩궛湲?踰꾪듉', tabKey);
+        await this.interactiveInput('input[type="number"]', '50000', '異붽??붽툑 ?낅젰', tabKey);
     }
 
     async testChargesSection(tabKey) {
-        console.log('🏷️ 요금 항목 섹션 테스트');
-        await this.interactiveClick('button:has-text("항목 추가")', '항목 추가 버튼', tabKey);
-        await this.interactiveInput('input[type="text"]', '테스트 요금 항목', '요금 항목명 입력', tabKey);
+        console.log('?뤇截??붽툑 ??ぉ ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('button:has-text("??ぉ 異붽?")', '??ぉ 異붽? 踰꾪듉', tabKey);
+        await this.interactiveInput('input[type="text"]', '?뚯뒪???붽툑 ??ぉ', '?붽툑 ??ぉ紐??낅젰', tabKey);
     }
 
     async testCheckinSection(tabKey) {
-        console.log('🕐 체크인/아웃 섹션 테스트');
-        await this.interactiveInput('input[type="time"]', '15:00', '체크인 시간 입력', tabKey);
+        console.log('?븧 泥댄겕???꾩썐 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveInput('input[type="time"]', '15:00', '泥댄겕???쒓컙 ?낅젰', tabKey);
     }
 
     async testCancelSection(tabKey) {
-        console.log('🛡️ 취소규정 섹션 테스트');
-        await this.interactiveClick('button:has-text("규칙 추가")', '규칙 추가 버튼', tabKey);
-        await this.interactiveClick('button:has-text("샘플 적용")', '샘플 적용 버튼', tabKey);
+        console.log('?썳截?痍⑥냼洹쒖젙 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('button:has-text("洹쒖튃 異붽?")', '洹쒖튃 異붽? 踰꾪듉', tabKey);
+        await this.interactiveClick('button:has-text("?섑뵆 ?곸슜")', '?섑뵆 ?곸슜 踰꾪듉', tabKey);
     }
 
     async testBookingSection(tabKey) {
-        console.log('📋 예약안내 섹션 테스트');
-        await this.interactiveClick('button:has-text("추가")', '항목 추가 버튼', tabKey);
-        await this.interactiveInput('textarea', '테스트 예약 안내사항', '예약 안내 입력', tabKey);
+        console.log('?뱥 ?덉빟?덈궡 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('button:has-text("異붽?")', '??ぉ 異붽? 踰꾪듉', tabKey);
+        await this.interactiveInput('textarea', '?뚯뒪???덉빟 ?덈궡?ы빆', '?덉빟 ?덈궡 ?낅젰', tabKey);
     }
 
     async testNoticesSection(tabKey) {
-        console.log('📢 공지사항 섹션 테스트');
-        await this.interactiveClick('[data-testid="add-notice-button"]', '공지 추가 버튼', tabKey);
-        await this.interactiveInput('input[type="text"]', '테스트 공지사항', '공지 제목 입력', tabKey);
+        console.log('?뱼 怨듭??ы빆 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('[data-testid="add-notice-button"]', '怨듭? 異붽? 踰꾪듉', tabKey);
+        await this.interactiveInput('input[type="text"]', '?뚯뒪??怨듭??ы빆', '怨듭? ?쒕ぉ ?낅젰', tabKey);
     }
 
     async testDatabaseSection(tabKey) {
-        console.log('💾 템플릿 목록 섹션 테스트');
-        await this.interactiveClick('button:has-text("불러오기")', '템플릿 불러오기 버튼', tabKey);
-        await this.interactiveClick('button:has-text("새로 저장")', '새로 저장 버튼', tabKey);
+        console.log('?뮶 ?쒗뵆由?紐⑸줉 ?뱀뀡 ?뚯뒪??);
+        await this.interactiveClick('button:has-text("遺덈윭?ㅺ린")', '?쒗뵆由?遺덈윭?ㅺ린 踰꾪듉', tabKey);
+        await this.interactiveClick('button:has-text("?덈줈 ???)', '?덈줈 ???踰꾪듉', tabKey);
     }
 
     async runTest() {
         try {
-            console.log('🎯 헤드온 모드 전체 섹션 테스트 시작');
-            console.log('👀 브라우저 창에서 실시간으로 테스트를 확인할 수 있습니다');
+            console.log('?렞 ?ㅻ뱶??紐⑤뱶 ?꾩껜 ?뱀뀡 ?뚯뒪???쒖옉');
+            console.log('?? 釉뚮씪?곗? 李쎌뿉???ㅼ떆媛꾩쑝濡??뚯뒪?몃? ?뺤씤?????덉뒿?덈떎');
             
             await this.init();
-            await this.takeScreenshot('initial_page', '초기 페이지 로드');
+            await this.takeScreenshot('initial_page', '珥덇린 ?섏씠吏 濡쒕뱶');
 
-            // 각 탭을 순회하며 인터랙티브 테스트
+            // 媛???쓣 ?쒗쉶?섎ŉ ?명꽣?숉떚釉??뚯뒪??
             for (let i = 0; i < ALL_TABS.length; i++) {
                 const tab = ALL_TABS[i];
-                console.log(`\n📑 [${i+1}/${ALL_TABS.length}] ${tab.icon} ${tab.label} 테스트`);
+                console.log(`\n?뱫 [${i+1}/${ALL_TABS.length}] ${tab.icon} ${tab.label} ?뚯뒪??);
                 
                 await this.testTabInteractively(tab);
                 this.results.totalInteractions++;
                 
-                // 각 탭 사이에 사용자 확인 시간 제공
-                console.log('⏳ 다음 탭으로 이동하기 전 3초 대기...');
+                // 媛????ъ씠???ъ슜???뺤씤 ?쒓컙 ?쒓났
+                console.log('???ㅼ쓬 ??쑝濡??대룞?섍린 ??3珥??湲?..');
                 await this.page.waitForTimeout(3000);
             }
 
-            await this.takeScreenshot('test_completed', '모든 테스트 완료');
+            await this.takeScreenshot('test_completed', '紐⑤뱺 ?뚯뒪???꾨즺');
             
         } catch (error) {
-            console.error('❌ 헤드온 테스트 실행 중 오류:', error);
+            console.error('???ㅻ뱶???뚯뒪???ㅽ뻾 以??ㅻ쪟:', error);
         } finally {
             await this.generateReport();
-            console.log('\n⏳ 결과 확인을 위해 30초 후 브라우저가 닫힙니다...');
+            console.log('\n??寃곌낵 ?뺤씤???꾪빐 30珥???釉뚮씪?곗?媛 ?ロ옓?덈떎...');
             await this.page.waitForTimeout(30000);
             await this.cleanup();
         }
@@ -434,33 +434,33 @@ class HeadOnTestRunner {
         fs.writeFileSync(TEST_CONFIG.resultFile, JSON.stringify(this.results, null, 2), 'utf8');
 
         console.log('\n' + '='.repeat(60));
-        console.log('🎉 헤드온 모드 테스트 완료');
+        console.log('?럦 ?ㅻ뱶??紐⑤뱶 ?뚯뒪???꾨즺');
         console.log('='.repeat(60));
-        console.log(`📊 테스트 통계:`);
-        console.log(`   • 테스트한 탭: ${this.results.totalInteractions}/${this.results.totalTabs}`);
-        console.log(`   • 성공한 인터랙션: ${this.results.successfulInteractions}`);
-        console.log(`   • 실패한 인터랙션: ${this.results.failedInteractions}`);
-        console.log(`   • 성공률: ${this.results.successRate}%`);
-        console.log(`   • 스크린샷: ${this.results.screenshots.length}개`);
-        console.log(`   • 소요시간: ${Math.round(this.results.duration / 1000)}초`);
-        console.log(`\n📄 상세 결과: ${TEST_CONFIG.resultFile}`);
-        console.log(`📸 스크린샷: ${TEST_CONFIG.screenshotDir}/`);
+        console.log(`?뱤 ?뚯뒪???듦퀎:`);
+        console.log(`   ???뚯뒪?명븳 ?? ${this.results.totalInteractions}/${this.results.totalTabs}`);
+        console.log(`   ???깃났???명꽣?숈뀡: ${this.results.successfulInteractions}`);
+        console.log(`   ???ㅽ뙣???명꽣?숈뀡: ${this.results.failedInteractions}`);
+        console.log(`   ???깃났瑜? ${this.results.successRate}%`);
+        console.log(`   ???ㅽ겕由곗꺑: ${this.results.screenshots.length}媛?);
+        console.log(`   ???뚯슂?쒓컙: ${Math.round(this.results.duration / 1000)}珥?);
+        console.log(`\n?뱞 ?곸꽭 寃곌낵: ${TEST_CONFIG.resultFile}`);
+        console.log(`?벝 ?ㅽ겕由곗꺑: ${TEST_CONFIG.screenshotDir}/`);
     }
 
     async cleanup() {
         if (this.browser) {
             await this.browser.close();
-            console.log('🔚 브라우저 종료');
+            console.log('?뵚 釉뚮씪?곗? 醫낅즺');
         }
     }
 }
 
-// 스크립트 실행
+// ?ㅽ겕由쏀듃 ?ㅽ뻾
 if (require.main === module) {
     const testRunner = new HeadOnTestRunner();
     
     testRunner.runTest().catch(error => {
-        console.error('💥 헤드온 테스트 실행 실패:', error);
+        console.error('?뮙 ?ㅻ뱶???뚯뒪???ㅽ뻾 ?ㅽ뙣:', error);
         process.exit(1);
     });
 }

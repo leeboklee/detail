@@ -1,13 +1,13 @@
 // @ts-check
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './tests',
   testIgnore: ['unit/**', '*.spec.ts', '*.spec.jsx'],
-  testMatch: ['**/*.spec.js', '**/visual-regression-test.js', '**/debug.spec.js'],
+  testMatch: ['**/*.spec.js', '**/visual-regression-test.js', '**/debug.spec.js', '**/main-page-check.spec.js'],
   timeout: 3 * 60 * 1000, // 테스트 전체 타임아웃 3분으로 설정
   /* Run tests in files in parallel */
   // fullyParallel: true,
@@ -34,7 +34,7 @@ module.exports = defineConfig({
   
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: 'http://localhost: {process.env.PORT || 34343}',
+    baseURL: `http://localhost:${process.env.PORT || 3900}`,
     trace: 'on-first-retry',
     headless: true,
     video: {
@@ -47,14 +47,12 @@ module.exports = defineConfig({
     }
   },
   
-  /*
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost: {process.env.PORT || 34343}',
+    command: 'npm run kill-port:safe && npm run dev',
+    url: `http://localhost:${process.env.PORT || 3900}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
-  */
 
   /* Configure projects for major browsers */
   projects: [

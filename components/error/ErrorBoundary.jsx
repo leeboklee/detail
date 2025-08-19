@@ -1,3 +1,5 @@
+'use client';
+
 // ErrorBoundary.jsx - 오류 경계 컴포넌트
 
 import React, { Component } from 'react';

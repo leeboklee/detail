@@ -1,95 +1,95 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function comprehensiveTest() {
   const browser = await chromium.launch({ 
     headless: false,
     args: ['--no-sandbox'],
-    slowMo: 500 // 동작을 천천히 해서 시각적으로 확인
+    slowMo: 500 // ?숈옉??泥쒖쿇???댁꽌 ?쒓컖?곸쑝濡??뺤씤
   });
   
   const page = await browser.newPage();
   
   try {
-    console.log('🚀 페이지 접속 중...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'domcontentloaded', timeout: 10000 });
+    console.log('?? ?섏씠吏 ?묒냽 以?..');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'domcontentloaded', timeout: 10000 });
     
-    console.log('📷 초기 페이지 스크린샷...');
+    console.log('?벜 珥덇린 ?섏씠吏 ?ㅽ겕由곗꺑...');
     await page.screenshot({ path: 'test-01-initial.png' });
     
-    // 섹션 카드들 확인
-    console.log('🔍 섹션 카드들 찾기...');
+    // ?뱀뀡 移대뱶???뺤씤
+    console.log('?뵇 ?뱀뀡 移대뱶??李얘린...');
     const sectionCards = await page.locator('[data-testid^="section-card-"]').count();
-    console.log(`✅ 발견된 섹션 카드: ${sectionCards}개`);
+    console.log(`??諛쒓껄???뱀뀡 移대뱶: ${sectionCards}媛?);
     
     if (sectionCards === 0) {
-      throw new Error('섹션 카드를 찾을 수 없습니다');
+      throw new Error('?뱀뀡 移대뱶瑜?李얠쓣 ???놁뒿?덈떎');
     }
     
-    // 각 섹션 테스트
+    // 媛??뱀뀡 ?뚯뒪??
     const sectionsToTest = ['hotel', 'rooms', 'facilities', 'packages', 'charges'];
     
     for (let i = 0; i < sectionsToTest.length; i++) {
       const section = sectionsToTest[i];
-      console.log(`\n📋 [${i+1}/${sectionsToTest.length}] ${section} 섹션 테스트 시작...`);
+      console.log(`\n?뱥 [${i+1}/${sectionsToTest.length}] ${section} ?뱀뀡 ?뚯뒪???쒖옉...`);
       
-      // 섹션 카드 클릭
-      console.log(`🖱️ ${section} 섹션 클릭...`);
+      // ?뱀뀡 移대뱶 ?대┃
+      console.log(`?뼮截?${section} ?뱀뀡 ?대┃...`);
       await page.locator(`[data-testid="section-card-${section}"]`).click();
       
-      // 모달 대기
-      console.log('⏳ 모달 대기...');
+      // 紐⑤떖 ?湲?
+      console.log('??紐⑤떖 ?湲?..');
       await page.waitForSelector('[role="dialog"]', { timeout: 5000 });
       
-      // 모달 스크린샷
-      console.log('📷 모달 스크린샷...');
+      // 紐⑤떖 ?ㅽ겕由곗꺑
+      console.log('?벜 紐⑤떖 ?ㅽ겕由곗꺑...');
       await page.screenshot({ path: `test-02-${section}-modal.png` });
       
-      // 적용하고 닫기 버튼 찾기 및 클릭
-      console.log('🔘 적용하고 닫기 버튼 찾기...');
-      const applyButton = page.locator('button:has-text("적용하고 닫기")');
+      // ?곸슜?섍퀬 ?リ린 踰꾪듉 李얘린 諛??대┃
+      console.log('?뵖 ?곸슜?섍퀬 ?リ린 踰꾪듉 李얘린...');
+      const applyButton = page.locator('button:has-text("?곸슜?섍퀬 ?リ린")');
       await applyButton.waitFor({ timeout: 3000 });
       await applyButton.click();
       
-      // 모달이 닫힐 때까지 대기
-      console.log('⏳ 모달 닫힘 대기...');
+      // 紐⑤떖???ロ옄 ?뚭퉴吏 ?湲?
+      console.log('??紐⑤떖 ?ロ옒 ?湲?..');
       await page.waitForSelector('[role="dialog"]', { state: 'detached', timeout: 3000 });
       
-      console.log(`✅ ${section} 섹션 테스트 완료`);
+      console.log(`??${section} ?뱀뀡 ?뚯뒪???꾨즺`);
       
-      // 각 섹션 테스트 사이에 잠시 대기
+      // 媛??뱀뀡 ?뚯뒪???ъ씠???좎떆 ?湲?
       await page.waitForTimeout(1000);
     }
     
-    // 전체 저장 버튼 테스트
-    console.log('\n💾 전체 저장 기능 테스트...');
+    // ?꾩껜 ???踰꾪듉 ?뚯뒪??
+    console.log('\n?뮶 ?꾩껜 ???湲곕뒫 ?뚯뒪??..');
     await page.screenshot({ path: 'test-03-before-save.png' });
     
-    const saveButton = page.locator('button:has-text("전체 저장")');
+    const saveButton = page.locator('button:has-text("?꾩껜 ???)');
     await saveButton.waitFor({ timeout: 3000 });
     await saveButton.click();
     
-    console.log('⏳ 저장 완료 대기...');
-    // 성공 메시지 대기 (5초 내에 나타나야 함)
+    console.log('??????꾨즺 ?湲?..');
+    // ?깃났 硫붿떆吏 ?湲?(5珥??댁뿉 ?섑??섏빞 ??
     try {
-      await page.waitForSelector('div:has-text("저장되었습니다")', { timeout: 8000 });
-      console.log('✅ 저장 성공 메시지 확인됨');
+      await page.waitForSelector('div:has-text("??λ릺?덉뒿?덈떎")', { timeout: 8000 });
+      console.log('??????깃났 硫붿떆吏 ?뺤씤??);
     } catch (e) {
-      console.log('⚠️ 저장 메시지를 찾을 수 없음, 하지만 계속 진행...');
+      console.log('?좑툘 ???硫붿떆吏瑜?李얠쓣 ???놁쓬, ?섏?留?怨꾩냽 吏꾪뻾...');
     }
     
     await page.screenshot({ path: 'test-04-after-save.png' });
     
-    console.log('\n🎉 모든 테스트 완료!');
-    console.log('📁 생성된 스크린샷:');
-    console.log('  - test-01-initial.png: 초기 페이지');
-    console.log('  - test-02-{section}-modal.png: 각 섹션 모달');
-    console.log('  - test-03-before-save.png: 저장 전');
-    console.log('  - test-04-after-save.png: 저장 후');
+    console.log('\n?럦 紐⑤뱺 ?뚯뒪???꾨즺!');
+    console.log('?뱚 ?앹꽦???ㅽ겕由곗꺑:');
+    console.log('  - test-01-initial.png: 珥덇린 ?섏씠吏');
+    console.log('  - test-02-{section}-modal.png: 媛??뱀뀡 紐⑤떖');
+    console.log('  - test-03-before-save.png: ?????);
+    console.log('  - test-04-after-save.png: ?????);
     
   } catch (error) {
-    console.error('❌ 테스트 실패:', error.message);
+    console.error('???뚯뒪???ㅽ뙣:', error.message);
     await page.screenshot({ path: 'test-error.png' });
-    console.log('📷 에러 스크린샷 저장: test-error.png');
+    console.log('?벜 ?먮윭 ?ㅽ겕由곗꺑 ??? test-error.png');
   } finally {
     await browser.close();
   }

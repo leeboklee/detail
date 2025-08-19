@@ -1,7 +1,8 @@
+﻿import React from 'react';
 const { chromium } = require('playwright');
 
 async function profileReactPerformance() {
-    console.log('🔍 React 성능 프로파일링 시작');
+    console.log('?뵇 React ?깅뒫 ?꾨줈?뚯씪留??쒖옉');
     
     const browser = await chromium.launch({ 
         headless: false,
@@ -12,11 +13,11 @@ async function profileReactPerformance() {
     try {
         const page = await browser.newPage();
         
-        // 성능 측정 활성화
+        // ?깅뒫 痢≪젙 ?쒖꽦??
         await page.addInitScript(() => {
             window.performanceMarks = [];
             
-            // React 렌더링 모니터링
+            // React ?뚮뜑留?紐⑤땲?곕쭅
             const originalLog = console.log;
             console.log = function(...args) {
                 if (args[0] && args[0].includes && args[0].includes('AppContext')) {
@@ -28,7 +29,7 @@ async function profileReactPerformance() {
                 originalLog.apply(console, args);
             };
             
-            // 성능 observer 추가
+            // ?깅뒫 observer 異붽?
             if (window.PerformanceObserver) {
                 const observer = new PerformanceObserver((list) => {
                     for (const entry of list.getEntries()) {
@@ -46,33 +47,33 @@ async function profileReactPerformance() {
             }
         });
         
-        console.log('📄 페이지 로딩...');
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        console.log('?뱞 ?섏씠吏 濡쒕뵫...');
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await page.waitForLoadState('networkidle');
         await page.waitForTimeout(3000);
         
-        console.log('🔸 호텔 정보 섹션 열기...');
-        await page.click('text=호텔 정보');
+        console.log('?뵺 ?명뀛 ?뺣낫 ?뱀뀡 ?닿린...');
+        await page.click('text=?명뀛 ?뺣낫');
         await page.waitForTimeout(2000);
         
-        // 입력 필드 찾기
-        const inputField = await page.locator('input[placeholder*="호텔명"]').first();
+        // ?낅젰 ?꾨뱶 李얘린
+        const inputField = await page.locator('input[placeholder*="?명뀛紐?]').first();
         if (await inputField.isVisible()) {
-            console.log('📝 입력 필드 성능 측정 시작...');
+            console.log('?뱷 ?낅젰 ?꾨뱶 ?깅뒫 痢≪젙 ?쒖옉...');
             
-            // 성능 마크 시작
+            // ?깅뒫 留덊겕 ?쒖옉
             await page.evaluate(() => {
                 if (window.performance && window.performance.mark) {
                     window.performance.mark('input-start');
                 }
             });
             
-            // 입력 시작
+            // ?낅젰 ?쒖옉
             await inputField.focus();
             await page.waitForTimeout(100);
             
-            // 한 글자씩 입력하며 성능 측정
-            const testText = '테스트호텔';
+            // ??湲?먯뵫 ?낅젰?섎ŉ ?깅뒫 痢≪젙
+            const testText = '?뚯뒪?명샇??;
             for (let i = 0; i < testText.length; i++) {
                 const char = testText[i];
                 const startTime = Date.now();
@@ -84,7 +85,7 @@ async function profileReactPerformance() {
                 }, char);
                 
                 await page.keyboard.type(char);
-                await page.waitForTimeout(100); // 각 입력 간 간격
+                await page.waitForTimeout(100); // 媛??낅젰 媛?媛꾧꺽
                 
                 const endTime = Date.now();
                 const duration = endTime - startTime;
@@ -96,10 +97,10 @@ async function profileReactPerformance() {
                     }
                 }, char, duration);
                 
-                console.log(`  → '${char}' 입력: ${duration}ms`);
+                console.log(`  ??'${char}' ?낅젰: ${duration}ms`);
             }
             
-            // 성능 마크 종료
+            // ?깅뒫 留덊겕 醫낅즺
             await page.evaluate(() => {
                 if (window.performance && window.performance.mark) {
                     window.performance.mark('input-end');
@@ -107,8 +108,8 @@ async function profileReactPerformance() {
                 }
             });
             
-            // 성능 데이터 수집
-            console.log('\n📊 성능 분석 결과:');
+            // ?깅뒫 ?곗씠???섏쭛
+            console.log('\n?뱤 ?깅뒫 遺꾩꽍 寃곌낵:');
             
             const performanceData = await page.evaluate(() => {
                 const marks = window.performanceMarks || [];
@@ -124,17 +125,17 @@ async function profileReactPerformance() {
                 };
             });
             
-            console.log('🔢 성능 마크:', performanceData.marks.length, '개');
+            console.log('?뵢 ?깅뒫 留덊겕:', performanceData.marks.length, '媛?);
             performanceData.marks.forEach(mark => {
-                console.log(`  → ${mark.message || mark.name}: ${mark.duration || 0}ms`);
+                console.log(`  ??${mark.message || mark.name}: ${mark.duration || 0}ms`);
             });
             
-            console.log('\n⏱️ 측정값:', performanceData.measures.length, '개');
+            console.log('\n?깍툘 痢≪젙媛?', performanceData.measures.length, '媛?);
             performanceData.measures.forEach(measure => {
-                console.log(`  → ${measure.name}: ${measure.duration.toFixed(2)}ms`);
+                console.log(`  ??${measure.name}: ${measure.duration.toFixed(2)}ms`);
             });
             
-            // React DevTools 정보 (가능한 경우)
+            // React DevTools ?뺣낫 (媛?ν븳 寃쎌슦)
             const reactInfo = await page.evaluate(() => {
                 if (window.React && window.React.version) {
                     return {
@@ -146,17 +147,17 @@ async function profileReactPerformance() {
             });
             
             if (reactInfo) {
-                console.log('\n⚛️ React 정보:');
-                console.log(`  → 버전: ${reactInfo.version}`);
-                console.log(`  → DevTools: ${reactInfo.hasDevTools ? '활성' : '비활성'}`);
+                console.log('\n?쏉툘 React ?뺣낫:');
+                console.log(`  ??踰꾩쟾: ${reactInfo.version}`);
+                console.log(`  ??DevTools: ${reactInfo.hasDevTools ? '?쒖꽦' : '鍮꾪솢??}`);
             }
         }
         
-        console.log('\n📝 브라우저를 10초간 유지하여 수동 확인 가능...');
+        console.log('\n?뱷 釉뚮씪?곗?瑜?10珥덇컙 ?좎??섏뿬 ?섎룞 ?뺤씤 媛??..');
         await page.waitForTimeout(10000);
         
     } catch (error) {
-        console.error('❌ 프로파일링 오류:', error);
+        console.error('???꾨줈?뚯씪留??ㅻ쪟:', error);
     } finally {
         await browser.close();
     }

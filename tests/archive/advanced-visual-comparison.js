@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 const { PNG } = require('pngjs');
 const pixelmatch = require('pixelmatch').default || require('pixelmatch');
 const fs = require('fs');
@@ -9,7 +9,7 @@ class VisualTestingManager {
     this.currentDir = './current-screenshots/';
     this.diffDir = './diff-screenshots/';
     
-    // 디렉토리 생성
+    // ?붾젆?좊━ ?앹꽦
     [this.baselineDir, this.currentDir, this.diffDir].forEach(dir => {
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
@@ -17,9 +17,9 @@ class VisualTestingManager {
     });
   }
 
-  // 베이스라인 생성 (최초 1회)
+  // 踰좎씠?ㅻ씪???앹꽦 (理쒖큹 1??
   async createBaseline() {
-    console.log('📋 베이스라인 스크린샷 생성 중...');
+    console.log('?뱥 踰좎씠?ㅻ씪???ㅽ겕由곗꺑 ?앹꽦 以?..');
     
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage({
@@ -27,27 +27,27 @@ class VisualTestingManager {
     });
     
     try {
-      await page.goto('http://localhost: {process.env.PORT || 34343}');
+      await page.goto('http://localhost: {process.env.PORT || 3900}');
       await page.waitForLoadState('networkidle');
       
-      // 전체 페이지
+      // ?꾩껜 ?섏씠吏
       await page.screenshot({ 
         path: `${this.baselineDir}full-page.png`,
         fullPage: true,
         animations: 'disabled'
       });
       
-      // 헤더
+      // ?ㅻ뜑
       await page.locator('header').screenshot({ 
         path: `${this.baselineDir}header.png` 
       });
       
-      // 메인 그리드
+      // 硫붿씤 洹몃━??
       await page.locator('main').screenshot({ 
         path: `${this.baselineDir}main-grid.png` 
       });
       
-      // 각 카드들
+      // 媛?移대뱶??
       const cards = await page.locator('[data-testid^="section-card-"]').all();
       for (let i = 0; i < cards.length; i++) {
         await cards[i].screenshot({ 
@@ -55,7 +55,7 @@ class VisualTestingManager {
         });
       }
       
-      // 반응형 테스트
+      // 諛섏쓳???뚯뒪??
       const viewports = [
         { name: 'mobile', width: 375, height: 667 },
         { name: 'tablet', width: 768, height: 1024 },
@@ -70,16 +70,16 @@ class VisualTestingManager {
         });
       }
       
-      console.log('✅ 베이스라인 생성 완료!');
+      console.log('??踰좎씠?ㅻ씪???앹꽦 ?꾨즺!');
       
     } finally {
       await browser.close();
     }
   }
 
-  // 현재 상태 캡처
+  // ?꾩옱 ?곹깭 罹≪쿂
   async captureCurrentState() {
-    console.log('📷 현재 상태 캡처 중...');
+    console.log('?벜 ?꾩옱 ?곹깭 罹≪쿂 以?..');
     
     const browser = await chromium.launch({ headless: true });
     const page = await browser.newPage({
@@ -87,27 +87,27 @@ class VisualTestingManager {
     });
     
     try {
-      await page.goto('http://localhost: {process.env.PORT || 34343}');
+      await page.goto('http://localhost: {process.env.PORT || 3900}');
       await page.waitForLoadState('networkidle');
       
-      // 전체 페이지
+      // ?꾩껜 ?섏씠吏
       await page.screenshot({ 
         path: `${this.currentDir}full-page.png`,
         fullPage: true,
         animations: 'disabled'
       });
       
-      // 헤더
+      // ?ㅻ뜑
       await page.locator('header').screenshot({ 
         path: `${this.currentDir}header.png` 
       });
       
-      // 메인 그리드
+      // 硫붿씤 洹몃━??
       await page.locator('main').screenshot({ 
         path: `${this.currentDir}main-grid.png` 
       });
       
-      // 각 카드들
+      // 媛?移대뱶??
       const cards = await page.locator('[data-testid^="section-card-"]').all();
       for (let i = 0; i < cards.length; i++) {
         await cards[i].screenshot({ 
@@ -115,7 +115,7 @@ class VisualTestingManager {
         });
       }
       
-      // 반응형 테스트
+      // 諛섏쓳???뚯뒪??
       const viewports = [
         { name: 'mobile', width: 375, height: 667 },
         { name: 'tablet', width: 768, height: 1024 },
@@ -130,22 +130,22 @@ class VisualTestingManager {
         });
       }
       
-      console.log('✅ 현재 상태 캡처 완료!');
+      console.log('???꾩옱 ?곹깭 罹≪쿂 ?꾨즺!');
       
     } finally {
       await browser.close();
     }
   }
 
-  // 이미지 비교
+  // ?대?吏 鍮꾧탳
   compareImages(baselinePath, currentPath, diffPath) {
     if (!fs.existsSync(baselinePath)) {
-      console.log(`⚠️ 베이스라인 없음: ${baselinePath}`);
+      console.log(`?좑툘 踰좎씠?ㅻ씪???놁쓬: ${baselinePath}`);
       return { match: false, reason: 'no-baseline' };
     }
     
     if (!fs.existsSync(currentPath)) {
-      console.log(`⚠️ 현재 이미지 없음: ${currentPath}`);
+      console.log(`?좑툘 ?꾩옱 ?대?吏 ?놁쓬: ${currentPath}`);
       return { match: false, reason: 'no-current' };
     }
     
@@ -153,7 +153,7 @@ class VisualTestingManager {
     const current = PNG.sync.read(fs.readFileSync(currentPath));
     
     if (baseline.width !== current.width || baseline.height !== current.height) {
-      console.log(`⚠️ 이미지 크기 불일치: ${baselinePath}`);
+      console.log(`?좑툘 ?대?吏 ?ш린 遺덉씪移? ${baselinePath}`);
       return { 
         match: false, 
         reason: 'size-mismatch',
@@ -172,23 +172,23 @@ class VisualTestingManager {
       { threshold: 0.2 }
     );
     
-    // diff 이미지 저장
+    // diff ?대?吏 ???
     fs.writeFileSync(diffPath, PNG.sync.write(diff));
     
     const totalPixels = baseline.width * baseline.height;
     const diffPercentage = (numDiffPixels / totalPixels) * 100;
     
     return {
-      match: diffPercentage < 0.2, // 0.2% 미만 차이면 일치로 간주
+      match: diffPercentage < 0.2, // 0.2% 誘몃쭔 李⑥씠硫??쇱튂濡?媛꾩＜
       diffPixels: numDiffPixels,
       totalPixels,
       diffPercentage: diffPercentage.toFixed(2)
     };
   }
 
-  // 전체 비교 실행
+  // ?꾩껜 鍮꾧탳 ?ㅽ뻾
   async runComparison() {
-    console.log('🔍 Visual Regression Testing 시작...');
+    console.log('?뵇 Visual Regression Testing ?쒖옉...');
     
     const testCases = [
       'full-page.png',
@@ -223,27 +223,27 @@ class VisualTestingManager {
       });
       
       if (result.match) {
-        console.log(`✅ ${testCase}: 일치`);
+        console.log(`??${testCase}: ?쇱튂`);
       } else {
-        console.log(`❌ ${testCase}: 불일치 (${result.diffPercentage}% 차이)`);
+        console.log(`??${testCase}: 遺덉씪移?(${result.diffPercentage}% 李⑥씠)`);
       }
     }
     
-    // 결과 요약
+    // 寃곌낵 ?붿빟
     const passed = results.filter(r => r.match).length;
     const failed = results.length - passed;
     
-    console.log('\n📊 테스트 결과 요약:');
-    console.log(`✅ 통과: ${passed}개`);
-    console.log(`❌ 실패: ${failed}개`);
-    console.log(`📈 통과율: ${((passed / results.length) * 100).toFixed(1)}%`);
+    console.log('\n?뱤 ?뚯뒪??寃곌낵 ?붿빟:');
+    console.log(`???듦낵: ${passed}媛?);
+    console.log(`???ㅽ뙣: ${failed}媛?);
+    console.log(`?뱢 ?듦낵?? ${((passed / results.length) * 100).toFixed(1)}%`);
     
     if (failed > 0) {
-      console.log('\n🔍 실패한 테스트들:');
+      console.log('\n?뵇 ?ㅽ뙣???뚯뒪?몃뱾:');
       results
         .filter(r => !r.match)
         .forEach(r => {
-          console.log(`  - ${r.testCase}: ${r.reason || r.diffPercentage + '% 차이'}`);
+          console.log(`  - ${r.testCase}: ${r.reason || r.diffPercentage + '% 李⑥씠'}`);
         });
     }
     
@@ -251,33 +251,33 @@ class VisualTestingManager {
   }
 }
 
-// 사용 예시
+// ?ъ슜 ?덉떆
 async function main() {
   const vtm = new VisualTestingManager();
   
-  // 첫 실행시에는 베이스라인 생성
+  // 泥??ㅽ뻾?쒖뿉??踰좎씠?ㅻ씪???앹꽦
   const baselineExists = fs.existsSync('./baseline-screenshots/full-page.png');
   
   if (!baselineExists) {
-    console.log('🏗️ 베이스라인이 없어서 생성합니다...');
+    console.log('?룛截?踰좎씠?ㅻ씪?몄씠 ?놁뼱???앹꽦?⑸땲??..');
     await vtm.createBaseline();
-    console.log('🎯 베이스라인 생성 완료! 이제 다시 실행하면 비교가 됩니다.');
+    console.log('?렞 踰좎씠?ㅻ씪???앹꽦 ?꾨즺! ?댁젣 ?ㅼ떆 ?ㅽ뻾?섎㈃ 鍮꾧탳媛 ?⑸땲??');
     return;
   }
   
-  // 현재 상태 캡처
+  // ?꾩옱 ?곹깭 罹≪쿂
   await vtm.captureCurrentState();
   
-  // 비교 실행
+  // 鍮꾧탳 ?ㅽ뻾
   await vtm.runComparison();
 }
 
-// 명령행 인자 처리
+// 紐낅졊???몄옄 泥섎━
 const args = process.argv.slice(2);
 if (args.includes('--baseline')) {
   const vtm = new VisualTestingManager();
   vtm.createBaseline().then(() => {
-    console.log('🎯 베이스라인 재생성 완료!');
+    console.log('?렞 踰좎씠?ㅻ씪???ъ깮???꾨즺!');
   });
 } else {
   main();

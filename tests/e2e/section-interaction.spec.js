@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
 test.describe('Section Interaction and API Test (Fixed)', () => {
   test('should edit hotel info and verify save', async ({ page }) => {
@@ -13,12 +13,12 @@ test.describe('Section Interaction and API Test (Fixed)', () => {
     await page.waitForLoadState('domcontentloaded');
 
     // 1. Wait for page to be ready
-    await expect(page.locator('h1:has-text("호텔 상세페이지 관리자")')).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('h1:has-text("?명뀛 ?곸꽭?섏씠吏 愿由ъ옄")')).toBeVisible({ timeout: 15000 });
     console.log('Admin page header is visible.');
 
-    // 2. Click "호텔 정보" tab to ensure it's active
-    console.log('Clicking on "호텔 정보" section tab...');
-    const hotelInfoTab = page.locator('button:has-text("🏠호텔 정보")');
+    // 2. Click "?명뀛 ?뺣낫" tab to ensure it's active
+    console.log('Clicking on "?명뀛 ?뺣낫" section tab...');
+    const hotelInfoTab = page.locator('button:has-text("?룧?명뀛 ?뺣낫")');
     await hotelInfoTab.click();
 
     // 3. Verify the form fields are directly visible (NO MODAL)
@@ -32,25 +32,25 @@ test.describe('Section Interaction and API Test (Fixed)', () => {
 
     // 4. Fill the form
     console.log('Filling form...');
-    await nameInput.fill('수정된 호텔 이름');
-    await addressInput.fill('수정된 호텔 주소');
+    await nameInput.fill('?섏젙???명뀛 ?대쫫');
+    await addressInput.fill('?섏젙???명뀛 二쇱냼');
 
-    // 5. Click "전체 저장" and wait for the API response
-    console.log('Clicking "전체 저장" button and waiting for API response...');
+    // 5. Click "?꾩껜 ??? and wait for the API response
+    console.log('Clicking "?꾩껜 ??? button and waiting for API response...');
     const [response] = await Promise.all([
       page.waitForResponse(res => res.url().includes('/api/hotels/save-all') && res.status() === 200),
-      page.locator('button:has-text("💾 전체 저장")').click(),
+      page.locator('button:has-text("?뮶 ?꾩껜 ???)').click(),
     ]);
 
     const responseBody = await response.json();
-    expect(responseBody.message).toContain('성공적으로 저장되었습니다');
+    expect(responseBody.message).toContain('?깃났?곸쑝濡???λ릺?덉뒿?덈떎');
 
     // 6. Verify the success message on the UI
     console.log('Verifying success message on UI...');
     const successMessage = page.locator('div.fixed.top-5.right-5.bg-green-500');
     await expect(successMessage).toBeVisible({ timeout: 10000 });
 
-    console.log('✅ Section interaction test passed.');
+    console.log('??Section interaction test passed.');
   });
 }); 
 

@@ -1,6 +1,6 @@
-/**
- * 🔍 전체 섹션 하이브리드 테스트 스크립트
- * 헤드리스로 시작 → 문제 발견시 헤드온으로 자동 전환
+﻿/**
+ * ?뵇 ?꾩껜 ?뱀뀡 ?섏씠釉뚮━???뚯뒪???ㅽ겕由쏀듃
+ * ?ㅻ뱶由ъ뒪濡??쒖옉 ??臾몄젣 諛쒓껄???ㅻ뱶?⑥쑝濡??먮룞 ?꾪솚
  * Created: 2025-07-03
  */
 
@@ -8,34 +8,34 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 
-// 테스트 설정
+// ?뚯뒪???ㅼ젙
 const TEST_CONFIG = {
-    url: 'http://localhost: {process.env.PORT || 34343}',
+    url: 'http://localhost: {process.env.PORT || 3900}',
     waitTime: 2000,
     screenshotDir: 'screenshots/hybrid-test',
     resultFile: 'hybrid-test-results.json',
-    initialMode: 'headless', // 시작은 헤드리스
-    errorThreshold: 3, // 에러 3개 이상시 헤드온으로 전환
+    initialMode: 'headless', // ?쒖옉? ?ㅻ뱶由ъ뒪
+    errorThreshold: 3, // ?먮윭 3媛??댁긽???ㅻ뱶?⑥쑝濡??꾪솚
     timeout: 30000
 };
 
-// 모든 탭 정보
+// 紐⑤뱺 ???뺣낫
 const ALL_TABS = [
-    { key: 'hotel', label: '호텔 정보', icon: '🏠', priority: 1 },
-    { key: 'rooms', label: '객실 정보', icon: '👥', priority: 2 },
-    { key: 'facilities', label: '시설 정보', icon: '⚙️', priority: 3 },
-    { key: 'packages', label: '패키지', icon: '📄', priority: 4 },
-    { key: 'period', label: '📅 판매기간&투숙일', icon: '📅', priority: 5 },
-    { key: 'pricing', label: '💰 추가요금', icon: '💰', priority: 1 }, // 우선순위 높음
-    { key: 'charges', label: '🏷️ 요금 항목', icon: '🏷️', priority: 3 },
-    { key: 'checkin', label: '체크인/아웃', icon: '📅', priority: 4 },
-    { key: 'cancel', label: '취소규정', icon: '🛡️', priority: 3 },
-    { key: 'booking', label: '예약안내', icon: '💾', priority: 2 },
-    { key: 'notices', label: '공지사항', icon: '📄', priority: 4 },
-    { key: 'database', label: '💾 템플릿 목록', icon: '💾', priority: 2 }
+    { key: 'hotel', label: '?명뀛 ?뺣낫', icon: '?룧', priority: 1 },
+    { key: 'rooms', label: '媛앹떎 ?뺣낫', icon: '?뫁', priority: 2 },
+    { key: 'facilities', label: '?쒖꽕 ?뺣낫', icon: '?숋툘', priority: 3 },
+    { key: 'packages', label: '?⑦궎吏', icon: '?뱞', priority: 4 },
+    { key: 'period', label: '?뱟 ?먮ℓ湲곌컙&?ъ닕??, icon: '?뱟', priority: 5 },
+    { key: 'pricing', label: '?뮥 異붽??붽툑', icon: '?뮥', priority: 1 }, // ?곗꽑?쒖쐞 ?믪쓬
+    { key: 'charges', label: '?뤇截??붽툑 ??ぉ', icon: '?뤇截?, priority: 3 },
+    { key: 'checkin', label: '泥댄겕???꾩썐', icon: '?뱟', priority: 4 },
+    { key: 'cancel', label: '痍⑥냼洹쒖젙', icon: '?썳截?, priority: 3 },
+    { key: 'booking', label: '?덉빟?덈궡', icon: '?뮶', priority: 2 },
+    { key: 'notices', label: '怨듭??ы빆', icon: '?뱞', priority: 4 },
+    { key: 'database', label: '?뮶 ?쒗뵆由?紐⑸줉', icon: '?뮶', priority: 2 }
 ];
 
-// 우선순위별로 정렬 (우선순위 높은 것부터)
+// ?곗꽑?쒖쐞蹂꾨줈 ?뺣젹 (?곗꽑?쒖쐞 ?믪? 寃껊???
 const SORTED_TABS = ALL_TABS.sort((a, b) => a.priority - b.priority);
 
 class HybridTestRunner {
@@ -57,14 +57,14 @@ class HybridTestRunner {
             screenshots: []
         };
 
-        // 스크린샷 디렉토리 생성
+        // ?ㅽ겕由곗꺑 ?붾젆?좊━ ?앹꽦
         if (!fs.existsSync(TEST_CONFIG.screenshotDir)) {
             fs.mkdirSync(TEST_CONFIG.screenshotDir, { recursive: true });
         }
     }
 
     async init(headless = true) {
-        console.log(`🚀 브라우저 초기화 중... (${headless ? 'Headless' : 'Head-on'} 모드)`);
+        console.log(`?? 釉뚮씪?곗? 珥덇린??以?.. (${headless ? 'Headless' : 'Head-on'} 紐⑤뱶)`);
         
         if (this.browser) {
             await this.browser.close();
@@ -84,7 +84,7 @@ class HybridTestRunner {
 
         this.page = await this.browser.newPage();
         
-        // 에러 모니터링
+        // ?먮윭 紐⑤땲?곕쭅
         this.page.on('console', msg => {
             if (msg.type() === 'error') {
                 this.handleError('console_error', msg.text());
@@ -100,7 +100,7 @@ class HybridTestRunner {
         });
 
         await this.page.goto(TEST_CONFIG.url, { waitUntil: 'networkidle2' });
-        console.log('✅ 페이지 로드 완료');
+        console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
     }
 
     handleError(type, message) {
@@ -116,24 +116,24 @@ class HybridTestRunner {
         };
 
         this.results.criticalErrors.push(errorInfo);
-        console.error(`❌ [${type}] ${message}`);
+        console.error(`??[${type}] ${message}`);
 
-        // 에러 임계값 초과시 헤드온 모드로 전환
+        // ?먮윭 ?꾧퀎媛?珥덇낵???ㅻ뱶??紐⑤뱶濡??꾪솚
         if (this.currentMode === 'headless' && this.errorCount >= TEST_CONFIG.errorThreshold) {
             this.scheduleHeadOnMode();
         }
     }
 
     async scheduleHeadOnMode() {
-        if (this.modeChanged) return; // 이미 전환된 경우 중복 방지
+        if (this.modeChanged) return; // ?대? ?꾪솚??寃쎌슦 以묐났 諛⑹?
         
-        console.log('\n🚨 에러 임계값 초과! 헤드온 모드로 전환합니다...');
+        console.log('\n?슚 ?먮윭 ?꾧퀎媛?珥덇낵! ?ㅻ뱶??紐⑤뱶濡??꾪솚?⑸땲??..');
         this.modeChanged = true;
         
         const modeChange = {
             from: 'headless',
             to: 'headon',
-            reason: `에러 ${this.errorCount}개 발생`,
+            reason: `?먮윭 ${this.errorCount}媛?諛쒖깮`,
             timestamp: new Date().toISOString()
         };
         
@@ -142,26 +142,26 @@ class HybridTestRunner {
     }
 
     async switchToHeadOnMode() {
-        console.log('🔄 헤드온 모드로 전환 중...');
+        console.log('?봽 ?ㅻ뱶??紐⑤뱶濡??꾪솚 以?..');
         
         this.currentMode = 'headon';
         this.results.currentMode = 'headon';
         
-        // 현재 페이지 URL 저장
+        // ?꾩옱 ?섏씠吏 URL ???
         const currentUrl = await this.page.url();
         
-        // 새로운 헤드온 브라우저로 재초기화
+        // ?덈줈???ㅻ뱶??釉뚮씪?곗?濡??ъ큹湲고솕
         await this.init(false);
         
-        // 이전 위치로 이동
+        // ?댁쟾 ?꾩튂濡??대룞
         if (currentUrl !== TEST_CONFIG.url) {
             await this.page.goto(currentUrl, { waitUntil: 'networkidle2' });
         }
         
-        console.log('✅ 헤드온 모드 전환 완료 - 브라우저 창에서 확인 가능');
+        console.log('???ㅻ뱶??紐⑤뱶 ?꾪솚 ?꾨즺 - 釉뚮씪?곗? 李쎌뿉???뺤씤 媛??);
         
-        // 사용자에게 상황 알림
-        await this.takeScreenshot('mode_switched', '헤드온 모드로 전환됨');
+        // ?ъ슜?먯뿉寃??곹솴 ?뚮┝
+        await this.takeScreenshot('mode_switched', '?ㅻ뱶??紐⑤뱶濡??꾪솚??);
         await this.page.waitForTimeout(3000);
     }
 
@@ -177,9 +177,9 @@ class HybridTestRunner {
                 mode: this.currentMode,
                 timestamp: new Date().toISOString()
             });
-            console.log(`📸 스크린샷: ${filename} ${description ? `(${description})` : ''}`);
+            console.log(`?벝 ?ㅽ겕由곗꺑: ${filename} ${description ? `(${description})` : ''}`);
         } catch (error) {
-            console.error('스크린샷 저장 실패:', error.message);
+            console.error('?ㅽ겕由곗꺑 ????ㅽ뙣:', error.message);
         }
     }
 
@@ -187,7 +187,7 @@ class HybridTestRunner {
         const isHeadOn = this.currentMode === 'headon';
         
         try {
-            // 헤드온 모드에서는 시각적 피드백 제공
+            // ?ㅻ뱶??紐⑤뱶?먯꽌???쒓컖???쇰뱶諛??쒓났
             if (isHeadOn) {
                 await this.page.evaluate((sel) => {
                     const element = document.querySelector(sel);
@@ -203,7 +203,7 @@ class HybridTestRunner {
             await this.page.waitForSelector(selector, { timeout: 5000 });
             await this.page.click(selector);
             
-            // 헤드온 모드에서 하이라이트 제거
+            // ?ㅻ뱶??紐⑤뱶?먯꽌 ?섏씠?쇱씠???쒓굅
             if (isHeadOn) {
                 await this.page.evaluate((sel) => {
                     const element = document.querySelector(sel);
@@ -214,7 +214,7 @@ class HybridTestRunner {
                 }, selector);
             }
             
-            console.log(`   ✅ 클릭 성공: ${description}`);
+            console.log(`   ???대┃ ?깃났: ${description}`);
             await this.page.waitForTimeout(isHeadOn ? 2000 : 1000);
             return true;
             
@@ -257,7 +257,7 @@ class HybridTestRunner {
                 }, selector);
             }
             
-            console.log(`   ✅ 입력 성공: ${description} = "${value}"`);
+            console.log(`   ???낅젰 ?깃났: ${description} = "${value}"`);
             await this.page.waitForTimeout(isHeadOn ? 1500 : 800);
             return true;
             
@@ -268,7 +268,7 @@ class HybridTestRunner {
     }
 
     async testTabComprehensively(tab) {
-        console.log(`\n${tab.icon} ${tab.label} 섹션 테스트 [우선순위: ${tab.priority}]`);
+        console.log(`\n${tab.icon} ${tab.label} ?뱀뀡 ?뚯뒪??[?곗꽑?쒖쐞: ${tab.priority}]`);
         
         const tabResult = {
             tabKey: tab.key,
@@ -282,23 +282,23 @@ class HybridTestRunner {
         };
 
         try {
-            // 탭 클릭
+            // ???대┃
             const tabClicked = await this.smartClick(
                 `[data-key="${tab.key}"]`,
-                `${tab.label} 탭 클릭`,
+                `${tab.label} ???대┃`,
                 tab.key
             );
             
             if (!tabClicked) {
-                tabResult.errors.push('탭 클릭 실패');
+                tabResult.errors.push('???대┃ ?ㅽ뙣');
                 this.results.testResults[tab.key] = tabResult;
                 return;
             }
             
-            await this.takeScreenshot(`tab_${tab.key}`, `${tab.label} 탭 열림`);
+            await this.takeScreenshot(`tab_${tab.key}`, `${tab.label} ???대┝`);
             tabResult.screenshots.push(`tab_${tab.key}`);
 
-            // 탭별 특화 테스트 수행
+            // ??퀎 ?뱁솕 ?뚯뒪???섑뻾
             await this.performTabSpecificTests(tab, tabResult);
             
             tabResult.success = tabResult.errors.length === 0;
@@ -314,90 +314,90 @@ class HybridTestRunner {
     async performTabSpecificTests(tab, tabResult) {
         switch (tab.key) {
             case 'pricing':
-                // 추가요금 섹션 - 최우선 테스트
-                await this.smartClick('button:has-text("🔍 테스트")', '테스트 버튼 클릭', tab.key);
-                await this.smartInput('input[type="number"]', '50000', '추가요금 입력', tab.key);
-                await this.smartClick('button:has-text("요금 계산기")', '요금 계산기 열기', tab.key);
+                // 異붽??붽툑 ?뱀뀡 - 理쒖슦???뚯뒪??
+                await this.smartClick('button:has-text("?뵇 ?뚯뒪??)', '?뚯뒪??踰꾪듉 ?대┃', tab.key);
+                await this.smartInput('input[type="number"]', '50000', '異붽??붽툑 ?낅젰', tab.key);
+                await this.smartClick('button:has-text("?붽툑 怨꾩궛湲?)', '?붽툑 怨꾩궛湲??닿린', tab.key);
                 break;
                 
             case 'hotel':
-                await this.smartInput('input[placeholder*="호텔"], input[name*="name"]', '하이브리드 테스트 호텔', '호텔명', tab.key);
-                await this.smartInput('textarea', '하이브리드 모드에서 테스트된 호텔입니다.', '호텔 설명', tab.key);
+                await this.smartInput('input[placeholder*="?명뀛"], input[name*="name"]', '?섏씠釉뚮━???뚯뒪???명뀛', '?명뀛紐?, tab.key);
+                await this.smartInput('textarea', '?섏씠釉뚮━??紐⑤뱶?먯꽌 ?뚯뒪?몃맂 ?명뀛?낅땲??', '?명뀛 ?ㅻ챸', tab.key);
                 break;
                 
             case 'rooms':
-                await this.smartClick('button:has-text("객실 추가")', '객실 추가', tab.key);
-                await this.smartInput('input[type="text"]', '하이브리드 테스트 룸', '객실명', tab.key);
+                await this.smartClick('button:has-text("媛앹떎 異붽?")', '媛앹떎 異붽?', tab.key);
+                await this.smartInput('input[type="text"]', '?섏씠釉뚮━???뚯뒪??猷?, '媛앹떎紐?, tab.key);
                 break;
                 
             case 'facilities':
-                await this.smartClick('[data-testid="add-facility-button"]', '시설 추가', tab.key);
-                await this.smartInput('input[type="text"]', '하이브리드 테스트 시설', '시설명', tab.key);
+                await this.smartClick('[data-testid="add-facility-button"]', '?쒖꽕 異붽?', tab.key);
+                await this.smartInput('input[type="text"]', '?섏씠釉뚮━???뚯뒪???쒖꽕', '?쒖꽕紐?, tab.key);
                 break;
                 
             case 'packages':
-                await this.smartClick('[data-testid="add-package-button"]', '패키지 추가', tab.key);
-                await this.smartInput('input[type="text"]', '하이브리드 패키지', '패키지명', tab.key);
+                await this.smartClick('[data-testid="add-package-button"]', '?⑦궎吏 異붽?', tab.key);
+                await this.smartInput('input[type="text"]', '?섏씠釉뚮━???⑦궎吏', '?⑦궎吏紐?, tab.key);
                 break;
                 
             case 'notices':
-                await this.smartClick('[data-testid="add-notice-button"]', '공지 추가', tab.key);
-                await this.smartInput('input[type="text"]', '하이브리드 테스트 공지', '공지 제목', tab.key);
+                await this.smartClick('[data-testid="add-notice-button"]', '怨듭? 異붽?', tab.key);
+                await this.smartInput('input[type="text"]', '?섏씠釉뚮━???뚯뒪??怨듭?', '怨듭? ?쒕ぉ', tab.key);
                 break;
                 
             case 'database':
-                await this.smartClick('button:has-text("불러오기")', '템플릿 불러오기', tab.key);
+                await this.smartClick('button:has-text("遺덈윭?ㅺ린")', '?쒗뵆由?遺덈윭?ㅺ린', tab.key);
                 break;
                 
             default:
-                // 기본 테스트 - 입력 필드와 버튼 찾아서 테스트
+                // 湲곕낯 ?뚯뒪??- ?낅젰 ?꾨뱶? 踰꾪듉 李얠븘???뚯뒪??
                 const inputs = await this.page.$$('input[type="text"], textarea');
                 if (inputs.length > 0) {
-                    await this.smartInput('input[type="text"], textarea', '하이브리드 테스트', '일반 입력', tab.key);
+                    await this.smartInput('input[type="text"], textarea', '?섏씠釉뚮━???뚯뒪??, '?쇰컲 ?낅젰', tab.key);
                 }
                 
                 const buttons = await this.page.$$('button:not([disabled])');
                 if (buttons.length > 0) {
-                    await this.smartClick('button:not([disabled])', '일반 버튼', tab.key);
+                    await this.smartClick('button:not([disabled])', '?쇰컲 踰꾪듉', tab.key);
                 }
         }
     }
 
     async runTest() {
         try {
-            console.log('🎯 하이브리드 모드 전체 섹션 테스트 시작');
-            console.log(`📋 테스트 탭: ${SORTED_TABS.length}개 (우선순위별 정렬)`);
-            console.log(`🔄 시작 모드: ${this.currentMode}`);
-            console.log(`⚠️ 에러 ${TEST_CONFIG.errorThreshold}개 이상시 헤드온으로 자동 전환`);
+            console.log('?렞 ?섏씠釉뚮━??紐⑤뱶 ?꾩껜 ?뱀뀡 ?뚯뒪???쒖옉');
+            console.log(`?뱥 ?뚯뒪???? ${SORTED_TABS.length}媛?(?곗꽑?쒖쐞蹂??뺣젹)`);
+            console.log(`?봽 ?쒖옉 紐⑤뱶: ${this.currentMode}`);
+            console.log(`?좑툘 ?먮윭 ${TEST_CONFIG.errorThreshold}媛??댁긽???ㅻ뱶?⑥쑝濡??먮룞 ?꾪솚`);
             
             await this.init(this.currentMode === 'headless');
-            await this.takeScreenshot('initial', '초기 페이지');
+            await this.takeScreenshot('initial', '珥덇린 ?섏씠吏');
 
-            // 우선순위별로 탭 테스트
+            // ?곗꽑?쒖쐞蹂꾨줈 ???뚯뒪??
             for (let i = 0; i < SORTED_TABS.length; i++) {
                 const tab = SORTED_TABS[i];
-                console.log(`\n📑 [${i+1}/${SORTED_TABS.length}] ${tab.icon} ${tab.label} (우선순위: ${tab.priority}) [${this.currentMode}]`);
+                console.log(`\n?뱫 [${i+1}/${SORTED_TABS.length}] ${tab.icon} ${tab.label} (?곗꽑?쒖쐞: ${tab.priority}) [${this.currentMode}]`);
                 
                 await this.testTabComprehensively(tab);
                 
-                // 헤드온 모드에서는 각 탭 완료 후 확인 시간 제공
+                // ?ㅻ뱶??紐⑤뱶?먯꽌??媛????꾨즺 ???뺤씤 ?쒓컙 ?쒓났
                 if (this.currentMode === 'headon') {
-                    console.log('⏳ 다음 탭으로 이동 전 2초 대기...');
+                    console.log('???ㅼ쓬 ??쑝濡??대룞 ??2珥??湲?..');
                     await this.page.waitForTimeout(2000);
                 }
             }
 
-            await this.takeScreenshot('completed', '전체 테스트 완료');
+            await this.takeScreenshot('completed', '?꾩껜 ?뚯뒪???꾨즺');
             
         } catch (error) {
-            console.error('❌ 하이브리드 테스트 실행 중 오류:', error);
+            console.error('???섏씠釉뚮━???뚯뒪???ㅽ뻾 以??ㅻ쪟:', error);
             this.handleError('test_execution_error', error.message);
         } finally {
             await this.generateReport();
             
-            // 헤드온 모드인 경우 결과 확인 시간 제공
+            // ?ㅻ뱶??紐⑤뱶??寃쎌슦 寃곌낵 ?뺤씤 ?쒓컙 ?쒓났
             if (this.currentMode === 'headon') {
-                console.log('\n⏳ 결과 확인을 위해 15초 후 브라우저가 닫힙니다...');
+                console.log('\n??寃곌낵 ?뺤씤???꾪빐 15珥???釉뚮씪?곗?媛 ?ロ옓?덈떎...');
                 await this.page.waitForTimeout(15000);
             }
             
@@ -419,56 +419,56 @@ class HybridTestRunner {
         fs.writeFileSync(TEST_CONFIG.resultFile, JSON.stringify(this.results, null, 2), 'utf8');
 
         console.log('\n' + '='.repeat(60));
-        console.log('🎉 하이브리드 모드 테스트 완료');
+        console.log('?럦 ?섏씠釉뚮━??紐⑤뱶 ?뚯뒪???꾨즺');
         console.log('='.repeat(60));
-        console.log(`🔄 모드 정보:`);
-        console.log(`   • 시작 모드: ${this.results.initialMode}`);
-        console.log(`   • 최종 모드: ${this.results.currentMode}`);
-        console.log(`   • 모드 변경: ${this.results.modeChanges.length}회`);
+        console.log(`?봽 紐⑤뱶 ?뺣낫:`);
+        console.log(`   ???쒖옉 紐⑤뱶: ${this.results.initialMode}`);
+        console.log(`   ??理쒖쥌 紐⑤뱶: ${this.results.currentMode}`);
+        console.log(`   ??紐⑤뱶 蹂寃? ${this.results.modeChanges.length}??);
         
         if (this.results.modeChanges.length > 0) {
             this.results.modeChanges.forEach((change, i) => {
-                console.log(`     ${i+1}. ${change.from} → ${change.to} (${change.reason})`);
+                console.log(`     ${i+1}. ${change.from} ??${change.to} (${change.reason})`);
             });
         }
         
-        console.log(`\n📊 테스트 통계:`);
-        console.log(`   • 총 탭: ${this.results.totalTabs}`);
-        console.log(`   • 성공: ${this.results.successfulTabs}`);
-        console.log(`   • 실패: ${this.results.failedTabs}`);
-        console.log(`   • 성공률: ${this.results.successRate}%`);
-        console.log(`   • 총 에러: ${this.results.totalErrors}`);
-        console.log(`   • 스크린샷: ${this.results.screenshots.length}개`);
-        console.log(`   • 소요시간: ${Math.round(this.results.duration / 1000)}초`);
+        console.log(`\n?뱤 ?뚯뒪???듦퀎:`);
+        console.log(`   ??珥??? ${this.results.totalTabs}`);
+        console.log(`   ???깃났: ${this.results.successfulTabs}`);
+        console.log(`   ???ㅽ뙣: ${this.results.failedTabs}`);
+        console.log(`   ???깃났瑜? ${this.results.successRate}%`);
+        console.log(`   ??珥??먮윭: ${this.results.totalErrors}`);
+        console.log(`   ???ㅽ겕由곗꺑: ${this.results.screenshots.length}媛?);
+        console.log(`   ???뚯슂?쒓컙: ${Math.round(this.results.duration / 1000)}珥?);
 
-        console.log(`\n📋 탭별 결과 (우선순위순):`);
+        console.log(`\n?뱥 ??퀎 寃곌낵 (?곗꽑?쒖쐞??:`);
         SORTED_TABS.forEach(tab => {
             const result = this.results.testResults[tab.key];
             if (result) {
-                const status = result.success ? '✅' : '❌';
-                const mode = result.mode === 'headon' ? '👁️' : '🤖';
-                console.log(`   ${status} ${mode} ${tab.icon} ${tab.label} (우선순위: ${tab.priority})`);
+                const status = result.success ? '?? : '??;
+                const mode = result.mode === 'headon' ? '?몓截? : '?쨼';
+                console.log(`   ${status} ${mode} ${tab.icon} ${tab.label} (?곗꽑?쒖쐞: ${tab.priority})`);
             }
         });
 
-        console.log(`\n📄 상세 결과: ${TEST_CONFIG.resultFile}`);
-        console.log(`📸 스크린샷: ${TEST_CONFIG.screenshotDir}/`);
+        console.log(`\n?뱞 ?곸꽭 寃곌낵: ${TEST_CONFIG.resultFile}`);
+        console.log(`?벝 ?ㅽ겕由곗꺑: ${TEST_CONFIG.screenshotDir}/`);
     }
 
     async cleanup() {
         if (this.browser) {
             await this.browser.close();
-            console.log('🔚 브라우저 종료');
+            console.log('?뵚 釉뚮씪?곗? 醫낅즺');
         }
     }
 }
 
-// 스크립트 실행
+// ?ㅽ겕由쏀듃 ?ㅽ뻾
 if (require.main === module) {
     const testRunner = new HybridTestRunner();
     
     testRunner.runTest().catch(error => {
-        console.error('💥 하이브리드 테스트 실행 실패:', error);
+        console.error('?뮙 ?섏씠釉뚮━???뚯뒪???ㅽ뻾 ?ㅽ뙣:', error);
         process.exit(1);
     });
 }

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale/ko';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../AppContext.Context';
 import styles from './PeriodInfo.module.css';
 
 /**

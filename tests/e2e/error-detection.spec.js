@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
-test.describe('오류 감지 테스트', () => {
-  test('브라우저 콘솔 오류 감지', async ({ page }) => {
+test.describe('?ㅻ쪟 媛먯? ?뚯뒪??, () => {
+  test('釉뚮씪?곗? 肄섏넄 ?ㅻ쪟 媛먯?', async ({ page }) => {
     const errors = [];
     
-    // 콘솔 오류 수집
+    // 肄섏넄 ?ㅻ쪟 ?섏쭛
     page.on('console', msg => {
       if (msg.type() === 'error') {
         errors.push({
@@ -16,7 +16,7 @@ test.describe('오류 감지 테스트', () => {
       }
     });
 
-    // 페이지 오류 수집
+    // ?섏씠吏 ?ㅻ쪟 ?섏쭛
     page.on('pageerror', error => {
       errors.push({
         type: 'page_error',
@@ -26,7 +26,7 @@ test.describe('오류 감지 테스트', () => {
       });
     });
 
-    // 네트워크 오류 수집
+    // ?ㅽ듃?뚰겕 ?ㅻ쪟 ?섏쭛
     page.on('response', response => {
       if (response.status() >= 400) {
         errors.push({
@@ -39,31 +39,31 @@ test.describe('오류 감지 테스트', () => {
       }
     });
 
-    // 페이지 로드
-    await page.goto('http://localhost: {process.env.PORT || 34343}/admin');
+    // ?섏씠吏 濡쒕뱶
+    await page.goto(`http://localhost:${process.env.PORT || 3900}/admin`);
     
-    // 잠시 대기해서 오류 수집
+    // ?좎떆 ?湲고빐???ㅻ쪟 ?섏쭛
     await page.waitForTimeout(5000);
 
-    // 오류가 있으면 상세 정보 출력
+    // ?ㅻ쪟媛 ?덉쑝硫??곸꽭 ?뺣낫 異쒕젰
     if (errors.length > 0) {
-      console.log('🚨 감지된 오류들:');
+      console.log('?슚 媛먯????ㅻ쪟??');
       errors.forEach((error, index) => {
         console.log(`\n${index + 1}. ${error.type}:`);
-        console.log('   메시지:', error.message || error.text);
+        console.log('   硫붿떆吏:', error.message || error.text);
         console.log('   URL:', error.url || error.location?.url);
-        console.log('   시간:', error.timestamp);
+        console.log('   ?쒓컙:', error.timestamp);
         if (error.stack) {
-          console.log('   스택:', error.stack);
+          console.log('   ?ㅽ깮:', error.stack);
         }
       });
     }
 
-    // 오류가 없으면 성공
+    // ?ㅻ쪟媛 ?놁쑝硫??깃났
     expect(errors.length).toBe(0);
   });
 
-  test('admin 페이지 기능별 오류 감지', async ({ page }) => {
+  test('admin ?섏씠吏 湲곕뒫蹂??ㅻ쪟 媛먯?', async ({ page }) => {
     const errors = [];
     
     page.on('console', msg => {
@@ -84,28 +84,28 @@ test.describe('오류 감지 테스트', () => {
       });
     });
 
-    // admin 페이지 로드
-    await page.goto('http://localhost: {process.env.PORT || 34343}/admin');
+    // admin ?섏씠吏 濡쒕뱶
+    await page.goto(`http://localhost:${process.env.PORT || 3900}/admin`);
     await page.waitForLoadState('networkidle');
 
-    // 각 탭 클릭하면서 오류 감지
-    const tabs = ['호텔 정보', '객실 정보', '시설 정보', '체크인/아웃', '패키지', '요금표', '취소규정', '예약안내', '공지사항'];
+    // 媛????대┃?섎㈃???ㅻ쪟 媛먯?
+    const tabs = ['?명뀛 ?뺣낫', '媛앹떎 ?뺣낫', '?쒖꽕 ?뺣낫', '泥댄겕???꾩썐', '?⑦궎吏', '?붽툑??, '痍⑥냼洹쒖젙', '?덉빟?덈궡', '怨듭??ы빆'];
     
     for (const tabName of tabs) {
       try {
         await page.click(`text=${tabName}`);
         await page.waitForTimeout(1000);
         
-        // 카드 클릭 시도
+        // 移대뱶 ?대┃ ?쒕룄
         const card = page.locator('.card').first();
         if (await card.isVisible()) {
           await card.click();
           await page.waitForTimeout(1000);
           
-          // 모달이 열렸는지 확인
+          // 紐⑤떖???대졇?붿? ?뺤씤
           const modal = page.locator('[role="dialog"]');
           if (await modal.isVisible()) {
-            await modal.locator('button:has-text("취소")').click();
+            await modal.locator('button:has-text("痍⑥냼")').click();
           }
         }
       } catch (error) {
@@ -118,14 +118,14 @@ test.describe('오류 감지 테스트', () => {
       }
     }
 
-    // 오류 리포트 생성
+    // ?ㅻ쪟 由ы룷???앹꽦
     if (errors.length > 0) {
-      console.log('\n🚨 Admin 페이지 오류 리포트:');
+      console.log('\n?슚 Admin ?섏씠吏 ?ㅻ쪟 由ы룷??');
       errors.forEach((error, index) => {
         console.log(`\n${index + 1}. ${error.type}:`);
-        console.log('   탭:', error.tab || 'N/A');
-        console.log('   메시지:', error.message || error.text);
-        console.log('   시간:', error.timestamp);
+        console.log('   ??', error.tab || 'N/A');
+        console.log('   硫붿떆吏:', error.message || error.text);
+        console.log('   ?쒓컙:', error.timestamp);
       });
     }
 

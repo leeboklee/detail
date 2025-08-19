@@ -1,0 +1,9 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# 모니터링 스크립트 복사
+COPY scripts/docker-monitor.cjs ./
+
+# 간단한 모니터링 서버 시작 (의존성 없이)
+CMD ["node", "docker-monitor.cjs", "monitor"] 

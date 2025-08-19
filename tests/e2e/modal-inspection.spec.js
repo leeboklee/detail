@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 import fs from 'fs';
 
 test.describe('Modal UI Inspection on Button Clicks', () => {
@@ -57,7 +57,7 @@ test.describe('Modal UI Inspection on Button Clicks', () => {
     await page.waitForLoadState('networkidle', { timeout: 30000 });
     
     // 2. Now wait for the specific main header
-    await expect(page.locator('h1:has-text("호텔 상세페이지 관리자")')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('h1:has-text("?명뀛 ?곸꽭?섏씠吏 愿由ъ옄")')).toBeVisible({ timeout: 30000 });
     console.log('Page loaded. Starting button scan.');
 
     await page.waitForTimeout(5000); // Increased wait time to 5s
@@ -105,7 +105,7 @@ test.describe('Modal UI Inspection on Button Clicks', () => {
         console.log(`  -> Screenshot saved: ${screenshotPath}`);
 
         // Try to close the modal
-        const closeButton = modal.locator('button:has-text("닫기"), button:has-text("Close"), button:has-text("Cancel"), [aria-label="close"], [aria-label="Close"]');
+        const closeButton = modal.locator('button:has-text("?リ린"), button:has-text("Close"), button:has-text("Cancel"), [aria-label="close"], [aria-label="Close"]');
         if (await closeButton.count() > 0) {
             await closeButton.first().click();
             console.log('  -> Closed modal with a button.');
@@ -123,12 +123,12 @@ test.describe('Modal UI Inspection on Button Clicks', () => {
           console.error(`  -> An error occurred for button "${buttonText}": ${error.message}`);
         }
         // If navigation happened, we need to go back.
-        if (page.url() !== 'http://localhost: {process.env.PORT || 34343}/') {
+        if (page.url() !== 'http://localhost: {process.env.PORT || 3900}/') {
             console.log('  -> Navigation occurred. Going back.');
             await page.goto('/');
             await new Promise(resolve => setTimeout(resolve, 1000));
             await page.waitForLoadState('networkidle', { timeout: 30000 });
-            await expect(page.locator('h1:has-text("호텔 상세페이지 관리자")')).toBeVisible({ timeout: 30000 });
+            await expect(page.locator('h1:has-text("?명뀛 ?곸꽭?섏씠吏 愿由ъ옄")')).toBeVisible({ timeout: 30000 });
         }
       }
       

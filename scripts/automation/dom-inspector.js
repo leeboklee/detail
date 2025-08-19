@@ -14,7 +14,7 @@ async function inspectDOM() {
     
     try {
         console.log('📱 페이지 로딩 중...');
-        await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle2' });
+        await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle2' });
         
         // 페이지 로드 대기
         await new Promise(resolve => setTimeout(resolve, 3000));

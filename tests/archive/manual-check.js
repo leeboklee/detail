@@ -1,40 +1,40 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function manualCheck() {
-    console.log('🔍 수동 확인을 위해 브라우저를 열어둡니다.');
-    console.log('📌 다음을 확인해주세요:');
-    console.log('   1. 페이지가 정상적으로 로드되는지');
-    console.log('   2. 어떤 버튼/영역을 클릭해야 입력 필드가 나타나는지');
-    console.log('   3. 입력 필드에서 타이핑할 때 버벅거리는지');
-    console.log('   4. 자동저장이 언제 동작하는지');
+    console.log('?뵇 ?섎룞 ?뺤씤???꾪빐 釉뚮씪?곗?瑜??댁뼱?〓땲??');
+    console.log('?뱦 ?ㅼ쓬???뺤씤?댁＜?몄슂:');
+    console.log('   1. ?섏씠吏媛 ?뺤긽?곸쑝濡?濡쒕뱶?섎뒗吏');
+    console.log('   2. ?대뼡 踰꾪듉/?곸뿭???대┃?댁빞 ?낅젰 ?꾨뱶媛 ?섑??섎뒗吏');
+    console.log('   3. ?낅젰 ?꾨뱶?먯꽌 ??댄븨????踰꾨쾮嫄곕━?붿?');
+    console.log('   4. ?먮룞??μ씠 ?몄젣 ?숈옉?섎뒗吏');
     console.log('');
     
     const browser = await chromium.launch({ 
         headless: false,
         slowMo: 300,
-        args: ['--start-maximized'] // 브라우저 최대화
+        args: ['--start-maximized'] // 釉뚮씪?곗? 理쒕???
     });
     
     try {
         const page = await browser.newPage();
         
-        // 브라우저 크기 설정
+        // 釉뚮씪?곗? ?ш린 ?ㅼ젙
         await page.setViewportSize({ width: 1920, height: 1080 });
         
-        // 콘솔 메시지 출력
+        // 肄섏넄 硫붿떆吏 異쒕젰
         page.on('console', msg => {
             const text = msg.text();
-            if (text.includes('AutoSave') || text.includes('저장') || text.includes('오류') || text.includes('Error')) {
-                console.log(`🌐 [${msg.type()}] ${text}`);
+            if (text.includes('AutoSave') || text.includes('???) || text.includes('?ㅻ쪟') || text.includes('Error')) {
+                console.log(`?뙋 [${msg.type()}] ${text}`);
             }
         });
         
-        console.log('📄 http://localhost: {process.env.PORT || 34343} 로딩...');
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        console.log('?뱞 http://localhost: {process.env.PORT || 3900} 濡쒕뵫...');
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await page.waitForLoadState('networkidle');
         await page.waitForTimeout(2000);
         
-        // 현재 상태 출력
+        // ?꾩옱 ?곹깭 異쒕젰
         const pageInfo = await page.evaluate(() => {
             const buttons = Array.from(document.querySelectorAll('button')).map(btn => btn.textContent?.trim()).filter(text => text);
             const inputs = document.querySelectorAll('input, textarea, select').length;
@@ -44,44 +44,44 @@ async function manualCheck() {
             return { buttons, inputs, cards, modals };
         });
         
-        console.log('\n📊 현재 페이지 상태:');
-        console.log(`   - 버튼들: [${pageInfo.buttons.join(', ')}]`);
-        console.log(`   - 입력 필드: ${pageInfo.inputs}개`);
-        console.log(`   - 클릭 가능한 카드: ${pageInfo.cards}개`);
-        console.log(`   - 열린 모달: ${pageInfo.modals}개`);
+        console.log('\n?뱤 ?꾩옱 ?섏씠吏 ?곹깭:');
+        console.log(`   - 踰꾪듉?? [${pageInfo.buttons.join(', ')}]`);
+        console.log(`   - ?낅젰 ?꾨뱶: ${pageInfo.inputs}媛?);
+        console.log(`   - ?대┃ 媛?ν븳 移대뱶: ${pageInfo.cards}媛?);
+        console.log(`   - ?대┛ 紐⑤떖: ${pageInfo.modals}媛?);
         
-        console.log('\n⏳ 브라우저를 열어둡니다. 수동으로 테스트해보세요!');
-        console.log('   💡 팁: 각 섹션 카드나 버튼을 클릭해보세요.');
-        console.log('   💡 팁: 입력 필드가 나타나면 타이핑 테스트해보세요.');
-        console.log('   💡 팁: 브라우저 콘솔에서 추가 정보를 확인하세요.');
-        console.log('\n   종료하려면 이 터미널에서 Ctrl+C를 누르세요.');
+        console.log('\n??釉뚮씪?곗?瑜??댁뼱?〓땲?? ?섎룞?쇰줈 ?뚯뒪?명빐蹂댁꽭??');
+        console.log('   ?뮕 ?? 媛??뱀뀡 移대뱶??踰꾪듉???대┃?대낫?몄슂.');
+        console.log('   ?뮕 ?? ?낅젰 ?꾨뱶媛 ?섑??섎㈃ ??댄븨 ?뚯뒪?명빐蹂댁꽭??');
+        console.log('   ?뮕 ?? 釉뚮씪?곗? 肄섏넄?먯꽌 異붽? ?뺣낫瑜??뺤씤?섏꽭??');
+        console.log('\n   醫낅즺?섎젮硫????곕??먯뿉??Ctrl+C瑜??꾨Ⅴ?몄슂.');
         
-        // 무한 대기 (사용자가 수동으로 종료할 때까지)
+        // 臾댄븳 ?湲?(?ъ슜?먭? ?섎룞?쇰줈 醫낅즺???뚭퉴吏)
         await new Promise(resolve => {
-            // 60초마다 상태 업데이트
+            // 60珥덈쭏???곹깭 ?낅뜲?댄듃
             const interval = setInterval(async () => {
                 try {
                     const currentInputs = await page.evaluate(() => document.querySelectorAll('input, textarea, select').length);
-                    console.log(`⏰ 현재 입력 필드 수: ${currentInputs}개`);
+                    console.log(`???꾩옱 ?낅젰 ?꾨뱶 ?? ${currentInputs}媛?);
                 } catch (err) {
-                    console.log('⚠️ 페이지 접근 오류 - 브라우저가 닫혔을 수 있습니다.');
+                    console.log('?좑툘 ?섏씠吏 ?묎렐 ?ㅻ쪟 - 釉뚮씪?곗?媛 ?ロ삍?????덉뒿?덈떎.');
                     clearInterval(interval);
                     resolve();
                 }
             }, 60000);
             
-            // 페이지 닫힘 감지
+            // ?섏씠吏 ?ロ옒 媛먯?
             page.on('close', () => {
-                console.log('🔚 페이지가 닫혔습니다.');
+                console.log('?뵚 ?섏씠吏媛 ?ロ삍?듬땲??');
                 clearInterval(interval);
                 resolve();
             });
         });
         
     } catch (error) {
-        console.error('❌ 오류 발생:', error);
+        console.error('???ㅻ쪟 諛쒖깮:', error);
     } finally {
-        console.log('🔚 수동 확인 종료.');
+        console.log('?뵚 ?섎룞 ?뺤씤 醫낅즺.');
         await browser.close();
     }
 }

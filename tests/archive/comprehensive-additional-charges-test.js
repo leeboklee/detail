@@ -1,11 +1,11 @@
-/**
- * 추가요금 기능 종합 테스트 스크립트
- * 복구된 추가요금 필드들과 새로운 기능들을 모두 테스트
+﻿/**
+ * 異붽??붽툑 湲곕뒫 醫낇빀 ?뚯뒪???ㅽ겕由쏀듃
+ * 蹂듦뎄??異붽??붽툑 ?꾨뱶?ㅺ낵 ?덈줈??湲곕뒫?ㅼ쓣 紐⑤몢 ?뚯뒪??
  */
 
-console.log('🧪 추가요금 기능 종합 테스트 시작');
+console.log('?㎦ 異붽??붽툑 湲곕뒫 醫낇빀 ?뚯뒪???쒖옉');
 
-// 테스트 결과 저장
+// ?뚯뒪??寃곌낵 ???
 const testResults = {
   fieldTests: [],
   buttonTests: [],
@@ -13,15 +13,15 @@ const testResults = {
   errors: []
 };
 
-// 1. 필드 존재 확인 테스트
+// 1. ?꾨뱶 議댁옱 ?뺤씤 ?뚯뒪??
 function testFieldsExistence() {
-  console.log('📋 1. 필드 존재 확인 테스트');
+  console.log('?뱥 1. ?꾨뱶 議댁옱 ?뺤씤 ?뚯뒪??);
   
   const fieldsToCheck = [
-    { name: '주말 추가요금', selector: 'input[placeholder*="20%"]' },
-    { name: '성수기/공휴일 추가요금', selector: 'input[placeholder*="30%"]' },
-    { name: '계절별 요금 정보', selector: 'textarea[placeholder*="계절별"]' },
-    { name: '추가 요금 안내', selector: 'textarea[placeholder*="조식"]' }
+    { name: '二쇰쭚 異붽??붽툑', selector: 'input[placeholder*="20%"]' },
+    { name: '?깆닔湲?怨듯쑕??異붽??붽툑', selector: 'input[placeholder*="30%"]' },
+    { name: '怨꾩젅蹂??붽툑 ?뺣낫', selector: 'textarea[placeholder*="怨꾩젅蹂?]' },
+    { name: '異붽? ?붽툑 ?덈궡', selector: 'textarea[placeholder*="議곗떇"]' }
   ];
   
   fieldsToCheck.forEach(field => {
@@ -34,21 +34,21 @@ function testFieldsExistence() {
       element: element
     });
     
-    console.log(`  ${exists ? '✅' : '❌'} ${field.name}: ${exists ? '존재함' : '없음'}`);
+    console.log(`  ${exists ? '?? : '??} ${field.name}: ${exists ? '議댁옱?? : '?놁쓬'}`);
   });
 }
 
-// 2. 버튼 클릭 테스트
+// 2. 踰꾪듉 ?대┃ ?뚯뒪??
 function testButtons() {
-  console.log('🔘 2. 버튼 클릭 테스트');
+  console.log('?뵖 2. 踰꾪듉 ?대┃ ?뚯뒪??);
   
   const buttonsToTest = [
-    { name: '항목 추가', text: '+ 항목 추가' },
-    { name: '템플릿 저장', text: '💾 템플릿 저장' },
-    { name: '템플릿 불러오기', text: '📂 템플릿 불러오기' },
-    { name: '초기화', text: '🗑️ 초기화' },
-    { name: '테스트 데이터 입력', text: '🧪 테스트 데이터 입력' },
-    { name: '데이터 확인', text: '🔍 데이터 확인' }
+    { name: '??ぉ 異붽?', text: '+ ??ぉ 異붽?' },
+    { name: '?쒗뵆由????, text: '?뮶 ?쒗뵆由???? },
+    { name: '?쒗뵆由?遺덈윭?ㅺ린', text: '?뱛 ?쒗뵆由?遺덈윭?ㅺ린' },
+    { name: '珥덇린??, text: '?뿊截?珥덇린?? },
+    { name: '?뚯뒪???곗씠???낅젰', text: '?㎦ ?뚯뒪???곗씠???낅젰' },
+    { name: '?곗씠???뺤씤', text: '?뵇 ?곗씠???뺤씤' }
   ];
   
   buttonsToTest.forEach(buttonInfo => {
@@ -66,134 +66,134 @@ function testButtons() {
       element: button
     });
     
-    console.log(`  ${exists ? '✅' : '❌'} ${buttonInfo.name}: ${exists ? (enabled ? '활성화됨' : '비활성화됨') : '없음'}`);
+    console.log(`  ${exists ? '?? : '??} ${buttonInfo.name}: ${exists ? (enabled ? '?쒖꽦?붾맖' : '鍮꾪솢?깊솕??) : '?놁쓬'}`);
   });
 }
 
-// 3. 데이터 입력/출력 테스트
+// 3. ?곗씠???낅젰/異쒕젰 ?뚯뒪??
 function testDataInputOutput() {
-  console.log('📝 3. 데이터 입력/출력 테스트');
+  console.log('?뱷 3. ?곗씠???낅젰/異쒕젰 ?뚯뒪??);
   
-  // 테스트 데이터 입력 버튼 클릭
+  // ?뚯뒪???곗씠???낅젰 踰꾪듉 ?대┃
   const testDataButton = Array.from(document.querySelectorAll('button')).find(btn => 
-    btn.textContent.includes('🧪 테스트 데이터 입력')
+    btn.textContent.includes('?㎦ ?뚯뒪???곗씠???낅젰')
   );
   
   if (testDataButton) {
-    console.log('  🔄 테스트 데이터 입력 버튼 클릭...');
+    console.log('  ?봽 ?뚯뒪???곗씠???낅젰 踰꾪듉 ?대┃...');
     testDataButton.click();
     
-    // 잠시 대기 후 데이터 확인
+    // ?좎떆 ?湲????곗씠???뺤씤
     setTimeout(() => {
-      // 주말 추가요금 필드 확인
+      // 二쇰쭚 異붽??붽툑 ?꾨뱶 ?뺤씤
       const weekendField = document.querySelector('input[placeholder*="20%"]');
       const weekendValue = weekendField ? weekendField.value : '';
       
-      // 성수기/공휴일 추가요금 필드 확인
+      // ?깆닔湲?怨듯쑕??異붽??붽툑 ?꾨뱶 ?뺤씤
       const holidayField = document.querySelector('input[placeholder*="30%"]');
       const holidayValue = holidayField ? holidayField.value : '';
       
-      // 계절별 요금 정보 필드 확인
-      const seasonalField = document.querySelector('textarea[placeholder*="계절별"]');
+      // 怨꾩젅蹂??붽툑 ?뺣낫 ?꾨뱶 ?뺤씤
+      const seasonalField = document.querySelector('textarea[placeholder*="怨꾩젅蹂?]');
       const seasonalValue = seasonalField ? seasonalField.value : '';
       
       testResults.dataTests.push({
-        field: '주말 추가요금',
+        field: '二쇰쭚 異붽??붽툑',
         value: weekendValue,
         hasData: weekendValue.length > 0
       });
       
       testResults.dataTests.push({
-        field: '성수기/공휴일 추가요금',
+        field: '?깆닔湲?怨듯쑕??異붽??붽툑',
         value: holidayValue,
         hasData: holidayValue.length > 0
       });
       
       testResults.dataTests.push({
-        field: '계절별 요금 정보',
+        field: '怨꾩젅蹂??붽툑 ?뺣낫',
         value: seasonalValue,
         hasData: seasonalValue.length > 0
       });
       
-      console.log('  📊 데이터 입력 결과:');
-      console.log(`    주말 추가요금: "${weekendValue}"`);
-      console.log(`    성수기/공휴일 추가요금: "${holidayValue}"`);
-      console.log(`    계절별 요금 정보: "${seasonalValue}"`);
+      console.log('  ?뱤 ?곗씠???낅젰 寃곌낵:');
+      console.log(`    二쇰쭚 異붽??붽툑: "${weekendValue}"`);
+      console.log(`    ?깆닔湲?怨듯쑕??異붽??붽툑: "${holidayValue}"`);
+      console.log(`    怨꾩젅蹂??붽툑 ?뺣낫: "${seasonalValue}"`);
       
-      // 데이터 확인 버튼 클릭
+      // ?곗씠???뺤씤 踰꾪듉 ?대┃
       const dataCheckButton = Array.from(document.querySelectorAll('button')).find(btn => 
-        btn.textContent.includes('🔍 데이터 확인')
+        btn.textContent.includes('?뵇 ?곗씠???뺤씤')
       );
       
       if (dataCheckButton) {
-        console.log('  🔍 데이터 확인 버튼 클릭...');
+        console.log('  ?뵇 ?곗씠???뺤씤 踰꾪듉 ?대┃...');
         dataCheckButton.click();
       }
       
-      // 최종 결과 출력
+      // 理쒖쥌 寃곌낵 異쒕젰
       setTimeout(() => {
         showTestResults();
       }, 1000);
       
     }, 1000);
   } else {
-    console.log('  ❌ 테스트 데이터 입력 버튼을 찾을 수 없음');
+    console.log('  ???뚯뒪???곗씠???낅젰 踰꾪듉??李얠쓣 ???놁쓬');
     showTestResults();
   }
 }
 
-// 4. 테스트 결과 출력
+// 4. ?뚯뒪??寃곌낵 異쒕젰
 function showTestResults() {
-  console.log('\n📊 === 추가요금 기능 종합 테스트 결과 ===');
+  console.log('\n?뱤 === 異붽??붽툑 湲곕뒫 醫낇빀 ?뚯뒪??寃곌낵 ===');
   
-  // 필드 테스트 결과
-  console.log('\n🏷️ 필드 존재 테스트:');
+  // ?꾨뱶 ?뚯뒪??寃곌낵
+  console.log('\n?뤇截??꾨뱶 議댁옱 ?뚯뒪??');
   const fieldsPassed = testResults.fieldTests.filter(t => t.exists).length;
-  console.log(`  ${fieldsPassed}/${testResults.fieldTests.length} 개 필드 존재`);
+  console.log(`  ${fieldsPassed}/${testResults.fieldTests.length} 媛??꾨뱶 議댁옱`);
   
-  // 버튼 테스트 결과
-  console.log('\n🔘 버튼 테스트:');
+  // 踰꾪듉 ?뚯뒪??寃곌낵
+  console.log('\n?뵖 踰꾪듉 ?뚯뒪??');
   const buttonsPassed = testResults.buttonTests.filter(t => t.exists && t.enabled).length;
-  console.log(`  ${buttonsPassed}/${testResults.buttonTests.length} 개 버튼 활성화`);
+  console.log(`  ${buttonsPassed}/${testResults.buttonTests.length} 媛?踰꾪듉 ?쒖꽦??);
   
-  // 데이터 테스트 결과
-  console.log('\n📝 데이터 테스트:');
+  // ?곗씠???뚯뒪??寃곌낵
+  console.log('\n?뱷 ?곗씠???뚯뒪??');
   const dataPassed = testResults.dataTests.filter(t => t.hasData).length;
-  console.log(`  ${dataPassed}/${testResults.dataTests.length} 개 필드에 데이터 입력됨`);
+  console.log(`  ${dataPassed}/${testResults.dataTests.length} 媛??꾨뱶???곗씠???낅젰??);
   
-  // 전체 점수
+  // ?꾩껜 ?먯닔
   const totalTests = testResults.fieldTests.length + testResults.buttonTests.length + testResults.dataTests.length;
   const totalPassed = fieldsPassed + buttonsPassed + dataPassed;
   const score = Math.round((totalPassed / totalTests) * 100);
   
-  console.log(`\n🎯 전체 점수: ${score}% (${totalPassed}/${totalTests})`);
+  console.log(`\n?렞 ?꾩껜 ?먯닔: ${score}% (${totalPassed}/${totalTests})`);
   
   if (score >= 90) {
-    console.log('🎉 우수! 추가요금 기능이 정상적으로 복구되었습니다.');
+    console.log('?럦 ?곗닔! 異붽??붽툑 湲곕뒫???뺤긽?곸쑝濡?蹂듦뎄?섏뿀?듬땲??');
   } else if (score >= 70) {
-    console.log('👍 양호! 대부분의 기능이 작동합니다.');
+    console.log('?몟 ?묓샇! ?遺遺꾩쓽 湲곕뒫???묐룞?⑸땲??');
   } else {
-    console.log('⚠️ 개선 필요! 일부 기능에 문제가 있습니다.');
+    console.log('?좑툘 媛쒖꽑 ?꾩슂! ?쇰? 湲곕뒫??臾몄젣媛 ?덉뒿?덈떎.');
   }
   
-  // 상세 결과를 전역 변수로 저장
+  // ?곸꽭 寃곌낵瑜??꾩뿭 蹂?섎줈 ???
   window.additionalChargesTestResults = testResults;
 }
 
-// 5. 메인 테스트 실행
+// 5. 硫붿씤 ?뚯뒪???ㅽ뻾
 function runComprehensiveTest() {
   try {
     testFieldsExistence();
     testButtons();
     testDataInputOutput();
   } catch (error) {
-    console.error('❌ 테스트 실행 중 오류:', error);
+    console.error('???뚯뒪???ㅽ뻾 以??ㅻ쪟:', error);
     testResults.errors.push(error.message);
     showTestResults();
   }
 }
 
-// 페이지 로드 확인 후 테스트 실행
+// ?섏씠吏 濡쒕뱶 ?뺤씤 ???뚯뒪???ㅽ뻾
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
     setTimeout(runComprehensiveTest, 2000);
@@ -202,4 +202,4 @@ if (document.readyState === 'loading') {
   setTimeout(runComprehensiveTest, 2000);
 }
 
-console.log('⏳ 2초 후 테스트가 시작됩니다...'); 
+console.log('??2珥????뚯뒪?멸? ?쒖옉?⑸땲??..'); 

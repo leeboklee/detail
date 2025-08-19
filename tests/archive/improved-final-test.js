@@ -1,10 +1,10 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 const fs = require('fs');
 
-// 대기 함수
+// ?湲??⑥닔
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// 결과 저장
+// 寃곌낵 ???
 const results = {
     timestamp: new Date().toISOString(),
     sections: [],
@@ -12,28 +12,28 @@ const results = {
     improvements: []
 };
 
-// 개선된 안전한 클릭 함수 - 모달 오버레이 문제 해결
+// 媛쒖꽑???덉쟾???대┃ ?⑥닔 - 紐⑤떖 ?ㅻ쾭?덉씠 臾몄젣 ?닿껐
 async function safeClick(page, element, description = '', forceClick = false) {
     try {
         await element.scrollIntoViewIfNeeded();
         await wait(500);
         
         if (forceClick) {
-            // JavaScript로 강제 클릭 (모달 오버레이 우회)
+            // JavaScript濡?媛뺤젣 ?대┃ (紐⑤떖 ?ㅻ쾭?덉씠 ?고쉶)
             await element.evaluate(el => el.click());
         } else {
             await element.click();
         }
         
         await wait(1000);
-        console.log(`✅ ${description} 클릭 성공`);
+        console.log(`??${description} ?대┃ ?깃났`);
         return true;
     } catch (error) {
-        console.log(`❌ ${description} 클릭 실패: ${error.message}`);
+        console.log(`??${description} ?대┃ ?ㅽ뙣: ${error.message}`);
         
-        // 재시도 - 강제 클릭으로
+        // ?ъ떆??- 媛뺤젣 ?대┃?쇰줈
         if (!forceClick) {
-            console.log(`🔄 ${description} 강제 클릭 재시도...`);
+            console.log(`?봽 ${description} 媛뺤젣 ?대┃ ?ъ떆??..`);
             return await safeClick(page, element, description, true);
         }
         
@@ -41,49 +41,49 @@ async function safeClick(page, element, description = '', forceClick = false) {
     }
 }
 
-// 개선된 안전한 입력 함수 - 필드 타입별 처리
+// 媛쒖꽑???덉쟾???낅젰 ?⑥닔 - ?꾨뱶 ??낅퀎 泥섎━
 async function safeInput(page, selector, value, description = '', fieldType = 'text') {
     try {
         const element = page.locator(selector).first();
         await element.scrollIntoViewIfNeeded();
         await element.click();
         
-        // 필드 타입에 따른 처리
+        // ?꾨뱶 ??낆뿉 ?곕Ⅸ 泥섎━
         if (fieldType === 'number') {
-            // 숫자 필드는 숫자만 입력
+            // ?レ옄 ?꾨뱶???レ옄留??낅젰
             const numericValue = value.replace(/[^0-9]/g, '');
             if (numericValue) {
                 await element.fill(numericValue);
-                console.log(`✅ ${description} 숫자 입력 성공: "${numericValue}"`);
+                console.log(`??${description} ?レ옄 ?낅젰 ?깃났: "${numericValue}"`);
                 return true;
             } else {
-                console.log(`⚠️ ${description} 숫자 변환 실패: "${value}"`);
+                console.log(`?좑툘 ${description} ?レ옄 蹂???ㅽ뙣: "${value}"`);
                 return false;
             }
         } else {
-            // 텍스트 필드는 일반 입력
-            await element.fill(''); // 기존 값 클리어
+            // ?띿뒪???꾨뱶???쇰컲 ?낅젰
+            await element.fill(''); // 湲곗〈 媛??대━??
             await element.fill(value);
-            console.log(`✅ ${description} 입력 성공: "${value}"`);
+            console.log(`??${description} ?낅젰 ?깃났: "${value}"`);
             return true;
         }
     } catch (error) {
-        console.log(`❌ ${description} 입력 실패: ${error.message}`);
+        console.log(`??${description} ?낅젰 ?ㅽ뙣: ${error.message}`);
         return false;
     }
 }
 
-// 실제 입력 필드 탐지 및 매핑
+// ?ㅼ젣 ?낅젰 ?꾨뱶 ?먯? 諛?留ㅽ븨
 async function detectInputFields(page, sectionName) {
-    console.log(`🔍 ${sectionName} 실제 입력 필드 탐지...`);
+    console.log(`?뵇 ${sectionName} ?ㅼ젣 ?낅젰 ?꾨뱶 ?먯?...`);
     
     const fields = [];
     
-    // 모든 visible 입력 필드 찾기
+    // 紐⑤뱺 visible ?낅젰 ?꾨뱶 李얘린
     const inputs = await page.locator('input:visible').all();
     const textareas = await page.locator('textarea:visible').all();
     
-    // input 필드 분석
+    // input ?꾨뱶 遺꾩꽍
     for (let i = 0; i < inputs.length; i++) {
         try {
             const input = inputs[i];
@@ -104,11 +104,11 @@ async function detectInputFields(page, sectionName) {
             
             console.log(`  Input ${i}: type="${type}", name="${name}", placeholder="${placeholder}", value="${value}"`);
         } catch (error) {
-            console.log(`  Input ${i}: 분석 실패`);
+            console.log(`  Input ${i}: 遺꾩꽍 ?ㅽ뙣`);
         }
     }
     
-    // textarea 필드 분석
+    // textarea ?꾨뱶 遺꾩꽍
     for (let i = 0; i < textareas.length; i++) {
         try {
             const textarea = textareas[i];
@@ -128,18 +128,18 @@ async function detectInputFields(page, sectionName) {
             
             console.log(`  Textarea ${i}: name="${name}", placeholder="${placeholder}", value="${value}"`);
         } catch (error) {
-            console.log(`  Textarea ${i}: 분석 실패`);
+            console.log(`  Textarea ${i}: 遺꾩꽍 ?ㅽ뙣`);
         }
     }
     
     return fields;
 }
 
-// 개선된 저장 버튼 클릭 함수
+// 媛쒖꽑?????踰꾪듉 ?대┃ ?⑥닔
 async function clickSaveButton(page, sectionName) {
-    console.log(`💾 ${sectionName} 저장 버튼 클릭...`);
+    console.log(`?뮶 ${sectionName} ???踰꾪듉 ?대┃...`);
     
-    const saveTexts = ['저장', '적용', '확인', 'DB 저장', '🗄️ DB 저장'];
+    const saveTexts = ['???, '?곸슜', '?뺤씤', 'DB ???, '?뾼截?DB ???];
     
     for (const saveText of saveTexts) {
         try {
@@ -148,9 +148,9 @@ async function clickSaveButton(page, sectionName) {
             for (const button of buttons) {
                 const text = await button.textContent();
                 if (text && text.includes(saveText)) {
-                    console.log(`✅ 저장 버튼 발견: "${text}"`);
+                    console.log(`?????踰꾪듉 諛쒓껄: "${text}"`);
                     
-                    // 모달 스크롤을 맨 아래로 이동 (버튼이 보이도록)
+                    // 紐⑤떖 ?ㅽ겕濡ㅼ쓣 留??꾨옒濡??대룞 (踰꾪듉??蹂댁씠?꾨줉)
                     await page.evaluate(() => {
                         const modal = document.querySelector('.modal-content, [role="dialog"], .fixed');
                         if (modal) {
@@ -160,53 +160,53 @@ async function clickSaveButton(page, sectionName) {
                     
                     await wait(1000);
                     
-                    // 강제 클릭으로 시도
-                    const clicked = await safeClick(page, button, '저장 버튼', true);
+                    // 媛뺤젣 ?대┃?쇰줈 ?쒕룄
+                    const clicked = await safeClick(page, button, '???踰꾪듉', true);
                     if (clicked) {
-                        await wait(3000); // 저장 처리 대기
+                        await wait(3000); // ???泥섎━ ?湲?
                         return true;
                     }
                 }
             }
         } catch (error) {
-            console.log(`⚠️ "${saveText}" 버튼 클릭 시도 실패: ${error.message}`);
+            console.log(`?좑툘 "${saveText}" 踰꾪듉 ?대┃ ?쒕룄 ?ㅽ뙣: ${error.message}`);
         }
     }
     
-    console.log(`❌ ${sectionName} 저장 버튼 클릭 실패`);
+    console.log(`??${sectionName} ???踰꾪듉 ?대┃ ?ㅽ뙣`);
     return false;
 }
 
-// 섹션별 맞춤형 테스트 데이터
+// ?뱀뀡蹂?留욎땄???뚯뒪???곗씠??
 const sectionTestData = {
-    '호텔 정보': [
-        { value: '그랜드 호텔', label: '호텔명' },
-        { value: '서울시 중구 명동', label: '주소' },
-        { value: '최고급 서비스를 제공하는 호텔입니다.', label: '호텔 설명' }
+    '?명뀛 ?뺣낫': [
+        { value: '洹몃옖???명뀛', label: '?명뀛紐? },
+        { value: '?쒖슱??以묎뎄 紐낅룞', label: '二쇱냼' },
+        { value: '理쒓퀬湲??쒕퉬?ㅻ? ?쒓났?섎뒗 ?명뀛?낅땲??', label: '?명뀛 ?ㅻ챸' }
     ],
-    '객실 정보': [
-        { value: '14', label: '체크인 시간', type: 'number' },
-        { value: '11', label: '체크아웃 시간', type: 'number' },
-        { value: '디럭스 트윈룸', label: '객실명' },
-        { value: '더블베드', label: '객실타입' },
-        { value: '35평', label: '구조' }
+    '媛앹떎 ?뺣낫': [
+        { value: '14', label: '泥댄겕???쒓컙', type: 'number' },
+        { value: '11', label: '泥댄겕?꾩썐 ?쒓컙', type: 'number' },
+        { value: '?붾윮???몄쐢猷?, label: '媛앹떎紐? },
+        { value: '?붾툝踰좊뱶', label: '媛앹떎??? },
+        { value: '35??, label: '援ъ“' }
     ],
-    '시설 정보': [
-        { value: '수영장, 피트니스센터, 스파, 레스토랑', label: '시설 정보' }
+    '?쒖꽕 ?뺣낫': [
+        { value: '?섏쁺?? ?쇳듃?덉뒪?쇳꽣, ?ㅽ뙆, ?덉뒪?좊옉', label: '?쒖꽕 ?뺣낫' }
     ],
-    '패키지': [
-        { value: '로맨틱 패키지', label: '패키지명' },
-        { value: '커플을 위한 특별한 서비스', label: '패키지 설명' }
+    '?⑦궎吏': [
+        { value: '濡쒕㎤???⑦궎吏', label: '?⑦궎吏紐? },
+        { value: '而ㅽ뵆???꾪븳 ?밸퀎???쒕퉬??, label: '?⑦궎吏 ?ㅻ챸' }
     ],
-    '추가요금': [
-        { value: '30000', label: '추가요금', type: 'number' },
-        { value: '엑스트라 베드 및 조식 포함', label: '요금 설명' }
+    '異붽??붽툑': [
+        { value: '30000', label: '異붽??붽툑', type: 'number' },
+        { value: '?묒뒪?몃씪 踰좊뱶 諛?議곗떇 ?ы븿', label: '?붽툑 ?ㅻ챸' }
     ]
 };
 
-// 개선된 섹션 테스트 함수
+// 媛쒖꽑???뱀뀡 ?뚯뒪???⑥닔
 async function testSection(page, sectionInfo) {
-    console.log(`\n🔍 === [${sectionInfo.name}] 섹션 테스트 시작 ===`);
+    console.log(`\n?뵇 === [${sectionInfo.name}] ?뱀뀡 ?뚯뒪???쒖옉 ===`);
     
     const sectionResult = {
         name: sectionInfo.name,
@@ -218,8 +218,8 @@ async function testSection(page, sectionInfo) {
     };
     
     try {
-        // 1. 섹션 카드 찾기 및 클릭
-        console.log(`🔍 ${sectionInfo.name} 카드 찾기...`);
+        // 1. ?뱀뀡 移대뱶 李얘린 諛??대┃
+        console.log(`?뵇 ${sectionInfo.name} 移대뱶 李얘린...`);
         const cards = await page.locator('div.cursor-pointer').all();
         let targetCard = null;
         
@@ -227,44 +227,44 @@ async function testSection(page, sectionInfo) {
             const text = await card.textContent();
             if (text.includes(sectionInfo.searchText)) {
                 targetCard = card;
-                console.log(`✅ ${sectionInfo.name} 카드 발견: "${text}"`);
+                console.log(`??${sectionInfo.name} 移대뱶 諛쒓껄: "${text}"`);
                 break;
             }
         }
         
         if (!targetCard) {
-            throw new Error(`${sectionInfo.name} 카드를 찾을 수 없습니다`);
+            throw new Error(`${sectionInfo.name} 移대뱶瑜?李얠쓣 ???놁뒿?덈떎`);
         }
         
-        // 카드 클릭
-        const cardClicked = await safeClick(page, targetCard, `${sectionInfo.name} 카드`);
+        // 移대뱶 ?대┃
+        const cardClicked = await safeClick(page, targetCard, `${sectionInfo.name} 移대뱶`);
         if (!cardClicked) {
-            throw new Error('카드 클릭 실패');
+            throw new Error('移대뱶 ?대┃ ?ㅽ뙣');
         }
         
-        sectionResult.steps.push({ step: '카드 클릭', success: true });
+        sectionResult.steps.push({ step: '移대뱶 ?대┃', success: true });
         
-        // 2. 모달 열림 확인
-        console.log(`🔍 ${sectionInfo.name} 모달 확인...`);
+        // 2. 紐⑤떖 ?대┝ ?뺤씤
+        console.log(`?뵇 ${sectionInfo.name} 紐⑤떖 ?뺤씤...`);
         await page.waitForSelector('.fixed, [role="dialog"], .modal', { timeout: 10000 });
         
         const modalVisible = await page.locator('.fixed, [role="dialog"], .modal').first().isVisible();
         if (!modalVisible) {
-            throw new Error('모달이 열리지 않았습니다');
+            throw new Error('紐⑤떖???대━吏 ?딆븯?듬땲??);
         }
         
-        console.log(`✅ ${sectionInfo.name} 모달 열림 확인`);
-        sectionResult.steps.push({ step: '모달 열림', success: true });
+        console.log(`??${sectionInfo.name} 紐⑤떖 ?대┝ ?뺤씤`);
+        sectionResult.steps.push({ step: '紐⑤떖 ?대┝', success: true });
         
-        // 3. 실제 입력 필드 탐지
+        // 3. ?ㅼ젣 ?낅젰 ?꾨뱶 ?먯?
         const detectedFields = await detectInputFields(page, sectionInfo.name);
-        sectionResult.improvements.push(`실제 입력 필드 ${detectedFields.length}개 탐지`);
+        sectionResult.improvements.push(`?ㅼ젣 ?낅젰 ?꾨뱶 ${detectedFields.length}媛??먯?`);
         
-        // 4. 입력 필드 테스트 - 섹션별 맞춤형 데이터 사용
+        // 4. ?낅젰 ?꾨뱶 ?뚯뒪??- ?뱀뀡蹂?留욎땄???곗씠???ъ슜
         const testData = sectionTestData[sectionInfo.name] || [];
         
         if (testData.length > 0) {
-            console.log(`✏️ ${sectionInfo.name} 입력 필드 테스트...`);
+            console.log(`?륅툘 ${sectionInfo.name} ?낅젰 ?꾨뱶 ?뚯뒪??..`);
             
             for (let i = 0; i < Math.min(testData.length, detectedFields.length); i++) {
                 const testInput = testData[i];
@@ -282,56 +282,56 @@ async function testSection(page, sectionInfo) {
                     let inputSuccess = false;
                     
                     if (field.type === 'number' && testInput.type === 'number') {
-                        // 숫자 필드에 숫자 입력
+                        // ?レ옄 ?꾨뱶???レ옄 ?낅젰
                         await field.element.fill(testInput.value);
                         inputSuccess = true;
-                        console.log(`  ✅ ${testInput.label}: "${testInput.value}" 숫자 입력 성공`);
+                        console.log(`  ??${testInput.label}: "${testInput.value}" ?レ옄 ?낅젰 ?깃났`);
                     } else if (field.type !== 'number') {
-                        // 텍스트 필드에 텍스트 입력
+                        // ?띿뒪???꾨뱶???띿뒪???낅젰
                         await field.element.fill(testInput.value);
                         inputSuccess = true;
-                        console.log(`  ✅ ${testInput.label}: "${testInput.value}" 텍스트 입력 성공`);
+                        console.log(`  ??${testInput.label}: "${testInput.value}" ?띿뒪???낅젰 ?깃났`);
                     } else {
-                        console.log(`  ⚠️ ${testInput.label}: 필드 타입 불일치 (${field.type})`);
+                        console.log(`  ?좑툘 ${testInput.label}: ?꾨뱶 ???遺덉씪移?(${field.type})`);
                     }
                     
                     inputResult.success = inputSuccess;
                     
                 } catch (error) {
                     inputResult.error = error.message;
-                    console.log(`  ❌ ${testInput.label}: 입력 실패 - ${error.message}`);
+                    console.log(`  ??${testInput.label}: ?낅젰 ?ㅽ뙣 - ${error.message}`);
                 }
                 
                 sectionResult.inputTests.push(inputResult);
             }
         }
         
-        // 5. 개선된 저장 버튼 클릭
+        // 5. 媛쒖꽑?????踰꾪듉 ?대┃
         const saveClicked = await clickSaveButton(page, sectionInfo.name);
         if (saveClicked) {
-            sectionResult.steps.push({ step: '저장 버튼 클릭', success: true });
-            sectionResult.improvements.push('저장 버튼 클릭 성공');
+            sectionResult.steps.push({ step: '???踰꾪듉 ?대┃', success: true });
+            sectionResult.improvements.push('???踰꾪듉 ?대┃ ?깃났');
         } else {
-            sectionResult.steps.push({ step: '저장 버튼 클릭', success: false });
+            sectionResult.steps.push({ step: '???踰꾪듉 ?대┃', success: false });
         }
         
-        // 6. 모달 닫기
-        console.log(`❌ ${sectionInfo.name} 모달 닫기...`);
+        // 6. 紐⑤떖 ?リ린
+        console.log(`??${sectionInfo.name} 紐⑤떖 ?リ린...`);
         await page.keyboard.press('Escape');
         await wait(1000);
         
-        sectionResult.steps.push({ step: '모달 닫기', success: true });
+        sectionResult.steps.push({ step: '紐⑤떖 ?リ린', success: true });
         
-        // 7. 자동저장 확인 (다시 열어서 값 확인)
-        console.log(`🔄 ${sectionInfo.name} 자동저장 확인...`);
+        // 7. ?먮룞????뺤씤 (?ㅼ떆 ?댁뼱??媛??뺤씤)
+        console.log(`?봽 ${sectionInfo.name} ?먮룞????뺤씤...`);
         await wait(2000);
         
-        // 다시 카드 클릭
-        const cardReopenClicked = await safeClick(page, targetCard, `${sectionInfo.name} 카드 재오픈`);
+        // ?ㅼ떆 移대뱶 ?대┃
+        const cardReopenClicked = await safeClick(page, targetCard, `${sectionInfo.name} 移대뱶 ?ъ삤??);
         if (cardReopenClicked) {
             await wait(2000);
             
-            // 값 확인
+            // 媛??뺤씤
             const reopenedFields = await detectInputFields(page, sectionInfo.name);
             let valuesPreserved = 0;
             
@@ -343,36 +343,36 @@ async function testSection(page, sectionInfo) {
                     const currentValue = await field.element.inputValue();
                     if (currentValue === testInput.value) {
                         valuesPreserved++;
-                        console.log(`  ✅ ${testInput.label}: 값 유지됨 ("${currentValue}")`);
+                        console.log(`  ??${testInput.label}: 媛??좎???("${currentValue}")`);
                     } else {
-                        console.log(`  ⚠️ ${testInput.label}: 값 변경됨 ("${testInput.value}" → "${currentValue}")`);
+                        console.log(`  ?좑툘 ${testInput.label}: 媛?蹂寃쎈맖 ("${testInput.value}" ??"${currentValue}")`);
                     }
                 } catch (error) {
-                    console.log(`  ❌ ${testInput.label}: 값 확인 실패`);
+                    console.log(`  ??${testInput.label}: 媛??뺤씤 ?ㅽ뙣`);
                 }
             }
             
             sectionResult.steps.push({ 
-                step: '자동저장 확인', 
+                step: '?먮룞????뺤씤', 
                 success: valuesPreserved > 0,
-                details: `${valuesPreserved}/${testData.length} 값 유지됨`
+                details: `${valuesPreserved}/${testData.length} 媛??좎???
             });
             
             if (valuesPreserved > 0) {
-                sectionResult.improvements.push(`자동저장 기능 작동 확인 (${valuesPreserved}/${testData.length})`);
+                sectionResult.improvements.push(`?먮룞???湲곕뒫 ?묐룞 ?뺤씤 (${valuesPreserved}/${testData.length})`);
             }
             
-            // 모달 다시 닫기
+            // 紐⑤떖 ?ㅼ떆 ?リ린
             await page.keyboard.press('Escape');
             await wait(1000);
         }
         
         sectionResult.success = true;
-        console.log(`✅ [${sectionInfo.name}] 섹션 테스트 완료`);
+        console.log(`??[${sectionInfo.name}] ?뱀뀡 ?뚯뒪???꾨즺`);
         
     } catch (error) {
         sectionResult.error = error.message;
-        console.log(`❌ [${sectionInfo.name}] 섹션 테스트 실패: ${error.message}`);
+        console.log(`??[${sectionInfo.name}] ?뱀뀡 ?뚯뒪???ㅽ뙣: ${error.message}`);
     }
     
     return sectionResult;
@@ -387,25 +387,25 @@ async function testSection(page, sectionInfo) {
     const page = await browser.newPage();
     
     try {
-        console.log('🚀 개선된 자동화 테스트 시작...');
+        console.log('?? 媛쒖꽑???먮룞???뚯뒪???쒖옉...');
         
-        // 페이지 로드
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        // ?섏씠吏 濡쒕뱶
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await page.waitForLoadState('networkidle');
         await wait(3000);
         
-        console.log('✅ 페이지 로드 완료');
+        console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
         
-        // 테스트할 섹션들 - 실제 카드 텍스트에 맞게 수정
+        // ?뚯뒪?명븷 ?뱀뀡??- ?ㅼ젣 移대뱶 ?띿뒪?몄뿉 留욊쾶 ?섏젙
         const sections = [
-            { name: '호텔 정보', searchText: '🏠호텔 정보' },
-            { name: '객실 정보', searchText: '👥객실 정보' },
-            { name: '시설 정보', searchText: '⚙️시설 정보' },
-            { name: '패키지', searchText: '📄패키지' },
-            { name: '추가요금', searchText: '💰추가요금' } // 이모지 중복 문제 해결
+            { name: '?명뀛 ?뺣낫', searchText: '?룧?명뀛 ?뺣낫' },
+            { name: '媛앹떎 ?뺣낫', searchText: '?뫁媛앹떎 ?뺣낫' },
+            { name: '?쒖꽕 ?뺣낫', searchText: '?숋툘?쒖꽕 ?뺣낫' },
+            { name: '?⑦궎吏', searchText: '?뱞?⑦궎吏' },
+            { name: '異붽??붽툑', searchText: '?뮥異붽??붽툑' } // ?대え吏 以묐났 臾몄젣 ?닿껐
         ];
         
-        // 각 섹션 테스트 실행
+        // 媛??뱀뀡 ?뚯뒪???ㅽ뻾
         for (const section of sections) {
             const sectionResult = await testSection(page, section);
             results.sections.push(sectionResult);
@@ -417,7 +417,7 @@ async function testSection(page, sectionInfo) {
                 results.summary.failed++;
             }
             
-            // 개선사항 수집
+            // 媛쒖꽑?ы빆 ?섏쭛
             if (sectionResult.improvements.length > 0) {
                 results.improvements.push({
                     section: section.name,
@@ -425,50 +425,50 @@ async function testSection(page, sectionInfo) {
                 });
             }
             
-            // 섹션 간 대기
+            // ?뱀뀡 媛??湲?
             await wait(2000);
         }
         
-        // 최종 결과 출력
-        console.log('\n📊 === 개선된 자동화 테스트 최종 결과 ===');
-        console.log(`총 섹션: ${results.summary.total}`);
-        console.log(`성공: ${results.summary.passed}`);
-        console.log(`실패: ${results.summary.failed}`);
-        console.log(`성공률: ${((results.summary.passed / results.summary.total) * 100).toFixed(1)}%`);
+        // 理쒖쥌 寃곌낵 異쒕젰
+        console.log('\n?뱤 === 媛쒖꽑???먮룞???뚯뒪??理쒖쥌 寃곌낵 ===');
+        console.log(`珥??뱀뀡: ${results.summary.total}`);
+        console.log(`?깃났: ${results.summary.passed}`);
+        console.log(`?ㅽ뙣: ${results.summary.failed}`);
+        console.log(`?깃났瑜? ${((results.summary.passed / results.summary.total) * 100).toFixed(1)}%`);
         
-        // 개선사항 출력
-        console.log('\n🔧 === 적용된 개선사항 ===');
+        // 媛쒖꽑?ы빆 異쒕젰
+        console.log('\n?뵩 === ?곸슜??媛쒖꽑?ы빆 ===');
         for (const improvement of results.improvements) {
             console.log(`\n[${improvement.section}]`);
             for (const item of improvement.improvements) {
-                console.log(`  ✅ ${item}`);
+                console.log(`  ??${item}`);
             }
         }
         
-        // 상세 결과
-        console.log('\n📋 === 상세 결과 ===');
+        // ?곸꽭 寃곌낵
+        console.log('\n?뱥 === ?곸꽭 寃곌낵 ===');
         for (const section of results.sections) {
-            console.log(`\n[${section.name}] ${section.success ? '✅ 성공' : '❌ 실패'}`);
+            console.log(`\n[${section.name}] ${section.success ? '???깃났' : '???ㅽ뙣'}`);
             if (section.error) {
-                console.log(`  오류: ${section.error}`);
+                console.log(`  ?ㅻ쪟: ${section.error}`);
             }
             
             if (section.inputTests.length > 0) {
                 const successInputs = section.inputTests.filter(t => t.success).length;
-                console.log(`  입력 테스트: ${successInputs}/${section.inputTests.length} 성공`);
+                console.log(`  ?낅젰 ?뚯뒪?? ${successInputs}/${section.inputTests.length} ?깃났`);
             }
             
-            console.log(`  완료된 단계: ${section.steps.filter(s => s.success).length}/${section.steps.length}`);
+            console.log(`  ?꾨즺???④퀎: ${section.steps.filter(s => s.success).length}/${section.steps.length}`);
         }
         
-        // 결과 파일 저장
+        // 寃곌낵 ?뚯씪 ???
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
         const resultFile = `test-results/improved-test-${timestamp}.json`;
         fs.writeFileSync(resultFile, JSON.stringify(results, null, 2));
-        console.log(`\n💾 결과 저장: ${resultFile}`);
+        console.log(`\n?뮶 寃곌낵 ??? ${resultFile}`);
         
     } catch (error) {
-        console.error('❌ 테스트 실행 중 오류:', error);
+        console.error('???뚯뒪???ㅽ뻾 以??ㅻ쪟:', error);
     } finally {
         await browser.close();
     }

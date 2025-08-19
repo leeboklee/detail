@@ -1,7 +1,7 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function testInputComprehensive() {
-  console.log('🏨 최적화된 입력 테스트 시작...');
+  console.log('?룳 理쒖쟻?붾맂 ?낅젰 ?뚯뒪???쒖옉...');
   
   const browser = await chromium.launch({ 
     headless: false,
@@ -12,23 +12,23 @@ async function testInputComprehensive() {
   try {
     const page = await browser.newPage();
     
-    // 페이지 로딩 성능 측정
+    // ?섏씠吏 濡쒕뵫 ?깅뒫 痢≪젙
     const startTime = Date.now();
-    console.log('📄 페이지 로딩 중...');
+    console.log('?뱞 ?섏씠吏 濡쒕뵫 以?..');
     
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { 
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { 
       waitUntil: 'networkidle',
       timeout: 30000 
     });
     
     const loadTime = Date.now() - startTime;
-    console.log(`✅ 페이지 로딩 완료: ${loadTime}ms`);
+    console.log(`???섏씠吏 濡쒕뵫 ?꾨즺: ${loadTime}ms`);
     
-    // 페이지 안정화 대기
+    // ?섏씠吏 ?덉젙???湲?
     await page.waitForTimeout(3000);
     
-    // 초기 상태 확인
-    console.log('📋 초기 상태 확인...');
+    // 珥덇린 ?곹깭 ?뺤씤
+    console.log('?뱥 珥덇린 ?곹깭 ?뺤씤...');
     const initialData = await page.evaluate(() => {
       return {
         buttons: document.querySelectorAll('button').length,
@@ -37,17 +37,17 @@ async function testInputComprehensive() {
         modals: document.querySelectorAll('[role="dialog"]').length
       };
     });
-    console.log('📊 초기 요소 수:', initialData);
+    console.log('?뱤 珥덇린 ?붿냼 ??', initialData);
     
-    // 호텔 정보 섹션 찾기 및 클릭
-    console.log('🏨 호텔 정보 섹션 찾는 중...');
+    // ?명뀛 ?뺣낫 ?뱀뀡 李얘린 諛??대┃
+    console.log('?룳 ?명뀛 ?뺣낫 ?뱀뀡 李얜뒗 以?..');
     
-    // 더 정확한 호텔 정보 카드 찾기
+    // ???뺥솗???명뀛 ?뺣낫 移대뱶 李얘린
     const hotelCards = await page.evaluate(() => {
       const cards = [];
       document.querySelectorAll('div').forEach((div, i) => {
         const text = div.textContent?.trim() || '';
-        if (text.includes('호텔 정보') && text.includes('기본 정보')) {
+        if (text.includes('?명뀛 ?뺣낫') && text.includes('湲곕낯 ?뺣낫')) {
           const rect = div.getBoundingClientRect();
           cards.push({
             index: i,
@@ -61,16 +61,16 @@ async function testInputComprehensive() {
       return cards;
     });
     
-    console.log('🔍 발견된 호텔 정보 카드:', hotelCards.length);
+    console.log('?뵇 諛쒓껄???명뀛 ?뺣낫 移대뱶:', hotelCards.length);
     
     if (hotelCards.length > 0) {
-      console.log('🎯 호텔 정보 카드 클릭 시도...');
+      console.log('?렞 ?명뀛 ?뺣낫 移대뱶 ?대┃ ?쒕룄...');
       
-      // 첫 번째 호텔 정보 카드 클릭
-      await page.click('text=호텔 정보');
+      // 泥?踰덉㎏ ?명뀛 ?뺣낫 移대뱶 ?대┃
+      await page.click('text=?명뀛 ?뺣낫');
       await page.waitForTimeout(2000);
       
-      // 모달 상태 확인
+      // 紐⑤떖 ?곹깭 ?뺤씤
       const modalState = await page.evaluate(() => {
         const modals = document.querySelectorAll('[role="dialog"]');
         return {
@@ -80,22 +80,22 @@ async function testInputComprehensive() {
         };
       });
       
-      console.log('📋 모달 상태:', modalState);
+      console.log('?뱥 紐⑤떖 ?곹깭:', modalState);
       
       if (modalState.modalCount > 0) {
-        console.log('✅ 모달 열림 확인');
+        console.log('??紐⑤떖 ?대┝ ?뺤씤');
         
-        // 모달 내용 로딩 대기
+        // 紐⑤떖 ?댁슜 濡쒕뵫 ?湲?
         await page.waitForTimeout(2000);
         
-        // 입력 필드 찾기
+        // ?낅젰 ?꾨뱶 李얘린
         const inputFields = await page.evaluate(() => {
           const inputs = [];
           
-          // 모달 내부의 입력 필드만 찾기
+          // 紐⑤떖 ?대????낅젰 ?꾨뱶留?李얘린
           const modal = document.querySelector('[role="dialog"]');
           if (modal) {
-            // input 태그들
+            // input ?쒓렇??
             modal.querySelectorAll('input').forEach((input, i) => {
               inputs.push({
                 index: i,
@@ -107,7 +107,7 @@ async function testInputComprehensive() {
               });
             });
             
-            // textarea 태그들
+            // textarea ?쒓렇??
             modal.querySelectorAll('textarea').forEach((textarea, i) => {
               inputs.push({
                 index: i,
@@ -123,49 +123,49 @@ async function testInputComprehensive() {
           return inputs;
         });
         
-        console.log('📝 발견된 입력 필드:', inputFields.length);
+        console.log('?뱷 諛쒓껄???낅젰 ?꾨뱶:', inputFields.length);
         inputFields.forEach((field, i) => {
           console.log(`  ${i + 1}. ${field.type} - name: "${field.name}", placeholder: "${field.placeholder}"`);
         });
         
         if (inputFields.length > 0) {
-          console.log('🖊️ 입력 테스트 시작...');
+          console.log('?뻿截??낅젰 ?뚯뒪???쒖옉...');
           
-          // 테스트 데이터
+          // ?뚯뒪???곗씠??
           const testData = {
-            hotelName: '테스트 호텔 ' + Date.now(),
-            address: '서울시 강남구 테스트로 123',
-            description: '테스트용 호텔 설명입니다. 자동 테스트로 입력된 내용입니다.'
+            hotelName: '?뚯뒪???명뀛 ' + Date.now(),
+            address: '?쒖슱??媛뺣궓援??뚯뒪?몃줈 123',
+            description: '?뚯뒪?몄슜 ?명뀛 ?ㅻ챸?낅땲?? ?먮룞 ?뚯뒪?몃줈 ?낅젰???댁슜?낅땲??'
           };
           
-          // 호텔명 입력
-          const hotelNameField = inputFields.find(f => f.name === 'hotelName' || f.placeholder.includes('호텔명'));
+          // ?명뀛紐??낅젰
+          const hotelNameField = inputFields.find(f => f.name === 'hotelName' || f.placeholder.includes('?명뀛紐?));
           if (hotelNameField) {
-            console.log('🏨 호텔명 입력 중...');
+            console.log('?룳 ?명뀛紐??낅젰 以?..');
             await page.fill(`[name="${hotelNameField.name}"]`, testData.hotelName);
             await page.waitForTimeout(500);
             
-            // 입력 확인
+            // ?낅젰 ?뺤씤
             const inputValue = await page.inputValue(`[name="${hotelNameField.name}"]`);
-            console.log(`✅ 호텔명 입력 완료: "${inputValue}"`);
+            console.log(`???명뀛紐??낅젰 ?꾨즺: "${inputValue}"`);
           }
           
-          // 주소 입력
-          const addressField = inputFields.find(f => f.name === 'address' || f.placeholder.includes('주소'));
+          // 二쇱냼 ?낅젰
+          const addressField = inputFields.find(f => f.name === 'address' || f.placeholder.includes('二쇱냼'));
           if (addressField) {
-            console.log('📍 주소 입력 중...');
+            console.log('?뱧 二쇱냼 ?낅젰 以?..');
             await page.fill(`[name="${addressField.name}"]`, testData.address);
             await page.waitForTimeout(500);
             
-            // 입력 확인
+            // ?낅젰 ?뺤씤
             const inputValue = await page.inputValue(`[name="${addressField.name}"]`);
-            console.log(`✅ 주소 입력 완료: "${inputValue}"`);
+            console.log(`??二쇱냼 ?낅젰 ?꾨즺: "${inputValue}"`);
           }
           
-          // 설명 입력
-          const descField = inputFields.find(f => f.name === 'description' || f.placeholder.includes('설명'));
+          // ?ㅻ챸 ?낅젰
+          const descField = inputFields.find(f => f.name === 'description' || f.placeholder.includes('?ㅻ챸'));
           if (descField) {
-            console.log('📝 설명 입력 중...');
+            console.log('?뱷 ?ㅻ챸 ?낅젰 以?..');
             if (descField.type === 'textarea') {
               await page.fill(`textarea[name="${descField.name}"]`, testData.description);
             } else {
@@ -173,18 +173,18 @@ async function testInputComprehensive() {
             }
             await page.waitForTimeout(500);
             
-            // 입력 확인
+            // ?낅젰 ?뺤씤
             const inputValue = descField.type === 'textarea' 
               ? await page.inputValue(`textarea[name="${descField.name}"]`)
               : await page.inputValue(`[name="${descField.name}"]`);
-            console.log(`✅ 설명 입력 완료: "${inputValue.substring(0, 50)}..."`);
+            console.log(`???ㅻ챸 ?낅젰 ?꾨즺: "${inputValue.substring(0, 50)}..."`);
           }
           
-          // 입력 완료 후 잠시 대기
+          // ?낅젰 ?꾨즺 ???좎떆 ?湲?
           await page.waitForTimeout(2000);
           
-          // 최종 입력 값 확인
-          console.log('🔍 최종 입력 값 확인...');
+          // 理쒖쥌 ?낅젰 媛??뺤씤
+          console.log('?뵇 理쒖쥌 ?낅젰 媛??뺤씤...');
           const finalValues = await page.evaluate(() => {
             const modal = document.querySelector('[role="dialog"]');
             const values = {};
@@ -200,53 +200,53 @@ async function testInputComprehensive() {
             return values;
           });
           
-          console.log('📋 최종 입력 값:', finalValues);
+          console.log('?뱥 理쒖쥌 ?낅젰 媛?', finalValues);
           
-          // 자동저장 확인 (3초 대기)
-          console.log('💾 자동저장 확인 중...');
+          // ?먮룞????뺤씤 (3珥??湲?
+          console.log('?뮶 ?먮룞????뺤씤 以?..');
           await page.waitForTimeout(3000);
           
-          // 저장 버튼 찾기 및 클릭
-          const saveButton = await page.locator('button:has-text("저장"), button:has-text("적용")').first();
+          // ???踰꾪듉 李얘린 諛??대┃
+          const saveButton = await page.locator('button:has-text("???), button:has-text("?곸슜")').first();
           if (await saveButton.isVisible()) {
-            console.log('💾 저장 버튼 클릭...');
+            console.log('?뮶 ???踰꾪듉 ?대┃...');
             await saveButton.click();
             await page.waitForTimeout(1000);
-            console.log('✅ 저장 완료');
+            console.log('??????꾨즺');
           }
           
-          // 스크린샷 저장
+          // ?ㅽ겕由곗꺑 ???
           await page.screenshot({ path: 'test-input-result.png' });
-          console.log('📸 결과 스크린샷 저장됨');
+          console.log('?벝 寃곌낵 ?ㅽ겕由곗꺑 ??λ맖');
           
-          // 성공 메시지
-          console.log('🎉 입력 테스트 성공!');
-          console.log('📊 테스트 결과:');
-          console.log(`  - 호텔명: ${finalValues.hotelName || '입력 실패'}`);
-          console.log(`  - 주소: ${finalValues.address || '입력 실패'}`);
-          console.log(`  - 설명: ${finalValues.description ? finalValues.description.substring(0, 30) + '...' : '입력 실패'}`);
+          // ?깃났 硫붿떆吏
+          console.log('?럦 ?낅젰 ?뚯뒪???깃났!');
+          console.log('?뱤 ?뚯뒪??寃곌낵:');
+          console.log(`  - ?명뀛紐? ${finalValues.hotelName || '?낅젰 ?ㅽ뙣'}`);
+          console.log(`  - 二쇱냼: ${finalValues.address || '?낅젰 ?ㅽ뙣'}`);
+          console.log(`  - ?ㅻ챸: ${finalValues.description ? finalValues.description.substring(0, 30) + '...' : '?낅젰 ?ㅽ뙣'}`);
           
         } else {
-          console.log('❌ 입력 필드를 찾을 수 없음');
+          console.log('???낅젰 ?꾨뱶瑜?李얠쓣 ???놁쓬');
         }
         
       } else {
-        console.log('❌ 모달이 열리지 않음');
+        console.log('??紐⑤떖???대━吏 ?딆쓬');
       }
       
     } else {
-      console.log('❌ 호텔 정보 카드를 찾을 수 없음');
+      console.log('???명뀛 ?뺣낫 移대뱶瑜?李얠쓣 ???놁쓬');
     }
     
-    // 5초 더 대기 (결과 확인용)
+    // 5珥????湲?(寃곌낵 ?뺤씤??
     await page.waitForTimeout(5000);
     
   } catch (error) {
-    console.error('❌ 테스트 실패:', error.message);
+    console.error('???뚯뒪???ㅽ뙣:', error.message);
     await page.screenshot({ path: 'test-input-error.png' });
   } finally {
     await browser.close();
-    console.log('🔚 테스트 완료');
+    console.log('?뵚 ?뚯뒪???꾨즺');
   }
 }
 

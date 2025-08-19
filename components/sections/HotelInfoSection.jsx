@@ -1,7 +1,7 @@
 // React import 추가
 import React from 'react';
 import Image from 'next/image';
-import { Button } from '@heroui/react';
+import { Button } from "@heroui/react";
 
 // 제어되는 컴포넌트로 리팩토링
 export function HotelInfoSection({ value, onChange }) {

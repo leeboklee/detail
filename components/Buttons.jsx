@@ -59,52 +59,35 @@ const Buttons = () => {
       
       if (result.success) {
         showMessage('success', '취소환불 정책이 생성되었습니다.');
-        if (onUpdate) onUpdate();
       } else {
-        throw new Error(result.error || '취소환불 정책 생성에 실패했습니다.');
+        showMessage('error', result.message || '취소환불 정책 생성에 실패했습니다.');
       }
     } catch (error) {
       console.error('취소환불 정책 생성 오류:', error);
-      showMessage('error', `취소환불 정책 생성 실패: ${error.message}`);
+      showMessage('error', '취소환불 정책 생성 중 오류가 발생했습니다.');
     }
-  }, [onUpdate]);
+  }, []);
 
   // 예약안내 생성
   const generateBookingInfo = useCallback(async () => {
     try {
       const bookingData = {
-        checkIn: {
-          time: "15:00",
-          requirements: [
-            "신분증 지참 필수",
-            "예약 확인서 제시",
-            "신용카드 또는 현금 보증금"
-          ]
-        },
-        checkOut: {
-          time: "11:00",
-          lateCheckout: "추가 요금으로 최대 14:00까지 연장 가능"
-        },
+        checkIn: "15:00",
+        checkOut: "11:00",
         policies: [
-          "미성년자 단독 투숙 불가",
-          "반려동물 동반 불가",
-          "객실 내 금연",
-          "외부 음식 반입 제한"
-        ],
-        services: [
-          "24시간 프런트 데스크",
-          "무료 Wi-Fi",
-          "발렛파킹 서비스",
-          "룸서비스 (24시간)"
+          "체크인: 오후 3시부터",
+          "체크아웃: 오전 11시까지",
+          "무료 Wi-Fi 제공",
+          "주차장 이용 가능",
+          "반려동물 동반 불가"
         ],
         contact: {
           phone: "02-1234-5678",
-          email: "info@hotel.com",
-          address: "서울특별시 강남구 테헤란로 123"
+          email: "reservation@hotel.com"
         }
       };
 
-      const response = await fetch('/api/bookingInfo', {
+      const response = await fetch('/api/booking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData)
@@ -118,113 +101,74 @@ const Buttons = () => {
       
       if (result.success) {
         showMessage('success', '예약안내가 생성되었습니다.');
-        if (onUpdate) onUpdate();
       } else {
-        throw new Error(result.error || '예약안내 생성에 실패했습니다.');
+        showMessage('error', result.message || '예약안내 생성에 실패했습니다.');
       }
     } catch (error) {
       console.error('예약안내 생성 오류:', error);
-      showMessage('error', `예약안내 생성 실패: ${error.message}`);
+      showMessage('error', '예약안내 생성 중 오류가 발생했습니다.');
     }
-  }, [onUpdate]);
+  }, []);
 
-  // 전체 HTML 생성
-  const generateCompleteHtml = async () => {
+  // 완전한 HTML 미리보기 생성
+  const generateCompleteHtml = useCallback(async () => {
     if (isGenerating) return;
-    
+
     setIsGenerating(true);
     try {
-      console.log('전체 HTML 생성 시작');
-      
-      // window.htmlPreviewData에서 최신 데이터 가져오기
-      const latestHtml = window.htmlPreviewData || htmlPreviewData;
-      
-      if (!latestHtml || latestHtml.trim() === '') {
-        showAlert('생성할 데이터가 없습니다. 왼쪽에서 정보를 입력해주세요.', 'warning');
-        return;
+      const response = await fetch('/api/generate-html', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const result = await response.json();
       
-      // 세션에 저장 (간단화)
-      try {
-        sessionStorage.setItem('htmlPreviewData', latestHtml);
-        console.log('세션에 HTML 데이터 저장 완료');
-      } catch (error) {
-        console.error('세션 저장 오류:', error);
+      if (result.success) {
+        updateHtmlPreviewData(result.html);
+        showMessage('success', '미리보기가 성공적으로 생성되었습니다.');
+      } else {
+        showMessage('error', result.message || '미리보기 생성에 실패했습니다.');
       }
-      
-      updateHtmlPreviewData(latestHtml);
-      
-      console.log('전체 HTML 생성 완료, 길이:', latestHtml.length);
-      showAlert('HTML이 생성되었습니다', 'success');
-      
     } catch (error) {
-      console.error('HTML 생성 오류:', error);
-      showAlert('HTML 생성 중 오류가 발생했습니다', 'danger');
+      console.error('미리보기 생성 오류:', error);
+      showMessage('error', '미리보기 생성 중 오류가 발생했습니다.');
     } finally {
       setIsGenerating(false);
     }
-  };
+  }, [data, isGenerating, updateHtmlPreviewData]);
 
   // 클립보드 복사
-  const copyToClipboard = async () => {
-    if (isCopying) return;
-    
+  const copyToClipboard = useCallback(async () => {
+    if (!htmlPreviewData || isCopying) return;
+
     setIsCopying(true);
     try {
-      const htmlToCopy = window.htmlPreviewData || htmlPreviewData;
-      
-      if (!htmlToCopy || htmlToCopy.trim() === '') {
-        showAlert('복사할 내용이 없습니다', 'warning');
-        return;
-      }
-      
-      await navigator.clipboard.writeText(htmlToCopy);
-      console.log('HTML이 클립보드에 복사되었습니다.');
-      showAlert('HTML이 클립보드에 복사되었습니다', 'success');
-      
+      await navigator.clipboard.writeText(htmlPreviewData);
+      showMessage('success', 'HTML이 클립보드에 복사되었습니다.');
     } catch (error) {
-      console.error('클립보드 복사 실패:', error);
-      showAlert('클립보드 복사에 실패했습니다', 'danger');
+      console.error('클립보드 복사 오류:', error);
+      showMessage('error', '클립보드 복사에 실패했습니다.');
     } finally {
       setIsCopying(false);
     }
-  };
+  }, [htmlPreviewData, isCopying]);
 
   // 전체화면 토글
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-    
-    const previewContainer = document.querySelector('.preview-container');
-    if (previewContainer) {
-      if (!isFullscreen) {
-        previewContainer.style.position = 'fixed';
-        previewContainer.style.top = '0';
-        previewContainer.style.left = '0';
-        previewContainer.style.width = '100vw';
-        previewContainer.style.height = '100vh';
-        previewContainer.style.zIndex = '9999';
-        previewContainer.style.backgroundColor = 'white';
-      } else {
-        previewContainer.style.position = '';
-        previewContainer.style.top = '';
-        previewContainer.style.left = '';
-        previewContainer.style.width = '';
-        previewContainer.style.height = '';
-        previewContainer.style.zIndex = '';
-        previewContainer.style.backgroundColor = '';
-      }
-    }
-  };
+  const toggleFullscreen = useCallback(() => {
+    setIsFullscreen(prev => !prev);
+    showMessage('info', isFullscreen ? '기본 크기로 변경되었습니다.' : '전체화면으로 변경되었습니다.');
+  }, [isFullscreen]);
 
   // 미리보기 토글
-  const togglePreview = () => {
-    setShowPreview(!showPreview);
-    
-    const previewContainer = document.querySelector('.preview-container');
-    if (previewContainer) {
-      previewContainer.style.display = showPreview ? 'none' : 'block';
-    }
-  };
+  const togglePreview = useCallback(() => {
+    setShowPreview(prev => !prev);
+    showMessage('info', showPreview ? '미리보기가 숨겨졌습니다.' : '미리보기가 표시되었습니다.');
+  }, [showPreview]);
 
   // 알림 표시 함수
   const showAlert = (message, type = 'info') => {
@@ -245,42 +189,35 @@ const Buttons = () => {
   }, []);
 
   return (
-    <div className="buttons-container" style={{ padding: '1rem', backgroundColor: '#f8f9fa', borderRadius: '8px', marginBottom: '1rem' }}>
-      <div className="button-group" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+    <div className="card p-6 mb-6">
+      <div className="flex flex-wrap gap-3">
         
         {/* 미리보기 생성 버튼 */}
         <button
           onClick={generateCompleteHtml}
           disabled={isGenerating || isContextLoading}
-          className="btn btn-primary"
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isGenerating ? 'not-allowed' : 'pointer',
-            opacity: isGenerating ? 0.6 : 1
-          }}
+          className="btn btn-primary btn-lg"
         >
-          {isGenerating ? '생성 중...' : '미리보기 생성'}
+          {isGenerating ? (
+            <>
+              <span className="spinner mr-2"></span>
+              생성 중...
+            </>
+          ) : (
+            <>
+              <span className="mr-2">✨</span>
+              미리보기 생성
+            </>
+          )}
         </button>
 
         {/* 취소환불 정책 생성 */}
         <button
           onClick={generateCancelPolicy}
           disabled={isGenerating}
-          className="btn btn-secondary"
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isGenerating ? 'not-allowed' : 'pointer',
-            opacity: isGenerating ? 0.6 : 1
-          }}
+          className="btn btn-secondary btn-lg"
         >
+          <span className="mr-2">📋</span>
           취소환불 정책 생성
         </button>
 
@@ -288,17 +225,9 @@ const Buttons = () => {
         <button
           onClick={generateBookingInfo}
           disabled={isGenerating}
-          className="btn btn-secondary"
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isGenerating ? 'not-allowed' : 'pointer',
-            opacity: isGenerating ? 0.6 : 1
-          }}
+          className="btn btn-secondary btn-lg"
         >
+          <span className="mr-2">📞</span>
           예약안내 생성
         </button>
 
@@ -306,65 +235,72 @@ const Buttons = () => {
         <button
           onClick={copyToClipboard}
           disabled={isCopying || !htmlPreviewData}
-          className="btn btn-success"
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: isCopying || !htmlPreviewData ? 'not-allowed' : 'pointer',
-            opacity: isCopying || !htmlPreviewData ? 0.6 : 1
-          }}
+          className="btn btn-success btn-lg"
         >
-          {isCopying ? '복사 중...' : 'HTML 복사'}
+          {isCopying ? (
+            <>
+              <span className="spinner mr-2"></span>
+              복사 중...
+            </>
+          ) : (
+            <>
+              <span className="mr-2">📋</span>
+              HTML 복사
+            </>
+          )}
         </button>
 
         {/* 전체화면 토글 */}
         <button
           onClick={toggleFullscreen}
-          className="btn btn-info"
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: '#17a2b8',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
+          className="btn btn-ghost btn-lg"
         >
+          <span className="mr-2">
+            {isFullscreen ? '📱' : '🖥️'}
+          </span>
           {isFullscreen ? '기본크기' : '전체화면'}
         </button>
 
         {/* 미리보기 토글 */}
         <button
           onClick={togglePreview}
-          className="btn btn-outline-secondary"
-          style={{
-            padding: '0.5rem 1rem',
-            backgroundColor: 'transparent',
-            color: '#6c757d',
-            border: '1px solid #6c757d',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
+          className="btn btn-ghost btn-lg"
         >
+          <span className="mr-2">
+            {showPreview ? '👁️' : '👁️‍🗨️'}
+          </span>
           {showPreview ? '미리보기 숨기기' : '미리보기 보기'}
         </button>
       </div>
 
       {/* 상태 표시 */}
-      {isContextLoading && (
-        <div style={{ marginTop: '0.5rem', color: '#6c757d', fontSize: '0.875rem' }}>
-          컨텍스트 로딩 중...
+      <div className="mt-4 p-4 bg-tertiary rounded-lg">
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-4">
+            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+              isGenerating ? 'bg-warning-100 text-warning-800' : 'bg-success-100 text-success-800'
+            }`}>
+              <span className={`w-2 h-2 rounded-full mr-2 ${
+                isGenerating ? 'bg-warning-500 animate-pulse' : 'bg-success-500'
+              }`}></span>
+              {isGenerating ? '생성 중' : '준비됨'}
+            </span>
+            
+            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+              htmlPreviewData ? 'bg-success-100 text-success-800' : 'bg-gray-100 text-gray-800'
+            }`}>
+              <span className={`w-2 h-2 rounded-full mr-2 ${
+                htmlPreviewData ? 'bg-success-500' : 'bg-gray-400'
+              }`}></span>
+              {htmlPreviewData ? '미리보기 준비됨' : '미리보기 없음'}
+            </span>
+          </div>
+          
+          <div className="text-tertiary">
+            {isGenerating ? '처리 중...' : '모든 기능 준비됨'}
+          </div>
         </div>
-      )}
-      
-      {htmlPreviewData && (
-        <div style={{ marginTop: '0.5rem', color: '#28a745', fontSize: '0.875rem' }}>
-          HTML 길이: {htmlPreviewData.length}자
-        </div>
-      )}
+      </div>
     </div>
   );
 };

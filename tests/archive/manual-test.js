@@ -1,17 +1,17 @@
-// Manual Korean Input Test Script
-console.log('🚀 Manual Korean Input Test Started');
+﻿// Manual Korean Input Test Script
+console.log('?? Manual Korean Input Test Started');
 
 // 1. Click Room Card
 function clickRoomCard() {
   const cards = document.querySelectorAll('.cursor-pointer');
   for (let card of cards) {
-    if (card.textContent.includes('객실 정보')) {
+    if (card.textContent.includes('媛앹떎 ?뺣낫')) {
       card.click();
-      console.log('✅ Room card clicked');
+      console.log('??Room card clicked');
       return true;
     }
   }
-  console.log('❌ Room card not found');
+  console.log('??Room card not found');
   return false;
 }
 
@@ -21,7 +21,7 @@ function waitForModal() {
     const checkModal = () => {
       const modal = document.querySelector('[role="dialog"]');
       if (modal && modal.offsetParent !== null) {
-        console.log('✅ Modal opened');
+        console.log('??Modal opened');
         resolve(true);
       } else {
         setTimeout(checkModal, 100);
@@ -35,7 +35,7 @@ function waitForModal() {
 function analyzeInputFields() {
   const modal = document.querySelector('[role="dialog"]');
   if (!modal) {
-    console.log('❌ Modal not found');
+    console.log('??Modal not found');
     return;
   }
   
@@ -43,7 +43,7 @@ function analyzeInputFields() {
   const typeInputs = modal.querySelectorAll('input[name="type"]');
   const allInputs = modal.querySelectorAll('input, textarea');
   
-  console.log('📊 Input Field Analysis:');
+  console.log('?뱤 Input Field Analysis:');
   console.log(`  Total inputs: ${allInputs.length}`);
   console.log(`  Name inputs: ${nameInputs.length}`);
   console.log(`  Type inputs: ${typeInputs.length}`);
@@ -61,7 +61,7 @@ function analyzeInputFields() {
 
 // 4. Test Korean Input
 async function testKoreanInput(input, value, fieldName) {
-  console.log(`📝 Testing "${fieldName}" with "${value}"`);
+  console.log(`?뱷 Testing "${fieldName}" with "${value}"`);
   
   // Focus
   input.focus();
@@ -128,11 +128,11 @@ async function testKoreanInput(input, value, fieldName) {
   const result = input.value;
   const success = result === value;
   
-  console.log(`  Result: "${result}" ${success ? '✅' : '❌'}`);
-  console.log(`  Events: ${events.join(' → ')}`);
+  console.log(`  Result: "${result}" ${success ? '?? : '??}`);
+  console.log(`  Events: ${events.join(' ??')}`);
   
   if (!success) {
-    console.log(`  ⚠️ Expected: "${value}"`);
+    console.log(`  ?좑툘 Expected: "${value}"`);
   }
   
   return success;
@@ -140,7 +140,7 @@ async function testKoreanInput(input, value, fieldName) {
 
 // 5. Run Full Test
 async function runFullTest() {
-  console.log('🎯 Running full test');
+  console.log('?렞 Running full test');
   
   // Click room card
   if (!clickRoomCard()) return;
@@ -154,8 +154,8 @@ async function runFullTest() {
   
   // Test cases
   const testCases = [
-    { input: fields.nameInputs[0], value: '디럭스 트윈룸', name: 'First room name' },
-    { input: fields.typeInputs[0], value: '더블베드', name: 'First room type' }
+    { input: fields.nameInputs[0], value: '?붾윮???몄쐢猷?, name: 'First room name' },
+    { input: fields.typeInputs[0], value: '?붾툝踰좊뱶', name: 'First room type' }
   ];
   
   let successCount = 0;
@@ -166,17 +166,17 @@ async function runFullTest() {
     }
   }
   
-  console.log(`🏁 Test completed: ${successCount}/${testCases.length} success`);
+  console.log(`?뢾 Test completed: ${successCount}/${testCases.length} success`);
   
   // Final state check
   setTimeout(() => {
-    console.log('📊 Final state:');
+    console.log('?뱤 Final state:');
     analyzeInputFields();
   }, 1000);
 }
 
 // Usage
-console.log('💡 Usage:');
+console.log('?뮕 Usage:');
 console.log('  runFullTest() - Run full test');
 console.log('  clickRoomCard() - Click room card');
 console.log('  analyzeInputFields() - Analyze input fields');

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:localhost)",
+      "Bash(rmdir:*)",
+      "Bash(rm:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(curl:*)",
+      "Bash(git config:*)",
+      "Bash(npm start)",
+      "Bash(tasklist:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(echo $env:USERPROFILE)",
+      "Bash(where playwright)",
+      "Bash(npx playwright:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:docs.anthropic.com)"
+    ],
+    "deny": []
+  }
+}

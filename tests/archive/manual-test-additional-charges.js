@@ -1,100 +1,101 @@
-// 추가요금 필드 수동 테스트 가이드
+﻿import React from 'react';
+// 異붽??붽툑 ?꾨뱶 ?섎룞 ?뚯뒪??媛?대뱶
 console.log(`
 ==================================================
-🔍 추가요금 필드 테스트 가이드
+?뵇 異붽??붽툑 ?꾨뱶 ?뚯뒪??媛?대뱶
 ==================================================
 
-이 스크립트는 추가요금 필드의 작동 상태를 확인하는 가이드입니다.
+???ㅽ겕由쏀듃??異붽??붽툑 ?꾨뱶???묐룞 ?곹깭瑜??뺤씤?섎뒗 媛?대뱶?낅땲??
 
-1. 📋 사전 준비:
-   - 서버가 http://localhost: {process.env.PORT || 34343}에서 실행 중인지 확인
-   - 브라우저에서 개발자 도구(F12) 열기
-   - 콘솔 탭 활성화
+1. ?뱥 ?ъ쟾 以鍮?
+   - ?쒕쾭媛 http://localhost: {process.env.PORT || 3900}?먯꽌 ?ㅽ뻾 以묒씤吏 ?뺤씤
+   - 釉뚮씪?곗??먯꽌 媛쒕컻???꾧뎄(F12) ?닿린
+   - 肄섏넄 ???쒖꽦??
 
-2. 🔍 테스트 단계:
+2. ?뵇 ?뚯뒪???④퀎:
 
-   단계 1: 페이지 로드
-   - http://localhost: {process.env.PORT || 34343} 접속
-   - 💰 요금표 탭 클릭
-   - "할증 요금 정보" 카드 확인
+   ?④퀎 1: ?섏씠吏 濡쒕뱶
+   - http://localhost: {process.env.PORT || 3900} ?묒냽
+   - ?뮥 ?붽툑?????대┃
+   - "?좎쬆 ?붽툑 ?뺣낫" 移대뱶 ?뺤씤
 
-   단계 2: 테스트 버튼 클릭
-   - 🔍 테스트 버튼 클릭
-   - 콘솔에서 다음 로그 확인:
-     * "🔍 테스트 버튼 클릭됨!"
-     * "🔍 PriceTable handleChange 호출:"
-     * "🔍 AppContext updatePricing 호출됨:"
+   ?④퀎 2: ?뚯뒪??踰꾪듉 ?대┃
+   - ?뵇 ?뚯뒪??踰꾪듉 ?대┃
+   - 肄섏넄?먯꽌 ?ㅼ쓬 濡쒓렇 ?뺤씤:
+     * "?뵇 ?뚯뒪??踰꾪듉 ?대┃??"
+     * "?뵇 PriceTable handleChange ?몄텧:"
+     * "?뵇 AppContext updatePricing ?몄텧??"
 
-   단계 3: 입력 필드 테스트
-   - 주말 추가요금 필드에 "테스트 입력" 타이핑
-   - 성수기/공휴일 추가요금 필드에 "테스트 입력2" 타이핑
-   - 계절별 요금 정보 텍스트영역에 "테스트 입력3" 타이핑
+   ?④퀎 3: ?낅젰 ?꾨뱶 ?뚯뒪??
+   - 二쇰쭚 異붽??붽툑 ?꾨뱶??"?뚯뒪???낅젰" ??댄븨
+   - ?깆닔湲?怨듯쑕??異붽??붽툑 ?꾨뱶??"?뚯뒪???낅젰2" ??댄븨
+   - 怨꾩젅蹂??붽툑 ?뺣낫 ?띿뒪?몄쁺??뿉 "?뚯뒪???낅젰3" ??댄븨
    
-   각 입력마다 콘솔에서 다음 로그 확인:
-     * "🔍 주말 추가요금 변경:"
-     * "🔍 PriceTable handleChange 호출:"
-     * "🔍 AppContext updatePricing 호출됨:"
+   媛??낅젰留덈떎 肄섏넄?먯꽌 ?ㅼ쓬 濡쒓렇 ?뺤씤:
+     * "?뵇 二쇰쭚 異붽??붽툑 蹂寃?"
+     * "?뵇 PriceTable handleChange ?몄텧:"
+     * "?뵇 AppContext updatePricing ?몄텧??"
 
-3. ✅ 성공 조건:
-   - 모든 필드에 텍스트가 정상 입력됨
-   - 콘솔에 모든 디버그 로그가 출력됨
-   - 에러 없이 상태 업데이트 완료
+3. ???깃났 議곌굔:
+   - 紐⑤뱺 ?꾨뱶???띿뒪?멸? ?뺤긽 ?낅젰??
+   - 肄섏넄??紐⑤뱺 ?붾쾭洹?濡쒓렇媛 異쒕젰??
+   - ?먮윭 ?놁씠 ?곹깭 ?낅뜲?댄듃 ?꾨즺
 
-4. ❌ 실패 조건:
-   - 필드에 입력해도 텍스트가 나타나지 않음
-   - 테스트 버튼 클릭해도 반응 없음
-   - 콘솔에 로그가 출력되지 않음
-   - 에러 메시지 발생
+4. ???ㅽ뙣 議곌굔:
+   - ?꾨뱶???낅젰?대룄 ?띿뒪?멸? ?섑??섏? ?딆쓬
+   - ?뚯뒪??踰꾪듉 ?대┃?대룄 諛섏쓳 ?놁쓬
+   - 肄섏넄??濡쒓렇媛 異쒕젰?섏? ?딆쓬
+   - ?먮윭 硫붿떆吏 諛쒖깮
 
-5. 🔧 문제 해결:
-   - Fast Refresh 오류가 있으면 페이지 새로고침
-   - 컴포넌트 충돌 의심 시 PeriodInfo 섹션도 확인
-   - 서버 재시작 후 다시 테스트
+5. ?뵩 臾몄젣 ?닿껐:
+   - Fast Refresh ?ㅻ쪟媛 ?덉쑝硫??섏씠吏 ?덈줈怨좎묠
+   - 而댄룷?뚰듃 異⑸룎 ?섏떖 ??PeriodInfo ?뱀뀡???뺤씤
+   - ?쒕쾭 ?ъ떆?????ㅼ떆 ?뚯뒪??
 
 ==================================================
 `);
 
-// 브라우저에서 실행할 수 있는 디버그 스크립트
+// 釉뚮씪?곗??먯꽌 ?ㅽ뻾?????덈뒗 ?붾쾭洹??ㅽ겕由쏀듃
 const debugScript = `
-// 브라우저 콘솔에서 실행할 디버그 스크립트
-console.log('🔍 추가요금 필드 디버그 스크립트 시작');
+// 釉뚮씪?곗? 肄섏넄?먯꽌 ?ㅽ뻾???붾쾭洹??ㅽ겕由쏀듃
+console.log('?뵇 異붽??붽툑 ?꾨뱶 ?붾쾭洹??ㅽ겕由쏀듃 ?쒖옉');
 
-// 1. 테스트 버튼 찾기
-const testButton = document.querySelector('button:has-text("🔍 테스트")');
-console.log('테스트 버튼:', testButton);
+// 1. ?뚯뒪??踰꾪듉 李얘린
+const testButton = document.querySelector('button:has-text("?뵇 ?뚯뒪??)');
+console.log('?뚯뒪??踰꾪듉:', testButton);
 
-// 2. 입력 필드들 찾기
+// 2. ?낅젰 ?꾨뱶??李얘린
 const weekendInput = document.querySelector('input[placeholder*="20%"]');
 const holidayInput = document.querySelector('input[placeholder*="30%"]');
-const seasonalTextarea = document.querySelector('textarea[placeholder*="계절별"]');
+const seasonalTextarea = document.querySelector('textarea[placeholder*="怨꾩젅蹂?]');
 
-console.log('주말 추가요금 필드:', weekendInput);
-console.log('성수기/공휴일 추가요금 필드:', holidayInput);
-console.log('계절별 요금 정보 텍스트영역:', seasonalTextarea);
+console.log('二쇰쭚 異붽??붽툑 ?꾨뱶:', weekendInput);
+console.log('?깆닔湲?怨듯쑕??異붽??붽툑 ?꾨뱶:', holidayInput);
+console.log('怨꾩젅蹂??붽툑 ?뺣낫 ?띿뒪?몄쁺??', seasonalTextarea);
 
-// 3. 이벤트 리스너 확인
+// 3. ?대깽??由ъ뒪???뺤씤
 if (weekendInput) {
-  console.log('주말 추가요금 필드 이벤트 리스너:', getEventListeners(weekendInput));
+  console.log('二쇰쭚 異붽??붽툑 ?꾨뱶 ?대깽??由ъ뒪??', getEventListeners(weekendInput));
 }
 
-// 4. React DevTools 정보 (React DevTools가 설치된 경우)
+// 4. React DevTools ?뺣낫 (React DevTools媛 ?ㅼ튂??寃쎌슦)
 if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-  console.log('React DevTools 감지됨');
+  console.log('React DevTools 媛먯???);
 }
 `;
 
-console.log('브라우저 콘솔에서 실행할 디버그 스크립트:');
+console.log('釉뚮씪?곗? 肄섏넄?먯꽌 ?ㅽ뻾???붾쾭洹??ㅽ겕由쏀듃:');
 console.log(debugScript);
 
-// Node.js 환경에서 실행 가능한 간단한 테스트
+// Node.js ?섍꼍?먯꽌 ?ㅽ뻾 媛?ν븳 媛꾨떒???뚯뒪??
 if (typeof window === 'undefined') {
-  console.log('\n📝 수동 테스트를 위해 다음 단계를 따라하세요:');
-  console.log('1. 브라우저에서 http://localhost: {process.env.PORT || 34343} 접속');
-  console.log('2. F12를 눌러 개발자 도구 열기');
-  console.log('3. 콘솔 탭으로 이동');
-  console.log('4. 위의 디버그 스크립트를 복사해서 콘솔에 붙여넣기');
-  console.log('5. 💰 요금표 탭 클릭');
-  console.log('6. 🔍 테스트 버튼 클릭');
-  console.log('7. 추가요금 필드들에 텍스트 입력');
-  console.log('8. 콘솔 로그 확인');
+  console.log('\n?뱷 ?섎룞 ?뚯뒪?몃? ?꾪빐 ?ㅼ쓬 ?④퀎瑜??곕씪?섏꽭??');
+  console.log('1. 釉뚮씪?곗??먯꽌 http://localhost: {process.env.PORT || 3900} ?묒냽');
+  console.log('2. F12瑜??뚮윭 媛쒕컻???꾧뎄 ?닿린');
+  console.log('3. 肄섏넄 ??쑝濡??대룞');
+  console.log('4. ?꾩쓽 ?붾쾭洹??ㅽ겕由쏀듃瑜?蹂듭궗?댁꽌 肄섏넄??遺숈뿬?ｊ린');
+  console.log('5. ?뮥 ?붽툑?????대┃');
+  console.log('6. ?뵇 ?뚯뒪??踰꾪듉 ?대┃');
+  console.log('7. 異붽??붽툑 ?꾨뱶?ㅼ뿉 ?띿뒪???낅젰');
+  console.log('8. 肄섏넄 濡쒓렇 ?뺤씤');
 } 

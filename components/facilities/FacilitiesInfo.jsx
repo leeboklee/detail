@@ -2,7 +2,7 @@
 
 import React, { useMemo } from 'react';
 import Image from 'next/image';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Input, Textarea, Select, SelectItem } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tooltip, Button, Input, Textarea, Select, SelectItem } from "@heroui/react";
 import { FaTrash, FaPlus, FaRunning, FaUtensils, FaWifi, FaParking, FaSwimmer } from 'react-icons/fa';
 
 // URL 유효성 검사 함수
@@ -107,7 +107,6 @@ export default function FacilitiesInfo({ value = {}, onChange }) {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-800">시설 정보 관리</h2>
       </div>
-
       <div className="mb-6 bg-gray-50 p-4 rounded-lg border">
         <h3 className="text-lg font-semibold mb-3 text-gray-700">추천 시설 바로 추가</h3>
         <div className="flex flex-wrap gap-2">
@@ -133,7 +132,6 @@ export default function FacilitiesInfo({ value = {}, onChange }) {
           </Button>
         </div>
       </div>
-
       <Table aria-label="시설 정보 테이블" className="min-w-full">
         <TableHeader>
           <TableColumn>카테고리</TableColumn>
@@ -145,13 +143,17 @@ export default function FacilitiesInfo({ value = {}, onChange }) {
         <TableBody items={facilities} emptyContent={"추가된 시설 정보가 없습니다."}>
           {(item, index) => (
             // key 에러 방지: name+category+index 조합으로 고유 key 생성
-            <TableRow key={`${item.name || 'facility'}-${item.category || 'general'}-${index}`}>
+            (<TableRow key={`${item.name || 'facility'}-${item.category || 'general'}-${index}`}>
               <TableCell>
                 <Select
                   size="sm"
                   selectedKeys={[item.category || 'general']}
                   onChange={(e) => handleFacilityChange(index, 'category', e.target.value)}
                   aria-label="카테고리 선택"
+                  classNames={{
+                    trigger: "text-gray-800 bg-white border-gray-300",
+                    label: "text-gray-700 font-medium"
+                  }}
                 >
                   {facilityCategories.map((cat) => (
                     <SelectItem key={cat.key} value={cat.key}>
@@ -166,6 +168,10 @@ export default function FacilitiesInfo({ value = {}, onChange }) {
                   value={item.name}
                   onValueChange={(value) => handleFacilityChange(index, 'name', value)}
                   placeholder="시설명 (예: 수영장)"
+                  classNames={{
+                    input: "text-gray-800 bg-white border-gray-300",
+                    label: "text-gray-700 font-medium"
+                  }}
                 />
               </TableCell>
               <TableCell>
@@ -174,6 +180,10 @@ export default function FacilitiesInfo({ value = {}, onChange }) {
                   value={item.description}
                   onValueChange={(value) => handleFacilityChange(index, 'description', value)}
                   placeholder="운영 시간 등"
+                  classNames={{
+                    input: "text-gray-800 bg-white border-gray-300",
+                    label: "text-gray-700 font-medium"
+                  }}
                 />
               </TableCell>
               <TableCell>
@@ -195,6 +205,10 @@ export default function FacilitiesInfo({ value = {}, onChange }) {
                     value={item.image}
                     onValueChange={(value) => handleFacilityChange(index, 'image', value)}
                     placeholder="이미지 URL"
+                    classNames={{
+                      input: "text-gray-800 bg-white border-gray-300",
+                      label: "text-gray-700 font-medium"
+                    }}
                   />
                 </div>
               </TableCell>
@@ -205,7 +219,7 @@ export default function FacilitiesInfo({ value = {}, onChange }) {
                   </Button>
                 </Tooltip>
               </TableCell>
-            </TableRow>
+            </TableRow>)
           )}
         </TableBody>
       </Table>

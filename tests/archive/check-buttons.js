@@ -1,19 +1,19 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 const BUTTON_LABELS = [
-  '호텔 정보',
-  '객실 정보 (통합)',
-  '시설 정보',
-  '패키지 (통합)',
-  '추가요금 (통합)',
-  '취소규정',
-  '예약안내',
-  '공지사항',
-  '템플릿 목록'
+  '?명뀛 ?뺣낫',
+  '媛앹떎 ?뺣낫 (?듯빀)',
+  '?쒖꽕 ?뺣낫',
+  '?⑦궎吏 (?듯빀)',
+  '異붽??붽툑 (?듯빀)',
+  '痍⑥냼洹쒖젙',
+  '?덉빟?덈궡',
+  '怨듭??ы빆',
+  '?쒗뵆由?紐⑸줉'
 ];
 
 (async () => {
-  console.log('🚀 버튼 클릭 및 모달 닫기 테스트 시작...');
+  console.log('?? 踰꾪듉 ?대┃ 諛?紐⑤떖 ?リ린 ?뚯뒪???쒖옉...');
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
   const allLogs = [];
@@ -26,74 +26,74 @@ const BUTTON_LABELS = [
     };
     allLogs.push(log);
     if (log.type === 'error') {
-        console.error(`🚨 실시간 에러 발견: ${log.text}`);
+        console.error(`?슚 ?ㅼ떆媛??먮윭 諛쒓껄: ${log.text}`);
         errorFound = true;
     }
   });
 
   try {
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'domcontentloaded', timeout: 60000 });
-    console.log('✅ 페이지 로드 완료.');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'domcontentloaded', timeout: 60000 });
+    console.log('???섏씠吏 濡쒕뱶 ?꾨즺.');
     await page.waitForTimeout(2000);
 
     for (const label of BUTTON_LABELS) {
       const buttonSelector = `div:has-text("${label}")`;
-      console.log(`\n--- 🖱️  '${label}' 버튼 클릭 ---`);
+      console.log(`\n--- ?뼮截? '${label}' 踰꾪듉 ?대┃ ---`);
       
       try {
         const button = page.locator(buttonSelector).first();
         if (await button.count() > 0) {
             await button.click({ timeout: 5000 });
-            console.log(`✅ '${label}' 버튼 클릭 성공. 모달이 열립니다.`);
+            console.log(`??'${label}' 踰꾪듉 ?대┃ ?깃났. 紐⑤떖???대┰?덈떎.`);
             await page.waitForTimeout(1500);
 
-            // 모달 닫기 시도
-            const closeButton = page.locator('button:has-text("닫기"), button:has-text("취소"), button.btn-close, [aria-label="Close"]').first();
+            // 紐⑤떖 ?リ린 ?쒕룄
+            const closeButton = page.locator('button:has-text("?リ린"), button:has-text("痍⑥냼"), button.btn-close, [aria-label="Close"]').first();
             if (await closeButton.count() > 0) {
               await closeButton.click({ timeout: 5000 });
-              console.log('✅ 모달 닫기 버튼 클릭 성공.');
+              console.log('??紐⑤떖 ?リ린 踰꾪듉 ?대┃ ?깃났.');
             } else {
-              console.warn('⚠️ 모달 닫기 버튼을 찾을 수 없음. ESC 키를 누릅니다.');
+              console.warn('?좑툘 紐⑤떖 ?リ린 踰꾪듉??李얠쓣 ???놁쓬. ESC ?ㅻ? ?꾨쫭?덈떎.');
               await page.keyboard.press('Escape');
             }
             await page.waitForTimeout(1000);
 
         } else {
-            console.warn(`⚠️ '${label}' 버튼을 찾을 수 없음.`);
+            console.warn(`?좑툘 '${label}' 踰꾪듉??李얠쓣 ???놁쓬.`);
         }
       } catch (e) {
-        console.error(`❌ '${label}' 버튼 테스트 중 오류 발생: ${e.message}`);
-        errorFound = true; // 클릭 자체의 오류도 에러로 간주
+        console.error(`??'${label}' 踰꾪듉 ?뚯뒪??以??ㅻ쪟 諛쒖깮: ${e.message}`);
+        errorFound = true; // ?대┃ ?먯껜???ㅻ쪟???먮윭濡?媛꾩＜
       }
     }
 
   } catch (e) {
-    console.error(`❌ 페이지 탐색 중 오류 발생: ${e.message}`);
+    console.error(`???섏씠吏 ?먯깋 以??ㅻ쪟 諛쒖깮: ${e.message}`);
     errorFound = true;
   } finally {
-    console.log('\n\n--- 📊 최종 콘솔 로그 요약 ---');
+    console.log('\n\n--- ?뱤 理쒖쥌 肄섏넄 濡쒓렇 ?붿빟 ---');
     if (allLogs.length === 0) {
-      console.log('캡처된 콘솔 로그가 없습니다.');
+      console.log('罹≪쿂??肄섏넄 濡쒓렇媛 ?놁뒿?덈떎.');
     } else {
       const errorLogs = allLogs.filter(log => log.type === 'error');
       if (errorLogs.length > 0) {
-        console.log(`총 ${allLogs.length}개의 로그 중 ${errorLogs.length}개의 에러 발견:`);
+        console.log(`珥?${allLogs.length}媛쒖쓽 濡쒓렇 以?${errorLogs.length}媛쒖쓽 ?먮윭 諛쒓껄:`);
         errorLogs.forEach((log, i) => {
           console.log(`${i + 1}. [${log.type.toUpperCase()}] ${log.text}`);
         });
       } else {
-        console.log(`✅ 에러 없음. 총 ${allLogs.length}개의 로그가 캡처되었습니다.`);
+        console.log(`???먮윭 ?놁쓬. 珥?${allLogs.length}媛쒖쓽 濡쒓렇媛 罹≪쿂?섏뿀?듬땲??`);
       }
     }
     console.log('---------------------------------');
 
     if (errorFound) {
-        console.log('\n🔴 테스트 중 에러가 발견되었습니다.');
+        console.log('\n?뵶 ?뚯뒪??以??먮윭媛 諛쒓껄?섏뿀?듬땲??');
     } else {
-        console.log('\n🟢 테스트가 에러 없이 완료되었습니다.');
+        console.log('\n?윟 ?뚯뒪?멸? ?먮윭 ?놁씠 ?꾨즺?섏뿀?듬땲??');
     }
 
     await browser.close();
-    console.log('🚀 테스트 종료.');
+    console.log('?? ?뚯뒪??醫낅즺.');
   }
 })(); 

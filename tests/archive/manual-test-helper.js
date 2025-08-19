@@ -1,55 +1,56 @@
+﻿import React from 'react';
 const puppeteer = require('puppeteer');
 
 async function manualTestHelper() {
-  console.log('🔧 수동 테스트 헬퍼 시작...');
-  console.log('📝 브라우저가 열리면 직접 한글을 입력해보세요.');
-  console.log('🎯 테스트할 내용: "디럭스 트윈룸", "프리미엄 스위트" 등');
+  console.log('?뵩 ?섎룞 ?뚯뒪???ы띁 ?쒖옉...');
+  console.log('?뱷 釉뚮씪?곗?媛 ?대━硫?吏곸젒 ?쒓????낅젰?대낫?몄슂.');
+  console.log('?렞 ?뚯뒪?명븷 ?댁슜: "?붾윮???몄쐢猷?, "?꾨━誘몄뾼 ?ㅼ쐞?? ??);
   
   const browser = await puppeteer.launch({ 
     headless: false, 
     defaultViewport: { width: 1280, height: 720 },
-    slowMo: 0 // 수동 입력이므로 slowMo 제거
+    slowMo: 0 // ?섎룞 ?낅젰?대?濡?slowMo ?쒓굅
   });
   
   try {
     const page = await browser.newPage();
     
-    // 콘솔 로그 모니터링
+    // 肄섏넄 濡쒓렇 紐⑤땲?곕쭅
     page.on('console', msg => {
       const text = msg.text();
       const timestamp = new Date().toISOString().substr(11, 12);
       
-      // 중요한 로그만 출력
+      // 以묒슂??濡쒓렇留?異쒕젰
       if (text.includes('SimpleInput') || text.includes('RoomInfoEditor') || 
-          text.includes('🇰🇷') || text.includes('⏰') || text.includes('✅') || 
-          text.includes('🚫') || text.includes('👀') || text.includes('📝')) {
+          text.includes('?눖?눟') || text.includes('??) || text.includes('??) || 
+          text.includes('?슟') || text.includes('??') || text.includes('?뱷')) {
         console.log(`[${timestamp}] ${text}`);
       }
     });
     
-    // 페이지 로드
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle0' });
+    // ?섏씠吏 濡쒕뱶
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle0' });
     
-    // React 로딩 대기
+    // React 濡쒕뵫 ?湲?
     await page.waitForFunction(() => {
       const gridContainer = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-4.xl\\:grid-cols-5');
       return gridContainer && gridContainer.querySelectorAll('.cursor-pointer').length > 0;
     }, { timeout: 15000 });
     
-    console.log('✅ 페이지 로드 완료');
+    console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
     
-    // 객실 카드 클릭
+    // 媛앹떎 移대뱶 ?대┃
     await page.evaluate(() => {
       const cards = document.querySelectorAll('.cursor-pointer');
       for (let card of cards) {
-        if (card.textContent.includes('객실 정보')) {
+        if (card.textContent.includes('媛앹떎 ?뺣낫')) {
           card.click();
           return;
         }
       }
     });
     
-    // 모달 대기
+    // 紐⑤떖 ?湲?
     await page.waitForFunction(() => {
       const modals = document.querySelectorAll('[role="dialog"]');
       return modals.length > 0 && modals[0].offsetParent !== null;
@@ -57,26 +58,26 @@ async function manualTestHelper() {
     
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    console.log('🎭 모달이 열렸습니다!');
+    console.log('?렚 紐⑤떖???대졇?듬땲??');
     console.log('');
-    console.log('📋 수동 테스트 가이드:');
-    console.log('  1. 첫 번째 객실명 필드를 클릭하세요');
-    console.log('  2. "디럭스 트윈룸"을 천천히 입력해보세요');
-    console.log('  3. Tab 키를 눌러 다음 필드로 이동하세요');
-    console.log('  4. "프리미엄 스위트"를 입력해보세요');
-    console.log('  5. 각 입력 후 콘솔 로그를 확인하세요');
+    console.log('?뱥 ?섎룞 ?뚯뒪??媛?대뱶:');
+    console.log('  1. 泥?踰덉㎏ 媛앹떎紐??꾨뱶瑜??대┃?섏꽭??);
+    console.log('  2. "?붾윮???몄쐢猷???泥쒖쿇???낅젰?대낫?몄슂');
+    console.log('  3. Tab ?ㅻ? ?뚮윭 ?ㅼ쓬 ?꾨뱶濡??대룞?섏꽭??);
+    console.log('  4. "?꾨━誘몄뾼 ?ㅼ쐞??瑜??낅젰?대낫?몄슂');
+    console.log('  5. 媛??낅젰 ??肄섏넄 濡쒓렇瑜??뺤씤?섏꽭??);
     console.log('');
-    console.log('🔍 확인사항:');
-    console.log('  - 조합 이벤트가 발생하는지 (🇰🇷 로그)');
-    console.log('  - debounce가 올바르게 작동하는지 (⏰ 로그)');
-    console.log('  - 최종 값이 정확히 저장되는지');
+    console.log('?뵇 ?뺤씤?ы빆:');
+    console.log('  - 議고빀 ?대깽?멸? 諛쒖깮?섎뒗吏 (?눖?눟 濡쒓렇)');
+    console.log('  - debounce媛 ?щ컮瑜닿쾶 ?묐룞?섎뒗吏 (??濡쒓렇)');
+    console.log('  - 理쒖쥌 媛믪씠 ?뺥솗????λ릺?붿?');
     console.log('');
-    console.log('⚠️ 테스트 완료 후 Ctrl+C를 눌러 종료하세요.');
+    console.log('?좑툘 ?뚯뒪???꾨즺 ??Ctrl+C瑜??뚮윭 醫낅즺?섏꽭??');
     
-    // 테스트용 유틸리티 함수를 페이지에 추가
+    // ?뚯뒪?몄슜 ?좏떥由ы떚 ?⑥닔瑜??섏씠吏??異붽?
     await page.evaluate(() => {
       window.testHelper = {
-        // 현재 모든 입력 필드 값 확인
+        // ?꾩옱 紐⑤뱺 ?낅젰 ?꾨뱶 媛??뺤씤
         checkAllValues: () => {
           const modal = document.querySelector('[role="dialog"]');
           if (!modal) return { error: 'Modal not found' };
@@ -84,13 +85,13 @@ async function manualTestHelper() {
           const nameInputs = Array.from(modal.querySelectorAll('input[name="name"]'));
           const typeInputs = Array.from(modal.querySelectorAll('input[name="type"]'));
           
-          console.log('📊 현재 입력 값들:');
+          console.log('?뱤 ?꾩옱 ?낅젰 媛믩뱾:');
           nameInputs.forEach((input, i) => {
-            console.log(`  객실 ${i + 1} 이름: "${input.value}"`);
+            console.log(`  媛앹떎 ${i + 1} ?대쫫: "${input.value}"`);
           });
           typeInputs.forEach((input, i) => {
             if (input.value) {
-              console.log(`  객실 ${i + 1} 타입: "${input.value}"`);
+              console.log(`  媛앹떎 ${i + 1} ??? "${input.value}"`);
             }
           });
           
@@ -100,7 +101,7 @@ async function manualTestHelper() {
           };
         },
         
-        // 입력 필드 강조 표시
+        // ?낅젰 ?꾨뱶 媛뺤“ ?쒖떆
         highlightFields: () => {
           const nameInputs = Array.from(document.querySelectorAll('[role="dialog"] input[name="name"]'));
           nameInputs.forEach((input, i) => {
@@ -111,38 +112,38 @@ async function manualTestHelper() {
               input.style.backgroundColor = '';
             }, 3000);
           });
-          console.log('✨ 객실명 입력 필드들을 강조 표시했습니다 (3초간)');
+          console.log('??媛앹떎紐??낅젰 ?꾨뱶?ㅼ쓣 媛뺤“ ?쒖떆?덉뒿?덈떎 (3珥덇컙)');
         }
       };
       
-      console.log('🛠️ 테스트 유틸리티 함수가 추가되었습니다:');
-      console.log('  - testHelper.checkAllValues() : 현재 모든 입력 값 확인');
-      console.log('  - testHelper.highlightFields() : 입력 필드 강조 표시');
+      console.log('?썱截??뚯뒪???좏떥由ы떚 ?⑥닔媛 異붽??섏뿀?듬땲??');
+      console.log('  - testHelper.checkAllValues() : ?꾩옱 紐⑤뱺 ?낅젰 媛??뺤씤');
+      console.log('  - testHelper.highlightFields() : ?낅젰 ?꾨뱶 媛뺤“ ?쒖떆');
     });
     
-    // 무한 대기 (사용자가 Ctrl+C로 종료할 때까지)
-    console.log('⏳ 수동 테스트 진행 중... (Ctrl+C로 종료)');
+    // 臾댄븳 ?湲?(?ъ슜?먭? Ctrl+C濡?醫낅즺???뚭퉴吏)
+    console.log('???섎룞 ?뚯뒪??吏꾪뻾 以?.. (Ctrl+C濡?醫낅즺)');
     
-    // 30초마다 상태 확인 메시지 출력
+    // 30珥덈쭏???곹깭 ?뺤씤 硫붿떆吏 異쒕젰
     setInterval(() => {
-      console.log('📝 수동 테스트 진행 중... 브라우저에서 직접 입력해보세요.');
+      console.log('?뱷 ?섎룞 ?뚯뒪??吏꾪뻾 以?.. 釉뚮씪?곗??먯꽌 吏곸젒 ?낅젰?대낫?몄슂.');
     }, 30000);
     
     // Promise that never resolves (until process is killed)
     await new Promise(() => {});
     
   } catch (error) {
-    console.error('❌ 헬퍼 실행 중 오류:', error);
+    console.error('???ы띁 ?ㅽ뻾 以??ㅻ쪟:', error);
   } finally {
     await browser.close();
   }
 }
 
-// Ctrl+C 핸들러
+// Ctrl+C ?몃뱾??
 process.on('SIGINT', () => {
-  console.log('\n🏁 수동 테스트 헬퍼 종료');
+  console.log('\n?뢾 ?섎룞 ?뚯뒪???ы띁 醫낅즺');
   process.exit(0);
 });
 
-// 실행
+// ?ㅽ뻾
 manualTestHelper().catch(console.error); 

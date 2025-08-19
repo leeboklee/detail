@@ -1,4 +1,4 @@
-// log-collector.js - 브라?��? 콘솔 로그 �?API ?�버깅을 ?�한 ?�크립트
+﻿// log-collector.js - 釉뚮씪?占쏙옙? 肄섏넄 濡쒓렇 占?API ?占쎈쾭源낆쓣 ?占쏀븳 ?占쏀겕由쏀듃
 
 import { chromium } from 'playwright';
 import fs from 'fs';
@@ -12,235 +12,235 @@ async function saveLog(message) {
 
 async function collectLogs() {
   const browser = await chromium.launch({
-    headless: false, // GUI 모드�??�행?�여 ?�시�??�인 가??
+    headless: false, // GUI 紐⑤뱶占??占쏀뻾?占쎌뿬 ?占쎌떆占??占쎌씤 媛??
   });
   
-  saveLog('브라?��?가 ?�작?�었?�니??');
+  saveLog('釉뚮씪?占쏙옙?媛 ?占쎌옉?占쎌뿀?占쎈땲??');
   
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 },
   });
   
-  // 콘솔 로그 ?�집
+  // 肄섏넄 濡쒓렇 ?占쎌쭛
   context.on('console', message => {
     const type = message.type();
     const text = message.text();
     
-    // 로그 ?�형�?출력 ?�맷??
+    // 濡쒓렇 ?占쏀삎占?異쒕젰 ?占쎈㎎??
     if (type === 'error') {
-      saveLog(`브라?��? 콘솔 ?�류: ${text}`);
+      saveLog(`釉뚮씪?占쏙옙? 肄섏넄 ?占쎈쪟: ${text}`);
     } else if (type === 'warning') {
-      saveLog(`브라?��? 콘솔 경고: ${text}`);
+      saveLog(`釉뚮씪?占쏙옙? 肄섏넄 寃쎄퀬: ${text}`);
     } else {
-      saveLog(`브라?��? 콘솔 ${type}: ${text}`);
+      saveLog(`釉뚮씪?占쏙옙? 肄섏넄 ${type}: ${text}`);
     }
   });
   
-  // ?�이지 ?�벤???�집
+  // ?占쎌씠吏 ?占쎈깽???占쎌쭛
   const page = await context.newPage();
   
-  // ?�트?�크 ?�청/?�답 감시
+  // ?占쏀듃?占쏀겕 ?占쎌껌/?占쎈떟 媛먯떆
   page.on('request', request => {
-    saveLog(`?�청: ${request.method()} ${request.url()}`);
+    saveLog(`?占쎌껌: ${request.method()} ${request.url()}`);
   });
   
   page.on('response', async response => {
     const status = response.status();
     const url = response.url();
     
-    // API ?�답?� ??�� 기록
+    // API ?占쎈떟?占???占쏙옙 湲곕줉
     if (url.includes('/api/')) {
-      saveLog(`API ?�답 (${status}): ${url}`);
+      saveLog(`API ?占쎈떟 (${status}): ${url}`);
       try {
         const responseBody = await response.text();
-        saveLog(`API ?�답 본문: ${responseBody.substring(0, 200)}${responseBody.length > 200 ? '...' : ''}`);
+        saveLog(`API ?占쎈떟 蹂몃Ц: ${responseBody.substring(0, 200)}${responseBody.length > 200 ? '...' : ''}`);
       } catch (err) {
-        saveLog(`API ?�답 본문 ?�싱 ?�류: ${err.message}`);
+        saveLog(`API ?占쎈떟 蹂몃Ц ?占쎌떛 ?占쎈쪟: ${err.message}`);
       }
     }
-    // ?�류 ?�답�??�세 출력
+    // ?占쎈쪟 ?占쎈떟占??占쎌꽭 異쒕젰
     else if (status >= 400) {
-      saveLog(`?�답 ?�류 (${status}): ${url}`);
+      saveLog(`?占쎈떟 ?占쎈쪟 (${status}): ${url}`);
       try {
         const body = await response.text();
-        saveLog(`?�답 본문: ${body.substring(0, 500)}`);
+        saveLog(`?占쎈떟 蹂몃Ц: ${body.substring(0, 500)}`);
       } catch (err) {
-        saveLog(`?�답 본문 ?�싱 ?�류: ${err.message}`);
+        saveLog(`?占쎈떟 蹂몃Ц ?占쎌떛 ?占쎈쪟: ${err.message}`);
       }
     } else {
-      saveLog(`?�답 (${status}): ${url}`);
+      saveLog(`?占쎈떟 (${status}): ${url}`);
     }
   });
   
-  // ?�이지 ?�류 ?�집
+  // ?占쎌씠吏 ?占쎈쪟 ?占쎌쭛
   page.on('pageerror', error => {
-    saveLog(`?�이지 ?�류: ${error.message}`);
+    saveLog(`?占쎌씠吏 ?占쎈쪟: ${error.message}`);
   });
   
   try {
-    saveLog('?�이지 로딩 ?�작: http://localhost: {process.env.PORT || 34343}');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { timeout: 30000 });
-    saveLog('?�이지 로딩 ?�료');
+    saveLog('?占쎌씠吏 濡쒕뵫 ?占쎌옉: http://localhost: {process.env.PORT || 3900}');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { timeout: 30000 });
+    saveLog('?占쎌씠吏 濡쒕뵫 ?占쎈즺');
     
-    // ?�이지 ?�크린샷 
+    // ?占쎌씠吏 ?占쏀겕由곗꺑 
     await page.screenshot({ path: 'screenshot-start.png', fullPage: true });
-    saveLog('초기 ?�크린샷 ?�???�료: screenshot-start.png');
+    saveLog('珥덇린 ?占쏀겕由곗꺑 ?占???占쎈즺: screenshot-start.png');
     
-    // 1. 기본 ?�태 ?�인
-    saveLog('--- 기본 ?�태 ?�인 ---');
+    // 1. 湲곕낯 ?占쏀깭 ?占쎌씤
+    saveLog('--- 湲곕낯 ?占쏀깭 ?占쎌씤 ---');
     await page.waitForTimeout(2000);
     
-    // 2. ?�스??모드 버튼 ?�릭
+    // 2. ?占쎌뒪??紐⑤뱶 踰꾪듉 ?占쎈┃
     try {
-      saveLog('?�스??모드 버튼 찾기 ?�도...');
-      // ???�확???�택???�용
-      await page.waitForSelector('button:has-text("?�스??모드")');
-      const testModeButton = await page.$('button:has-text("?�스??모드")');
+      saveLog('?占쎌뒪??紐⑤뱶 踰꾪듉 李얘린 ?占쎈룄...');
+      // ???占쏀솗???占쏀깮???占쎌슜
+      await page.waitForSelector('button:has-text("?占쎌뒪??紐⑤뱶")');
+      const testModeButton = await page.$('button:has-text("?占쎌뒪??紐⑤뱶")');
       if (testModeButton) {
-        saveLog('?�스??모드 버튼 찾음, ?�릭 ?�도...');
+        saveLog('?占쎌뒪??紐⑤뱶 踰꾪듉 李얠쓬, ?占쎈┃ ?占쎈룄...');
         await testModeButton.click();
-        saveLog('?�스??모드 버튼 ?�릭 ?�료');
+        saveLog('?占쎌뒪??紐⑤뱶 踰꾪듉 ?占쎈┃ ?占쎈즺');
         await page.waitForTimeout(2000);
       } else {
-        saveLog('?�스??모드 버튼??찾을 ???�습?�다.');
+        saveLog('?占쎌뒪??紐⑤뱶 踰꾪듉??李얠쓣 ???占쎌뒿?占쎈떎.');
       }
     } catch (err) {
-      saveLog(`?�스??모드 버튼 ?�릭 ?�패: ${err.message}`);
+      saveLog(`?占쎌뒪??紐⑤뱶 踰꾪듉 ?占쎈┃ ?占쏀뙣: ${err.message}`);
     }
     
-    // 3. 객실 ?�보 ?�력 ?�스??
+    // 3. 媛앹떎 ?占쎈낫 ?占쎈젰 ?占쎌뒪??
     try {
-      saveLog('--- 객실 ?�보 ?�력 ?�스??---');
+      saveLog('--- 媛앹떎 ?占쎈낫 ?占쎈젰 ?占쎌뒪??---');
       
-      // 객실 ?�보 ?�션 ?�인
+      // 媛앹떎 ?占쎈낫 ?占쎌뀡 ?占쎌씤
       await page.waitForSelector('section#room', { timeout: 5000 });
-      saveLog('객실 ?�보 ?�션 찾음');
+      saveLog('媛앹떎 ?占쎈낫 ?占쎌뀡 李얠쓬');
       
-      // 객실�??�력
-      saveLog('객실�??�력 ?�도...');
+      // 媛앹떎占??占쎈젰
+      saveLog('媛앹떎占??占쎈젰 ?占쎈룄...');
       const roomNameInput = await page.$('input[name="name"]');
       if (roomNameInput) {
-        // ?�전 �??�인
+        // ?占쎌쟾 占??占쎌씤
         const prevValue = await roomNameInput.inputValue();
-        saveLog(`객실�??�력 ?�드 ?�전 �? "${prevValue}"`);
+        saveLog(`媛앹떎占??占쎈젰 ?占쎈뱶 ?占쎌쟾 占? "${prevValue}"`);
         
-        // ??�??�력
-        await roomNameInput.fill('?�스???�위?�룸');
+        // ??占??占쎈젰
+        await roomNameInput.fill('?占쎌뒪???占쎌쐞?占쎈８');
         
-        // ?�력 ??�??�인
+        // ?占쎈젰 ??占??占쎌씤
         const newValue = await roomNameInput.inputValue();
-        saveLog(`객실�??�력 ??�? "${newValue}"`);
+        saveLog(`媛앹떎占??占쎈젰 ??占? "${newValue}"`);
       } else {
-        saveLog('객실�??�력 ?�드�?찾을 ???�음');
+        saveLog('媛앹떎占??占쎈젰 ?占쎈뱶占?李얠쓣 ???占쎌쓬');
       }
       
-      // ?�???�력
+      // ?占???占쎈젰
       const roomTypeInput = await page.$('input[name="type"]');
       if (roomTypeInput) {
-        await roomTypeInput.fill('?�럭??);
-        saveLog('객실 ?�???�력 ?�료');
+        await roomTypeInput.fill('?占쎈윮??);
+        saveLog('媛앹떎 ?占???占쎈젰 ?占쎈즺');
       } else {
-        saveLog('?�???�력 ?�드�?찾을 ???�음');
+        saveLog('?占???占쎈젰 ?占쎈뱶占?李얠쓣 ???占쎌쓬');
       }
       
-      // 구조 ?�력
+      // 援ъ“ ?占쎈젰
       const roomStructureInput = await page.$('input[name="structure"]');
       if (roomStructureInput) {
-        await roomStructureInput.fill('�?+?�실1');
-        saveLog('구조 ?�력 ?�료');
+        await roomStructureInput.fill('占?+?占쎌떎1');
+        saveLog('援ъ“ ?占쎈젰 ?占쎈즺');
       } else {
-        saveLog('구조 ?�력 ?�드�?찾을 ???�음');
+        saveLog('援ъ“ ?占쎈젰 ?占쎈뱶占?李얠쓣 ???占쎌쓬');
       }
       
-      // 베드?�???�력
+      // 踰좊뱶?占???占쎈젰
       const roomBedTypeInput = await page.$('input[name="bedType"]');
       if (roomBedTypeInput) {
-        await roomBedTypeInput.fill('???�이�?1�?);
-        saveLog('베드?�???�력 ?�료');
+        await roomBedTypeInput.fill('???占쎌씠占?1占?);
+        saveLog('踰좊뱶?占???占쎈젰 ?占쎈즺');
       } else {
-        saveLog('베드?�???�력 ?�드�?찾을 ???�음');
+        saveLog('踰좊뱶?占???占쎈젰 ?占쎈뱶占?李얠쓣 ???占쎌쓬');
       }
       
-      // ?�력 ???�시 ?��?
-      saveLog('?�력 ???�태 ?�데?�트 ?��?..');
+      // ?占쎈젰 ???占쎌떆 ?占쏙옙?
+      saveLog('?占쎈젰 ???占쏀깭 ?占쎈뜲?占쏀듃 ?占쏙옙?..');
       await page.waitForTimeout(2000);
       
-      // ?�력 ???�크린샷
+      // ?占쎈젰 ???占쏀겕由곗꺑
       await page.screenshot({ path: 'screenshot-after-input.png', fullPage: true });
-      saveLog('?�력 ???�크린샷 ?�???�료: screenshot-after-input.png');
+      saveLog('?占쎈젰 ???占쏀겕由곗꺑 ?占???占쎈즺: screenshot-after-input.png');
     } catch (err) {
-      saveLog(`객실 ?�보 ?�력 ?�스???�패: ${err.message}`);
+      saveLog(`媛앹떎 ?占쎈낫 ?占쎈젰 ?占쎌뒪???占쏀뙣: ${err.message}`);
     }
     
-    // 4. 미리보기 버튼 ?�릭 ?�스??
+    // 4. 誘몃━蹂닿린 踰꾪듉 ?占쎈┃ ?占쎌뒪??
     try {
-      saveLog('--- 미리보기 버튼 ?�릭 ?�스??---');
+      saveLog('--- 誘몃━蹂닿린 踰꾪듉 ?占쎈┃ ?占쎌뒪??---');
       
-      // 미리보기 버튼 찾기
-      await page.waitForSelector('button:has-text("미리보기 ?�성")');
-      const previewButton = await page.$('button:has-text("미리보기 ?�성")');
+      // 誘몃━蹂닿린 踰꾪듉 李얘린
+      await page.waitForSelector('button:has-text("誘몃━蹂닿린 ?占쎌꽦")');
+      const previewButton = await page.$('button:has-text("誘몃━蹂닿린 ?占쎌꽦")');
       
       if (previewButton) {
-        saveLog('미리보기 버튼 찾음, ?�릭 ?�도...');
+        saveLog('誘몃━蹂닿린 踰꾪듉 李얠쓬, ?占쎈┃ ?占쎈룄...');
         await previewButton.click();
-        saveLog('미리보기 버튼 ?�릭 ?�료');
+        saveLog('誘몃━蹂닿린 踰꾪듉 ?占쎈┃ ?占쎈즺');
         
-        // 로딩 ?��?
-        saveLog('미리보기 ?�성 �?.. (5�??��?');
+        // 濡쒕뵫 ?占쏙옙?
+        saveLog('誘몃━蹂닿린 ?占쎌꽦 占?.. (5占??占쏙옙?');
         await page.waitForTimeout(5000);
         
-        // 미리보기 결과 ?�크린샷
+        // 誘몃━蹂닿린 寃곌낵 ?占쏀겕由곗꺑
         await page.screenshot({ path: 'screenshot-preview.png', fullPage: true });
-        saveLog('미리보기 ???�크린샷 ?�???�료: screenshot-preview.png');
+        saveLog('誘몃━蹂닿린 ???占쏀겕由곗꺑 ?占???占쎈즺: screenshot-preview.png');
         
-        // HTML 미리보기 ?�용 ?�인
+        // HTML 誘몃━蹂닿린 ?占쎌슜 ?占쎌씤
         const previewContent = await page.locator('#previewContainer iframe').contentFrame();
         if (previewContent) {
-          saveLog('미리보기 iframe 찾음, ?�용 ?�인 �?..');
+          saveLog('誘몃━蹂닿린 iframe 李얠쓬, ?占쎌슜 ?占쎌씤 占?..');
           
-          // iframe ?�용 가?�오�?
+          // iframe ?占쎌슜 媛?占쎌삤占?
           const frameContent = await previewContent.content();
           if (frameContent) {
-            saveLog(`미리보기 iframe ?�용 ?��?: ${frameContent.substring(0, 200)}...`);
+            saveLog(`誘몃━蹂닿린 iframe ?占쎌슜 ?占쏙옙?: ${frameContent.substring(0, 200)}...`);
             
-            // ?�정 ?�용 ?�인
-            if (frameContent.includes('?�스???�위?�룸')) {
-              saveLog('??미리보기??객실명이 ?�상?�으�??�시?�니??');
+            // ?占쎌젙 ?占쎌슜 ?占쎌씤
+            if (frameContent.includes('?占쎌뒪???占쎌쐞?占쎈８')) {
+              saveLog('??誘몃━蹂닿린??媛앹떎紐낆씠 ?占쎌긽?占쎌쑝占??占쎌떆?占쎈땲??');
             } else {
-              saveLog('??미리보기??객실명이 ?�시?��? ?�습?�다!');
+              saveLog('??誘몃━蹂닿린??媛앹떎紐낆씠 ?占쎌떆?占쏙옙? ?占쎌뒿?占쎈떎!');
             }
             
-            if (frameContent.includes('?�럭??)) {
-              saveLog('??미리보기??객실 ?�?�이 ?�상?�으�??�시?�니??');
+            if (frameContent.includes('?占쎈윮??)) {
+              saveLog('??誘몃━蹂닿린??媛앹떎 ?占?占쎌씠 ?占쎌긽?占쎌쑝占??占쎌떆?占쎈땲??');
             } else {
-              saveLog('??미리보기??객실 ?�?�이 ?�시?��? ?�습?�다!');
+              saveLog('??誘몃━蹂닿린??媛앹떎 ?占?占쎌씠 ?占쎌떆?占쏙옙? ?占쎌뒿?占쎈떎!');
             }
           } else {
-            saveLog('미리보기 iframe ?�용??가?�올 ???�습?�다.');
+            saveLog('誘몃━蹂닿린 iframe ?占쎌슜??媛?占쎌삱 ???占쎌뒿?占쎈떎.');
           }
         } else {
-          saveLog('미리보기 iframe??찾을 ???�습?�다.');
+          saveLog('誘몃━蹂닿린 iframe??李얠쓣 ???占쎌뒿?占쎈떎.');
         }
       } else {
-        saveLog('미리보기 버튼??찾을 ???�습?�다.');
+        saveLog('誘몃━蹂닿린 踰꾪듉??李얠쓣 ???占쎌뒿?占쎈떎.');
       }
     } catch (err) {
-      saveLog(`미리보기 ?�스???�패: ${err.message}`);
+      saveLog(`誘몃━蹂닿린 ?占쎌뒪???占쏀뙣: ${err.message}`);
     }
     
-    // ?�시 ?��???종료
-    saveLog('?�스???�료, 5�???종료');
+    // ?占쎌떆 ?占쏙옙???醫낅즺
+    saveLog('?占쎌뒪???占쎈즺, 5占???醫낅즺');
     await page.waitForTimeout(5000);
   } catch (err) {
-    saveLog(`?�스??�??�류 발생: ${err}`);
+    saveLog(`?占쎌뒪??占??占쎈쪟 諛쒖깮: ${err}`);
   } finally {
     await browser.close();
-    saveLog('브라?��?가 종료?�었?�니??');
+    saveLog('釉뚮씪?占쏙옙?媛 醫낅즺?占쎌뿀?占쎈땲??');
   }
 }
 
-// ?�크립트 ?�행
+// ?占쏀겕由쏀듃 ?占쏀뻾
 collectLogs().catch(err => {
-  console.error('로그 ?�집 ?�크립트 ?�류:', err);
+  console.error('濡쒓렇 ?占쎌쭛 ?占쏀겕由쏀듃 ?占쎈쪟:', err);
   process.exit(1);
 }); 

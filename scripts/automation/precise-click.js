@@ -13,7 +13,7 @@ async function preciseClick() {
     console.log('🎯 정확한 클릭 테스트 시작...');
     
     // 페이지 로드
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle2', timeout: 60000 });
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle2', timeout: 60000 });
     console.log('✅ 페이지 로드 완료');
     
     // 객실 정보 섹션 정확히 찾기

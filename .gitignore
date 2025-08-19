@@ -45,3 +45,6 @@ screenshots-archive/
 current-screenshots/
 diff-screenshots/
 baseline-screenshots/
+
+# Local environment variables
+.env.local

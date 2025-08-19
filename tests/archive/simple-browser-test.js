@@ -1,8 +1,9 @@
+﻿import React from 'react';
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
 async function testModal() {
-  console.log('🧪 객실 모달 테스트 시작...');
+  console.log('?㎦ 媛앹떎 紐⑤떖 ?뚯뒪???쒖옉...');
   
   const browser = await puppeteer.launch({ 
     headless: false, 
@@ -12,96 +13,96 @@ async function testModal() {
   try {
     const page = await browser.newPage();
     
-    // 콘솔 로그 수집
+    // 肄섏넄 濡쒓렇 ?섏쭛
     page.on('console', msg => {
-      console.log('🖥️ 브라우저 로그:', msg.text());
+      console.log('?뼢截?釉뚮씪?곗? 濡쒓렇:', msg.text());
     });
     
-    // 1. 페이지 로드
-    console.log('🌐 페이지 로드 중...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle0' });
+    // 1. ?섏씠吏 濡쒕뱶
+    console.log('?뙋 ?섏씠吏 濡쒕뱶 以?..');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle0' });
     
-    // 2. React 컴포넌트 로딩 완료 대기 (카드 그리드가 렌더링될 때까지)
-    console.log('⏳ React 컴포넌트 로딩 대기 중...');
+    // 2. React 而댄룷?뚰듃 濡쒕뵫 ?꾨즺 ?湲?(移대뱶 洹몃━?쒓? ?뚮뜑留곷맆 ?뚭퉴吏)
+    console.log('??React 而댄룷?뚰듃 濡쒕뵫 ?湲?以?..');
     await page.waitForFunction(() => {
-      // 카드 그리드가 렌더링될 때까지 대기
+      // 移대뱶 洹몃━?쒓? ?뚮뜑留곷맆 ?뚭퉴吏 ?湲?
       const gridContainer = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-4.xl\\:grid-cols-5');
       const cards = gridContainer ? gridContainer.querySelectorAll('.cursor-pointer') : [];
       return cards.length > 0;
     }, { timeout: 15000 });
     
-    console.log('✅ React 컴포넌트 로딩 완료');
+    console.log('??React 而댄룷?뚰듃 濡쒕뵫 ?꾨즺');
     await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // 3. 초기 스크린샷
+    // 3. 珥덇린 ?ㅽ겕由곗꺑
     await page.screenshot({ path: 'test-results/browser-test-01-initial.png', fullPage: true });
-    console.log('📸 초기 스크린샷 저장 완료');
+    console.log('?벝 珥덇린 ?ㅽ겕由곗꺑 ????꾨즺');
     
-    // 4. 페이지 구조 확인
+    // 4. ?섏씠吏 援ъ“ ?뺤씤
     const cardCount = await page.evaluate(() => {
       const gridContainer = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-4.xl\\:grid-cols-5');
       return gridContainer ? gridContainer.querySelectorAll('.cursor-pointer').length : 0;
     });
-    console.log(`📊 카드 개수: ${cardCount}개`);
+    console.log(`?뱤 移대뱶 媛쒖닔: ${cardCount}媛?);
     
-    // 5. 객실 카드 찾기 - 텍스트로 찾기
+    // 5. 媛앹떎 移대뱶 李얘린 - ?띿뒪?몃줈 李얘린
     const roomCardExists = await page.evaluate(() => {
       const cards = document.querySelectorAll('.cursor-pointer');
       for (let card of cards) {
-        if (card.textContent.includes('객실 정보')) {
+        if (card.textContent.includes('媛앹떎 ?뺣낫')) {
           return true;
         }
       }
       return false;
     });
-    console.log(`🏠 객실 카드 존재: ${roomCardExists}`);
+    console.log(`?룧 媛앹떎 移대뱶 議댁옱: ${roomCardExists}`);
     
     if (roomCardExists) {
-      // 6. 카드 텍스트 확인
+      // 6. 移대뱶 ?띿뒪???뺤씤
       const cardText = await page.evaluate(() => {
         const cards = document.querySelectorAll('.cursor-pointer');
         for (let card of cards) {
-          if (card.textContent.includes('객실 정보')) {
+          if (card.textContent.includes('媛앹떎 ?뺣낫')) {
             return card.textContent;
           }
         }
         return null;
       });
-      console.log(`📝 카드 텍스트: ${cardText?.substring(0, 100)}...`);
+      console.log(`?뱷 移대뱶 ?띿뒪?? ${cardText?.substring(0, 100)}...`);
       
-      // 7. 모달 상태 확인 (클릭 전)
+      // 7. 紐⑤떖 ?곹깭 ?뺤씤 (?대┃ ??
       const modalsBefore = await page.evaluate(() => {
         return document.querySelectorAll('[role="dialog"]').length;
       });
-      console.log(`🎭 클릭 전 모달 개수: ${modalsBefore}`);
+      console.log(`?렚 ?대┃ ??紐⑤떖 媛쒖닔: ${modalsBefore}`);
       
-      // 8. 카드 클릭 - 객실 정보 카드를 찾아서 클릭
+      // 8. 移대뱶 ?대┃ - 媛앹떎 ?뺣낫 移대뱶瑜?李얠븘???대┃
       await page.evaluate(() => {
         const cards = document.querySelectorAll('.cursor-pointer');
         for (let card of cards) {
-          if (card.textContent.includes('객실 정보')) {
+          if (card.textContent.includes('媛앹떎 ?뺣낫')) {
             card.click();
             return;
           }
         }
       });
-      console.log('👆 객실 카드 클릭 완료');
+      console.log('?몘 媛앹떎 移대뱶 ?대┃ ?꾨즺');
       
-      // 9. 클릭 후 모달 렌더링 대기
-      console.log('⏳ 모달 렌더링 대기 중...');
+      // 9. ?대┃ ??紐⑤떖 ?뚮뜑留??湲?
+      console.log('??紐⑤떖 ?뚮뜑留??湲?以?..');
       try {
         await page.waitForFunction(() => {
           const modals = document.querySelectorAll('[role="dialog"]');
           return modals.length > 0 && modals[0].offsetParent !== null;
         }, { timeout: 5000 });
-        console.log('✅ 모달 렌더링 완료');
+        console.log('??紐⑤떖 ?뚮뜑留??꾨즺');
       } catch (e) {
-        console.log('⚠️ 모달 렌더링 타임아웃 (계속 진행)');
+        console.log('?좑툘 紐⑤떖 ?뚮뜑留???꾩븘??(怨꾩냽 吏꾪뻾)');
       }
       
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // 10. 모달 상태 확인 (클릭 후)
+      // 10. 紐⑤떖 ?곹깭 ?뺤씤 (?대┃ ??
       const modalsAfter = await page.evaluate(() => {
         const modals = document.querySelectorAll('[role="dialog"]');
         return {
@@ -114,13 +115,13 @@ async function testModal() {
           }))
         };
       });
-      console.log(`🎭 클릭 후 모달 상태:`, modalsAfter);
+      console.log(`?렚 ?대┃ ??紐⑤떖 ?곹깭:`, modalsAfter);
       
-      // 11. 클릭 후 스크린샷
+      // 11. ?대┃ ???ㅽ겕由곗꺑
       await page.screenshot({ path: 'test-results/browser-test-02-after-click.png', fullPage: true });
-      console.log('📸 클릭 후 스크린샷 저장 완료');
+      console.log('?벝 ?대┃ ???ㅽ겕由곗꺑 ????꾨즺');
       
-      // 12. 모달이 있다면 입력 필드 확인
+      // 12. 紐⑤떖???덈떎硫??낅젰 ?꾨뱶 ?뺤씤
       if (modalsAfter.count > 0) {
         const inputFields = await page.evaluate(() => {
           const modal = document.querySelector('[role="dialog"]');
@@ -136,23 +137,23 @@ async function testModal() {
           return null;
         });
         
-        console.log(`🔤 입력 필드 정보:`, inputFields);
+        console.log(`?뵥 ?낅젰 ?꾨뱶 ?뺣낫:`, inputFields);
         
         if (inputFields && inputFields.inputs > 0) {
-          // 첫 번째 입력 필드에 테스트 입력
-          await page.type('[role="dialog"] input:first-of-type', '테스트 객실명');
+          // 泥?踰덉㎏ ?낅젰 ?꾨뱶???뚯뒪???낅젰
+          await page.type('[role="dialog"] input:first-of-type', '?뚯뒪??媛앹떎紐?);
           await new Promise(resolve => setTimeout(resolve, 1000));
           
           const inputValue = await page.$eval('[role="dialog"] input:first-of-type', el => el.value);
-          console.log(`✍️ 입력 테스트 결과: "${inputValue}"`);
+          console.log(`?랃툘 ?낅젰 ?뚯뒪??寃곌낵: "${inputValue}"`);
           
           await page.screenshot({ path: 'test-results/browser-test-03-input-test.png', fullPage: true });
-          console.log('📸 입력 테스트 스크린샷 저장 완료');
+          console.log('?벝 ?낅젰 ?뚯뒪???ㅽ겕由곗꺑 ????꾨즺');
         }
       } else {
-        console.log('❌ 모달이 열리지 않았음');
+        console.log('??紐⑤떖???대━吏 ?딆븯??);
         
-        // React 상태 디버깅
+        // React ?곹깭 ?붾쾭源?
         const reactDebug = await page.evaluate(() => {
           const body = document.body;
           return {
@@ -162,31 +163,31 @@ async function testModal() {
             overlayElements: document.querySelectorAll('*[class*="overlay"], *[class*="Overlay"]').length,
             clickableElements: document.querySelectorAll('.cursor-pointer').length,
             roomCards: Array.from(document.querySelectorAll('.cursor-pointer')).filter(card => 
-              card.textContent.includes('객실')).length
+              card.textContent.includes('媛앹떎')).length
           };
         });
-        console.log('🔍 React 디버깅 정보:', reactDebug);
+        console.log('?뵇 React ?붾쾭源??뺣낫:', reactDebug);
       }
     } else {
-      console.log('❌ 객실 카드를 찾을 수 없음');
+      console.log('??媛앹떎 移대뱶瑜?李얠쓣 ???놁쓬');
       
-      // 사용 가능한 카드들 나열
+      // ?ъ슜 媛?ν븳 移대뱶???섏뿴
       const availableCards = await page.evaluate(() => {
         const cards = document.querySelectorAll('.cursor-pointer');
         return Array.from(cards).map(card => ({
           text: card.textContent.substring(0, 100)
         }));
       });
-      console.log('📋 사용 가능한 카드들:', availableCards);
+      console.log('?뱥 ?ъ슜 媛?ν븳 移대뱶??', availableCards);
     }
     
   } catch (error) {
-    console.error('❌ 테스트 실행 중 오류:', error);
+    console.error('???뚯뒪???ㅽ뻾 以??ㅻ쪟:', error);
   } finally {
-    console.log('🏁 테스트 완료, 브라우저 닫는 중...');
+    console.log('?뢾 ?뚯뒪???꾨즺, 釉뚮씪?곗? ?ル뒗 以?..');
     await browser.close();
   }
 }
 
-// 실행
+// ?ㅽ뻾
 testModal().catch(console.error); 

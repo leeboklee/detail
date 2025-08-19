@@ -1,0 +1,132 @@
+{
+  "timestamp": "2025-07-27T19:23:00.909Z",
+  "systemInfo": {
+    "error": "Command failed: systeminfo | findstr /C:\"Total Physical Memory\" /C:\"Available Physical Memory\" /C:\"Virtual Memory\"\n"
+  },
+  "nodeProcesses": {
+    "processes": [
+      {
+        "Id": 2456,
+        "ProcessName": "node",
+        "CPU": 1.25,
+        "WorkingSet": 46358528,
+        "PrivateMemorySize": 53948416,
+        "VirtualMemorySize": 859590656
+      },
+      {
+        "Id": 21548,
+        "ProcessName": "node",
+        "CPU": 1.75,
+        "WorkingSet": 49627136,
+        "PrivateMemorySize": 53686272,
+        "VirtualMemorySize": 867717120
+      },
+      {
+        "Id": 30420,
+        "ProcessName": "node",
+        "CPU": 7.84375,
+        "WorkingSet": 65679360,
+        "PrivateMemorySize": 74256384,
+        "VirtualMemorySize": 880775168
+      },
+      {
+        "Id": 33536,
+        "ProcessName": "node",
+        "CPU": 0.453125,
+        "WorkingSet": 43728896,
+        "PrivateMemorySize": 15265792,
+        "VirtualMemorySize": 835448832
+      },
+      {
+        "Id": 37544,
+        "ProcessName": "node",
+        "CPU": 8.859375,
+        "WorkingSet": 117227520,
+        "PrivateMemorySize": 140410880,
+        "VirtualMemorySize": 964755456
+      },
+      {
+        "Id": 40852,
+        "ProcessName": "node",
+        "CPU": 0.390625,
+        "WorkingSet": 43053056,
+        "PrivateMemorySize": 14364672,
+        "VirtualMemorySize": 834400256
+      },
+      {
+        "Id": 40912,
+        "ProcessName": "node",
+        "CPU": 1.53125,
+        "WorkingSet": 60964864,
+        "PrivateMemorySize": 68210688,
+        "VirtualMemorySize": -1266421760
+      },
+      {
+        "Id": 41080,
+        "ProcessName": "node",
+        "CPU": 4.34375,
+        "WorkingSet": 52592640,
+        "PrivateMemorySize": 61751296,
+        "VirtualMemorySize": -1273778176
+      },
+      {
+        "Id": 41224,
+        "ProcessName": "node",
+        "CPU": 54.28125,
+        "WorkingSet": 369283072,
+        "PrivateMemorySize": 551145472,
+        "VirtualMemorySize": -2073722880
+      },
+      {
+        "Id": 41964,
+        "ProcessName": "node",
+        "CPU": 2.390625,
+        "WorkingSet": 66936832,
+        "PrivateMemorySize": 84643840,
+        "VirtualMemorySize": -1225265152
+      }
+    ],
+    "totalMemoryMB": 873,
+    "processCount": 10
+  },
+  "memoryOptimization": {
+    "nodeOptions": [
+      "--max-old-space-size=2048 (기본값)",
+      "--expose-gc (가비지 컬렉션 강제 실행)",
+      "--optimize-for-size (메모리 사용량 최적화)",
+      "--gc-interval=100 (가비지 컬렉션 간격 조정)"
+    ],
+    "nextjsOptimization": [
+      "SWC 컴파일러 사용 (forceSwcTransforms: true)",
+      "웹팩 캐시 활성화 (filesystem cache)",
+      "번들 최적화 (splitChunks 비활성화)",
+      "소스맵 최적화 (devtool 설정)"
+    ],
+    "codeOptimization": [
+      "React.memo 사용으로 불필요한 리렌더링 방지",
+      "useMemo, useCallback으로 메모이제이션",
+      "동적 임포트로 코드 스플리팅",
+      "이미지 최적화 및 압축"
+    ]
+  },
+  "recommendations": {
+    "immediate": [
+      "메모리 사용량이 높은 컴포넌트 최적화",
+      "불필요한 상태 업데이트 제거",
+      "대용량 데이터 처리 시 페이지네이션 적용",
+      "이미지 lazy loading 구현"
+    ],
+    "longTerm": [
+      "서버 사이드 렌더링 (SSR) 고려",
+      "정적 사이트 생성 (SSG) 적용",
+      "CDN 사용으로 정적 자산 최적화",
+      "데이터베이스 쿼리 최적화"
+    ],
+    "monitoring": [
+      "메모리 사용량 모니터링 도구 설치",
+      "성능 메트릭 수집 및 분석",
+      "정기적인 메모리 누수 검사",
+      "자동화된 성능 테스트 구현"
+    ]
+  }
+}

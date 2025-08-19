@@ -1,14 +1,15 @@
+﻿import React from 'react';
 const { chromium } = require('playwright');
 
 async function testBrowser() {
-  console.log('🚀 브라우저 테스트 시작...');
+  console.log('?? 釉뚮씪?곗? ?뚯뒪???쒖옉...');
   
   let browser = null;
   let context = null;
   let page = null;
   
   try {
-    // 브라우저 실행
+    // 釉뚮씪?곗? ?ㅽ뻾
     browser = await chromium.launch({ 
       headless: false,
       args: ['--no-sandbox', '--disable-dev-shm-usage']
@@ -20,77 +21,77 @@ async function testBrowser() {
     
     page = await context.newPage();
     
-    // 콘솔 로그 캐치
+    // 肄섏넄 濡쒓렇 罹먯튂
     page.on('console', msg => {
-      console.log(`🖥️ 콘솔: ${msg.type()}: ${msg.text()}`);
+      console.log(`?뼢截?肄섏넄: ${msg.type()}: ${msg.text()}`);
     });
     
-    // 에러 캐치
+    // ?먮윭 罹먯튂
     page.on('pageerror', error => {
-      console.log(`❌ 페이지 에러: ${error.message}`);
+      console.log(`???섏씠吏 ?먮윭: ${error.message}`);
     });
     
-    // 네트워크 요청 모니터링
+    // ?ㅽ듃?뚰겕 ?붿껌 紐⑤땲?곕쭅
     page.on('request', request => {
-      console.log(`📡 요청: ${request.method()} ${request.url()}`);
+      console.log(`?뱻 ?붿껌: ${request.method()} ${request.url()}`);
     });
     
     page.on('response', response => {
-      console.log(`📨 응답: ${response.status()} ${response.url()}`);
+      console.log(`?벂 ?묐떟: ${response.status()} ${response.url()}`);
     });
     
-    console.log('🌐 localhost: {process.env.PORT || 34343}로 이동 중...');
+    console.log('?뙋 localhost: {process.env.PORT || 3900}濡??대룞 以?..');
     
-    // 페이지 로드 (타임아웃 설정)
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { 
+    // ?섏씠吏 濡쒕뱶 (??꾩븘???ㅼ젙)
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { 
       waitUntil: 'networkidle',
       timeout: 30000 
     });
     
-    console.log('✅ 페이지 로드 완료');
+    console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
     
-    // 페이지 제목 확인
+    // ?섏씠吏 ?쒕ぉ ?뺤씤
     const title = await page.title();
-    console.log(`📄 페이지 제목: ${title}`);
+    console.log(`?뱞 ?섏씠吏 ?쒕ぉ: ${title}`);
     
-    // DOM 기본 요소들 확인
+    // DOM 湲곕낯 ?붿냼???뺤씤
     const bodyText = await page.textContent('body');
-    console.log(`📝 페이지 내용 (첫 200자): ${bodyText?.substring(0, 200)}...`);
+    console.log(`?뱷 ?섏씠吏 ?댁슜 (泥?200??: ${bodyText?.substring(0, 200)}...`);
     
-    // React 앱이 로드되었는지 확인
+    // React ?깆씠 濡쒕뱶?섏뿀?붿? ?뺤씤
     const reactElements = await page.locator('[data-reactroot], #__next, .App').count();
-    console.log(`⚛️ React 요소 감지: ${reactElements}개`);
+    console.log(`?쏉툘 React ?붿냼 媛먯?: ${reactElements}媛?);
     
-    // 주요 섹션들 확인
+    // 二쇱슂 ?뱀뀡???뺤씤
     const sections = await page.locator('section, .section, [class*="section"]').count();
-    console.log(`📑 섹션 요소: ${sections}개`);
+    console.log(`?뱫 ?뱀뀡 ?붿냼: ${sections}媛?);
     
-    // 입력 필드들 확인
+    // ?낅젰 ?꾨뱶???뺤씤
     const inputs = await page.locator('input, textarea, select').count();
-    console.log(`📝 입력 필드: ${inputs}개`);
+    console.log(`?뱷 ?낅젰 ?꾨뱶: ${inputs}媛?);
     
-    // 버튼들 확인
+    // 踰꾪듉???뺤씤
     const buttons = await page.locator('button, [role="button"]').count();
-    console.log(`🔘 버튼: ${buttons}개`);
+    console.log(`?뵖 踰꾪듉: ${buttons}媛?);
     
-    // 스크린샷 저장
+    // ?ㅽ겕由곗꺑 ???
     await page.screenshot({ path: 'debug-browser-test.png', fullPage: true });
-    console.log('📸 스크린샷 저장 완료: debug-browser-test.png');
+    console.log('?벝 ?ㅽ겕由곗꺑 ????꾨즺: debug-browser-test.png');
     
-    // 잠시 대기 (페이지 확인용)
-    console.log('⏳ 5초간 페이지 유지...');
+    // ?좎떆 ?湲?(?섏씠吏 ?뺤씤??
+    console.log('??5珥덇컙 ?섏씠吏 ?좎?...');
     await page.waitForTimeout(5000);
     
   } catch (error) {
-    console.log(`❌ 브라우저 테스트 실패: ${error.message}`);
-    console.log(`📊 스택 트레이스:`, error.stack);
+    console.log(`??釉뚮씪?곗? ?뚯뒪???ㅽ뙣: ${error.message}`);
+    console.log(`?뱤 ?ㅽ깮 ?몃젅?댁뒪:`, error.stack);
   } finally {
     if (browser) {
       await browser.close();
-      console.log('🔚 브라우저 종료');
+      console.log('?뵚 釉뚮씪?곗? 醫낅즺');
     }
   }
 }
 
-// 테스트 실행
+// ?뚯뒪???ㅽ뻾
 testBrowser().catch(console.error); 

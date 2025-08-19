@@ -1,24 +1,23 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
-// 테스트에 사용될 기본 데이터 구조
+// ?뚯뒪?몄뿉 ?ъ슜??湲곕낯 ?곗씠??援ъ“
 const createInitialData = () => ({
   hotel: {
     id: null, name: '', address: '', description: '', phone: '',
     checkin_time: '15:00', checkout_time: '11:00', imageUrl: ''
   },
   rooms: [{
-    name: '스탠다드', type: '더블', structure: '원룸', bedType: '킹', view: '시티',
-    standardCapacity: 2, maxCapacity: 2, description: '기본 객실', image: '', amenities: [], price: '0'
+    name: '?ㅽ깲?ㅻ뱶', type: '?붾툝', structure: '?먮８', bedType: '??, view: '?쒗떚',
+    standardCapacity: 2, maxCapacity: 2, description: '湲곕낯 媛앹떎', image: '', amenities: [], price: '0'
   }],
   facilities: { general: [], business: [], leisure: [], dining: [] },
   packages: [],
   period: {}, cancel: {}, pricing: {}, booking: {}, notices: [], charges: {}, checkin: {}
 });
 
-test.describe('종합 템플릿 관리 DB 연동 테스트 (API 최적화)', () => {
+test.describe('醫낇빀 ?쒗뵆由?愿由?DB ?곕룞 ?뚯뒪??(API 理쒖쟻??', () => {
 
-  // 각 테스트 실행 전 데이터베이스 초기화
-  test.beforeEach(async ({ page }) => {
+  // 媛??뚯뒪???ㅽ뻾 ???곗씠?곕쿋?댁뒪 珥덇린??  test.beforeEach(async ({ page }) => {
     console.log('Initializing database...');
     const response = await page.request.post('/api/init-db');
     await expect(response.ok()).toBeTruthy();
@@ -30,86 +29,86 @@ test.describe('종합 템플릿 관리 DB 연동 테스트 (API 최적화)', () 
     console.log('Database connection is warm.');
   });
 
-  test('템플릿 생성, 저장, 로드, 수정 및 검증', async ({ page }) => {
+  test('?쒗뵆由??앹꽦, ??? 濡쒕뱶, ?섏젙 諛?寃利?, async ({ page }) => {
     
-    // --- API를 통한 테스트 데이터 사전 생성 ---
-    console.log('1. API를 통해 "룸온리"와 "조식PKG" 템플릿을 사전 생성합니다.');
+    // --- API瑜??듯븳 ?뚯뒪???곗씠???ъ쟾 ?앹꽦 ---
+    console.log('1. API瑜??듯빐 "猷몄삩由?? "議곗떇PKG" ?쒗뵆由우쓣 ?ъ쟾 ?앹꽦?⑸땲??');
     
-    // "룸온리" 데이터 생성
+    // "猷몄삩由? ?곗씠???앹꽦
     const roomOnlyData = createInitialData();
-    roomOnlyData.hotel.name = '룸온리';
+    roomOnlyData.hotel.name = '猷몄삩由?;
     roomOnlyData.rooms[0].price = '200000';
     roomOnlyData.rooms[0].standardCapacity = 2;
 
     await page.request.post('/api/hotels/save-all', { data: roomOnlyData });
 
-    // "조식PKG" 데이터 생성
+    // "議곗떇PKG" ?곗씠???앹꽦
     const breakfastPkgData = createInitialData();
-    breakfastPkgData.hotel.name = '조식PKG';
+    breakfastPkgData.hotel.name = '議곗떇PKG';
     breakfastPkgData.rooms[0].price = '250000';
     breakfastPkgData.rooms[0].standardCapacity = 2;
     
     await page.request.post('/api/hotels/save-all', { data: breakfastPkgData });
 
-    // 1. 페이지 접속 및 새로고침으로 데이터 로드 보장
+    // 1. ?섏씠吏 ?묒냽 諛??덈줈怨좎묠?쇰줈 ?곗씠??濡쒕뱶 蹂댁옣
     await page.goto('/');
     await new Promise(resolve => setTimeout(resolve, 1000));
     await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('body')).toBeVisible({ timeout: 60000 });
 
-    // --- 템플릿 목록 확인 ---
-    console.log('2. 템플릿 목록에서 사전 생성된 템플릿들을 확인합니다.');
+    // --- ?쒗뵆由?紐⑸줉 ?뺤씤 ---
+    console.log('2. ?쒗뵆由?紐⑸줉?먯꽌 ?ъ쟾 ?앹꽦???쒗뵆由용뱾???뺤씤?⑸땲??');
     
-    // 2. '템플릿 목록' 탭으로 이동
-    await page.getByRole('tab', { name: '템플릿 목록' }).click();
+    // 2. '?쒗뵆由?紐⑸줉' ??쑝濡??대룞
+    await page.getByRole('tab', { name: '?쒗뵆由?紐⑸줉' }).click();
     
-    // 3. "룸온리"와 "조식PKG"가 목록에 있는지 확인
-    await expect(page.locator('div:has-text("룸온리")').first()).toBeVisible({ timeout: 30000 });
-    await expect(page.locator('div:has-text("조식PKG")').first()).toBeVisible({ timeout: 30000 });
+    // 3. "猷몄삩由?? "議곗떇PKG"媛 紐⑸줉???덈뒗吏 ?뺤씤
+    await expect(page.locator('div:has-text("猷몄삩由?)').first()).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('div:has-text("議곗떇PKG")').first()).toBeVisible({ timeout: 30000 });
 
-    // --- "룸온리" 템플릿 불러오기 및 수정 ---
-    console.log('3. "룸온리" 템플릿을 불러와 수정하고 새로 저장합니다.');
+    // --- "猷몄삩由? ?쒗뵆由?遺덈윭?ㅺ린 諛??섏젙 ---
+    console.log('3. "猷몄삩由? ?쒗뵆由우쓣 遺덈윭? ?섏젙?섍퀬 ?덈줈 ??ν빀?덈떎.');
     
-    await page.locator('div.flex:has-text("룸온리")').getByRole('button', { name: '불러오기' }).click();
-    await expect(page.locator('div[role="alert"]:has-text("로드 완료")')).toBeVisible({ timeout: 10000 });
+    await page.locator('div.flex:has-text("猷몄삩由?)').getByRole('button', { name: '遺덈윭?ㅺ린' }).click();
+    await expect(page.locator('div[role="alert"]:has-text("濡쒕뱶 ?꾨즺")')).toBeVisible({ timeout: 10000 });
 
-    await page.getByRole('tab', { name: '호텔 정보' }).click();
-    await expect(page.getByPlaceholder('호텔/업체 이름을 입력하세요')).toHaveValue('룸온리');
-    await page.getByRole('tab', { name: '객실 정보 (통합)' }).click();
+    await page.getByRole('tab', { name: '?명뀛 ?뺣낫' }).click();
+    await expect(page.getByPlaceholder('?명뀛/?낆껜 ?대쫫???낅젰?섏꽭??)).toHaveValue('猷몄삩由?);
+    await page.getByRole('tab', { name: '媛앹떎 ?뺣낫 (?듯빀)' }).click();
     await expect(page.locator('input[name="price"]').first()).toHaveValue('200000');
 
-    await page.getByRole('tab', { name: '호텔 정보' }).click();
-    await page.getByPlaceholder('호텔/업체 이름을 입력하세요').fill('룸온리_가격수정');
-    await page.getByRole('tab', { name: '객실 정보 (통합)' }).click();
+    await page.getByRole('tab', { name: '?명뀛 ?뺣낫' }).click();
+    await page.getByPlaceholder('?명뀛/?낆껜 ?대쫫???낅젰?섏꽭??).fill('猷몄삩由?媛寃⑹닔??);
+    await page.getByRole('tab', { name: '媛앹떎 ?뺣낫 (?듯빀)' }).click();
     await page.locator('input[name="price"]').first().fill('210000');
-    await page.getByRole('button', { name: '전체 저장' }).click();
-    await expect(page.locator('div[role="alert"]:has-text("성공적으로 저장되었습니다")')).toBeVisible({ timeout: 10000 });
+    await page.getByRole('button', { name: '?꾩껜 ??? }).click();
+    await expect(page.locator('div[role="alert"]:has-text("?깃났?곸쑝濡???λ릺?덉뒿?덈떎")')).toBeVisible({ timeout: 10000 });
 
-    // --- "조식PKG" 템플릿 불러오기 및 수정 ---
-    console.log('4. "조식PKG" 템플릿을 불러와 수정합니다.');
+    // --- "議곗떇PKG" ?쒗뵆由?遺덈윭?ㅺ린 諛??섏젙 ---
+    console.log('4. "議곗떇PKG" ?쒗뵆由우쓣 遺덈윭? ?섏젙?⑸땲??');
     
-    await page.getByRole('tab', { name: '템플릿 목록' }).click();
-    await page.locator('div.flex:has-text("조식PKG")').getByRole('button', { name: '불러오기' }).click();
-    await expect(page.locator('div[role="alert"]:has-text("로드 완료")')).toBeVisible({ timeout: 10000 });
+    await page.getByRole('tab', { name: '?쒗뵆由?紐⑸줉' }).click();
+    await page.locator('div.flex:has-text("議곗떇PKG")').getByRole('button', { name: '遺덈윭?ㅺ린' }).click();
+    await expect(page.locator('div[role="alert"]:has-text("濡쒕뱶 ?꾨즺")')).toBeVisible({ timeout: 10000 });
 
-    await page.getByRole('tab', { name: '객실 정보 (통합)' }).click();
+    await page.getByRole('tab', { name: '媛앹떎 ?뺣낫 (?듯빀)' }).click();
     await expect(page.locator('input[name="standardCapacity"]').first()).toHaveValue('2');
     
-    console.log('기준 인원을 2 -> 3으로 수정합니다.');
+    console.log('湲곗? ?몄썝??2 -> 3?쇰줈 ?섏젙?⑸땲??');
     await page.locator('input[name="standardCapacity"]').first().fill('3');
     
-    await page.getByRole('tab', { name: '호텔 정보' }).click();
-    await page.getByPlaceholder('호텔/업체 이름을 입력하세요').fill('조식PKG_3인');
-    await page.getByRole('button', { name: '전체 저장' }).click();
-    await expect(page.locator('div[role="alert"]:has-text("성공적으로 저장되었습니다")')).toBeVisible({ timeout: 10000 });
+    await page.getByRole('tab', { name: '?명뀛 ?뺣낫' }).click();
+    await page.getByPlaceholder('?명뀛/?낆껜 ?대쫫???낅젰?섏꽭??).fill('議곗떇PKG_3??);
+    await page.getByRole('button', { name: '?꾩껜 ??? }).click();
+    await expect(page.locator('div[role="alert"]:has-text("?깃났?곸쑝濡???λ릺?덉뒿?덈떎")')).toBeVisible({ timeout: 10000 });
 
-    // --- 최종 확인 ---
-    console.log('5. 최종적으로 모든 템플릿이 목록에 있는지 확인합니다.');
-    await page.getByRole('tab', { name: '템플릿 목록' }).click();
-    await expect(page.locator('div:has-text("룸온리_가격수정")').first()).toBeVisible({ timeout: 30000 });
-    await expect(page.locator('div:has-text("조식PKG_3인")').first()).toBeVisible({ timeout: 30000 });
+    // --- 理쒖쥌 ?뺤씤 ---
+    console.log('5. 理쒖쥌?곸쑝濡?紐⑤뱺 ?쒗뵆由우씠 紐⑸줉???덈뒗吏 ?뺤씤?⑸땲??');
+    await page.getByRole('tab', { name: '?쒗뵆由?紐⑸줉' }).click();
+    await expect(page.locator('div:has-text("猷몄삩由?媛寃⑹닔??)').first()).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('div:has-text("議곗떇PKG_3??)').first()).toBeVisible({ timeout: 30000 });
 
-    console.log('✅ 종합 템플릿 관리 DB 연동 테스트가 성공적으로 완료되었습니다.');
+    console.log('??醫낇빀 ?쒗뵆由?愿由?DB ?곕룞 ?뚯뒪?멸? ?깃났?곸쑝濡??꾨즺?섏뿀?듬땲??');
   });
 }); 
 

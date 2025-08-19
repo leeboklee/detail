@@ -1,32 +1,30 @@
-const { test, expect } = require('@playwright/test');
+﻿import { test, expect } from '@playwright/test';
 
-test.describe.skip('호텔 관리 페이지 버튼 테스트', () => {
+test.describe.skip('?명뀛 愿由??섏씠吏 踰꾪듉 ?뚯뒪??, () => {
   test.beforeEach(async ({ page }) => {
-    // 페이지 이동
-    await page.goto('http://localhost: {process.env.PORT || 34343}');
+    // ?섏씠吏 ?대룞
+    await page.goto(`http://localhost:${process.env.PORT || 3900}`);
     await page.waitForLoadState('networkidle');
     
-    // 페이지가 완전히 로드될 때까지 대기
-    await page.waitForSelector('.grid.grid-cols-2.md\\:grid-cols-3', { timeout: 180000 });
+    // ?섏씠吏媛 ?꾩쟾??濡쒕뱶???뚭퉴吏 ?湲?    await page.waitForSelector('.grid.grid-cols-2.md\\:grid-cols-3', { timeout: 180000 });
   });
 
   const tabTests = [
-    { key: 'hotel', label: '호텔 정보', icon: '🏨' },
-    { key: 'rooms', label: '객실 정보', icon: '🚪' },
-    { key: 'facilities', label: '시설 정보', icon: '🏋️' },
-    { key: 'checkin', label: '체크인/아웃', icon: '🕒' },
-    { key: 'packages', label: '패키지', icon: '🎁' },
-    { key: 'pricing', label: '요금', icon: '💰' },
-    { key: 'cancel', label: '취소규정', icon: '📜' },
-    { key: 'booking', label: '예약안내', icon: '📞' },
-    { key: 'notices', label: '공지사항', icon: '📢' },
-    { key: 'database', label: '데이터베이스', icon: '💾' }
+    { key: 'hotel', label: '?명뀛 ?뺣낫', icon: '?룳' },
+    { key: 'rooms', label: '媛앹떎 ?뺣낫', icon: '?슞' },
+    { key: 'facilities', label: '?쒖꽕 ?뺣낫', icon: '?룍截? },
+    { key: 'checkin', label: '泥댄겕???꾩썐', icon: '?븩' },
+    { key: 'packages', label: '?⑦궎吏', icon: '?럞' },
+    { key: 'pricing', label: '?붽툑', icon: '?뮥' },
+    { key: 'cancel', label: '痍⑥냼洹쒖젙', icon: '?뱶' },
+    { key: 'booking', label: '?덉빟?덈궡', icon: '?뱸' },
+    { key: 'notices', label: '怨듭??ы빆', icon: '?뱼' },
+    { key: 'database', label: '?곗씠?곕쿋?댁뒪', icon: '?뮶' }
   ];
 
-  // 각 탭 버튼 개별 테스트
-  for (const tab of tabTests) {
-    test(`${tab.label} 버튼 클릭 테스트`, async ({ page }) => {
-      console.log(`\n[Test] ${tab.label} 버튼 테스트 시작...`);
+  // 媛???踰꾪듉 媛쒕퀎 ?뚯뒪??  for (const tab of tabTests) {
+    test(`${tab.label} 踰꾪듉 ?대┃ ?뚯뒪??, async ({ page }) => {
+      console.log(`\n[Test] ${tab.label} 踰꾪듉 ?뚯뒪???쒖옉...`);
       
       const logs = [];
       page.on('console', msg => {
@@ -38,20 +36,20 @@ test.describe.skip('호텔 관리 페이지 버튼 테스트', () => {
       try {
         button = await page.locator(`text=${tab.label}`).first();
         if (await button.isVisible()) {
-          console.log(`[Success] 버튼을 텍스트로 찾음: ${tab.label}`);
+          console.log(`[Success] 踰꾪듉???띿뒪?몃줈 李얠쓬: ${tab.label}`);
         }
       } catch (e) {
-        console.log(`[Fail] 텍스트로 버튼을 찾을 수 없음: ${tab.label}`);
+        console.log(`[Fail] ?띿뒪?몃줈 踰꾪듉??李얠쓣 ???놁쓬: ${tab.label}`);
       }
       
       if (!button || !(await button.isVisible())) {
         try {
           button = await page.locator(`div:has-text("${tab.label}"):has(span:text("${tab.icon}"))`).first();
           if (await button.isVisible()) {
-            console.log(`[Success] 버튼을 아이콘과 텍스트로 찾음: ${tab.label}`);
+            console.log(`[Success] 踰꾪듉???꾩씠肄섍낵 ?띿뒪?몃줈 李얠쓬: ${tab.label}`);
           }
         } catch (e) {
-          console.log(`[Fail] 아이콘과 텍스트로 버튼을 찾을 수 없음: ${tab.label}`);
+          console.log(`[Fail] ?꾩씠肄섍낵 ?띿뒪?몃줈 踰꾪듉??李얠쓣 ???놁쓬: ${tab.label}`);
         }
       }
       
@@ -62,12 +60,12 @@ test.describe.skip('호텔 관리 페이지 버튼 테스트', () => {
             const cardText = await cards[i].textContent();
             if (cardText.includes(tab.label)) {
               button = cards[i];
-              console.log(`[Success] 버튼을 카드 인덱스로 찾음: ${tab.label} (${i}번째)`);
+              console.log(`[Success] 踰꾪듉??移대뱶 ?몃뜳?ㅻ줈 李얠쓬: ${tab.label} (${i}踰덉㎏)`);
               break;
             }
           }
         } catch (e) {
-          console.log(`[Fail] 카드로 버튼을 찾을 수 없음: ${tab.label}`);
+          console.log(`[Fail] 移대뱶濡?踰꾪듉??李얠쓣 ???놁쓬: ${tab.label}`);
         }
       }
       
@@ -76,14 +74,14 @@ test.describe.skip('호텔 관리 페이지 버튼 테스트', () => {
       await expect(button).toBeVisible();
       
       await page.evaluate(() => {
-        console.log('[Debug] 클릭 전 모달 상태:', {
+        console.log('[Debug] ?대┃ ??紐⑤떖 ?곹깭:', {
           modalElements: document.querySelectorAll('[class*="modal"]').length,
           zIndex50Elements: document.querySelectorAll('.z-50').length,
           fixedElements: document.querySelectorAll('.fixed.inset-0').length
         });
       });
       
-      console.log(`[Action] ${tab.label} 버튼 클릭 시도...`);
+      console.log(`[Action] ${tab.label} 踰꾪듉 ?대┃ ?쒕룄...`);
       await button.click();
       
       await page.waitForTimeout(1000);
@@ -91,35 +89,35 @@ test.describe.skip('호텔 관리 페이지 버튼 테스트', () => {
       const modalVisible = await page.locator('.fixed.inset-0.z-50').isVisible().catch(() => false);
       const modalContent = await page.locator('.bg-white.rounded-lg.shadow-xl').isVisible().catch(() => false);
       
-      console.log(`[Result] ${tab.label} 클릭 결과:`, {
+      console.log(`[Result] ${tab.label} ?대┃ 寃곌낵:`, {
         modalVisible,
         modalContent,
         logs: logs.slice(-5)
       });
       
       if (modalVisible && modalContent) {
-        console.log(`[Success] ${tab.label} 모달이 성공적으로 열림`);
+        console.log(`[Success] ${tab.label} 紐⑤떖???깃났?곸쑝濡??대┝`);
         
         const modalTitle = await page.locator('.text-xl.font-semibold').textContent().catch(() => '');
         expect(modalTitle).toContain(tab.label);
         
-        await page.locator('button:has-text("×")').click();
+        await page.locator('button:has-text("횞")').click();
         await page.waitForTimeout(500);
         
       } else {
-        console.log(`[Fail] ${tab.label} 모달이 열리지 않음`);
+        console.log(`[Fail] ${tab.label} 紐⑤떖???대━吏 ?딆쓬`);
       }
     });
   }
 
-  test('모든 버튼 순차 클릭 테스트', async ({ page }) => {
-    console.log('\n[Test] 전체 버튼 순차 테스트 시작...');
+  test('紐⑤뱺 踰꾪듉 ?쒖감 ?대┃ ?뚯뒪??, async ({ page }) => {
+    console.log('\n[Test] ?꾩껜 踰꾪듉 ?쒖감 ?뚯뒪???쒖옉...');
     
     const results = [];
     
     for (const tab of tabTests) {
       try {
-        console.log(`\n[Action] ${tab.label} 테스트 시도...`);
+        console.log(`\n[Action] ${tab.label} ?뚯뒪???쒕룄...`);
         
         const button = await page.locator(`text=${tab.label}`).first();
         
@@ -130,34 +128,34 @@ test.describe.skip('호텔 관리 페이지 버튼 테스트', () => {
           const modalVisible = await page.locator('.fixed.inset-0.z-50').isVisible().catch(() => false);
           
           if (modalVisible) {
-            results.push({ tab: tab.label, status: '성공' });
+            results.push({ tab: tab.label, status: '?깃났' });
             
-            await page.locator('button:has-text("×")').click();
+            await page.locator('button:has-text("횞")').click();
             await page.waitForTimeout(500);
           } else {
-            results.push({ tab: tab.label, status: '모달 안열림' });
+            results.push({ tab: tab.label, status: '紐⑤떖 ?덉뿴由? });
           }
         } else {
-          results.push({ tab: tab.label, status: '버튼 없음' });
+          results.push({ tab: tab.label, status: '踰꾪듉 ?놁쓬' });
         }
       } catch (error) {
-        results.push({ tab: tab.label, status: `에러: ${error.message}` });
+        results.push({ tab: tab.label, status: `?먮윭: ${error.message}` });
       }
     }
     
-    console.log('\n[Result] 전체 테스트 결과:');
+    console.log('\n[Result] ?꾩껜 ?뚯뒪??寃곌낵:');
     results.forEach(result => {
       console.log(`  ${result.tab}: ${result.status}`);
     });
     
-    const successCount = results.filter(r => r.status.includes('성공')).length;
+    const successCount = results.filter(r => r.status.includes('?깃났')).length;
     expect(successCount).toBeGreaterThan(0);
   });
 
-  test('미리보기 버튼 테스트', async ({ page }) => {
-    console.log('\n[Test] 미리보기 버튼 테스트..');
+  test('誘몃━蹂닿린 踰꾪듉 ?뚯뒪??, async ({ page }) => {
+    console.log('\n[Test] 誘몃━蹂닿린 踰꾪듉 ?뚯뒪??.');
     
-    const previewButton = page.locator('button:has-text("미리보기")');
+    const previewButton = page.locator('button:has-text("誘몃━蹂닿린")');
     await expect(previewButton).toBeVisible();
     
     await previewButton.click();
@@ -166,33 +164,34 @@ test.describe.skip('호텔 관리 페이지 버튼 테스트', () => {
     const previewModal = await page.locator('[role="dialog"]').isVisible().catch(() => false);
     
     if (previewModal) {
-      console.log('[Success] 미리보기 모달이 열림');
+      console.log('[Success] 誘몃━蹂닿린 紐⑤떖???대┝');
     } else {
-      console.log('[Fail] 미리보기 모달이 열리지 않음');
+      console.log('[Fail] 誘몃━蹂닿린 紐⑤떖???대━吏 ?딆쓬');
     }
   });
 
-  test('DB 저장 버튼 테스트', async ({ page }) => {
-    console.log('\n[Test] DB 저장 버튼 테스트..');
+  test('DB ???踰꾪듉 ?뚯뒪??, async ({ page }) => {
+    console.log('\n[Test] DB ???踰꾪듉 ?뚯뒪??.');
     
-    const dbButton = page.locator('button:has-text("DB 저장")');
+    const dbButton = page.locator('button:has-text("DB ???)');
     await expect(dbButton).toBeVisible();
     
     await dbButton.click();
     await page.waitForTimeout(1000);
     
-    console.log('[Success] DB 저장 버튼 클릭 완료');
+    console.log('[Success] DB ???踰꾪듉 ?대┃ ?꾨즺');
   });
 });
 
-test('미리보기 버튼 단일 테스트', async ({ page }) => {
-  await page.goto('http://localhost: {process.env.PORT || 34343}');
-  await page.waitForSelector('button:has-text("미리보기")', { timeout: 180000 });
+test('誘몃━蹂닿린 踰꾪듉 ?⑥씪 ?뚯뒪??, async ({ page }) => {
+  await page.goto(`http://localhost:${process.env.PORT || 3900}`);
+  await page.waitForSelector('button:has-text("誘몃━蹂닿린")', { timeout: 180000 });
   
-  console.log('\n[Test] 미리보기 버튼 테스트..');
+  console.log('\n[Test] 誘몃━蹂닿린 踰꾪듉 ?뚯뒪??.');
   
-  const previewButton = page.locator('button:has-text("미리보기")');
+  const previewButton = page.locator('button:has-text("誘몃━蹂닿린")');
   await expect(previewButton).toBeVisible();
+  await expect(previewButton).toHaveCSS('cursor', 'pointer');
   
   await previewButton.click();
   await page.waitForTimeout(1000);
@@ -200,10 +199,10 @@ test('미리보기 버튼 단일 테스트', async ({ page }) => {
   const previewModal = await page.locator('[role="dialog"]').isVisible().catch(() => false);
   
   if (previewModal) {
-    console.log('[Success] 미리보기 모달이 열림');
+    console.log('[Success] 誘몃━蹂닿린 紐⑤떖???대┝');
     await page.screenshot({ path: 'preview-modal-opened.png' });
   } else {
-    console.log('[Fail] 미리보기 모달이 열리지 않음');
+    console.log('[Fail] 誘몃━蹂닿린 紐⑤떖???대━吏 ?딆쓬');
     await page.screenshot({ path: 'preview-modal-failed.png' });
   }
 

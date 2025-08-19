@@ -1,35 +1,35 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 const SECTIONS_TO_TEST = [
   { 
-    label: '호텔 정보', 
-    saveButton: '💾 호텔정보 저장',
+    label: '?명뀛 ?뺣낫', 
+    saveButton: '?뮶 ?명뀛?뺣낫 ???,
     inputs: ['input[type="text"]', 'textarea']
   },
   { 
-    label: '객실 정보 (통합)', 
-    saveButton: '💾 객실정보 저장',
+    label: '媛앹떎 ?뺣낫 (?듯빀)', 
+    saveButton: '?뮶 媛앹떎?뺣낫 ???,
     inputs: ['input[type="text"]', 'input[type="number"]', 'textarea', 'select']
   },
   { 
-    label: '시설 정보', 
-    saveButton: '💾 시설정보 저장',
+    label: '?쒖꽕 ?뺣낫', 
+    saveButton: '?뮶 ?쒖꽕?뺣낫 ???,
     inputs: ['input[type="checkbox"]', 'textarea']
   },
    { 
-    label: '패키지 (통합)', 
-    saveButton: '💾 패키지 저장',
+    label: '?⑦궎吏 (?듯빀)', 
+    saveButton: '?뮶 ?⑦궎吏 ???,
     inputs: ['input[type="text"]', 'input[type="number"]', 'textarea']
   },
   { 
-    label: '추가요금 (통합)', 
-    saveButton: '💾 추가요금 저장',
+    label: '異붽??붽툑 (?듯빀)', 
+    saveButton: '?뮶 異붽??붽툑 ???,
     inputs: ['input[type="text"]', 'input[type="number"]']
   },
 ];
 
 (async () => {
-  console.log('🚀 고급 상호작용 시나리오 테스트 시작...');
+  console.log('?? 怨좉툒 ?곹샇?묒슜 ?쒕굹由ъ삤 ?뚯뒪???쒖옉...');
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
   const capturedErrors = [];
@@ -48,25 +48,25 @@ const SECTIONS_TO_TEST = [
   
   page.on('pageerror', exc => {
       const errorText = `[PAGE ERROR] ${exc.message}`;
-      console.error(`🚨 ${errorText}`);
+      console.error(`?슚 ${errorText}`);
       capturedErrors.push(errorText);
   });
 
   try {
-    console.log('🌐 페이지로 이동 중... (http://localhost: {process.env.PORT || 34343})');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle', timeout: 30000 });
-    console.log('✅ 페이지 로드 완료');
+    console.log('?뙋 ?섏씠吏濡??대룞 以?.. (http://localhost: {process.env.PORT || 3900})');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle', timeout: 30000 });
+    console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
     
     for (const section of SECTIONS_TO_TEST) {
-      console.log(`\n\n--- [시작] '${section.label}' 섹션 테스트 ---`);
+      console.log(`\n\n--- [?쒖옉] '${section.label}' ?뱀뀡 ?뚯뒪??---`);
 
-      // 1. 섹션 열기
+      // 1. ?뱀뀡 ?닿린
       await page.locator(`div:has-text("${section.label}")`).first().click();
-      console.log(`  - '${section.label}' 섹션 열기 완료.`);
+      console.log(`  - '${section.label}' ?뱀뀡 ?닿린 ?꾨즺.`);
       await page.waitForTimeout(1000);
 
-      // 2. 모든 입력란에 값 채우기
-      console.log('  - 입력란 채우기 시작...');
+      // 2. 紐⑤뱺 ?낅젰???媛?梨꾩슦湲?
+      console.log('  - ?낅젰? 梨꾩슦湲??쒖옉...');
       for (const inputType of section.inputs) {
         const inputs = await page.locator(`.modal-content ${inputType}, .fade.in ${inputType}`).all();
         for (const input of inputs) {
@@ -79,62 +79,62 @@ const SECTIONS_TO_TEST = [
                 } else if (type === 'number') {
                     await input.fill('123', { force: true });
                 } else {
-                    await input.fill('테스트 자동 입력', { force: true });
+                    await input.fill('?뚯뒪???먮룞 ?낅젰', { force: true });
                 }
             }
         }
       }
-      console.log('  - 입력란 채우기 완료.');
+      console.log('  - ?낅젰? 梨꾩슦湲??꾨즺.');
 
-      // 3. 저장 버튼 클릭
+      // 3. ???踰꾪듉 ?대┃
       page.once('dialog', async dialog => {
-        console.log(`  - Alert 메시지 확인: "${dialog.message()}"`);
+        console.log(`  - Alert 硫붿떆吏 ?뺤씤: "${dialog.message()}"`);
         await dialog.dismiss();
       });
 
-      // DEBUG: 버튼 클릭 전 모달의 HTML 구조 확인
+      // DEBUG: 踰꾪듉 ?대┃ ??紐⑤떖??HTML 援ъ“ ?뺤씤
       const modalHtml = await page.locator('.modal-content').innerHTML();
       console.log('--- MODAL HTML ---');
       console.log(modalHtml);
       console.log('--- END MODAL HTML ---');
 
       await page.locator(`button:has-text("${section.saveButton}")`).click();
-      console.log(`  - '${section.saveButton}' 저장 버튼 클릭 완료.`);
+      console.log(`  - '${section.saveButton}' ???踰꾪듉 ?대┃ ?꾨즺.`);
       await page.waitForTimeout(1500);
 
-      // 4. 모달 닫기
-      await page.locator('button:has-text("닫기"), button.btn-close').first().click();
-      console.log('  - 모달 닫기 완료.');
+      // 4. 紐⑤떖 ?リ린
+      await page.locator('button:has-text("?リ린"), button.btn-close').first().click();
+      console.log('  - 紐⑤떖 ?リ린 ?꾨즺.');
       await page.waitForTimeout(1000);
       
-      // 5. 섹션 다시 열기
+      // 5. ?뱀뀡 ?ㅼ떆 ?닿린
       await page.locator(`div:has-text("${section.label}")`).first().click();
-      console.log(`  - '${section.label}' 섹션 다시 열기 완료.`);
+      console.log(`  - '${section.label}' ?뱀뀡 ?ㅼ떆 ?닿린 ?꾨즺.`);
       await page.waitForTimeout(1000);
 
-      // 6. 입력창 다시 클릭해보기
+      // 6. ?낅젰李??ㅼ떆 ?대┃?대낫湲?
       const firstInput = page.locator(`.modal-content ${section.inputs[0]}, .fade.in ${section.inputs[0]}`).first();
       if(await firstInput.count() > 0) {
         await firstInput.click();
-        console.log('  - 다시 연 후 입력창 클릭 완료.');
+        console.log('  - ?ㅼ떆 ?????낅젰李??대┃ ?꾨즺.');
       }
       
-      await page.locator('button:has-text("닫기"), button.btn-close').first().click();
-      console.log('  - 최종 닫기 완료.');
+      await page.locator('button:has-text("?リ린"), button.btn-close').first().click();
+      console.log('  - 理쒖쥌 ?リ린 ?꾨즺.');
 
-      console.log(`--- [종료] '${section.label}' 섹션 테스트 완료 ---`);
+      console.log(`--- [醫낅즺] '${section.label}' ?뱀뀡 ?뚯뒪???꾨즺 ---`);
     }
 
   } catch (error) {
-    console.error(`❌ 테스트 중 심각한 오류 발생: ${error.message}`);
+    console.error(`???뚯뒪??以??ш컖???ㅻ쪟 諛쒖깮: ${error.message}`);
     const screenshotPath = `debug-screenshot-${Date.now()}.png`;
     await page.screenshot({ path: screenshotPath, fullPage: true });
-    console.log(`📸 오류 발생 시점의 스크린샷을 '${screenshotPath}' 파일로 저장했습니다.`);
+    console.log(`?벝 ?ㅻ쪟 諛쒖깮 ?쒖젏???ㅽ겕由곗꺑??'${screenshotPath}' ?뚯씪濡???ν뻽?듬땲??`);
     console.error(error.stack);
   } finally {
-    console.log('\n\n--- 📊 최종 테스트 결과 ---');
+    console.log('\n\n--- ?뱤 理쒖쥌 ?뚯뒪??寃곌낵 ---');
     if (capturedErrors.length > 0) {
-      console.log('🔴 총 12개의 에러가 발견되었습니다:');
+      console.log('?뵶 珥?12媛쒖쓽 ?먮윭媛 諛쒓껄?섏뿀?듬땲??');
       capturedErrors.forEach(err => {
         console.log(`- [${err.type.toUpperCase()}] ${err.text}`);
         if(err.location) {
@@ -142,9 +142,9 @@ const SECTIONS_TO_TEST = [
         }
       });
     } else {
-      console.log('🟢 테스트의 모든 시나리오에서 브라우저 에러가 발견되지 않았습니다.');
+      console.log('?윟 ?뚯뒪?몄쓽 紐⑤뱺 ?쒕굹由ъ삤?먯꽌 釉뚮씪?곗? ?먮윭媛 諛쒓껄?섏? ?딆븯?듬땲??');
     }
     await browser.close();
-    console.log('🚀 테스트 종료.');
+    console.log('?? ?뚯뒪??醫낅즺.');
   }
 })(); 

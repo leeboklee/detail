@@ -1,7 +1,7 @@
-const puppeteer = require('puppeteer');
+﻿const puppeteer = require('puppeteer');
 
 async function testOnclickDivs() {
-    console.log('🔍 onclick DIV 정확한 분석 및 테스트...');
+    console.log('?뵇 onclick DIV ?뺥솗??遺꾩꽍 諛??뚯뒪??..');
     
     const browser = await puppeteer.launch({ 
         headless: false, 
@@ -12,12 +12,12 @@ async function testOnclickDivs() {
     const page = await browser.newPage();
     
     try {
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await new Promise(resolve => setTimeout(resolve, 3000));
         
-        console.log('✅ 페이지 로드 완료');
+        console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
         
-        // 1. 모든 onclick DIV들의 정확한 정보 수집
+        // 1. 紐⑤뱺 onclick DIV?ㅼ쓽 ?뺥솗???뺣낫 ?섏쭛
         const onclickDivs = await page.evaluate(() => {
             const divs = Array.from(document.querySelectorAll('div[onclick]'));
             return divs.map((div, index) => ({
@@ -31,7 +31,7 @@ async function testOnclickDivs() {
             }));
         });
         
-        console.log('\n=== 모든 onclick DIV들 ===');
+        console.log('\n=== 紐⑤뱺 onclick DIV??===');
         onclickDivs.forEach(div => {
             console.log(`${div.index}: "${div.textContent}"`);
             console.log(`  - Class: ${div.className}`);
@@ -41,20 +41,20 @@ async function testOnclickDivs() {
             console.log('');
         });
         
-        // 2. 각 DIV를 순서대로 클릭해보기
-        console.log('\n=== DIV 클릭 테스트 ===');
+        // 2. 媛?DIV瑜??쒖꽌?濡??대┃?대낫湲?
+        console.log('\n=== DIV ?대┃ ?뚯뒪??===');
         
         for (let i = 0; i < onclickDivs.length; i++) {
             const div = onclickDivs[i];
-            console.log(`\n--- DIV ${i}: "${div.textContent}" 클릭 테스트 ---`);
+            console.log(`\n--- DIV ${i}: "${div.textContent}" ?대┃ ?뚯뒪??---`);
             
             if (!div.visible) {
-                console.log('❌ DIV가 보이지 않음');
+                console.log('??DIV媛 蹂댁씠吏 ?딆쓬');
                 continue;
             }
             
             try {
-                // DIV 클릭
+                // DIV ?대┃
                 const clicked = await page.evaluate((index) => {
                     const divs = Array.from(document.querySelectorAll('div[onclick]'));
                     if (divs[index]) {
@@ -65,28 +65,28 @@ async function testOnclickDivs() {
                 }, i);
                 
                 if (clicked) {
-                    console.log('✅ DIV 클릭 성공');
+                    console.log('??DIV ?대┃ ?깃났');
                     await new Promise(resolve => setTimeout(resolve, 1500));
                     
-                    // 클릭 후 상태 확인
+                    // ?대┃ ???곹깭 ?뺤씤
                     const afterClick = await page.evaluate(() => {
                         const modals = document.querySelectorAll('[role="dialog"], .modal, [class*="modal"]');
                         const buttons = Array.from(document.querySelectorAll('button')).filter(btn => 
                             btn.offsetParent !== null && btn.textContent.trim()
                         );
                         
-                        // 특정 ID 버튼들 확인
+                        // ?뱀젙 ID 踰꾪듉???뺤씤
                         const specificButtons = {
                             addPackageBtn: document.getElementById('addPackageBtn'),
                             addNoticeBtn: document.getElementById('addNoticeBtn'),
                             addFacilityBtn: document.getElementById('addFacilityBtn')
                         };
                         
-                        // 추가요금 관련 입력 필드들 확인
+                        // 異붽??붽툑 愿???낅젰 ?꾨뱶???뺤씤
                         const additionalFeeInputs = [
-                            ...document.querySelectorAll('input[placeholder*="주말"]'),
-                            ...document.querySelectorAll('input[placeholder*="성수기"]'),
-                            ...document.querySelectorAll('input[placeholder*="공휴일"]'),
+                            ...document.querySelectorAll('input[placeholder*="二쇰쭚"]'),
+                            ...document.querySelectorAll('input[placeholder*="?깆닔湲?]'),
+                            ...document.querySelectorAll('input[placeholder*="怨듯쑕??]'),
                             ...document.querySelectorAll('input[name*="weekend"]'),
                             ...document.querySelectorAll('input[name*="peak"]'),
                             ...document.querySelectorAll('input[name*="holiday"]')
@@ -113,17 +113,17 @@ async function testOnclickDivs() {
                         };
                     });
                     
-                    console.log(`  모달 개수: ${afterClick.modalCount}`);
-                    console.log(`  버튼 개수: ${afterClick.buttonCount}`);
-                    console.log(`  주요 버튼들: ${afterClick.buttonTexts.slice(0, 5).join(', ')}...`);
+                    console.log(`  紐⑤떖 媛쒖닔: ${afterClick.modalCount}`);
+                    console.log(`  踰꾪듉 媛쒖닔: ${afterClick.buttonCount}`);
+                    console.log(`  二쇱슂 踰꾪듉?? ${afterClick.buttonTexts.slice(0, 5).join(', ')}...`);
                     
-                    // 특정 ID 버튼들 상태
-                    console.log('  특정 ID 버튼들:');
+                    // ?뱀젙 ID 踰꾪듉???곹깭
+                    console.log('  ?뱀젙 ID 踰꾪듉??');
                     afterClick.specificButtons.forEach(btn => {
                         if (btn.found) {
-                            console.log(`    ${btn.id}: ✅ (visible: ${btn.visible}, enabled: ${btn.enabled}, text: "${btn.text}")`);
+                            console.log(`    ${btn.id}: ??(visible: ${btn.visible}, enabled: ${btn.enabled}, text: "${btn.text}")`);
                             
-                            // 찾은 버튼이 있으면 클릭해보기
+                            // 李얠? 踰꾪듉???덉쑝硫??대┃?대낫湲?
                             if (btn.visible && btn.enabled) {
                                 page.evaluate((buttonId) => {
                                     const button = document.getElementById(buttonId);
@@ -136,45 +136,45 @@ async function testOnclickDivs() {
                                         }
                                     }
                                 }, btn.id).then(() => {
-                                    console.log(`    → ${btn.id} 클릭 시도 완료`);
+                                    console.log(`    ??${btn.id} ?대┃ ?쒕룄 ?꾨즺`);
                                 });
                             }
                         } else {
-                            console.log(`    ${btn.id}: ❌ 찾을 수 없음`);
+                            console.log(`    ${btn.id}: ??李얠쓣 ???놁쓬`);
                         }
                     });
                     
-                    // 추가요금 입력 필드들
+                    // 異붽??붽툑 ?낅젰 ?꾨뱶??
                     if (afterClick.additionalFeeInputCount > 0) {
-                        console.log(`  추가요금 입력 필드 개수: ${afterClick.additionalFeeInputCount}`);
+                        console.log(`  異붽??붽툑 ?낅젰 ?꾨뱶 媛쒖닔: ${afterClick.additionalFeeInputCount}`);
                         afterClick.additionalFeeInputs.forEach(input => {
                             console.log(`    - ${input.placeholder || input.name || input.id}: "${input.value}"`);
                         });
                     }
                     
-                    // 스크린샷 저장
+                    // ?ㅽ겕由곗꺑 ???
                     await page.screenshot({ path: `onclick-div-${i}-${div.textContent.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 20)}.png` });
                     
-                    // 모달 닫기
+                    // 紐⑤떖 ?リ린
                     await page.keyboard.press('Escape');
                     await new Promise(resolve => setTimeout(resolve, 500));
                     
                 } else {
-                    console.log('❌ DIV 클릭 실패');
+                    console.log('??DIV ?대┃ ?ㅽ뙣');
                 }
                 
             } catch (error) {
-                console.log(`❌ DIV ${i} 클릭 중 오류:`, error.message);
+                console.log(`??DIV ${i} ?대┃ 以??ㅻ쪟:`, error.message);
             }
         }
         
-        console.log('\n📸 모든 스크린샷이 저장되었습니다.');
+        console.log('\n?벝 紐⑤뱺 ?ㅽ겕由곗꺑????λ릺?덉뒿?덈떎.');
         
     } catch (error) {
-        console.error('❌ onclick DIV 테스트 중 오류:', error);
+        console.error('??onclick DIV ?뚯뒪??以??ㅻ쪟:', error);
     } finally {
         await browser.close();
-        console.log('\n✅ onclick DIV 테스트 완료');
+        console.log('\n??onclick DIV ?뚯뒪???꾨즺');
     }
 }
 

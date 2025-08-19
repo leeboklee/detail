@@ -1,3 +1,4 @@
+﻿import React from 'react';
 import { test, expect } from '@playwright/test';
 
 test.describe('Comprehensive End-to-End Test (Self-Contained)', () => {
@@ -17,12 +18,11 @@ test.describe('Comprehensive End-to-End Test (Self-Contained)', () => {
     
     page.on('console', msg => {
       if (msg.type() === 'error') {
-        // 특정 라이브러리 경고 등 무시하고 싶은 에러가 있다면 여기서 필터링
-        if (msg.text().includes('some-ignorable-error')) return;
+        // ?뱀젙 ?쇱씠釉뚮윭由?寃쎄퀬 ??臾댁떆?섍퀬 ?띠? ?먮윭媛 ?덈떎硫??ш린???꾪꽣留?        if (msg.text().includes('some-ignorable-error')) return;
         console.error(`Browser console error: ${msg.text()}`);
         browserErrors.push(msg.text());
       } else {
-        // 일반 로그는 선택적으로 출력
+        // ?쇰컲 濡쒓렇???좏깮?곸쑝濡?異쒕젰
         if (msg.text().includes('Download the React DevTools')) return;
         console.log(`[Browser Console] ${msg.type().toUpperCase()}: ${msg.text()}`);
       }
@@ -30,58 +30,54 @@ test.describe('Comprehensive End-to-End Test (Self-Contained)', () => {
   });
   
   test('should create, save, load, and verify a hotel template without errors', async () => {
-    // 1. 초기 페이지 로드
+    // 1. 珥덇린 ?섏씠吏 濡쒕뱶
     const initialResponse = await page.goto('/');
-    await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기
-    await page.waitForLoadState('domcontentloaded');
+    await new Promise(resolve => setTimeout(resolve, 1000)); // 1珥??湲?    await page.waitForLoadState('domcontentloaded');
     expect(initialResponse.status()).toBe(200);
-    await expect(page.locator('h1:has-text("호텔 상세페이지 관리자")')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('h1:has-text("?명뀛 ?곸꽭?섏씠吏 愿由ъ옄")')).toBeVisible({ timeout: 30000 });
 
-    // 2. '호텔 정보' 탭으로 이동 (기본 탭이지만 명시적으로 확인)
-    const hotelInfoTab = page.locator('button[role="tab"]:has-text("호텔 정보")');
+    // 2. '?명뀛 ?뺣낫' ??쑝濡??대룞 (湲곕낯 ??씠吏留?紐낆떆?곸쑝濡??뺤씤)
+    const hotelInfoTab = page.locator('button[role="tab"]:has-text("?명뀛 ?뺣낫")');
     await hotelInfoTab.click();
     
-    // 3. 고유한 호텔 이름으로 새 템플릿 정보 입력
+    // 3. 怨좎쑀???명뀛 ?대쫫?쇰줈 ???쒗뵆由??뺣낫 ?낅젰
     console.log(`Creating new template with name: ${uniqueHotelName}`);
-    await page.locator('input[placeholder="호텔/업체 이름을 입력하세요"]').fill(uniqueHotelName);
-    await page.locator('input[placeholder="호텔의 주소를 입력하세요"]').fill('123 Test St, Test City');
+    await page.locator('input[placeholder="?명뀛/?낆껜 ?대쫫???낅젰?섏꽭??]').fill(uniqueHotelName);
+    await page.locator('input[placeholder="?명뀛??二쇱냼瑜??낅젰?섏꽭??]').fill('123 Test St, Test City');
 
-    // 4. '전체 저장' 눌러 템플릿 생성
+    // 4. '?꾩껜 ??? ?뚮윭 ?쒗뵆由??앹꽦
     console.log('Saving new template...');
     const [response] = await Promise.all([
       page.waitForResponse(res => res.url().includes('/api/hotels/save-all') && res.status() === 200),
-      page.locator('button:has-text("💾 전체 저장")').click(),
+      page.locator('button:has-text("?뮶 ?꾩껜 ???)').click(),
     ]);
     const responseBody = await response.json();
-    expect(responseBody.message).toBe('템플릿이 성공적으로 생성되었습니다');
+    expect(responseBody.message).toBe('?쒗뵆由우씠 ?깃났?곸쑝濡??앹꽦?섏뿀?듬땲??);
     console.log('Save successful. New template created.');
 
-    // 5. '템플릿 목록' 탭으로 이동
+    // 5. '?쒗뵆由?紐⑸줉' ??쑝濡??대룞
     console.log('Navigating to template list...');
-    const dbManagerTab = page.locator('button:has-text("🗂️ 템플릿 목록")');
+    const dbManagerTab = page.locator('button:has-text("?뾺截??쒗뵆由?紐⑸줉")');
     await dbManagerTab.click();
 
-    // 6. 방금 생성한 템플릿이 목록에 보일 때까지 대기
-    console.log(`Searching for template: "${uniqueHotelName}"`);
+    // 6. 諛⑷툑 ?앹꽦???쒗뵆由우씠 紐⑸줉??蹂댁씪 ?뚭퉴吏 ?湲?    console.log(`Searching for template: "${uniqueHotelName}"`);
     const newTemplateRow = page.locator('.flex.items-center.justify-between', { hasText: uniqueHotelName });
     await expect(newTemplateRow).toBeVisible({ timeout: 15000 });
     console.log('New template found in the list.');
 
-    // 7. 해당 템플릿의 '불러오기' 버튼 클릭 (Lazy-load test)
+    // 7. ?대떦 ?쒗뵆由우쓽 '遺덈윭?ㅺ린' 踰꾪듉 ?대┃ (Lazy-load test)
     console.log('Clicking "Load" button for the new template...');
-    await newTemplateRow.locator('button:has-text("불러오기")').click();
+    await newTemplateRow.locator('button:has-text("遺덈윭?ㅺ린")').click();
 
-    // 8. 데이터가 로드되었는지 검증
-    // 로드 후 '호텔 정보' 탭이 다시 활성화되고 이름이 채워져 있어야 함
-    await expect(hotelInfoTab).toHaveClass(/bg-blue-500/); // 활성 탭인지 확인
+    // 8. ?곗씠?곌? 濡쒕뱶?섏뿀?붿? 寃利?    // 濡쒕뱶 ??'?명뀛 ?뺣낫' ??씠 ?ㅼ떆 ?쒖꽦?붾릺怨??대쫫??梨꾩썙???덉뼱????    await expect(hotelInfoTab).toHaveClass(/bg-blue-500/); // ?쒖꽦 ??씤吏 ?뺤씤
     
     console.log('Verifying data was loaded correctly...');
-    const hotelNameInput = page.locator('input[placeholder="호텔/업체 이름을 입력하세요"]');
+    const hotelNameInput = page.locator('input[placeholder="?명뀛/?낆껜 ?대쫫???낅젰?섏꽭??]');
     await expect(hotelNameInput).toHaveValue(uniqueHotelName, { timeout: 10000 });
     
-    console.log('✅ Comprehensive test passed: Create, Save, Load, and Verify flow is working.');
+    console.log('??Comprehensive test passed: Create, Save, Load, and Verify flow is working.');
 
-    // 최종적으로 브라우저 에러가 없었는지 확인
+    // 理쒖쥌?곸쑝濡?釉뚮씪?곗? ?먮윭媛 ?놁뿀?붿? ?뺤씤
     expect(browserErrors).toHaveLength(0, `Browser console should have no errors, but found: \n${browserErrors.join('\n')}`);
   });
 }); 

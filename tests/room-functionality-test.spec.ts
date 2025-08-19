@@ -1,96 +1,96 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
-test.describe('객실 ?�보 ?�체 기능 ?�스??, () => {
-  test('객실 추�? ???�력 ???�???�체 ?�로???�스??, async ({ page }) => {
-    console.log('?���?객실 ?�보 ?�체 기능 ?�스???�작');
+test.describe('媛앹떎 ?占쎈낫 ?占쎌껜 湲곕뒫 ?占쎌뒪??, () => {
+  test('媛앹떎 異뷂옙? ???占쎈젰 ???占???占쎌껜 ?占쎈줈???占쎌뒪??, async ({ page }) => {
+    console.log('?占쏙옙占?媛앹떎 ?占쎈낫 ?占쎌껜 湲곕뒫 ?占쎌뒪???占쎌옉');
     
-    // ?�이지 로드
-    await page.goto('http://localhost:9002');
+    // ?占쎌씠吏 濡쒕뱶
+    await page.goto('http://localhost:3900');
     await page.waitForLoadState('networkidle');
     
-    console.log('?�� ?�이지 로드 ?�료');
+    console.log('?占쏙옙 ?占쎌씠吏 濡쒕뱶 ?占쎈즺');
     
-    // 객실 ?�보 ?�션 ?�기
-    console.log('?�� 객실 ?�보 ?�션 버튼 찾기...');
-    const roomSectionButton = page.locator('button:has-text("?���?객실 ?�보")');
+    // 媛앹떎 ?占쎈낫 ?占쎌뀡 ?占쎄린
+    console.log('?占쏙옙 媛앹떎 ?占쎈낫 ?占쎌뀡 踰꾪듉 李얘린...');
+    const roomSectionButton = page.locator('button:has-text("?占쏙옙占?媛앹떎 ?占쎈낫")');
     await expect(roomSectionButton).toBeVisible();
     await roomSectionButton.click();
     await page.waitForTimeout(1000);
     
-    console.log('??객실 ?�보 ?�션 ?�림');
+    console.log('??媛앹떎 ?占쎈낫 ?占쎌뀡 ?占쎈┝');
     
-    // ?�재 객실 개수 ?�인
+    // ?占쎌옱 媛앹떎 媛쒖닔 ?占쎌씤
     const roomItems = await page.locator('.border.rounded-lg.p-4.bg-gray-50').count();
-    console.log(`?�� ?�재 객실 개수: ${roomItems}�?);
+    console.log(`?占쏙옙 ?占쎌옱 媛앹떎 媛쒖닔: ${roomItems}占?);
     
-    // 객실 추�? 버튼 ?�릭
-    console.log('??객실 추�? 버튼 ?�릭...');
-    const addRoomButton = page.locator('button:has-text("객실 추�?")');
+    // 媛앹떎 異뷂옙? 踰꾪듉 ?占쎈┃
+    console.log('??媛앹떎 異뷂옙? 踰꾪듉 ?占쎈┃...');
+    const addRoomButton = page.locator('button:has-text("媛앹떎 異뷂옙?")');
     await expect(addRoomButton).toBeVisible();
     await addRoomButton.click();
     await page.waitForTimeout(500);
     
-    // 추�? ??객실 개수 ?�인
+    // 異뷂옙? ??媛앹떎 媛쒖닔 ?占쎌씤
     const newRoomItems = await page.locator('.border.rounded-lg.p-4.bg-gray-50').count();
-    console.log(`?�� 추�? ??객실 개수: ${newRoomItems}�?);
+    console.log(`?占쏙옙 異뷂옙? ??媛앹떎 媛쒖닔: ${newRoomItems}占?);
     
     if (newRoomItems > roomItems) {
-      console.log('??객실 추�? ?�공');
+      console.log('??媛앹떎 異뷂옙? ?占쎄났');
     } else {
-      console.log('??객실 추�? ?�패');
+      console.log('??媛앹떎 異뷂옙? ?占쏀뙣');
     }
     
-    // ?�로 추�???객실(마�?�?객실)???�보 ?�력
-    console.log('?�️ 객실 ?�보 ?�력 ?�작...');
+    // ?占쎈줈 異뷂옙???媛앹떎(留덌옙?占?媛앹떎)???占쎈낫 ?占쎈젰
+    console.log('?占쏙툘 媛앹떎 ?占쎈낫 ?占쎈젰 ?占쎌옉...');
     
     const lastRoomIndex = newRoomItems - 1;
     const lastRoom = page.locator('.border.rounded-lg.p-4.bg-gray-50').nth(lastRoomIndex);
     
-    // 객실 ?�름 ?�력
-    const roomNameInput = lastRoom.locator('input[placeholder*="객실 ?�름"]').first();
-    await roomNameInput.fill('?�스??객실');
-    console.log('??객실 ?�름 ?�력: ?�스??객실');
+    // 媛앹떎 ?占쎈쫫 ?占쎈젰
+    const roomNameInput = lastRoom.locator('input[placeholder*="媛앹떎 ?占쎈쫫"]').first();
+    await roomNameInput.fill('?占쎌뒪??媛앹떎');
+    console.log('??媛앹떎 ?占쎈쫫 ?占쎈젰: ?占쎌뒪??媛앹떎');
     
-    // 객실 ?�???�력
-    const roomTypeInput = lastRoom.locator('input[placeholder*="객실 ?�??]').first();
-    await roomTypeInput.fill('?�럭??);
-    console.log('??객실 ?�???�력: ?�럭??);
+    // 媛앹떎 ?占???占쎈젰
+    const roomTypeInput = lastRoom.locator('input[placeholder*="媛앹떎 ?占??]').first();
+    await roomTypeInput.fill('?占쎈윮??);
+    console.log('??媛앹떎 ?占???占쎈젰: ?占쎈윮??);
     
-    // 구조 ?�력
-    const structureInput = lastRoom.locator('input[placeholder*="구조"]').first();
-    await structureInput.fill('?�룸??);
-    console.log('??구조 ?�력: ?�룸??);
+    // 援ъ“ ?占쎈젰
+    const structureInput = lastRoom.locator('input[placeholder*="援ъ“"]').first();
+    await structureInput.fill('?占쎈８??);
+    console.log('??援ъ“ ?占쎈젰: ?占쎈８??);
     
-    // 침�? ?�???�력
-    const bedTypeInput = lastRoom.locator('input[placeholder*="침�?"]').first();
-    await bedTypeInput.fill('?�사?�즈');
-    console.log('??침�? ?�???�력: ?�사?�즈');
+    // 移⑨옙? ?占???占쎈젰
+    const bedTypeInput = lastRoom.locator('input[placeholder*="移⑨옙?"]').first();
+    await bedTypeInput.fill('?占쎌궗?占쎌쫰');
+    console.log('??移⑨옙? ?占???占쎈젰: ?占쎌궗?占쎌쫰');
     
-    // ?�망 ?�력
-    const viewInput = lastRoom.locator('input[placeholder*="?�망"]').first();
-    await viewInput.fill('?�티�?);
-    console.log('???�망 ?�력: ?�티�?);
+    // ?占쎈쭩 ?占쎈젰
+    const viewInput = lastRoom.locator('input[placeholder*="?占쎈쭩"]').first();
+    await viewInput.fill('?占쏀떚占?);
+    console.log('???占쎈쭩 ?占쎈젰: ?占쏀떚占?);
     
-    // 기�? ?�원 ?�력
-    const standardCapacityInput = lastRoom.locator('input[placeholder*="기�? ?�원"]').first();
+    // 湲곤옙? ?占쎌썝 ?占쎈젰
+    const standardCapacityInput = lastRoom.locator('input[placeholder*="湲곤옙? ?占쎌썝"]').first();
     await standardCapacityInput.fill('2');
-    console.log('??기�? ?�원 ?�력: 2');
+    console.log('??湲곤옙? ?占쎌썝 ?占쎈젰: 2');
     
-    // 최�? ?�원 ?�력
-    const maxCapacityInput = lastRoom.locator('input[placeholder*="최�? ?�원"]').first();
+    // 理쒙옙? ?占쎌썝 ?占쎈젰
+    const maxCapacityInput = lastRoom.locator('input[placeholder*="理쒙옙? ?占쎌썝"]').first();
     await maxCapacityInput.fill('4');
-    console.log('??최�? ?�원 ?�력: 4');
+    console.log('??理쒙옙? ?占쎌썝 ?占쎈젰: 4');
     
-    // 객실 ?�명 ?�력
-    const descriptionTextarea = lastRoom.locator('textarea[placeholder*="?�명"]').first();
-    await descriptionTextarea.fill('?�고 쾌적???�스??객실?�니??');
-    console.log('??객실 ?�명 ?�력 ?�료');
+    // 媛앹떎 ?占쎈챸 ?占쎈젰
+    const descriptionTextarea = lastRoom.locator('textarea[placeholder*="?占쎈챸"]').first();
+    await descriptionTextarea.fill('?占쎄퀬 苡뚯쟻???占쎌뒪??媛앹떎?占쎈땲??');
+    console.log('??媛앹떎 ?占쎈챸 ?占쎈젰 ?占쎈즺');
     
-    // ?�력 ?�료 ???�시 ?��?(debounce 처리 ?�해)
+    // ?占쎈젰 ?占쎈즺 ???占쎌떆 ?占쏙옙?(debounce 泥섎━ ?占쏀빐)
     await page.waitForTimeout(1000);
     
-    // ?�력??값들???��?�??�?�되?�는지 ?�인
-    console.log('?�� ?�력 �??�인 �?..');
+    // ?占쎈젰??媛믩뱾???占쏙옙?占??占?占쎈릺?占쎈뒗吏 ?占쎌씤
+    console.log('?占쏙옙 ?占쎈젰 占??占쎌씤 占?..');
     
     const nameValue = await roomNameInput.inputValue();
     const typeValue = await roomTypeInput.inputValue();
@@ -101,95 +101,95 @@ test.describe('객실 ?�보 ?�체 기능 ?�스??, () => {
     const maxValue = await maxCapacityInput.inputValue();
     const descValue = await descriptionTextarea.inputValue();
     
-    console.log('?�� ?�력??값들:');
-    console.log(`- 객실 ?�름: ${nameValue}`);
-    console.log(`- 객실 ?�?? ${typeValue}`);
-    console.log(`- 구조: ${structureValue}`);
-    console.log(`- 침�? ?�?? ${bedValue}`);
-    console.log(`- ?�망: ${viewValue}`);
-    console.log(`- 기�? ?�원: ${standardValue}`);
-    console.log(`- 최�? ?�원: ${maxValue}`);
-    console.log(`- ?�명: ${descValue}`);
+    console.log('?占쏙옙 ?占쎈젰??媛믩뱾:');
+    console.log(`- 媛앹떎 ?占쎈쫫: ${nameValue}`);
+    console.log(`- 媛앹떎 ?占?? ${typeValue}`);
+    console.log(`- 援ъ“: ${structureValue}`);
+    console.log(`- 移⑨옙? ?占?? ${bedValue}`);
+    console.log(`- ?占쎈쭩: ${viewValue}`);
+    console.log(`- 湲곤옙? ?占쎌썝: ${standardValue}`);
+    console.log(`- 理쒙옙? ?占쎌썝: ${maxValue}`);
+    console.log(`- ?占쎈챸: ${descValue}`);
     
-    // 모든 값이 ?�바르게 ?�력?�었?��? 검�?
+    // 紐⑤뱺 媛믪씠 ?占쎈컮瑜닿쾶 ?占쎈젰?占쎌뿀?占쏙옙? 寃占?
     const allInputsValid = 
-      nameValue === '?�스??객실' &&
-      typeValue === '?�럭?? &&
-      structureValue === '?�룸?? &&
-      bedValue === '?�사?�즈' &&
-      viewValue === '?�티�? &&
+      nameValue === '?占쎌뒪??媛앹떎' &&
+      typeValue === '?占쎈윮?? &&
+      structureValue === '?占쎈８?? &&
+      bedValue === '?占쎌궗?占쎌쫰' &&
+      viewValue === '?占쏀떚占? &&
       standardValue === '2' &&
       maxValue === '4' &&
-      descValue === '?�고 쾌적???�스??객실?�니??';
+      descValue === '?占쎄퀬 苡뚯쟻???占쎌뒪??媛앹떎?占쎈땲??';
     
     if (allInputsValid) {
-      console.log('??모든 ?�력 값이 ?�바르게 ?�?�됨');
+      console.log('??紐⑤뱺 ?占쎈젰 媛믪씠 ?占쎈컮瑜닿쾶 ?占?占쎈맖');
     } else {
-      console.log('???��? ?�력 값이 ?�?�되지 ?�음');
+      console.log('???占쏙옙? ?占쎈젰 媛믪씠 ?占?占쎈릺吏 ?占쎌쓬');
     }
     
-    // ?�이지 ?�로고침 ???�이???��? ?�인
-    console.log('?�� ?�이지 ?�로고침 ???�이???��? ?�인...');
+    // ?占쎌씠吏 ?占쎈줈怨좎묠 ???占쎌씠???占쏙옙? ?占쎌씤
+    console.log('?占쏙옙 ?占쎌씠吏 ?占쎈줈怨좎묠 ???占쎌씠???占쏙옙? ?占쎌씤...');
     await page.reload();
     await page.waitForLoadState('networkidle');
     
-    // ?�시 객실 ?�보 ?�션 ?�기
-    const roomSectionButton2 = page.locator('button:has-text("?���?객실 ?�보")');
+    // ?占쎌떆 媛앹떎 ?占쎈낫 ?占쎌뀡 ?占쎄린
+    const roomSectionButton2 = page.locator('button:has-text("?占쏙옙占?媛앹떎 ?占쎈낫")');
     await roomSectionButton2.click();
     await page.waitForTimeout(1000);
     
-    // ?�로고침 ??객실 개수 ?�인
+    // ?占쎈줈怨좎묠 ??媛앹떎 媛쒖닔 ?占쎌씤
     const reloadedRoomItems = await page.locator('.border.rounded-lg.p-4.bg-gray-50').count();
-    console.log(`?�� ?�로고침 ??객실 개수: ${reloadedRoomItems}�?);
+    console.log(`?占쏙옙 ?占쎈줈怨좎묠 ??媛앹떎 媛쒖닔: ${reloadedRoomItems}占?);
     
     if (reloadedRoomItems === newRoomItems) {
-      console.log('???�로고침 ?�에??객실 개수 ?��???);
+      console.log('???占쎈줈怨좎묠 ?占쎌뿉??媛앹떎 媛쒖닔 ?占쏙옙???);
       
-      // 마�?�?객실???�이?��? ?��??�었?��? ?�인
+      // 留덌옙?占?媛앹떎???占쎌씠?占쏙옙? ?占쏙옙??占쎌뿀?占쏙옙? ?占쎌씤
       const lastRoomAfterReload = page.locator('.border.rounded-lg.p-4.bg-gray-50').nth(reloadedRoomItems - 1);
-      const nameAfterReload = await lastRoomAfterReload.locator('input[placeholder*="객실 ?�름"]').first().inputValue();
-      const typeAfterReload = await lastRoomAfterReload.locator('input[placeholder*="객실 ?�??]').first().inputValue();
+      const nameAfterReload = await lastRoomAfterReload.locator('input[placeholder*="媛앹떎 ?占쎈쫫"]').first().inputValue();
+      const typeAfterReload = await lastRoomAfterReload.locator('input[placeholder*="媛앹떎 ?占??]').first().inputValue();
       
-      console.log(`?�� ?�로고침 ???�이??`);
-      console.log(`- 객실 ?�름: ${nameAfterReload}`);
-      console.log(`- 객실 ?�?? ${typeAfterReload}`);
+      console.log(`?占쏙옙 ?占쎈줈怨좎묠 ???占쎌씠??`);
+      console.log(`- 媛앹떎 ?占쎈쫫: ${nameAfterReload}`);
+      console.log(`- 媛앹떎 ?占?? ${typeAfterReload}`);
       
-      if (nameAfterReload === '?�스??객실' && typeAfterReload === '?�럭??) {
-        console.log('???�로고침 ?�에???�력 ?�이?��? ?��???);
+      if (nameAfterReload === '?占쎌뒪??媛앹떎' && typeAfterReload === '?占쎈윮??) {
+        console.log('???占쎈줈怨좎묠 ?占쎌뿉???占쎈젰 ?占쎌씠?占쏙옙? ?占쏙옙???);
       } else {
-        console.log('???�로고침 ???�력 ?�이?��? ?�라�?);
+        console.log('???占쎈줈怨좎묠 ???占쎈젰 ?占쎌씠?占쏙옙? ?占쎈씪占?);
       }
     } else {
-      console.log('???�로고침 ??객실 개수가 변경됨');
+      console.log('???占쎈줈怨좎묠 ??媛앹떎 媛쒖닔媛 蹂寃쎈맖');
     }
     
-    // 객실 ??�� ?�스??
-    console.log('?���?객실 ??�� ?�스??..');
+    // 媛앹떎 ??占쏙옙 ?占쎌뒪??
+    console.log('?占쏙옙占?媛앹떎 ??占쏙옙 ?占쎌뒪??..');
     if (reloadedRoomItems > 1) {
-      const deleteButton = page.locator('button:has-text("??��")').first();
+      const deleteButton = page.locator('button:has-text("??占쏙옙")').first();
       if (await deleteButton.isVisible()) {
         await deleteButton.click();
         await page.waitForTimeout(500);
         
         const afterDeleteCount = await page.locator('.border.rounded-lg.p-4.bg-gray-50').count();
-        console.log(`?�� ??�� ??객실 개수: ${afterDeleteCount}�?);
+        console.log(`?占쏙옙 ??占쏙옙 ??媛앹떎 媛쒖닔: ${afterDeleteCount}占?);
         
         if (afterDeleteCount === reloadedRoomItems - 1) {
-          console.log('??객실 ??�� ?�공');
+          console.log('??媛앹떎 ??占쏙옙 ?占쎄났');
         } else {
-          console.log('??객실 ??�� ?�패');
+          console.log('??媛앹떎 ??占쏙옙 ?占쏀뙣');
         }
       } else {
-        console.log('?�️ ??�� 버튼??찾을 ???�음');
+        console.log('?占쏙툘 ??占쏙옙 踰꾪듉??李얠쓣 ???占쎌쓬');
       }
     } else {
-      console.log('?�️ ??��??객실???�음 (최소 1�??��?)');
+      console.log('?占쏙툘 ??占쏙옙??媛앹떎???占쎌쓬 (理쒖냼 1占??占쏙옙?)');
     }
     
-    // 최종 결과 ?�크린샷
+    // 理쒖쥌 寃곌낵 ?占쏀겕由곗꺑
     await page.screenshot({ path: 'tests/screenshots/room-functionality-test-result.png' });
-    console.log('?�� ?�스??결과 ?�크린샷 ?�?�됨');
+    console.log('?占쏙옙 ?占쎌뒪??寃곌낵 ?占쏀겕由곗꺑 ?占?占쎈맖');
     
-    console.log('?�� 객실 ?�보 ?�체 기능 ?�스???�료');
+    console.log('?占쏙옙 媛앹떎 ?占쎈낫 ?占쎌껜 湲곕뒫 ?占쎌뒪???占쎈즺');
   });
 }); 

@@ -1,20 +1,20 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
-// 대기 함수
+// ?湲??⑥닔
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// 실제 필드 찾기 함수
+// ?ㅼ젣 ?꾨뱶 李얘린 ?⑥닔
 async function findActualFields(page) {
-    console.log('🔍 실제 입력 필드 찾기...');
+    console.log('?뵇 ?ㅼ젣 ?낅젰 ?꾨뱶 李얘린...');
     
-    // 모든 입력 필드 찾기
+    // 紐⑤뱺 ?낅젰 ?꾨뱶 李얘린
     const inputs = await page.locator('input').all();
     const textareas = await page.locator('textarea').all();
     const selects = await page.locator('select').all();
     
-    console.log(`📝 입력 필드 발견: input(${inputs.length}), textarea(${textareas.length}), select(${selects.length})`);
+    console.log(`?뱷 ?낅젰 ?꾨뱶 諛쒓껄: input(${inputs.length}), textarea(${textareas.length}), select(${selects.length})`);
     
-    // 각 필드의 정보 출력
+    // 媛??꾨뱶???뺣낫 異쒕젰
     for (let i = 0; i < inputs.length; i++) {
         try {
             const input = inputs[i];
@@ -26,7 +26,7 @@ async function findActualFields(page) {
             
             console.log(`  Input ${i + 1}: name="${name}", id="${id}", type="${type}", placeholder="${placeholder}", value="${value}"`);
         } catch (error) {
-            console.log(`  Input ${i + 1}: 정보 읽기 실패`);
+            console.log(`  Input ${i + 1}: ?뺣낫 ?쎄린 ?ㅽ뙣`);
         }
     }
     
@@ -40,17 +40,17 @@ async function findActualFields(page) {
             
             console.log(`  Textarea ${i + 1}: name="${name}", id="${id}", placeholder="${placeholder}", value="${value}"`);
         } catch (error) {
-            console.log(`  Textarea ${i + 1}: 정보 읽기 실패`);
+            console.log(`  Textarea ${i + 1}: ?뺣낫 ?쎄린 ?ㅽ뙣`);
         }
     }
 }
 
-// 버튼 찾기 함수
+// 踰꾪듉 李얘린 ?⑥닔
 async function findButtons(page) {
-    console.log('🔍 버튼 찾기...');
+    console.log('?뵇 踰꾪듉 李얘린...');
     
     const buttons = await page.locator('button').all();
-    console.log(`🔲 버튼 발견: ${buttons.length}개`);
+    console.log(`?뵴 踰꾪듉 諛쒓껄: ${buttons.length}媛?);
     
     for (let i = 0; i < buttons.length; i++) {
         try {
@@ -61,7 +61,7 @@ async function findButtons(page) {
             
             console.log(`  Button ${i + 1}: text="${text}", disabled=${disabled}, class="${className}"`);
         } catch (error) {
-            console.log(`  Button ${i + 1}: 정보 읽기 실패`);
+            console.log(`  Button ${i + 1}: ?뺣낫 ?쎄린 ?ㅽ뙣`);
         }
     }
 }
@@ -75,32 +75,32 @@ async function findButtons(page) {
     const page = await browser.newPage();
     
     try {
-        console.log('🚀 모든 섹션 수동 확인 시작...');
+        console.log('?? 紐⑤뱺 ?뱀뀡 ?섎룞 ?뺤씤 ?쒖옉...');
         
-        // 페이지 로드
-        await page.goto('http://localhost: {process.env.PORT || 34343}');
+        // ?섏씠吏 濡쒕뱶
+        await page.goto('http://localhost: {process.env.PORT || 3900}');
         await page.waitForLoadState('networkidle');
         await wait(3000);
         
-        console.log('✅ 페이지 로드 완료');
+        console.log('???섏씠吏 濡쒕뱶 ?꾨즺');
         
-        // 섹션 카드들 찾기
+        // ?뱀뀡 移대뱶??李얘린
         const sections = [
-            { name: '호텔 정보', text: '🏠호텔 정보' },
-            { name: '객실 정보', text: '👥객실 정보' },
-            { name: '시설 정보', text: '⚙️시설 정보' },
-            { name: '패키지', text: '📄패키지' },
-            { name: '추가요금', text: '💰추가요금' },
-            { name: '취소규정', text: '🛡️취소규정' },
-            { name: '예약안내', text: '💾예약안내' },
-            { name: '공지사항', text: '📄공지사항' }
+            { name: '?명뀛 ?뺣낫', text: '?룧?명뀛 ?뺣낫' },
+            { name: '媛앹떎 ?뺣낫', text: '?뫁媛앹떎 ?뺣낫' },
+            { name: '?쒖꽕 ?뺣낫', text: '?숋툘?쒖꽕 ?뺣낫' },
+            { name: '?⑦궎吏', text: '?뱞?⑦궎吏' },
+            { name: '異붽??붽툑', text: '?뮥異붽??붽툑' },
+            { name: '痍⑥냼洹쒖젙', text: '?썳截륁랬?뚭퇋?? },
+            { name: '?덉빟?덈궡', text: '?뮶?덉빟?덈궡' },
+            { name: '怨듭??ы빆', text: '?뱞怨듭??ы빆' }
         ];
         
         for (const section of sections) {
-            console.log(`\n🔍 === [${section.name}] 섹션 확인 ===`);
+            console.log(`\n?뵇 === [${section.name}] ?뱀뀡 ?뺤씤 ===`);
             
             try {
-                // 섹션 카드 찾기
+                // ?뱀뀡 移대뱶 李얘린
                 const cards = await page.locator('div.cursor-pointer').all();
                 let targetCard = null;
                 
@@ -108,54 +108,54 @@ async function findButtons(page) {
                     const text = await card.textContent();
                     if (text.includes(section.text)) {
                         targetCard = card;
-                        console.log(`✅ ${section.name} 카드 발견: "${text}"`);
+                        console.log(`??${section.name} 移대뱶 諛쒓껄: "${text}"`);
                         break;
                     }
                 }
                 
                 if (!targetCard) {
-                    console.log(`❌ ${section.name} 카드를 찾을 수 없습니다`);
+                    console.log(`??${section.name} 移대뱶瑜?李얠쓣 ???놁뒿?덈떎`);
                     continue;
                 }
                 
-                // 카드 클릭
-                console.log(`🖱️ ${section.name} 카드 클릭...`);
+                // 移대뱶 ?대┃
+                console.log(`?뼮截?${section.name} 移대뱶 ?대┃...`);
                 await targetCard.click();
                 await wait(2000);
                 
-                // 모달 확인
+                // 紐⑤떖 ?뺤씤
                 const modal = await page.locator('.modal-content, [role="dialog"], .fixed').first();
                 if (await modal.isVisible()) {
-                    console.log(`✅ ${section.name} 모달 열림 확인`);
+                    console.log(`??${section.name} 紐⑤떖 ?대┝ ?뺤씤`);
                     
-                    // 필드 찾기
+                    // ?꾨뱶 李얘린
                     await findActualFields(page);
                     
-                    // 버튼 찾기
+                    // 踰꾪듉 李얘린
                     await findButtons(page);
                     
-                    // 입력 테스트 (첫 번째 입력 필드에 테스트 값 입력)
-                    console.log(`✏️ ${section.name} 입력 테스트...`);
+                    // ?낅젰 ?뚯뒪??(泥?踰덉㎏ ?낅젰 ?꾨뱶???뚯뒪??媛??낅젰)
+                    console.log(`?륅툘 ${section.name} ?낅젰 ?뚯뒪??..`);
                     const firstInput = await page.locator('input:visible').first();
                     if (await firstInput.isVisible()) {
-                        await firstInput.fill(`테스트 ${section.name} 값`);
-                        console.log(`✅ 첫 번째 입력 필드에 값 입력 완료`);
+                        await firstInput.fill(`?뚯뒪??${section.name} 媛?);
+                        console.log(`??泥?踰덉㎏ ?낅젰 ?꾨뱶??媛??낅젰 ?꾨즺`);
                         
-                        // 값 확인
+                        // 媛??뺤씤
                         const inputValue = await firstInput.inputValue();
-                        console.log(`📝 입력된 값: "${inputValue}"`);
+                        console.log(`?뱷 ?낅젰??媛? "${inputValue}"`);
                     }
                     
-                    // 저장 버튼 찾기 및 클릭
-                    console.log(`💾 ${section.name} 저장 버튼 찾기...`);
+                    // ???踰꾪듉 李얘린 諛??대┃
+                    console.log(`?뮶 ${section.name} ???踰꾪듉 李얘린...`);
                     const saveButtons = await page.locator('button').all();
                     let saveButton = null;
                     
                     for (const button of saveButtons) {
                         const text = await button.textContent();
-                        if (text.includes('저장') || text.includes('적용') || text.includes('확인')) {
+                        if (text.includes('???) || text.includes('?곸슜') || text.includes('?뺤씤')) {
                             saveButton = button;
-                            console.log(`✅ 저장 버튼 발견: "${text}"`);
+                            console.log(`?????踰꾪듉 諛쒓껄: "${text}"`);
                             break;
                         }
                     }
@@ -163,19 +163,19 @@ async function findButtons(page) {
                     if (saveButton) {
                         await saveButton.click();
                         await wait(2000);
-                        console.log(`✅ ${section.name} 저장 버튼 클릭 완료`);
+                        console.log(`??${section.name} ???踰꾪듉 ?대┃ ?꾨즺`);
                     }
                     
-                    // 모달 닫기
-                    console.log(`❌ ${section.name} 모달 닫기...`);
+                    // 紐⑤떖 ?リ린
+                    console.log(`??${section.name} 紐⑤떖 ?リ린...`);
                     const closeButtons = await page.locator('button').all();
                     let closeButton = null;
                     
                     for (const button of closeButtons) {
                         const text = await button.textContent();
-                        if (text.includes('×') || text.includes('닫기') || text.includes('취소')) {
+                        if (text.includes('횞') || text.includes('?リ린') || text.includes('痍⑥냼')) {
                             closeButton = button;
-                            console.log(`✅ 닫기 버튼 발견: "${text}"`);
+                            console.log(`???リ린 踰꾪듉 諛쒓껄: "${text}"`);
                             break;
                         }
                     }
@@ -183,16 +183,16 @@ async function findButtons(page) {
                     if (closeButton) {
                         await closeButton.click();
                         await wait(1000);
-                        console.log(`✅ ${section.name} 모달 닫기 완료`);
+                        console.log(`??${section.name} 紐⑤떖 ?リ린 ?꾨즺`);
                     } else {
-                        // ESC 키로 닫기 시도
+                        // ESC ?ㅻ줈 ?リ린 ?쒕룄
                         await page.keyboard.press('Escape');
                         await wait(1000);
-                        console.log(`✅ ${section.name} ESC로 모달 닫기 시도`);
+                        console.log(`??${section.name} ESC濡?紐⑤떖 ?リ린 ?쒕룄`);
                     }
                     
-                    // 다시 열어서 값 확인
-                    console.log(`🔄 ${section.name} 다시 열어서 값 확인...`);
+                    // ?ㅼ떆 ?댁뼱??媛??뺤씤
+                    console.log(`?봽 ${section.name} ?ㅼ떆 ?댁뼱??媛??뺤씤...`);
                     await wait(2000);
                     await targetCard.click();
                     await wait(2000);
@@ -200,42 +200,42 @@ async function findButtons(page) {
                     const reopenedInput = await page.locator('input:visible').first();
                     if (await reopenedInput.isVisible()) {
                         const savedValue = await reopenedInput.inputValue();
-                        console.log(`📝 저장된 값: "${savedValue}"`);
+                        console.log(`?뱷 ??λ맂 媛? "${savedValue}"`);
                         
-                        if (savedValue.includes(`테스트 ${section.name} 값`)) {
-                            console.log(`✅ ${section.name} 값이 올바르게 저장되었습니다!`);
+                        if (savedValue.includes(`?뚯뒪??${section.name} 媛?)) {
+                            console.log(`??${section.name} 媛믪씠 ?щ컮瑜닿쾶 ??λ릺?덉뒿?덈떎!`);
                         } else {
-                            console.log(`⚠️ ${section.name} 값이 저장되지 않았거나 변경되었습니다`);
+                            console.log(`?좑툘 ${section.name} 媛믪씠 ??λ릺吏 ?딆븯嫄곕굹 蹂寃쎈릺?덉뒿?덈떎`);
                         }
                     }
                     
-                    // 모달 다시 닫기
+                    // 紐⑤떖 ?ㅼ떆 ?リ린
                     await page.keyboard.press('Escape');
                     await wait(1000);
                     
                 } else {
-                    console.log(`❌ ${section.name} 모달이 열리지 않았습니다`);
+                    console.log(`??${section.name} 紐⑤떖???대━吏 ?딆븯?듬땲??);
                 }
                 
             } catch (error) {
-                console.log(`❌ ${section.name} 테스트 실패: ${error.message}`);
+                console.log(`??${section.name} ?뚯뒪???ㅽ뙣: ${error.message}`);
             }
             
-            // 섹션 간 대기
+            // ?뱀뀡 媛??湲?
             await wait(2000);
         }
         
-        console.log('\n🎉 모든 섹션 확인 완료!');
+        console.log('\n?럦 紐⑤뱺 ?뱀뀡 ?뺤씤 ?꾨즺!');
         
-        // 브라우저 유지 (수동 확인을 위해)
-        console.log('\n⏳ 브라우저를 열어둡니다. 수동으로 확인해보세요...');
-        console.log('확인이 끝나면 브라우저를 닫아주세요.');
+        // 釉뚮씪?곗? ?좎? (?섎룞 ?뺤씤???꾪빐)
+        console.log('\n??釉뚮씪?곗?瑜??댁뼱?〓땲?? ?섎룞?쇰줈 ?뺤씤?대낫?몄슂...');
+        console.log('?뺤씤???앸굹硫?釉뚮씪?곗?瑜??レ븘二쇱꽭??');
         
-        // 브라우저 닫기 대기
-        await page.waitForTimeout(300000); // 5분 대기
+        // 釉뚮씪?곗? ?リ린 ?湲?
+        await page.waitForTimeout(300000); // 5遺??湲?
         
     } catch (error) {
-        console.error('❌ 테스트 실행 중 오류:', error);
+        console.error('???뚯뒪???ㅽ뻾 以??ㅻ쪟:', error);
     } finally {
         await browser.close();
     }

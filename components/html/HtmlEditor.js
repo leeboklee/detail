@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, memo } from 'react';
-import { Button, Textarea, Card, CardBody, CardHeader, CardFooter, Divider } from '@heroui/react';
+import { Button, Textarea, Card, CardBody, CardHeader, CardFooter, Divider } from "@heroui/react";
 
 /**
  * HTML 에디터 컴포넌트
@@ -29,6 +29,7 @@ const HtmlEditor = memo(({ initialHtml = '', onSave }) => {
   const openExternalEditor = useCallback(() => {
     // HTML 코드를 인코딩하여 URL 파라미터로 전달
     const encodedHtml = encodeURIComponent(htmlCode);
+    // 새 탭에서 열기
     window.open(`https://url.kr/p/html-editor/?code=${encodedHtml}`, '_blank');
   }, [htmlCode]);
 

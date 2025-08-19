@@ -273,8 +273,8 @@ ${testResults.map(r => `${r.status === 'success' ? '✅' : '❌'} ${r.name}: ${r
                     
                     testResults.push({name: 'HTML 생성', status: 'success', message: `${result.size}자, ${result.url}`});
                     
-                    // 새 창에서 미리보기 열기
-                    window.open(result.url, '_blank');
+                    // 현재 창에서 미리보기 열기
+                    window.location.href = result.url;
                 } else {
                     log(`❌ HTML 생성 실패: ${result.message}`, 'error');
                     testResults.push({name: 'HTML 생성', status: 'error', message: result.message});
@@ -287,8 +287,8 @@ ${testResults.map(r => `${r.status === 'success' ? '✅' : '❌'} ${r.name}: ${r
         }
 
         function openMainApp() {
-            log('🚀 메인 앱을 새 창에서 열고 있습니다...', 'info');
-            window.open('http://localhost:9002', '_blank');
+            log('🚀 메인 앱을 현재 창에서 열고 있습니다...', 'info');
+            window.location.href = 'http://localhost:9002';
         }
 
         // 페이지 로드 시 초기화

@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -7,25 +7,25 @@ async function testImprovedSave() {
   const page = await browser.newPage();
   
   try {
-    console.log('📄 페이지 로드...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle' });
+    console.log('?뱞 ?섏씠吏 濡쒕뱶...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle' });
     await delay(3000);
     
-    // 콘솔 로그 수집
+    // 肄섏넄 濡쒓렇 ?섏쭛
     const logs = [];
     page.on('console', msg => {
-      if (msg.text().includes('저장') || msg.text().includes('API') || msg.text().includes('호텔')) {
+      if (msg.text().includes('???) || msg.text().includes('API') || msg.text().includes('?명뀛')) {
         logs.push(`${new Date().toISOString()} ${msg.type()}: ${msg.text()}`);
       }
     });
     
-    // alert 대화상자 처리
+    // alert ??붿긽??泥섎━
     page.on('dialog', async dialog => {
-      console.log('🚨 Alert 메시지:', dialog.message());
+      console.log('?슚 Alert 硫붿떆吏:', dialog.message());
       await dialog.accept();
     });
     
-    // 네트워크 요청 모니터링
+    // ?ㅽ듃?뚰겕 ?붿껌 紐⑤땲?곕쭅
     const responses = [];
     page.on('response', response => {
       if (response.url().includes('/api/')) {
@@ -38,12 +38,12 @@ async function testImprovedSave() {
       }
     });
     
-    console.log('🏨 호텔 정보 모달 열기...');
+    console.log('?룳 ?명뀛 ?뺣낫 紐⑤떖 ?닿린...');
     
-    // 호텔 정보 카드 클릭
+    // ?명뀛 ?뺣낫 移대뱶 ?대┃
     await page.evaluate(() => {
       const elements = Array.from(document.querySelectorAll('*')).filter(el => 
-        el.textContent && el.textContent.includes('호텔 정보') && 
+        el.textContent && el.textContent.includes('?명뀛 ?뺣낫') && 
         (el.tagName === 'DIV' || el.tagName === 'BUTTON' || el.tagName === 'SPAN')
       );
       
@@ -70,46 +70,46 @@ async function testImprovedSave() {
     
     await delay(2000);
     
-    console.log('✅ 호텔 정보 모달 열림');
+    console.log('???명뀛 ?뺣낫 紐⑤떖 ?대┝');
     
-    // 호텔 정보 입력
-    console.log('📝 호텔 정보 입력...');
+    // ?명뀛 ?뺣낫 ?낅젰
+    console.log('?뱷 ?명뀛 ?뺣낫 ?낅젰...');
     
-    const testName = `개선된 테스트 호텔 ${Date.now()}`;
+    const testName = `媛쒖꽑???뚯뒪???명뀛 ${Date.now()}`;
     
-    // 호텔명 입력
+    // ?명뀛紐??낅젰
     const nameInput = await page.locator('input[name="name"]').first();
     if (await nameInput.isVisible()) {
       await nameInput.fill(testName);
-      console.log('✅ 호텔명 입력 완료:', testName);
+      console.log('???명뀛紐??낅젰 ?꾨즺:', testName);
     }
     
-    // 주소 입력
+    // 二쇱냼 ?낅젰
     const addressInput = await page.locator('input[name="address"]').first();
     if (await addressInput.isVisible()) {
-      await addressInput.fill('서울시 강남구 개선된 테스트로 456');
-      console.log('✅ 주소 입력 완료');
+      await addressInput.fill('?쒖슱??媛뺣궓援?媛쒖꽑???뚯뒪?몃줈 456');
+      console.log('??二쇱냼 ?낅젰 ?꾨즺');
     }
     
-    // 설명 입력
+    // ?ㅻ챸 ?낅젰
     const descInput = await page.locator('textarea[name="description"]').first();
     if (await descInput.isVisible()) {
-      await descInput.fill('개선된 자동 테스트로 생성된 호텔입니다.');
-      console.log('✅ 설명 입력 완료');
+      await descInput.fill('媛쒖꽑???먮룞 ?뚯뒪?몃줈 ?앹꽦???명뀛?낅땲??');
+      console.log('???ㅻ챸 ?낅젰 ?꾨즺');
     }
     
     await delay(1000);
     
-    console.log('💾 개선된 호텔정보 저장 버튼 클릭...');
+    console.log('?뮶 媛쒖꽑???명뀛?뺣낫 ???踰꾪듉 ?대┃...');
     
-    // 새로운 저장 버튼 클릭
+    // ?덈줈?????踰꾪듉 ?대┃
     const saveResult = await page.evaluate(() => {
       const saveButtons = Array.from(document.querySelectorAll('button')).filter(btn => 
-        btn.textContent.includes('호텔정보 저장') || 
-        btn.textContent.includes('💾 호텔정보 저장')
+        btn.textContent.includes('?명뀛?뺣낫 ???) || 
+        btn.textContent.includes('?뮶 ?명뀛?뺣낫 ???)
       );
       
-      console.log('찾은 호텔정보 저장 버튼:', saveButtons.map(btn => btn.textContent));
+      console.log('李얠? ?명뀛?뺣낫 ???踰꾪듉:', saveButtons.map(btn => btn.textContent));
       
       if (saveButtons.length > 0) {
         const saveButton = saveButtons[0];
@@ -120,30 +120,30 @@ async function testImprovedSave() {
           saveButton.click();
           return { success: true, buttonText: saveButton.textContent };
         } else {
-          return { success: false, reason: '버튼이 보이지 않음' };
+          return { success: false, reason: '踰꾪듉??蹂댁씠吏 ?딆쓬' };
         }
       }
-      return { success: false, reason: '호텔정보 저장 버튼을 찾을 수 없음' };
+      return { success: false, reason: '?명뀛?뺣낫 ???踰꾪듉??李얠쓣 ???놁쓬' };
     });
     
     if (saveResult.success) {
-      console.log(`✅ 호텔정보 저장 버튼 클릭 성공: ${saveResult.buttonText}`);
+      console.log(`???명뀛?뺣낫 ???踰꾪듉 ?대┃ ?깃났: ${saveResult.buttonText}`);
     } else {
-      console.log(`❌ 호텔정보 저장 버튼 클릭 실패: ${saveResult.reason}`);
+      console.log(`???명뀛?뺣낫 ???踰꾪듉 ?대┃ ?ㅽ뙣: ${saveResult.reason}`);
     }
     
-    // 15초 대기 (저장 처리 및 alert 확인)
+    // 15珥??湲?(???泥섎━ 諛?alert ?뺤씤)
     await delay(15000);
     
-    // 저장 메시지 확인
+    // ???硫붿떆吏 ?뺤씤
     const saveMessage = await page.evaluate(() => {
       const messageElements = Array.from(document.querySelectorAll('*')).filter(el => 
         el.textContent && (
-          el.textContent.includes('저장되었습니다') || 
-          el.textContent.includes('저장 성공') ||
-          el.textContent.includes('저장 완료') ||
-          el.textContent.includes('성공적으로 저장') ||
-          el.textContent.includes('✅')
+          el.textContent.includes('??λ릺?덉뒿?덈떎') || 
+          el.textContent.includes('????깃났') ||
+          el.textContent.includes('????꾨즺') ||
+          el.textContent.includes('?깃났?곸쑝濡????) ||
+          el.textContent.includes('??)
         )
       );
       
@@ -151,30 +151,30 @@ async function testImprovedSave() {
     });
     
     if (saveMessage) {
-      console.log(`✅ 호텔정보 저장 완료: ${saveMessage}`);
+      console.log(`???명뀛?뺣낫 ????꾨즺: ${saveMessage}`);
     } else {
-      console.log('⚠️ 호텔정보 저장 메시지 확인 안됨');
+      console.log('?좑툘 ?명뀛?뺣낫 ???硫붿떆吏 ?뺤씤 ?덈맖');
     }
     
-    console.log('\n📋 중요 콘솔 로그:');
+    console.log('\n?뱥 以묒슂 肄섏넄 濡쒓렇:');
     logs.forEach(log => console.log(log));
     
-    console.log('\n🌐 API 요청:');
+    console.log('\n?뙋 API ?붿껌:');
     responses.forEach(req => {
       console.log(`${req.timestamp} ${req.method} ${req.url} - ${req.status}`);
     });
     
-    // 결과 요약
+    // 寃곌낵 ?붿빟
     const postRequests = responses.filter(r => r.method === 'POST');
-    console.log(`\n📊 결과 요약:`);
-    console.log(`- 저장 버튼 클릭: ${saveResult.success ? '✅ 성공' : '❌ 실패'}`);
-    console.log(`- POST 요청 발생: ${postRequests.length > 0 ? '✅ 성공' : '❌ 실패'} (${postRequests.length}개)`);
-    console.log(`- 저장 메시지: ${saveMessage ? '✅ 확인됨' : '⚠️ 확인 안됨'}`);
+    console.log(`\n?뱤 寃곌낵 ?붿빟:`);
+    console.log(`- ???踰꾪듉 ?대┃: ${saveResult.success ? '???깃났' : '???ㅽ뙣'}`);
+    console.log(`- POST ?붿껌 諛쒖깮: ${postRequests.length > 0 ? '???깃났' : '???ㅽ뙣'} (${postRequests.length}媛?`);
+    console.log(`- ???硫붿떆吏: ${saveMessage ? '???뺤씤?? : '?좑툘 ?뺤씤 ?덈맖'}`);
     
     await delay(2000);
     
   } catch (error) {
-    console.error('❌ 테스트 중 오류:', error);
+    console.error('???뚯뒪??以??ㅻ쪟:', error);
   } finally {
     await browser.close();
   }

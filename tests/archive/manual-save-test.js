@@ -1,53 +1,53 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function testSaveFunction() {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
   
   try {
-    console.log('📄 페이지 로드...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle' });
+    console.log('?뱞 ?섏씠吏 濡쒕뱶...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle' });
     await page.waitForTimeout(3000);
     
-    console.log('🧪 호텔 정보 저장 테스트...');
+    console.log('?㎦ ?명뀛 ?뺣낫 ????뚯뒪??..');
     
-    // 호텔 정보 클릭
+    // ?명뀛 ?뺣낫 ?대┃
     await page.click('[data-section="hotel"]');
     await page.waitForTimeout(2000);
     
-    // 호텔 정보 입력
-    await page.fill('input[name="name"]', '테스트 호텔');
-    await page.fill('input[name="address"]', '서울시 강남구');
-    await page.fill('textarea[name="description"]', '테스트 설명');
+    // ?명뀛 ?뺣낫 ?낅젰
+    await page.fill('input[name="name"]', '?뚯뒪???명뀛');
+    await page.fill('input[name="address"]', '?쒖슱??媛뺣궓援?);
+    await page.fill('textarea[name="description"]', '?뚯뒪???ㅻ챸');
     
-    console.log('💾 저장 버튼 클릭...');
+    console.log('?뮶 ???踰꾪듉 ?대┃...');
     
-    // 콘솔 로그 수집
+    // 肄섏넄 濡쒓렇 ?섏쭛
     const logs = [];
     page.on('console', msg => {
       logs.push(`${msg.type()}: ${msg.text()}`);
     });
     
-    // 저장 버튼 클릭
-    await page.click('button:has-text("🗄️ DB 저장")');
+    // ???踰꾪듉 ?대┃
+    await page.click('button:has-text("?뾼截?DB ???)');
     
-    // 3초 대기
+    // 3珥??湲?
     await page.waitForTimeout(3000);
     
-    console.log('\n📋 콘솔 로그:');
+    console.log('\n?뱥 肄섏넄 濡쒓렇:');
     logs.forEach(log => console.log(log));
     
-    // 메시지 확인
-    const message = await page.locator('div:has-text("저장")').first().textContent().catch(() => null);
-    console.log('📝 저장 메시지:', message);
+    // 硫붿떆吏 ?뺤씤
+    const message = await page.locator('div:has-text("???)').first().textContent().catch(() => null);
+    console.log('?뱷 ???硫붿떆吏:', message);
     
-    // 스크린샷
+    // ?ㅽ겕由곗꺑
     await page.screenshot({ path: 'debug/manual-save-test.png' });
     
-    console.log('✅ 수동 테스트 완료');
+    console.log('???섎룞 ?뚯뒪???꾨즺');
     
   } catch (error) {
-    console.error('❌ 테스트 오류:', error);
+    console.error('???뚯뒪???ㅻ쪟:', error);
   } finally {
     await browser.close();
   }

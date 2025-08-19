@@ -1,35 +1,35 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function quickUITest() {
-    console.log('🔍 빠른 UI 테스트 시작...');
+    console.log('?뵇 鍮좊Ⅸ UI ?뚯뒪???쒖옉...');
     
     const browser = await chromium.launch({ headless: false });
     const page = await browser.newPage();
     
     try {
-        console.log('📄 페이지 로딩 중...');
-        await page.goto('http://localhost: {process.env.PORT || 34343}/');
+        console.log('?뱞 ?섏씠吏 濡쒕뵫 以?..');
+        await page.goto('http://localhost: {process.env.PORT || 3900}/');
         await page.waitForLoadState('networkidle');
         
-        console.log('📝 페이지 제목:', await page.title());
+        console.log('?뱷 ?섏씠吏 ?쒕ぉ:', await page.title());
         
-        // 페이지 스크린샷 찍기
+        // ?섏씠吏 ?ㅽ겕由곗꺑 李띻린
         await page.screenshot({ path: 'page-loaded.png' });
-        console.log('📸 페이지 로딩 스크린샷 저장됨');
+        console.log('?벝 ?섏씠吏 濡쒕뵫 ?ㅽ겕由곗꺑 ??λ맖');
         
-        // 호텔 정보 카드 찾기
+        // ?명뀛 ?뺣낫 移대뱶 李얘린
         const hotelCard = page.locator('[data-testid="section-card-hotel"]');
         const isCardVisible = await hotelCard.isVisible();
-        console.log('🏨 호텔 정보 카드 보임:', isCardVisible);
+        console.log('?룳 ?명뀛 ?뺣낫 移대뱶 蹂댁엫:', isCardVisible);
         
         if (isCardVisible) {
-            console.log('🖱️ 호텔 정보 카드 클릭...');
+            console.log('?뼮截??명뀛 ?뺣낫 移대뱶 ?대┃...');
             await hotelCard.click();
             
-            // 모달 대기
+            // 紐⑤떖 ?湲?
             await page.waitForTimeout(3000);
             
-            // 다양한 모달 셀렉터로 확인
+            // ?ㅼ뼇??紐⑤떖 ??됲꽣濡??뺤씤
             const modalSelectors = [
                 'div[role="dialog"]',
                 '[data-slot="wrapper"]',
@@ -46,51 +46,51 @@ async function quickUITest() {
                 const modal = page.locator(selector);
                 const isVisible = await modal.isVisible();
                 if (isVisible) {
-                    console.log(`✅ 모달 발견: ${selector}`);
+                    console.log(`??紐⑤떖 諛쒓껄: ${selector}`);
                     foundModal = modal;
                     break;
                 } else {
-                    console.log(`❌ 없음: ${selector}`);
+                    console.log(`???놁쓬: ${selector}`);
                 }
             }
             
             if (foundModal) {
-                console.log('📸 모달 스크린샷 찍기...');
+                console.log('?벝 紐⑤떖 ?ㅽ겕由곗꺑 李띻린...');
                 await page.screenshot({ path: 'modal-found.png' });
                 
-                // 모달 내용 확인
+                // 紐⑤떖 ?댁슜 ?뺤씤
                 const modalText = await foundModal.textContent();
-                console.log('📝 모달 내용 일부:', modalText?.substring(0, 200));
+                console.log('?뱷 紐⑤떖 ?댁슜 ?쇰?:', modalText?.substring(0, 200));
                 
             } else {
-                console.log('❌ 어떤 모달 셀렉터로도 찾을 수 없음');
+                console.log('???대뼡 紐⑤떖 ??됲꽣濡쒕룄 李얠쓣 ???놁쓬');
                 
-                // DOM 구조 분석
+                // DOM 援ъ“ 遺꾩꽍
                 const body = await page.locator('body').innerHTML();
-                console.log('🔍 body에서 "modal" 관련 클래스 찾기...');
+                console.log('?뵇 body?먯꽌 "modal" 愿???대옒??李얘린...');
                 const modalMatches = body.match(/class="[^"]*modal[^"]*"/gi) || [];
-                console.log('모달 클래스들:', modalMatches.slice(0, 5));
+                console.log('紐⑤떖 ?대옒?ㅻ뱾:', modalMatches.slice(0, 5));
                 
-                // 새로 생긴 div들 찾기
+                // ?덈줈 ?앷릿 div??李얘린
                 const allDivs = page.locator('div');
                 const divCount = await allDivs.count();
-                console.log('📊 총 div 개수:', divCount);
+                console.log('?뱤 珥?div 媛쒖닔:', divCount);
                 
-                // 화면에 새로 나타난 것들 확인
+                // ?붾㈃???덈줈 ?섑???寃껊뱾 ?뺤씤
                 await page.screenshot({ path: 'no-modal-found.png' });
             }
         } else {
-            console.log('❌ 호텔 정보 카드를 찾을 수 없음');
+            console.log('???명뀛 ?뺣낫 移대뱶瑜?李얠쓣 ???놁쓬');
         }
         
-        console.log('⏱️ 5초 대기 (수동 확인용)...');
+        console.log('?깍툘 5珥??湲?(?섎룞 ?뺤씤??...');
         await page.waitForTimeout(5000);
         
     } catch (error) {
-        console.error('❌ 테스트 중 오류:', error);
+        console.error('???뚯뒪??以??ㅻ쪟:', error);
     } finally {
         await browser.close();
-        console.log('✅ 테스트 완료');
+        console.log('???뚯뒪???꾨즺');
     }
 }
 

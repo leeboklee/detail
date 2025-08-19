@@ -1,0 +1,18 @@
+{
+  "watch": ["."],
+  "ext": "js,jsx,ts,tsx,json",
+  "ignore": [
+    ".next",
+    "node_modules",
+    ".git",
+    "*.log",
+    "dist",
+    "build"
+  ],
+  "exec": "npx next dev -p 3900",
+  "restartable": "rs",
+  "verbose": true,
+  "env": {
+    "NODE_ENV": "development"
+  }
+}

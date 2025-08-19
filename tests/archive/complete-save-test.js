@@ -1,36 +1,35 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
-// 대기 함수
+// ?湲??⑥닔
 const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-// 안전한 클릭 함수
+// ?덉쟾???대┃ ?⑥닔
 async function safeClick(page, element, description = '') {
   try {
     await element.scrollIntoViewIfNeeded();
     await wait(500);
     await element.click();
     await wait(1000);
-    console.log(`✅ ${description} 클릭 성공`);
+    console.log(`??${description} ?대┃ ?깃났`);
     return true;
   } catch (error) {
-    console.log(`❌ ${description} 클릭 실패: ${error.message}`);
+    console.log(`??${description} ?대┃ ?ㅽ뙣: ${error.message}`);
     try {
       await element.evaluate(el => el.click());
       await wait(1000);
-      console.log(`✅ ${description} 강제 클릭 성공`);
+      console.log(`??${description} 媛뺤젣 ?대┃ ?깃났`);
       return true;
     } catch (e) {
-      console.log(`❌ ${description} 강제 클릭도 실패: ${e.message}`);
+      console.log(`??${description} 媛뺤젣 ?대┃???ㅽ뙣: ${e.message}`);
       return false;
     }
   }
 }
 
-// 섹션별 저장 테스트
-async function testSectionSave(page, sectionName, sectionText) {
-  console.log(`\n🔍 [${sectionName}] 섹션 테스트 시작...`);
+// ?뱀뀡蹂?????뚯뒪??async function testSectionSave(page, sectionName, sectionText) {
+  console.log(`\n?뵇 [${sectionName}] ?뱀뀡 ?뚯뒪???쒖옉...`);
   
-  // 섹션 카드 찾기
+  // ?뱀뀡 移대뱶 李얘린
   const cards = await page.locator('div.cursor-pointer').all();
   let sectionCard = null;
   
@@ -38,79 +37,79 @@ async function testSectionSave(page, sectionName, sectionText) {
     const text = await card.textContent();
     if (text.includes(sectionText)) {
       sectionCard = card;
-      console.log(`✅ ${sectionName} 카드 발견: "${text}"`);
+      console.log(`??${sectionName} 移대뱶 諛쒓껄: "${text}"`);
       break;
     }
   }
   
   if (!sectionCard) {
-    console.log(`❌ ${sectionName} 카드를 찾을 수 없음`);
+    console.log(`??${sectionName} 移대뱶瑜?李얠쓣 ???놁쓬`);
     return false;
   }
   
-  // 섹션 카드 클릭
-  console.log(`🏠 ${sectionName} 카드 클릭...`);
-  await safeClick(page, sectionCard, `${sectionName} 카드`);
+  // ?뱀뀡 移대뱶 ?대┃
+  console.log(`?룧 ${sectionName} 移대뱶 ?대┃...`);
+  await safeClick(page, sectionCard, `${sectionName} 移대뱶`);
   
-  console.log('⏳ 모달 로딩 대기...');
+  console.log('??紐⑤떖 濡쒕뵫 ?湲?..');
   await wait(3000);
   
   let inputCount = 0;
 
-  // 섹션별 특화된 입력 로직
-  if (sectionName === '시설 정보') {
-    console.log('🏢 [시설 정보] 특화 로직: "시설 추가" 버튼 클릭');
-    const addButton = page.locator('button:has-text("+ 시설 추가")');
+  // ?뱀뀡蹂??뱁솕???낅젰 濡쒖쭅
+  if (sectionName === '?쒖꽕 ?뺣낫') {
+    console.log('?룫 [?쒖꽕 ?뺣낫] ?뱁솕 濡쒖쭅: "?쒖꽕 異붽?" 踰꾪듉 ?대┃');
+    const addButton = page.locator('button:has-text("+ ?쒖꽕 異붽?")');
     if (await addButton.count() > 0) {
-      await safeClick(page, addButton, '시설 추가 버튼');
+      await safeClick(page, addButton, '?쒖꽕 異붽? 踰꾪듉');
       await wait(1000);
 
-      const facilityNameInput = page.locator('input[placeholder="시설명 (예: 수영장)"]').last();
-      const testValue = `${sectionName} 테스트 값 ${Date.now()}`;
+      const facilityNameInput = page.locator('input[placeholder="?쒖꽕紐?(?? ?섏쁺??"]').last();
+      const testValue = `${sectionName} ?뚯뒪??媛?${Date.now()}`;
       await facilityNameInput.fill(testValue);
-      console.log(`📝 입력 완료: name = "${testValue}"`);
+      console.log(`?뱷 ?낅젰 ?꾨즺: name = "${testValue}"`);
       inputCount = 1;
     }
-  } else if (sectionName === '패키지') {
-    console.log('📦 [패키지] 특화 로직: 새 패키지 정보 입력 후 "패키지 추가" 버튼 클릭');
-    const nameInput = page.locator('input[placeholder="패키지명"]');
-    const priceInput = page.locator('input[placeholder="가격"]');
-    const addButton = page.locator('button:has-text("패키지 추가")');
+  } else if (sectionName === '?⑦궎吏') {
+    console.log('?벀 [?⑦궎吏] ?뱁솕 濡쒖쭅: ???⑦궎吏 ?뺣낫 ?낅젰 ??"?⑦궎吏 異붽?" 踰꾪듉 ?대┃');
+    const nameInput = page.locator('input[placeholder="?⑦궎吏紐?]');
+    const priceInput = page.locator('input[placeholder="媛寃?]');
+    const addButton = page.locator('button:has-text("?⑦궎吏 異붽?")');
 
     if (await nameInput.count() > 0 && await addButton.count() > 0) {
-      const nameValue = `${sectionName} 테스트 값 ${Date.now()}`;
+      const nameValue = `${sectionName} ?뚯뒪??媛?${Date.now()}`;
       const priceValue = String(Math.floor(Math.random() * 100000) + 50000);
 
       await nameInput.fill(nameValue);
-      console.log(`📝 입력 완료: name = "${nameValue}"`);
+      console.log(`?뱷 ?낅젰 ?꾨즺: name = "${nameValue}"`);
       await priceInput.fill(priceValue);
-      console.log(`📝 입력 완료: price = "${priceValue}"`);
+      console.log(`?뱷 ?낅젰 ?꾨즺: price = "${priceValue}"`);
 
-      await safeClick(page, addButton, '패키지 추가 버튼');
+      await safeClick(page, addButton, '?⑦궎吏 異붽? 踰꾪듉');
       await wait(1000);
-      inputCount = 1; // 패키지 1개 추가
+      inputCount = 1; // ?⑦궎吏 1媛?異붽?
     }
-  } else if (sectionName === '추가요금') {
-    console.log('💰 [추가요금] 특화 로직: "항목 추가" 버튼 클릭');
-    const addButton = page.locator('button:has-text("+ 항목 추가")');
+  } else if (sectionName === '異붽??붽툑') {
+    console.log('?뮥 [異붽??붽툑] ?뱁솕 濡쒖쭅: "??ぉ 異붽?" 踰꾪듉 ?대┃');
+    const addButton = page.locator('button:has-text("+ ??ぉ 異붽?")');
     if (await addButton.count() > 0) {
-      await safeClick(page, addButton, '항목 추가 버튼');
+      await safeClick(page, addButton, '??ぉ 異붽? 踰꾪듉');
       await wait(1000);
 
-      const itemNameInput = page.locator('input[placeholder="항목명 (예: 인원 추가)"]').last();
-      const itemPriceInput = page.locator('input[placeholder="가격 (예: 20000)"]').last();
+      const itemNameInput = page.locator('input[placeholder="??ぉ紐?(?? ?몄썝 異붽?)"]').last();
+      const itemPriceInput = page.locator('input[placeholder="媛寃?(?? 20000)"]').last();
       
-      const nameValue = `${sectionName} 테스트 값 ${Date.now()}`;
+      const nameValue = `${sectionName} ?뚯뒪??媛?${Date.now()}`;
       const priceValue = String(Math.floor(Math.random() * 20000) + 10000);
 
       await itemNameInput.fill(nameValue);
-      console.log(`📝 입력 완료: name = "${nameValue}"`);
+      console.log(`?뱷 ?낅젰 ?꾨즺: name = "${nameValue}"`);
       await itemPriceInput.fill(priceValue);
-      console.log(`📝 입력 완료: price = "${priceValue}"`);
+      console.log(`?뱷 ?낅젰 ?꾨즺: price = "${priceValue}"`);
       inputCount = 1;
     }
   } else {
-    // 기존 입력 로직
+    // 湲곗〈 ?낅젰 濡쒖쭅
     const inputs = await page.locator('input[type="text"], input[type="url"], textarea').all();
     
     for (let i = 0; i < Math.min(inputs.length, 3); i++) {
@@ -119,59 +118,59 @@ async function testSectionSave(page, sectionName, sectionText) {
         const name = await input.getAttribute('name');
         
         if (name && !name.includes('time') && !name.includes('capacity')) {
-          const testValue = `${sectionName} 테스트 값 ${Date.now()}`;
+          const testValue = `${sectionName} ?뚯뒪??媛?${Date.now()}`;
           await input.fill(testValue);
           inputCount++;
-          console.log(`📝 입력 완료: ${name} = "${testValue}"`);
+          console.log(`?뱷 ?낅젰 ?꾨즺: ${name} = "${testValue}"`);
         }
       } catch (error) {
-        console.log(`⚠️ 입력 실패: ${error.message}`);
+        console.log(`?좑툘 ?낅젰 ?ㅽ뙣: ${error.message}`);
       }
     }
   }
   
-  console.log(`📊 총 ${inputCount}개 필드에 입력 완료`);
+  console.log(`?뱤 珥?${inputCount}媛??꾨뱶???낅젰 ?꾨즺`);
   
-  // 저장 버튼 클릭
-  console.log('💾 적용하고 닫기 버튼 찾기...');
-  const saveButton = page.locator('button:has-text("적용하고 닫기")').first();
+  // ???踰꾪듉 ?대┃
+  console.log('?뮶 ?곸슜?섍퀬 ?リ린 踰꾪듉 李얘린...');
+  const saveButton = page.locator('button:has-text("?곸슜?섍퀬 ?リ린")').first();
   
   if (await saveButton.count() > 0) {
-    console.log('💾 적용하고 닫기 버튼 클릭...');
-    await safeClick(page, saveButton, '적용하고 닫기 버튼');
+    console.log('?뮶 ?곸슜?섍퀬 ?リ린 踰꾪듉 ?대┃...');
+    await safeClick(page, saveButton, '?곸슜?섍퀬 ?リ린 踰꾪듉');
     
-    console.log('⏳ 저장 완료 대기...');
-    await wait(2000); // DB 반영 및 UI 업데이트 시간
+    console.log('??????꾨즺 ?湲?..');
+    await wait(2000); // DB 諛섏쁺 諛?UI ?낅뜲?댄듃 ?쒓컙
     
-    // 성공 메시지 확인 (이 부분은 현재 UI에 없으므로 주석 처리 또는 다른 방식으로 확인)
+    // ?깃났 硫붿떆吏 ?뺤씤 (??遺遺꾩? ?꾩옱 UI???놁쑝誘濡?二쇱꽍 泥섎━ ?먮뒗 ?ㅻⅨ 諛⑹떇?쇰줈 ?뺤씤)
     /*
-    const successMessage = await page.locator('div:has-text("저장되었습니다")').first();
+    const successMessage = await page.locator('div:has-text("??λ릺?덉뒿?덈떎")').first();
     if (await successMessage.count() > 0) {
-      console.log('✅ 저장 성공 메시지 확인됨');
+      console.log('??????깃났 硫붿떆吏 ?뺤씤??);
     } else {
-      console.log('❌ 저장 성공 메시지 없음');
+      console.log('??????깃났 硫붿떆吏 ?놁쓬');
     }
     */
-    // 모달이 닫히는 것으로 성공 간주
+    // 紐⑤떖???ロ엳??寃껋쑝濡??깃났 媛꾩＜
     await page.waitForSelector('[role="dialog"]', { state: 'hidden', timeout: 5000 });
-    console.log('✅ 모달이 닫힘. 저장 성공으로 간주.');
+    console.log('??紐⑤떖???ロ옒. ????깃났?쇰줈 媛꾩＜.');
 
   } else {
-    console.log('❌ 적용하고 닫기 버튼을 찾을 수 없음');
+    console.log('???곸슜?섍퀬 ?リ린 踰꾪듉??李얠쓣 ???놁쓬');
   }
   
-  console.log('⏳ 잠시 대기...');
+  console.log('???좎떆 ?湲?..');
   await wait(3000);
   
-  // 다시 열어서 값 확인
-  console.log(`🔄 다시 ${sectionName} 카드 클릭하여 값 확인...`);
-  await safeClick(page, sectionCard, `${sectionName} 카드 재클릭`);
+  // ?ㅼ떆 ?댁뼱??媛??뺤씤
+  console.log(`?봽 ?ㅼ떆 ${sectionName} 移대뱶 ?대┃?섏뿬 媛??뺤씤...`);
+  await safeClick(page, sectionCard, `${sectionName} 移대뱶 ?ы겢由?);
   
-  console.log('⏳ 모달 재로딩 대기...');
+  console.log('??紐⑤떖 ?щ줈???湲?..');
   await wait(3000);
   
-  // 저장된 값 확인
-  console.log('🔍 저장된 값 확인...');
+  // ??λ맂 媛??뺤씤
+  console.log('?뵇 ??λ맂 媛??뺤씤...');
   const savedInputs = await page.locator('input[type="text"], input[type="url"], textarea').all();
   let savedValues = [];
   
@@ -185,26 +184,26 @@ async function testSectionSave(page, sectionName, sectionText) {
         savedValues.push(`${name}: "${value}"`);
       }
     } catch (error) {
-      console.log(`⚠️ 값 확인 실패: ${error.message}`);
+      console.log(`?좑툘 媛??뺤씤 ?ㅽ뙣: ${error.message}`);
     }
   }
   
-  console.log(`📊 저장된 값들:`);
+  console.log(`?뱤 ??λ맂 媛믩뱾:`);
   savedValues.forEach(value => console.log(`  - ${value}`));
   
-  // 저장 성공 여부 판단
-  const hasSavedValues = savedValues.some(value => value.includes('테스트 값'));
+  // ????깃났 ?щ? ?먮떒
+  const hasSavedValues = savedValues.some(value => value.includes('?뚯뒪??媛?));
   
   if (hasSavedValues) {
-    console.log(`🎉 [${sectionName}] 저장 기능이 정상적으로 작동함!`);
+    console.log(`?럦 [${sectionName}] ???湲곕뒫???뺤긽?곸쑝濡??묐룞??`);
   } else {
-    console.log(`❌ [${sectionName}] 저장된 값이 원래대로 돌아감`);
+    console.log(`??[${sectionName}] ??λ맂 媛믪씠 ?먮옒?濡??뚯븘媛?);
   }
   
-  // 모달 닫기
-  const finalCloseButton = page.locator('button:has-text("×")').first();
+  // 紐⑤떖 ?リ린
+  const finalCloseButton = page.locator('button:has-text("횞")').first();
   if (await finalCloseButton.count() > 0) {
-    await safeClick(page, finalCloseButton, '최종 모달 닫기');
+    await safeClick(page, finalCloseButton, '理쒖쥌 紐⑤떖 ?リ린');
   }
   
   await wait(2000);
@@ -212,29 +211,28 @@ async function testSectionSave(page, sectionName, sectionText) {
   return hasSavedValues;
 }
 
-// 전체 테스트 실행
+// ?꾩껜 ?뚯뒪???ㅽ뻾
 async function runCompleteTest() {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
   
-  // 브라우저 콘솔 로그를 터미널에 출력
+  // 釉뚮씪?곗? 肄섏넄 濡쒓렇瑜??곕??먯뿉 異쒕젰
   page.on('console', msg => {
     const type = msg.type().toUpperCase();
     console.log(`[BROWSER ${type}]: ${msg.text()}`);
   });
 
   try {
-    console.log('🌐 페이지 로딩...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle', timeout: 60000 });
+    console.log('?뙋 ?섏씠吏 濡쒕뵫...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle', timeout: 60000 });
     await wait(3000);
     
-    // 테스트할 섹션들
-    const sections = [
-      { name: '호텔 정보', text: '호텔 정보' },
-      { name: '객실 정보', text: '객실 정보' },
-      { name: '시설 정보', text: '시설 정보' },
-      { name: '패키지', text: '패키지' },
-      { name: '추가요금', text: '추가요금' }
+    // ?뚯뒪?명븷 ?뱀뀡??    const sections = [
+      { name: '?명뀛 ?뺣낫', text: '?명뀛 ?뺣낫' },
+      { name: '媛앹떎 ?뺣낫', text: '媛앹떎 ?뺣낫' },
+      { name: '?쒖꽕 ?뺣낫', text: '?쒖꽕 ?뺣낫' },
+      { name: '?⑦궎吏', text: '?⑦궎吏' },
+      { name: '異붽??붽툑', text: '異붽??붽툑' }
     ];
     
     let successCount = 0;
@@ -244,20 +242,20 @@ async function runCompleteTest() {
       if (success) successCount++;
     }
     
-    console.log(`\n🎯 최종 결과: ${successCount}/${sections.length} 섹션 저장 성공`);
+    console.log(`\n?렞 理쒖쥌 寃곌낵: ${successCount}/${sections.length} ?뱀뀡 ????깃났`);
     
     if (successCount === sections.length) {
-      console.log('🎉 모든 섹션의 저장 기능이 정상적으로 작동합니다!');
+      console.log('?럦 紐⑤뱺 ?뱀뀡?????湲곕뒫???뺤긽?곸쑝濡??묐룞?⑸땲??');
     } else {
-      console.log('⚠️ 일부 섹션에서 저장 기능에 문제가 있습니다.');
+      console.log('?좑툘 ?쇰? ?뱀뀡?먯꽌 ???湲곕뒫??臾몄젣媛 ?덉뒿?덈떎.');
     }
     
   } catch (error) {
-    console.error('❌ 테스트 오류:', error);
+    console.error('???뚯뒪???ㅻ쪟:', error);
   } finally {
     await browser.close();
   }
 }
 
-// 테스트 실행
+// ?뚯뒪???ㅽ뻾
 runCompleteTest().catch(console.error); 

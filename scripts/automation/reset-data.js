@@ -12,7 +12,7 @@ async function resetData() {
 
   try {
     // 페이지 로드
-    await page.goto('http://localhost: {process.env.PORT || 34343}');
+    await page.goto('http://localhost: {process.env.PORT || 3900}');
     await page.waitForTimeout(2000);
 
     // 로컬스토리지 초기화

@@ -1,22 +1,22 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
-test('메인 페이지 렌더링 및 에러/스크린샷 확인', async ({ page }) => {
+test('硫붿씤 ?섏씠吏 ?뚮뜑留?諛??먮윭/?ㅽ겕由곗꺑 ?뺤씤', async ({ page }) => {
   const consoleLogs = [];
   const pageErrors = [];
 
   page.on('console', msg => consoleLogs.push(`[${msg.type()}] ${msg.text()}`));
   page.on('pageerror', error => pageErrors.push(error.message));
 
-  await page.goto('http://localhost:34343');
+  await page.goto('http://localhost:3900');
   await page.screenshot({ path: 'test-results/debug-render.png', fullPage: true });
 
   if (consoleLogs.length > 0) {
-    console.log('콘솔 로그:', consoleLogs);
+    console.log('肄섏넄 濡쒓렇:', consoleLogs);
   }
   if (pageErrors.length > 0) {
-    console.log('페이지 에러:', pageErrors);
+    console.log('?섏씠吏 ?먮윭:', pageErrors);
   }
 
-  // 렌더링 에러가 있으면 테스트 실패 처리
+  // ?뚮뜑留??먮윭媛 ?덉쑝硫??뚯뒪???ㅽ뙣 泥섎━
   expect(pageErrors.length).toBe(0);
 }); 

@@ -1,61 +1,61 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 (async () => {
   let browser;
   try {
-    console.log('테스트를 시작합니다. Headed 모드로 브라우저를 실행합니다...');
-    browser = await chromium.launch({ headless: false }); // 시각적 확인을 위해 headed 모드로 실행
+    console.log('?뚯뒪?몃? ?쒖옉?⑸땲?? Headed 紐⑤뱶濡?釉뚮씪?곗?瑜??ㅽ뻾?⑸땲??..');
+    browser = await chromium.launch({ headless: false }); // ?쒓컖???뺤씤???꾪빐 headed 紐⑤뱶濡??ㅽ뻾
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    console.log('http://localhost:3000 으로 이동합니다...');
+    console.log('http://localhost:3000 ?쇰줈 ?대룞?⑸땲??..');
     await page.goto('http://localhost:3000', { timeout: 60000 });
 
     page.on('console', msg => {
       if (msg.text().includes('fast-refresh')) return;
-      console.log(`[브라우저 콘솔] ${msg.type().toUpperCase()}: ${msg.text()}`);
+      console.log(`[釉뚮씪?곗? 肄섏넄] ${msg.type().toUpperCase()}: ${msg.text()}`);
     });
 
-    console.log('"호텔 정보" 섹션 카드를 클릭합니다...');
+    console.log('"?명뀛 ?뺣낫" ?뱀뀡 移대뱶瑜??대┃?⑸땲??..');
     await page.locator('[data-testid="section-card-hotel"]').click({ timeout: 15000 });
 
-    console.log('모달창이 나타나는 것을 기다립니다...');
+    console.log('紐⑤떖李쎌씠 ?섑??섎뒗 寃껋쓣 湲곕떎由쎈땲??..');
     const modal = page.locator('div[role="dialog"]');
     await modal.waitFor({ state: 'visible', timeout: 10000 });
-    console.log('✅ 모달창이 성공적으로 나타났습니다.');
+    console.log('??紐⑤떖李쎌씠 ?깃났?곸쑝濡??섑??ъ뒿?덈떎.');
 
-    console.log('모달창의 양식을 수정합니다...');
-    await modal.locator('input[name="name"]').fill('수정된 호텔 이름');
-    await modal.locator('input[name="address"]').fill('수정된 호텔 주소');
+    console.log('紐⑤떖李쎌쓽 ?묒떇???섏젙?⑸땲??..');
+    await modal.locator('input[name="name"]').fill('?섏젙???명뀛 ?대쫫');
+    await modal.locator('input[name="address"]').fill('?섏젙???명뀛 二쇱냼');
 
-    console.log('"적용하고 닫기" 버튼을 클릭합니다...');
-    await modal.locator('button:has-text("적용하고 닫기")').click();
+    console.log('"?곸슜?섍퀬 ?リ린" 踰꾪듉???대┃?⑸땲??..');
+    await modal.locator('button:has-text("?곸슜?섍퀬 ?リ린")').click();
     await modal.waitFor({ state: 'hidden', timeout: 5000 });
-    console.log('✅ 모달창이 성공적으로 닫혔습니다.');
+    console.log('??紐⑤떖李쎌씠 ?깃났?곸쑝濡??ロ삍?듬땲??');
 
-    console.log('"전체 저장" 버튼을 클릭하고 API 응답을 기다립니다...');
+    console.log('"?꾩껜 ??? 踰꾪듉???대┃?섍퀬 API ?묐떟??湲곕떎由쎈땲??..');
     const [response] = await Promise.all([
       page.waitForResponse(res => res.url().includes('/api/hotels/save-all') && res.status() === 200, { timeout: 10000 }),
-      page.locator('button:has-text("전체 저장")').click(),
+      page.locator('button:has-text("?꾩껜 ???)').click(),
     ]);
 
     const responseBody = await response.json();
-    if (responseBody.message && responseBody.message.includes('성공적으로 저장되었습니다')) {
-        console.log('✅ API 응답: 저장 성공 메시지를 확인했습니다.');
+    if (responseBody.message && responseBody.message.includes('?깃났?곸쑝濡???λ릺?덉뒿?덈떎')) {
+        console.log('??API ?묐떟: ????깃났 硫붿떆吏瑜??뺤씤?덉뒿?덈떎.');
     } else {
-        throw new Error(`API 응답에서 성공 메시지를 찾을 수 없습니다. 받은 메시지: ${JSON.stringify(responseBody)}`);
+        throw new Error(`API ?묐떟?먯꽌 ?깃났 硫붿떆吏瑜?李얠쓣 ???놁뒿?덈떎. 諛쏆? 硫붿떆吏: ${JSON.stringify(responseBody)}`);
     }
 
-    console.log('UI에서 최종 성공 메시지가 보이는지 확인합니다...');
-    const successMessage = page.locator('div:has-text("성공적으로 저장되었습니다")');
+    console.log('UI?먯꽌 理쒖쥌 ?깃났 硫붿떆吏媛 蹂댁씠?붿? ?뺤씤?⑸땲??..');
+    const successMessage = page.locator('div:has-text("?깃났?곸쑝濡???λ릺?덉뒿?덈떎")');
     await successMessage.waitFor({ state: 'visible', timeout: 10000 });
-    console.log('✅✅✅ 테스트 통과: 모든 과정이 성공적으로 완료되었습니다.');
+    console.log('?끸쐟???뚯뒪???듦낵: 紐⑤뱺 怨쇱젙???깃났?곸쑝濡??꾨즺?섏뿀?듬땲??');
 
   } catch (error) {
-    console.error('❌ 테스트 실패:', error.message);
+    console.error('???뚯뒪???ㅽ뙣:', error.message);
   } finally {
     if (browser) {
-      console.log('테스트를 종료하고 브라우저를 닫습니다.');
+      console.log('?뚯뒪?몃? 醫낅즺?섍퀬 釉뚮씪?곗?瑜??レ뒿?덈떎.');
       await browser.close();
     }
   }

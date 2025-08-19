@@ -1,100 +1,184 @@
 'use client';
 
-import React from 'react';
-import styles from './Notice.module.css';
-import useNoticeManager from '@/hooks/useNoticeManager';
+import React, { useState, useEffect, useCallback } from 'react';
+// Context 제거 - props 사용
+import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, Select, SelectItem } from "@heroui/react";
+import { NoticeTable } from '../ui/EnhancedTable';
 
-/**
- * 호텔 상세 페이지 생성기 - 공지사항 컴포넌트
- * 공지사항 정보 입력 및 관리
- */
-export default function Notice({ data = [], onChange }) {
-  const [saveMessage, setSaveMessage] = React.useState('');
-  
-  // 공통 훅으로 상태/핸들러 관리
-  const {
-    notices,
-    newNotice,
-    setNewNotice,
-    handleAddNotice,
-    handleRemoveNotice,
-    handleUpdateNotice,
-    handleKeyPress
-  } = useNoticeManager(data, onChange);
-  
-  // 저장 메시지 표시
-  React.useEffect(() => {
-    if (notices.length > 0) {
-      setSaveMessage('✅ 공지사항이 저장되었습니다');
-      const timer = setTimeout(() => setSaveMessage(''), 2000);
-      return () => clearTimeout(timer);
+// 공지사항 편집 모달 컴포넌트
+function NoticeEditModal({ isOpen, onClose, notice, onSave, isNew = false }) {
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    category: 'general',
+    priority: 'normal',
+    date: new Date().toISOString().split('T')[0]
+  });
+
+  useEffect(() => {
+    if (notice) {
+      setFormData(notice);
     }
-  }, [notices]);
+  }, [notice]);
 
-  // 안전하게 스타일 사용 (CSS 모듈이 로드되지 않았을 경우 대비)
-  const s = styles || {};
+  const handleSave = () => {
+    onSave(formData);
+    onClose();
+  };
 
   return (
-    <div className={s.noticeEditor || ''}>
-      <h3 className={s.title || ''}>공지사항</h3>
-      
-      {saveMessage && (
-        <div className="mb-4 p-3 bg-green-100 text-green-800 rounded border border-green-300">
-          {saveMessage}
-        </div>
-      )}
-      {notices.length === 0 ? (
-        <div className={s.emptyState || ''}>등록된 공지사항이 없습니다</div>
-      ) : (
-        <div className={s.noticesContainer || ''}>
-          {notices.map((notice, index) => (
-            notice && typeof notice === 'object' ? (
-              <div key={index} className={s.noticeItem || ''}>
-                <input
-                  className={s.noticeInput || ''}
-                  type="text"
-                  value={notice.content || ''}
-                  onChange={e => handleUpdateNotice(index, e.target.value)}
-                  placeholder="공지사항 내용"
-                />
-                <button className={s.removeButton || ''} onClick={() => handleRemoveNotice(index)}>삭제</button>
-              </div>
-            ) : null
-          ))}
-        </div>
-      )}
-      <div className={s.addNoticeContainer || ''}>
-        <input
-          className={s.addNoticeInput || ''}
-          type="text"
-          value={newNotice}
-          onChange={e => setNewNotice(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="새 공지사항 입력"
-        />
-        <button 
-          className={s.addButton || ''} 
-          id="addNoticeBtn"
-          onClick={handleAddNotice}
-          aria-label="새 공지사항 추가"
-          data-testid="add-notice-button"
-          style={{ zIndex: 1 }}
-        >
-          ➕추가
-        </button>
-      </div>
-      
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-        <div className="flex gap-4 flex-wrap justify-center">
-          <div className="px-4 py-3 bg-blue-100 text-blue-800 rounded-lg flex items-center border border-blue-300">
-            <span>💡 현재 {notices.length}개 공지사항 등록됨</span>
+    <Modal isOpen={isOpen} onClose={onClose} size="2xl" scrollBehavior="inside">
+      <ModalContent>
+        <ModalHeader>
+          {isNew ? '새 공지사항 추가' : '공지사항 편집'}
+        </ModalHeader>
+        <ModalBody>
+          <div className="space-y-4">
+            <Input
+              label="제목"
+              value={formData.title}
+              onValueChange={(value) => setFormData(prev => ({ ...prev, title: value }))}
+              placeholder="공지사항 제목을 입력하세요"
+              size="sm"
+              classNames={{
+                input: "text-gray-800 bg-white border-gray-300",
+                label: "text-gray-700 font-medium"
+              }}
+            />
+            
+            <div className="grid grid-cols-2 gap-4">
+              <Select
+                label="카테고리"
+                selectedKeys={[formData.category]}
+                onSelectionChange={(keys) => setFormData(prev => ({ ...prev, category: Array.from(keys)[0] }))}
+                size="sm"
+                classNames={{
+                  trigger: "text-gray-800 bg-white border-gray-300",
+                  label: "text-gray-700 font-medium"
+                }}
+              >
+                <SelectItem key="general">일반</SelectItem>
+                <SelectItem key="important">중요</SelectItem>
+                <SelectItem key="maintenance">점검</SelectItem>
+                <SelectItem key="event">이벤트</SelectItem>
+              </Select>
+              
+              <Select
+                label="우선순위"
+                selectedKeys={[formData.priority]}
+                onSelectionChange={(keys) => setFormData(prev => ({ ...prev, priority: Array.from(keys)[0] }))}
+                size="sm"
+                classNames={{
+                  trigger: "text-gray-800 bg-white border-gray-300",
+                  label: "text-gray-700 font-medium"
+                }}
+              >
+                <SelectItem key="low">낮음</SelectItem>
+                <SelectItem key="normal">보통</SelectItem>
+                <SelectItem key="high">높음</SelectItem>
+                <SelectItem key="urgent">긴급</SelectItem>
+              </Select>
+            </div>
+            
+            <Input
+              type="date"
+              label="등록일"
+              value={formData.date}
+              onValueChange={(value) => setFormData(prev => ({ ...prev, date: value }))}
+              size="sm"
+              classNames={{
+                input: "text-gray-800 bg-white border-gray-300",
+                label: "text-gray-700 font-medium"
+              }}
+            />
+            
+            <Textarea
+              label="내용"
+              value={formData.content}
+              onValueChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+              placeholder="공지사항 내용을 입력하세요"
+              rows={6}
+              classNames={{
+                input: "text-gray-800 bg-white border-gray-300",
+                label: "text-gray-700 font-medium"
+              }}
+            />
           </div>
-          
-          <div className="px-4 py-3 bg-green-100 text-green-800 rounded-lg flex items-center border border-green-300">
-            <span>✅ CRUD 관리에서 전체 템플릿을 저장하세요</span>
-          </div>
-        </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" variant="light" onPress={onClose}>
+            취소
+          </Button>
+          <Button color="primary" onPress={handleSave}>
+            저장
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+export default function Notice({ value = [], onChange }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingNotice, setEditingNotice] = useState(null);
+  const [isNewNotice, setIsNewNotice] = useState(false);
+
+  const notices = value || [];
+
+  const handleAddNotice = () => {
+    setEditingNotice(null);
+    setIsNewNotice(true);
+    setIsModalOpen(true);
+  };
+
+  const handleEditNotice = (notice, index) => {
+    setEditingNotice({ ...notice, index });
+    setIsNewNotice(false);
+    setIsModalOpen(true);
+  };
+
+  const handleDeleteNotice = (notice, index) => {
+    const updatedNotices = notices.filter((_, i) => i !== index);
+    onChange('notices', updatedNotices);
+  };
+
+  const handleSaveNotice = (noticeData) => {
+    let updatedNotices;
+    
+    if (isNewNotice) {
+      updatedNotices = [...notices, { ...noticeData, id: Date.now().toString() }];
+    } else {
+      updatedNotices = notices.map((notice, index) => 
+        index === editingNotice.index ? { ...noticeData, id: notice.id } : notice
+      );
+    }
+    
+    onChange('notices', updatedNotices);
+  };
+
+  return (
+    <div className="notice-manager">
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">공지사항 관리</h3>
+        <p className="text-sm text-gray-600">
+          호텔의 공지사항을 관리하고 편집할 수 있습니다.
+        </p>
       </div>
+
+      <NoticeTable
+        notices={notices}
+        onEdit={handleEditNotice}
+        onDelete={handleDeleteNotice}
+        onAdd={handleAddNotice}
+      />
+
+      <NoticeEditModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        notice={editingNotice}
+        onSave={handleSaveNotice}
+        isNew={isNewNotice}
+      />
     </div>
   );
 } 

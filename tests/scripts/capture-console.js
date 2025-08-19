@@ -1,4 +1,4 @@
-const puppeteer = require('puppeteer');
+﻿const puppeteer = require('puppeteer');
 
 (async () => {
   let browser;
@@ -57,9 +57,9 @@ const puppeteer = require('puppeteer');
       }
     });
 
-    console.log(`[Capture Script] Navigating to http://localhost:${process.env.PORT || 34343}...`);
+    console.log(`[Capture Script] Navigating to http://localhost:${process.env.PORT || 3900}...`);
     try {
-        await page.goto(`http://localhost:${process.env.PORT || 34343}`, { waitUntil: 'domcontentloaded', timeout: 20000 }); // Use domcontentloaded, maybe networkidle is too long/fails
+        await page.goto(`http://localhost:${process.env.PORT || 3900}`, { waitUntil: 'domcontentloaded', timeout: 20000 }); // Use domcontentloaded, maybe networkidle is too long/fails
         console.log('[Capture Script] Navigation potentially complete (domcontentloaded). Waiting for errors...');
         // Wait a few seconds to ensure async errors are caught or page settles
         await new Promise(resolve => setTimeout(resolve, 7000)); // Increased wait time

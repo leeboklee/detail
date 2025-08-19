@@ -1,3 +1,4 @@
+import React from 'react';
 const puppeteer = require('puppeteer');
 
 async function debugPageSource() {
@@ -11,7 +12,7 @@ async function debugPageSource() {
   const page = await browser.newPage();
   
   try {
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle2' });
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle2' });
     await new Promise(resolve => setTimeout(resolve, 3000));
     
     console.log('1️⃣ 페이지 소스 분석...');

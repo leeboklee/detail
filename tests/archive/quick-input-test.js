@@ -1,21 +1,21 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 async function quickInputTest() {
-  console.log('입력 성능 테스트 시작...');
+  console.log('?낅젰 ?깅뒫 ?뚯뒪???쒖옉...');
   
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
 
   try {
-    // 페이지 로드
-    await page.goto('http://localhost: {process.env.PORT || 34343}');
+    // ?섏씠吏 濡쒕뱶
+    await page.goto('http://localhost: {process.env.PORT || 3900}');
     await page.waitForTimeout(2000);
 
-    // 객실 정보 클릭
-    await page.click('text=객실 정보');
+    // 媛앹떎 ?뺣낫 ?대┃
+    await page.click('text=媛앹떎 ?뺣낫');
     await page.waitForTimeout(1000);
 
-    // 모든 보이는 입력 필드 찾기
+    // 紐⑤뱺 蹂댁씠???낅젰 ?꾨뱶 李얘린
     const inputs = await page.$$eval('input:visible, textarea:visible', elements => 
       elements.map(el => ({
         placeholder: el.placeholder,
@@ -24,14 +24,14 @@ async function quickInputTest() {
       }))
     );
 
-    console.log(`발견된 입력 필드: ${inputs.length}개`);
+    console.log(`諛쒓껄???낅젰 ?꾨뱶: ${inputs.length}媛?);
     inputs.forEach((input, i) => {
       console.log(`${i+1}. ${input.tag} - ${input.placeholder || input.id}`);
     });
 
-    // 첫 번째 보이는 입력 필드에 입력 테스트
+    // 泥?踰덉㎏ 蹂댁씠???낅젰 ?꾨뱶???낅젰 ?뚯뒪??
     if (inputs.length > 0) {
-      const testText = '성능테스트입력';
+      const testText = '?깅뒫?뚯뒪?몄엯??;
       
       for (let i = 0; i < Math.min(3, inputs.length); i++) {
         try {
@@ -43,25 +43,25 @@ async function quickInputTest() {
           await page.fill(selector, testText);
           const end = Date.now();
           
-          console.log(`입력 필드 ${i+1} 응답시간: ${end - start}ms`);
+          console.log(`?낅젰 ?꾨뱶 ${i+1} ?묐떟?쒓컙: ${end - start}ms`);
           
-          // 연속 입력 테스트
+          // ?곗냽 ?낅젰 ?뚯뒪??
           const charStart = Date.now();
           await page.type(selector, 'abc', { delay: 10 });
           const charEnd = Date.now();
           
-          console.log(`  문자별 입력 테스트: ${charEnd - charStart}ms`);
+          console.log(`  臾몄옄蹂??낅젰 ?뚯뒪?? ${charEnd - charStart}ms`);
           
         } catch (error) {
-          console.log(`입력 필드 ${i+1} 테스트 실패: ${error.message}`);
+          console.log(`?낅젰 ?꾨뱶 ${i+1} ?뚯뒪???ㅽ뙣: ${error.message}`);
         }
       }
     } else {
-      console.log('입력 필드를 찾을 수 없습니다.');
+      console.log('?낅젰 ?꾨뱶瑜?李얠쓣 ???놁뒿?덈떎.');
     }
 
   } catch (error) {
-    console.error('테스트 오류:', error.message);
+    console.error('?뚯뒪???ㅻ쪟:', error.message);
   } finally {
     await browser.close();
   }

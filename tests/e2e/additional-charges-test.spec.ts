@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
 test.describe('Additional Charges Field Test', () => {
   test.beforeEach(async ({ page }) => {
@@ -9,7 +9,7 @@ test.describe('Additional Charges Field Test', () => {
     await page.waitForLoadState('networkidle');
 
     // click charges button
-    const chargesButton = page.locator('button:has-text("추가 요금")');
+    const chargesButton = page.locator('button:has-text("異붽? ?붽툑")');
     await chargesButton.click();
     await page.waitForTimeout(1000);
   });
@@ -18,10 +18,10 @@ test.describe('Additional Charges Field Test', () => {
     console.log('--- Start additional charges test in headless mode');
 
     // Check if the surcharge info card is visible
-    await expect(page.locator('text=추가 요금 정보')).toBeVisible({ timeout: 30000 });
+    await expect(page.locator('text=異붽? ?붽툑 ?뺣낫')).toBeVisible({ timeout: 30000 });
 
     // Weekend surcharge input
-    const weekendSurchargeInput = page.locator('input[placeholder*="주말 증가"]').first();
+    const weekendSurchargeInput = page.locator('input[placeholder*="二쇰쭚 利앷?"]').first();
     await expect(weekendSurchargeInput).toBeVisible({ timeout: 30000 });
 
     console.log('--- Attempting to fill weekend surcharge');
@@ -29,7 +29,7 @@ test.describe('Additional Charges Field Test', () => {
     await weekendSurchargeInput.fill('Test Weekend Surcharge');
 
     // Peak season/holiday surcharge input
-    const holidaySurchargeInput = page.locator('input[placeholder*="공휴일 증가"]').first();
+    const holidaySurchargeInput = page.locator('input[placeholder*="怨듯쑕??利앷?"]').first();
     await expect(holidaySurchargeInput).toBeVisible({ timeout: 30000 });
 
     console.log('--- Attempting to fill holiday surcharge');
@@ -37,7 +37,7 @@ test.describe('Additional Charges Field Test', () => {
     await holidaySurchargeInput.fill('Test Holiday Surcharge');
 
     // Seasonal rates textarea
-    const seasonalRatesTextarea = page.locator('textarea[placeholder*="계절 요금"]').first();
+    const seasonalRatesTextarea = page.locator('textarea[placeholder*="怨꾩젅 ?붽툑"]').first();
     await expect(seasonalRatesTextarea).toBeVisible({ timeout: 30000 });
 
     console.log('--- Attempting to fill seasonal rates');

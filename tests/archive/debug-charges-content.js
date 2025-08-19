@@ -1,4 +1,4 @@
-const { chromium } = require('playwright');
+﻿const { chromium } = require('playwright');
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -7,16 +7,16 @@ async function debugChargesContent() {
   const page = await browser.newPage();
   
   try {
-    console.log('📄 페이지 로드...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle' });
+    console.log('?뱞 ?섏씠吏 濡쒕뱶...');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle' });
     await delay(3000);
     
-    console.log('🧪 추가요금 모달 열기...');
+    console.log('?㎦ 異붽??붽툑 紐⑤떖 ?닿린...');
     
-    // 추가요금 섹션 클릭
+    // 異붽??붽툑 ?뱀뀡 ?대┃
     await page.evaluate(() => {
       const elements = Array.from(document.querySelectorAll('*')).filter(el => 
-        el.textContent && el.textContent.includes('추가요금') && 
+        el.textContent && el.textContent.includes('異붽??붽툑') && 
         (el.tagName === 'DIV' || el.tagName === 'BUTTON' || el.tagName === 'SPAN')
       );
       
@@ -42,17 +42,17 @@ async function debugChargesContent() {
     });
     
     await delay(3000);
-    console.log('✅ 추가요금 모달 열림');
+    console.log('??異붽??붽툑 紐⑤떖 ?대┝');
     
-    // 모달 안의 모든 텍스트 내용 확인
+    // 紐⑤떖 ?덉쓽 紐⑤뱺 ?띿뒪???댁슜 ?뺤씤
     const content = await page.evaluate(() => {
       const modals = Array.from(document.querySelectorAll('[role="dialog"], .modal, .modal-content, .charges-container'));
       
       if (modals.length === 0) {
-        return { error: '모달을 찾을 수 없음' };
+        return { error: '紐⑤떖??李얠쓣 ???놁쓬' };
       }
       
-      const modal = modals[modals.length - 1]; // 가장 최근 모달
+      const modal = modals[modals.length - 1]; // 媛??理쒓렐 紐⑤떖
       
       return {
         innerHTML: modal.innerHTML,
@@ -62,15 +62,15 @@ async function debugChargesContent() {
       };
     });
     
-    console.log('🔍 모달 내용:');
-    console.log('태그:', content.tagName);
-    console.log('클래스:', content.className);
-    console.log('텍스트 내용:', content.textContent?.substring(0, 500) + '...');
+    console.log('?뵇 紐⑤떖 ?댁슜:');
+    console.log('?쒓렇:', content.tagName);
+    console.log('?대옒??', content.className);
+    console.log('?띿뒪???댁슜:', content.textContent?.substring(0, 500) + '...');
     
-    // 추가요금 관련 요소 찾기
+    // 異붽??붽툑 愿???붿냼 李얘린
     const chargesElements = await page.evaluate(() => {
       const elements = Array.from(document.querySelectorAll('*')).filter(el => 
-        el.textContent && el.textContent.includes('추가요금')
+        el.textContent && el.textContent.includes('異붽??붽툑')
       );
       
       return elements.map(el => ({
@@ -81,17 +81,17 @@ async function debugChargesContent() {
       }));
     });
     
-    console.log('\n📋 추가요금 관련 요소들:');
+    console.log('\n?뱥 異붽??붽툑 愿???붿냼??');
     chargesElements.forEach((el, index) => {
-      console.log(`${index + 1}. ${el.tagName} (${el.visible ? '보임' : '숨김'}): "${el.textContent}"`);
+      console.log(`${index + 1}. ${el.tagName} (${el.visible ? '蹂댁엫' : '?④?'}): "${el.textContent}"`);
     });
     
-    // 저장 버튼 다시 찾기 (더 넓은 범위)
+    // ???踰꾪듉 ?ㅼ떆 李얘린 (???볦? 踰붿쐞)
     const allSaveButtons = await page.evaluate(() => {
       const buttons = Array.from(document.querySelectorAll('button'));
       return buttons.filter(btn => 
-        btn.textContent.includes('저장') || 
-        btn.textContent.includes('💾')
+        btn.textContent.includes('???) || 
+        btn.textContent.includes('?뮶')
       ).map(btn => ({
         text: btn.textContent.trim(),
         className: btn.className,
@@ -100,15 +100,15 @@ async function debugChargesContent() {
       }));
     });
     
-    console.log('\n💾 모든 저장 버튼:');
+    console.log('\n?뮶 紐⑤뱺 ???踰꾪듉:');
     allSaveButtons.forEach((btn, index) => {
-      console.log(`${index + 1}. "${btn.text}" (${btn.visible ? '보임' : '숨김'}) - 부모: ${btn.parent}`);
+      console.log(`${index + 1}. "${btn.text}" (${btn.visible ? '蹂댁엫' : '?④?'}) - 遺紐? ${btn.parent}`);
     });
     
     await delay(5000);
     
   } catch (error) {
-    console.error('❌ 테스트 중 오류:', error);
+    console.error('???뚯뒪??以??ㅻ쪟:', error);
   } finally {
     await browser.close();
   }

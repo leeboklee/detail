@@ -1,7 +1,8 @@
+﻿import React from 'react';
 const puppeteer = require('puppeteer');
 
 async function browserConsoleTest() {
-  console.log('🔍 브라우저 콘솔 로그 모니터링...');
+  console.log('?뵇 釉뚮씪?곗? 肄섏넄 濡쒓렇 紐⑤땲?곕쭅...');
   
   const browser = await puppeteer.launch({ 
     headless: false, 
@@ -12,52 +13,52 @@ async function browserConsoleTest() {
   try {
     const page = await browser.newPage();
     
-    // 모든 콘솔 로그 수집
+    // 紐⑤뱺 肄섏넄 濡쒓렇 ?섏쭛
     const logs = [];
     page.on('console', msg => {
       const text = msg.text();
       const timestamp = new Date().toISOString().substr(11, 12);
       logs.push({ timestamp, text });
       
-      // SimpleInput과 RoomInfoEditor 관련 로그만 출력
-      if (text.includes('SimpleInput') || text.includes('RoomInfoEditor') || text.includes('🔧') || text.includes('📝') || text.includes('🏨')) {
+      // SimpleInput怨?RoomInfoEditor 愿??濡쒓렇留?異쒕젰
+      if (text.includes('SimpleInput') || text.includes('RoomInfoEditor') || text.includes('?뵩') || text.includes('?뱷') || text.includes('?룳')) {
         console.log(`[${timestamp}] ${text}`);
       }
     });
     
-    // 페이지 로드
-    console.log('📄 페이지 로드 중...');
-    await page.goto('http://localhost: {process.env.PORT || 34343}', { waitUntil: 'networkidle0' });
+    // ?섏씠吏 濡쒕뱶
+    console.log('?뱞 ?섏씠吏 濡쒕뱶 以?..');
+    await page.goto('http://localhost: {process.env.PORT || 3900}', { waitUntil: 'networkidle0' });
     
-    // React 로딩 대기
+    // React 濡쒕뵫 ?湲?
     await page.waitForFunction(() => {
       const gridContainer = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-4.xl\\:grid-cols-5');
       return gridContainer && gridContainer.querySelectorAll('.cursor-pointer').length > 0;
     }, { timeout: 15000 });
     
-    console.log('✅ 페이지 로드 완료, 객실 모달 열기...');
+    console.log('???섏씠吏 濡쒕뱶 ?꾨즺, 媛앹떎 紐⑤떖 ?닿린...');
     
-    // 객실 카드 클릭
+    // 媛앹떎 移대뱶 ?대┃
     await page.evaluate(() => {
       const cards = document.querySelectorAll('.cursor-pointer');
       for (let card of cards) {
-        if (card.textContent.includes('객실 정보')) {
+        if (card.textContent.includes('媛앹떎 ?뺣낫')) {
           card.click();
           return;
         }
       }
     });
     
-    // 모달 대기
+    // 紐⑤떖 ?湲?
     await page.waitForFunction(() => {
       const modals = document.querySelectorAll('[role="dialog"]');
       return modals.length > 0 && modals[0].offsetParent !== null;
     }, { timeout: 5000 });
     
-    console.log('🎭 모달 열림 완료, 3초 대기...');
+    console.log('?렚 紐⑤떖 ?대┝ ?꾨즺, 3珥??湲?..');
     await new Promise(resolve => setTimeout(resolve, 3000));
     
-    // 입력 필드 확인
+    // ?낅젰 ?꾨뱶 ?뺤씤
     const inputInfo = await page.evaluate(() => {
       const modal = document.querySelector('[role="dialog"]');
       if (!modal) return null;
@@ -71,64 +72,64 @@ async function browserConsoleTest() {
       }));
     });
     
-    console.log(`\n📊 찾은 입력 필드: ${inputInfo.length}개`);
+    console.log(`\n?뱤 李얠? ?낅젰 ?꾨뱶: ${inputInfo.length}媛?);
     inputInfo.forEach((input, i) => {
-      console.log(`  ${i + 1}. 값: "${input.value}", 클래스: ${input.className}`);
+      console.log(`  ${i + 1}. 媛? "${input.value}", ?대옒?? ${input.className}`);
     });
     
     if (inputInfo.length > 0) {
-      console.log('\n📝 입력 테스트 시작...');
+      console.log('\n?뱷 ?낅젰 ?뚯뒪???쒖옉...');
       
-      // 첫 번째 필드에 'ㅌ' 입력 (한글 조합 시작)
+      // 泥?踰덉㎏ ?꾨뱶??'?? ?낅젰 (?쒓? 議고빀 ?쒖옉)
       await page.focus('[role="dialog"] input[name="name"]:first-of-type');
-      console.log('⌨️ 필드 포커스 완료');
+      console.log('?⑨툘 ?꾨뱶 ?ъ빱???꾨즺');
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // 한 글자씩 입력
-      await page.keyboard.type('ㅌ', { delay: 500 });
-      console.log('⌨️ "ㅌ" 입력 완료');
+      // ??湲?먯뵫 ?낅젰
+      await page.keyboard.type('??, { delay: 500 });
+      console.log('?⑨툘 "?? ?낅젰 ?꾨즺');
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      await page.keyboard.type('ㅔ', { delay: 500 });
-      console.log('⌨️ "ㅔ" 입력 완료');
+      await page.keyboard.type('??, { delay: 500 });
+      console.log('?⑨툘 "?? ?낅젰 ?꾨즺');
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      await page.keyboard.type('ㅅ', { delay: 500 });
-      console.log('⌨️ "ㅅ" 입력 완료');
+      await page.keyboard.type('??, { delay: 500 });
+      console.log('?⑨툘 "?? ?낅젰 ?꾨즺');
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      await page.keyboard.type('ㅌ', { delay: 500 });
-      console.log('⌨️ "ㅌ" 입력 완료');
+      await page.keyboard.type('??, { delay: 500 });
+      console.log('?⑨툘 "?? ?낅젰 ?꾨즺');
       
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // 최종 값 확인
+      // 理쒖쥌 媛??뺤씤
       const finalValue = await page.$eval('[role="dialog"] input[name="name"]:first-of-type', el => el.value);
-      console.log(`\n🎯 최종 입력 값: "${finalValue}"`);
+      console.log(`\n?렞 理쒖쥌 ?낅젰 媛? "${finalValue}"`);
     }
     
-    // 최근 로그 출력
-    console.log('\n📋 최근 콘솔 로그 (마지막 20개):');
+    // 理쒓렐 濡쒓렇 異쒕젰
+    console.log('\n?뱥 理쒓렐 肄섏넄 濡쒓렇 (留덉?留?20媛?:');
     const recentLogs = logs.slice(-20);
     recentLogs.forEach(log => {
       console.log(`  [${log.timestamp}] ${log.text}`);
     });
     
-    // 잠시 대기
-    console.log('\n⏱️ 5초 대기 중... (브라우저에서 직접 확인 가능)');
+    // ?좎떆 ?湲?
+    console.log('\n?깍툘 5珥??湲?以?.. (釉뚮씪?곗??먯꽌 吏곸젒 ?뺤씤 媛??');
     await new Promise(resolve => setTimeout(resolve, 5000));
     
   } catch (error) {
-    console.error('❌ 테스트 중 오류:', error);
+    console.error('???뚯뒪??以??ㅻ쪟:', error);
   } finally {
-    console.log('🏁 브라우저 콘솔 테스트 완료');
+    console.log('?뢾 釉뚮씪?곗? 肄섏넄 ?뚯뒪???꾨즺');
     await browser.close();
   }
 }
 
-// 실행
+// ?ㅽ뻾
 browserConsoleTest().catch(console.error); 
