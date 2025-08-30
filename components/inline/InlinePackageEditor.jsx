@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Button, Input, Textarea, Chip, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/react";
 import { FaPlus, FaTrash, FaSave, FaTimes, FaDownload, FaUpload } from 'react-icons/fa';
 
@@ -103,18 +105,8 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
     }
   };
 
-  const removeInclude = (index) => {
-    const currentIncludes = tempPackage.includes || [];
-    const updatedIncludes = currentIncludes.filter((_, i) => i !== index);
-    setTempPackage({
-      ...tempPackage,
-      includes: updatedIncludes
-    });
-  };
-
   const updateInclude = (index, value) => {
-    const currentIncludes = tempPackage.includes || [];
-    const updatedIncludes = [...currentIncludes];
+    const updatedIncludes = [...(tempPackage.includes || [])];
     updatedIncludes[index] = value;
     setTempPackage({
       ...tempPackage,
@@ -122,84 +114,75 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
     });
   };
 
-  // 패키지 템플릿 저장
-  const savePackageTemplate = async () => {
-    if (!templateName.trim()) {
-      alert('템플릿 이름을 입력해주세요.');
-      return;
-    }
+  const removeInclude = (index) => {
+    const updatedIncludes = tempPackage.includes.filter((_, i) => i !== index);
+    setTempPackage({
+      ...tempPackage,
+      includes: updatedIncludes
+    });
+  };
 
-    try {
-      const response = await fetch('/api/packages/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: templateName,
-          packages: packages
-        })
-      });
-
-      const result = await response.json();
-      
-      if (result.success) {
-        alert('패키지 템플릿이 저장되었습니다.');
+  const savePackageTemplate = () => {
+    if (templateName.trim()) {
+      const template = {
+        id: Date.now(),
+        name: templateName.trim(),
+        packages: packages,
+        createdAt: new Date().toISOString()
+      };
+      const updatedTemplates = [...savedTemplates, template];
+      setSavedTemplates(updatedTemplates);
+      localStorage.setItem('packageTemplates', JSON.stringify(updatedTemplates));
         setTemplateName('');
         onSaveModalClose();
-        loadSavedTemplates(); // 목록 새로고침
-      } else {
-        alert('저장 실패: ' + result.message);
-      }
-    } catch (error) {
-      console.error('패키지 저장 오류:', error);
-      alert('패키지 저장 중 오류가 발생했습니다.');
     }
   };
 
-  // 저장된 템플릿 목록 로드
-  const loadSavedTemplates = async () => {
-    try {
-      const response = await fetch('/api/packages/save');
-      const result = await response.json();
-      
-      if (result.success) {
-        setSavedTemplates(result.data);
-      }
-    } catch (error) {
-      console.error('템플릿 목록 로드 오류:', error);
-    }
-  };
-
-  // 템플릿 불러오기
   const loadTemplate = (template) => {
     if (template.packages && Array.isArray(template.packages)) {
       onPackagesChange(template.packages);
       onLoadModalClose();
-      alert('패키지 템플릿을 불러왔습니다.');
-    } else {
-      alert('템플릿 데이터가 올바르지 않습니다.');
     }
   };
 
-  // 모달 열 때 템플릿 목록 로드
+  const handleSaveModalOpen = () => {
+    onSaveModalOpen();
+  };
+
   const handleLoadModalOpen = () => {
-    loadSavedTemplates();
+    // 저장된 템플릿 불러오기
+    const saved = localStorage.getItem('packageTemplates');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setSavedTemplates(parsed);
+      } catch (error) {
+        console.error('템플릿 불러오기 실패:', error);
+      }
+    }
     onLoadModalOpen();
   };
 
   return (
-    <div className="space-y-6">
-      {/* 저장/불러오기 버튼 */}
-      <div className="flex gap-2 mb-4">
+    <div className="space-y-6 min-h-screen">
+      {/* 헤더 */}
+      <div className="flex justify-between items-center">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+            <span className="mr-2">📦</span>
+            패키지 정보 관리
+          </h2>
+          <p className="text-sm text-gray-600">호텔의 특별 패키지를 관리하고 편집할 수 있습니다.</p>
+        </div>
+        <div className="flex gap-2">
         <Button
           color="primary"
           variant="bordered"
-          onPress={onSaveModalOpen}
+            onPress={handleSaveModalOpen}
           startContent={<FaDownload />}
           size="sm"
         >
-          패키지 저장
+            패키지 템플릿 저장
         </Button>
         <Button
           color="secondary"
@@ -208,70 +191,80 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
           startContent={<FaUpload />}
           size="sm"
         >
-          패키지 불러오기
+            패키지 템플릿 목록
         </Button>
       </div>
+      </div>
+      
       {/* 기존 패키지 목록 */}
       {packages.map((pkg, index) => (
-        <div key={index} className="border rounded-lg p-4 bg-gray-50">
+        <div key={index} className="border rounded-lg p-6 bg-gray-50">
           {editingIndex === index ? (
             // 편집 모드
-            (<div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-3">
                 <Input
-                  label="패키지명"
+                  label={Labels["패키지명"]}
                   value={tempPackage.name}
                   onChange={(e) => setTempPackage({ ...tempPackage, name: e.target.value })}
-                  placeholder="예: 로맨틱 패키지"
+                  placeholder={Labels["예_로맨틱_패키지_PH"]}
                   size="sm"
                   classNames={{
-                    input: "text-gray-800 bg-white border-gray-300",
-                    label: "text-gray-700 font-medium"
+                    input: "text-black bg-white border-gray-400 placeholder:text-gray-500",
+                    label: "text-gray-700 font-medium text-sm mb-3"
                   }}
                 />
+                </div>
+                <div className="space-y-3">
                 <Input
                   type="number"
-                  label="가격"
+                  label={Labels["가격"]}
                   value={tempPackage.price}
                   onChange={(e) => setTempPackage({ ...tempPackage, price: parseInt(e.target.value) || 0 })}
-                  placeholder="0"
+                  placeholder={Labels["0_PH"]}
                   size="sm"
                   startContent={
                     <div className="pointer-events-none flex items-center">
-                      <span className="text-default-400 text-small">₩</span>
+                      <span className="text-gray-700 text-small font-medium">₩</span>
                     </div>
                   }
                   classNames={{
-                    input: "text-gray-800 bg-white border-gray-300",
-                    label: "text-gray-700 font-medium"
+                    input: "text-black bg-white border-gray-400 placeholder:text-gray-500",
+                    label: "text-gray-700 font-medium text-sm mb-3"
                   }}
                 />
               </div>
+              </div>
+              
+              <div className="space-y-3">
               <Textarea
-                label="패키지 설명"
+                label={Labels["패키지_설명"]}
                 value={tempPackage.description}
                 onChange={(e) => setTempPackage({ ...tempPackage, description: e.target.value })}
-                placeholder="패키지에 대한 상세한 설명을 입력하세요"
-                rows={3}
+                placeholder={Labels["패키지에_대한_상세한_설명을_입력하세요_PH"]}
+                  rows={4}
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
+                  input: "text-black bg-white border-gray-400 placeholder:text-gray-500",
+                  label: "text-gray-700 font-medium text-sm mb-3"
                 }}
-              />
-              <div>
-                <label className="block text-sm font-medium mb-2">포함 사항</label>
-                <div className="space-y-2">
+                />
+              </div>
+              
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">{Labels.포함_사항}</label>
+                <div className="space-y-3">
                   {(tempPackage.includes || []).map((include, includeIndex) => (
-                    <div key={includeIndex} className="flex gap-2 items-center">
+                    <div key={includeIndex} className="flex gap-3 items-center">
                       <Input
                         value={include}
                         onChange={(e) => updateInclude(includeIndex, e.target.value)}
-                        placeholder="포함 사항을 입력하세요"
+                        placeholder={Labels["포함_사항을_입력하세요_PH"]}
                         className="flex-1"
                         size="sm"
                         classNames={{
-                          input: "text-gray-800 bg-white border-gray-300",
-                          label: "text-gray-700 font-medium"
+                          input: "text-black bg-white border-gray-400 placeholder:text-gray-500",
+                          label: "text-gray-700 font-medium text-sm mb-2"
                         }}
                       />
                       <Button
@@ -290,19 +283,55 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                   variant="bordered"
                   onPress={addInclude}
                   startContent={<FaPlus />}
-                  className="mt-2"
+                  className="mt-3"
                 >
                   포함 사항 추가
                 </Button>
               </div>
               
+              {/* 판매기간 */}
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">{Labels.판매기간}</label>
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    type="date"
+                    value={tempPackage.salesPeriod?.start || ''}
+                    onChange={(e) => setTempPackage({
+                      ...tempPackage,
+                      salesPeriod: { ...tempPackage.salesPeriod, start: e.target.value }
+                    })}
+                    classNames={{
+                      input: "text-black bg-white border-gray-400 text-sm placeholder:text-gray-500",
+                      inputWrapper: "h-12 bg-white shadow-sm"
+                    }}
+                  />
+                  <Input
+                    type="date"
+                    value={tempPackage.salesPeriod?.end || ''}
+                    onChange={(e) => setTempPackage({
+                      ...tempPackage,
+                      salesPeriod: { ...tempPackage.salesPeriod, end: e.target.value }
+                    })}
+                    classNames={{
+                      input: "text-black bg-white border-gray-400 text-sm placeholder:text-gray-500",
+                      inputWrapper: "h-12 bg-white shadow-sm"
+                    }}
+                  />
+                </div>
+                {tempPackage.salesPeriod?.start && tempPackage.salesPeriod?.end && (
+                  <p className="text-sm text-gray-600 bg-blue-50 p-2 rounded">
+                    입력된 값: {tempPackage.salesPeriod.start} ~ {tempPackage.salesPeriod.end}
+                  </p>
+                )}
+              </div>
+              
               {/* 투숙 적용기간 */}
-              <div>
-                <label className="block text-sm font-medium mb-2">투숙 적용기간</label>
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">{Labels.투숙_적용기간}</label>
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     type="text"
-                    placeholder="MMDD (예: 0824)"
+                    placeholder={Labels["MMDD_예_0824_PH"]}
                     value={tempPackage.stayPeriod?.start || ''}
                     onChange={(e) => {
                       const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -313,12 +342,12 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                     }}
                     classNames={{
                       input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                      inputWrapper: "h-10"
+                      inputWrapper: "h-12"
                     }}
                   />
                   <Input
                     type="text"
-                    placeholder="MMDD (예: 0930)"
+                    placeholder={Labels["MMDD_예_0930_PH"]}
                     value={tempPackage.stayPeriod?.end || ''}
                     onChange={(e) => {
                       const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -329,17 +358,17 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                     }}
                     classNames={{
                       input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                      inputWrapper: "h-10"
+                      inputWrapper: "h-12"
                     }}
                   />
                 </div>
               </div>
               
               {/* 상품구성 */}
-              <div>
-                <label className="block text-sm font-medium mb-2">상품구성</label>
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-gray-700">{Labels.상품구성}</label>
                 <Input
-                  placeholder="예: 객실 1박 + 조식 2인 + 스파 이용권"
+                  placeholder={Labels["예_객실_1박__조식_2인__스파_이용권_PH"]}
                   value={tempPackage.productComposition || ''}
                   onChange={(e) => setTempPackage({
                     ...tempPackage,
@@ -347,11 +376,12 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                   })}
                   classNames={{
                     input: "text-gray-800 bg-white border-gray-300 text-sm",
-                    inputWrapper: "h-10"
+                    inputWrapper: "h-12"
                   }}
                 />
               </div>
-              <div className="flex gap-2">
+              
+              <div className="flex gap-3 pt-4">
                 <Button color="primary" onPress={savePackage} startContent={<FaSave />}>
                   저장
                 </Button>
@@ -359,10 +389,10 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                   취소
                 </Button>
               </div>
-            </div>)
+            </div>
           ) : (
             // 보기 모드
-            (<div className="flex justify-between items-start">
+            <div className="flex justify-between items-start">
               <div className="flex-1">
                 <h3 className="font-semibold text-lg">{pkg.name}</h3>
                 <p className="text-gray-600 text-sm">
@@ -399,72 +429,79 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                   삭제
                 </Button>
               </div>
-            </div>)
+            </div>
           )}
         </div>
       ))}
+      
       {/* 새 패키지 추가 */}
       {editingIndex === packages.length && (
-        <div className="border rounded-lg p-4 bg-blue-50">
-          <h3 className="font-semibold text-lg mb-4">새 패키지 추가</h3>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+        <div className="border rounded-lg p-6 bg-blue-50">
+          <h3 className="font-semibold text-lg mb-6">새 패키지 추가</h3>
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 gap-6">
+              <div className="space-y-3">
               <Input
-                label="패키지명"
+                label={Labels["패키지명_1"]}
                 value={tempPackage.name}
                 onChange={(e) => setTempPackage({ ...tempPackage, name: e.target.value })}
-                placeholder="예: 로맨틱 패키지"
+                placeholder={Labels["예_로맨틱_패키지_PH_1"]}
                 size="sm"
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
+                  input: "text-black bg-white border-gray-400 placeholder:text-gray-500",
+                  label: "text-gray-700 font-medium text-sm mb-3"
                 }}
               />
+              </div>
+              <div className="space-y-3">
               <Input
                 type="number"
-                label="가격"
+                label={Labels["가격_1"]}
                 value={tempPackage.price}
                 onChange={(e) => setTempPackage({ ...tempPackage, price: parseInt(e.target.value) || 0 })}
-                placeholder="0"
+                placeholder={Labels["0_PH_1"]}
                 size="sm"
                 startContent={
                   <div className="pointer-events-none flex items-center">
-                    <span className="text-default-400 text-small">₩</span>
+                    <span className="text-gray-700 text-small font-medium">₩</span>
                   </div>
                 }
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
+                  input: "text-black bg-white border-gray-400 placeholder:text-gray-500",
+                  label: "text-gray-700 font-medium text-sm mb-3"
+                }}
+              />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+            <Textarea
+              label={Labels["패키지_설명_1"]}
+              value={tempPackage.description}
+              onChange={(e) => setTempPackage({ ...tempPackage, description: e.target.value })}
+              placeholder={Labels["패키지에_대한_상세한_설명을_입력하세요_PH_1"]}
+                rows={4}
+              classNames={{
+                input: "text-gray-800 bg-white border-gray-300",
+                  label: "text-gray-700 font-medium text-sm mb-2"
                 }}
               />
             </div>
             
-            <Textarea
-              label="패키지 설명"
-              value={tempPackage.description}
-              onChange={(e) => setTempPackage({ ...tempPackage, description: e.target.value })}
-              placeholder="패키지에 대한 상세한 설명을 입력하세요"
-              rows={3}
-              classNames={{
-                input: "text-gray-800 bg-white border-gray-300",
-                label: "text-gray-700 font-medium"
-              }}
-            />
-            
-            <div>
-              <label className="block text-sm font-medium mb-2">포함 사항</label>
-              <div className="space-y-2">
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">{Labels.포함_사항_1}</label>
+              <div className="space-y-3">
                 {(tempPackage.includes || []).map((include, includeIndex) => (
-                  <div key={includeIndex} className="flex gap-2 items-center">
+                  <div key={includeIndex} className="flex gap-3 items-center">
                     <Input
                       value={include}
                       onChange={(e) => updateInclude(includeIndex, e.target.value)}
-                      placeholder="포함 사항을 입력하세요"
+                      placeholder={Labels["포함_사항을_입력하세요_PH_1"]}
                       className="flex-1"
                       size="sm"
                       classNames={{
                         input: "text-gray-800 bg-white border-gray-300",
-                        label: "text-gray-700 font-medium"
+                        label: "text-gray-700 font-medium text-sm mb-2"
                       }}
                     />
                     <Button
@@ -483,19 +520,50 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                 variant="bordered"
                 onPress={addInclude}
                 startContent={<FaPlus />}
-                className="mt-2"
+                className="mt-3"
               >
                 포함 사항 추가
               </Button>
             </div>
             
+            {/* 판매기간 */}
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">{Labels.판매기간_1}</label>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  type="date"
+                  value={tempPackage.salesPeriod?.start || ''}
+                  onChange={(e) => setTempPackage({
+                    ...tempPackage,
+                    salesPeriod: { ...tempPackage.salesPeriod, start: e.target.value }
+                  })}
+                  classNames={{
+                    input: "text-gray-800 bg-white border-gray-300 text-sm",
+                    inputWrapper: "h-12"
+                  }}
+                />
+                <Input
+                  type="date"
+                  value={tempPackage.salesPeriod?.end || ''}
+                  onChange={(e) => setTempPackage({
+                    ...tempPackage,
+                    salesPeriod: { ...tempPackage.salesPeriod, end: e.target.value }
+                  })}
+                  classNames={{
+                    input: "text-gray-800 bg-white border-gray-300 text-sm",
+                    inputWrapper: "h-12"
+                  }}
+                />
+              </div>
+            </div>
+            
             {/* 투숙 적용기간 */}
-            <div>
-              <label className="block text-sm font-medium mb-2">투숙 적용기간</label>
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">{Labels.투숙_적용기간_1}</label>
               <div className="grid grid-cols-2 gap-4">
                 <Input
                   type="text"
-                  placeholder="MMDD (예: 0824)"
+                  placeholder={Labels["MMDD_예_0824_PH_1"]}
                   value={tempPackage.stayPeriod?.start || ''}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -506,12 +574,12 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                   }}
                   classNames={{
                     input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                    inputWrapper: "h-10"
+                    inputWrapper: "h-12"
                   }}
                 />
                 <Input
                   type="text"
-                  placeholder="MMDD (예: 0930)"
+                  placeholder={Labels["MMDD_예_0930_PH_1"]}
                   value={tempPackage.stayPeriod?.end || ''}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -522,17 +590,17 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                   }}
                   classNames={{
                     input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                    inputWrapper: "h-10"
+                    inputWrapper: "h-12"
                   }}
                 />
               </div>
             </div>
             
             {/* 상품구성 */}
-            <div>
-              <label className="block text-sm font-medium mb-2">상품구성</label>
+            <div className="space-y-3">
+              <label className="block text-sm font-medium text-gray-700">{Labels.상품구성_1}</label>
               <Input
-                placeholder="예: 객실 1박 + 조식 2인 + 스파 이용권"
+                placeholder={Labels["예_객실_1박__조식_2인__스파_이용권_PH_1"]}
                 value={tempPackage.productComposition || ''}
                 onChange={(e) => setTempPackage({
                   ...tempPackage,
@@ -540,12 +608,12 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
                 })}
                 classNames={{
                   input: "text-gray-800 bg-white border-gray-300 text-sm",
-                  inputWrapper: "h-10"
+                  inputWrapper: "h-12"
                 }}
               />
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex gap-3 pt-4">
               <Button color="primary" onPress={savePackage} startContent={<FaSave />}>
                 저장
               </Button>
@@ -556,20 +624,22 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
           </div>
         </div>
       )}
+      
       {/* 새 패키지 추가 버튼 */}
       {editingIndex === null && (
         <Button color="primary" onPress={addPackage} startContent={<FaPlus />}>
           새 패키지 추가
         </Button>
       )}
+      
       {/* 저장 모달 */}
       <Modal isOpen={isSaveModalOpen} onClose={onSaveModalClose}>
         <ModalContent>
           <ModalHeader>패키지 템플릿 저장</ModalHeader>
           <ModalBody>
             <Input
-              label="템플릿 이름"
-              placeholder="예: 조식 패키지, 워터파크 패키지"
+              label={Labels.TEMPLATE_NAME}
+              placeholder={Labels["예_조식_패키지_워터파크_패키지_PH"]}
               value={templateName}
               onChange={(e) => setTemplateName(e.target.value)}
               size="sm"
@@ -592,6 +662,7 @@ const InlinePackageEditor = ({ packages = [], onPackagesChange }) => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      
       {/* 불러오기 모달 */}
       <Modal isOpen={isLoadModalOpen} onClose={onLoadModalClose} size="2xl">
         <ModalContent>

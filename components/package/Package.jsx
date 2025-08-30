@@ -1,8 +1,50 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, Chip } from "@heroui/react";
 import { PackageTable } from '../ui/EnhancedTable';
+
+// 기본 패키지 템플릿 데이터
+const DEFAULT_PACKAGE_TEMPLATES = [
+  {
+    id: 'yongpyong-summer',
+    name: '용평리조트 레이트 썸머 PKG',
+    packages: [
+      {
+        id: 1,
+        name: '용평리조트 레이트 썸머 PKG',
+        description: '늦여름을 즐기는 특별한 패키지',
+        salesPeriod: { start: '0827', end: '0829' },
+        stayPeriod: { start: '0827', end: '1031' },
+        productComposition: '객실1박 + 워터오후 OR 케이블카 + 레저(택1)',
+        includes: [
+          '객실 1박',
+          '워터파크 오후권 또는 케이블카',
+          '레저 선택 1개 (루지, 마운틴코스터, 사륜오토바이 중)'
+        ],
+        notes: [
+          '판매/접수기간: 08.27~08.29',
+          '투숙 적용기간: 8.27~10.31',
+          '상품구성: 객실1박 + 워터오후 OR 케이블카 + 레저(택1)'
+        ],
+        constraints: [
+          '루지: 매주 화요일 휴장',
+          '마운틴코스터/사륜오토바이: 매주 월요일 휴장',
+          '케이블카: 매주 월요일 휴장 (강풍/우천 시 휴장)',
+          '워터파크: 매주 화/수요일 휴장',
+          '워터파크 종일권 변경 시 현장에서 1인당 10,000원 추가 결제',
+          '성수기기간(7/19-8/17) 워터파크 종일권 변경 시 1인당 20,000원 추가 결제'
+        ],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+    ],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }
+];
 
 // 패키지 편집 모달 컴포넌트
 function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false }) {
@@ -114,23 +156,23 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
         <ModalBody className="overflow-y-auto max-h-[70vh] px-4 sm:px-6 py-4">
           <div className="space-y-4 sm:space-y-6">
             <Input
-              label="패키지명"
-              placeholder="패키지 이름을 입력하세요"
+              label={Labels["패키지명"]}
+              placeholder={Labels["패키지_이름을_입력하세요_PH"]}
               value={formData.name}
               onChange={(e) => setFormData(prev => ({
                 ...prev,
                 name: e.target.value
               }))}
               classNames={{
-                input: "text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
-                label: "text-gray-700 font-medium mb-2 text-sm sm:text-base",
-                inputWrapper: "h-10 sm:h-12"
+                input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500",
+                label: "text-gray-800 font-semibold mb-2 text-sm sm:text-base",
+                inputWrapper: "h-10 sm:h-12 bg-white shadow-sm"
               }}
             />
             
             <Textarea
-              label="패키지 설명"
-              placeholder="패키지에 대한 상세한 설명을 입력하세요"
+              label={Labels["패키지_설명"]}
+              placeholder={Labels["패키지에_대한_상세한_설명을_입력하세요_PH"]}
               value={formData.description}
               onChange={(e) => setFormData(prev => ({
                 ...prev,
@@ -138,16 +180,16 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
               }))}
               minRows={3}
               classNames={{
-                input: "text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
-                label: "text-gray-700 font-medium mb-2 text-sm sm:text-base",
-                inputWrapper: "min-h-[80px]"
+                input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500",
+                label: "text-gray-800 font-semibold mb-2 text-sm sm:text-base",
+                inputWrapper: "min-h-[80px] bg-white shadow-sm"
               }}
             />
             
             <Input
-              label="가격"
+              label={Labels["가격"]}
               type="number"
-              placeholder="0"
+              placeholder={Labels["0_PH"]}
               value={formData.price}
               onChange={(e) => setFormData(prev => ({
                 ...prev,
@@ -155,23 +197,23 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
               }))}
               startContent={
                 <div className="pointer-events-none flex items-center">
-                  <span className="text-gray-500 text-small">₩</span>
+                  <span className="text-gray-700 text-small font-medium">₩</span>
                 </div>
               }
               classNames={{
-                input: "text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
-                label: "text-gray-700 font-medium mb-2 text-sm sm:text-base",
-                inputWrapper: "h-10 sm:h-12"
+                input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500",
+                label: "text-gray-800 font-semibold mb-2 text-sm sm:text-base",
+                inputWrapper: "h-10 sm:h-12 bg-white shadow-sm"
               }}
             />
 
             {/* 판매기간 */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">판매기간</label>
+              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.판매기간}</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   type="text"
-                  placeholder="MMDD (예: 0804)"
+                  placeholder={Labels["MMDD_예_0804_PH"]}
                   value={formData.salesPeriod.start}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -187,7 +229,7 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                 />
                 <Input
                   type="text"
-                  placeholder="MMDD (예: 0831)"
+                  placeholder={Labels["MMDD_예_0831_PH"]}
                   value={formData.salesPeriod.end}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -206,11 +248,11 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
 
             {/* 투숙기간 */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">투숙 적용기간</label>
+              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.투숙_적용기간}</label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   type="text"
-                  placeholder="MMDD (예: 0824)"
+                  placeholder={Labels["MMDD_예_0824_PH"]}
                   value={formData.stayPeriod.start}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -226,7 +268,7 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                 />
                 <Input
                   type="text"
-                  placeholder="MMDD (예: 0930)"
+                  placeholder={Labels["MMDD_예_0930_PH"]}
                   value={formData.stayPeriod.end}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -245,8 +287,8 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
 
             {/* 상품구성 */}
             <Textarea
-              label="상품구성"
-              placeholder="예: 객실 1박 + 조식 2인 + 스파 이용권"
+              label={Labels["상품구성"]}
+              placeholder={Labels["예_객실_1박__조식_2인__스파_이용권_PH"]}
               value={formData.productComposition}
               onChange={(e) => setFormData(prev => ({
                 ...prev,
@@ -254,14 +296,64 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
               }))}
               minRows={3}
               classNames={{
-                input: "text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
+                input: "text-black bg-white border-gray-300 text-sm sm:text-base",
                 label: "text-gray-700 font-medium mb-2 text-sm sm:text-base",
                 inputWrapper: "min-h-[80px]"
               }}
             />
 
+            {/* 포함사항 */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">유의사항/참고사항</label>
+              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.포함사항 || '포함사항'}</label>
+              
+              {/* 기존 포함사항 표시 */}
+              {formData.includes.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {formData.includes.map((include, index) => (
+                    <Chip
+                      key={index}
+                      color="success"
+                      variant="flat"
+                      onClose={() => handleRemoveInclude(index)}
+                      className="h-8 text-gray-800 text-xs sm:text-sm"
+                    >
+                      {include}
+                    </Chip>
+                  ))}
+                </div>
+              )}
+
+              {/* 새 포함사항 추가 */}
+              <div className="flex flex-col sm:flex-row gap-2 mb-4">
+                <Input
+                  size="sm"
+                  placeholder="포함사항을 입력하세요"
+                  value={newInclude}
+                  onChange={(e) => setNewInclude(e.target.value)}
+                  classNames={{
+                    input: "text-black bg-white border-gray-400 text-sm placeholder:text-gray-500",
+                    inputWrapper: "bg-white shadow-sm"
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && e.target.value.trim()) {
+                      handleAddInclude();
+                    }
+                  }}
+                />
+                <Button
+                  size="sm"
+                  color="success"
+                  className="h-10 w-full sm:w-auto"
+                  onPress={handleAddInclude}
+                >
+                  추가
+                </Button>
+              </div>
+            </div>
+
+            {/* 유의사항/참고사항 */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.유의사항참고사항 || '유의사항/참고사항'}</label>
               
               {/* 기존 참고사항 표시 */}
               {formData.notes.length > 0 && (
@@ -284,11 +376,12 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
               <div className="flex flex-col sm:flex-row gap-2 mb-4">
                 <Input
                   size="sm"
-                  placeholder="유의사항 입력"
+                  placeholder="유의사항을 입력하세요"
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
                   classNames={{
-                    input: "text-gray-800 bg-white border-gray-300 text-sm"
+                    input: "text-black bg-white border-gray-400 text-sm placeholder:text-gray-500",
+                    inputWrapper: "bg-white shadow-sm"
                   }}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' && e.target.value.trim()) {
@@ -301,6 +394,55 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                   color="warning"
                   className="h-10 w-full sm:w-auto"
                   onPress={handleAddNote}
+                >
+                  추가
+                </Button>
+              </div>
+            </div>
+
+            {/* 제약사항 */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.제약사항 || '제약사항'}</label>
+              
+              {/* 기존 제약사항 표시 */}
+              {formData.constraints.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {formData.constraints.map((constraint, index) => (
+                    <Chip
+                      key={index}
+                      color="danger"
+                      variant="flat"
+                      onClose={() => handleRemoveConstraint(index)}
+                      className="h-8 text-gray-800 text-xs sm:text-sm"
+                    >
+                      {constraint}
+                    </Chip>
+                  ))}
+                </div>
+              )}
+
+              {/* 새 제약사항 추가 */}
+              <div className="flex flex-col sm:flex-row gap-2 mb-4">
+                <Input
+                  size="sm"
+                  placeholder="제약사항을 입력하세요"
+                  value={newConstraint}
+                  onChange={(e) => setNewConstraint(e.target.value)}
+                  classNames={{
+                    input: "text-black bg-white border-gray-400 text-sm placeholder:text-gray-500",
+                    inputWrapper: "bg-white shadow-sm"
+                  }}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && e.target.value.trim()) {
+                      handleAddConstraint();
+                    }
+                  }}
+                />
+                <Button
+                  size="sm"
+                  color="danger"
+                  className="h-10 w-full sm:w-auto"
+                  onPress={handleAddConstraint}
                 >
                   추가
                 </Button>
@@ -321,126 +463,137 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
   );
 }
 
+// 메인 패키지 컴포넌트
 export default function Package({ value = [], onChange }) {
-  const [editingPackage, setEditingPackage] = useState(null);
+  const [packages, setPackages] = useState(value);
   const [isEditing, setIsEditing] = useState(false);
+  const [editingPackage, setEditingPackage] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [isTemplateListOpen, setIsTemplateListOpen] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingPackageData, setEditingPackageData] = useState(null);
+  const [isNewPackage, setIsNewPackage] = useState(false);
   const [templateList, setTemplateList] = useState([]);
+  const [isTemplateListOpen, setIsTemplateListOpen] = useState(false);
 
-  // 컴포넌트 마운트 시 템플릿 목록 로드
+  // 초기 데이터 설정
   useEffect(() => {
-    try {
-      const savedTemplates = JSON.parse(localStorage.getItem('packageTemplates') || '[]');
-      setTemplateList(savedTemplates);
-    } catch (error) {
-      console.error('템플릿 로드 실패:', error);
-      setTemplateList([]);
+    if (value && Array.isArray(value) && value.length > 0) {
+      setPackages(value);
+    } else {
+      // 기본 템플릿 로드
+      loadDefaultTemplates();
     }
-  }, []);
+  }, [value]);
 
-  const packages = value || [];
+  // 기본 템플릿 로드
+  const loadDefaultTemplates = useCallback(() => {
+    try {
+      // 로컬 스토리지에서 기본 템플릿 확인
+      const savedTemplates = JSON.parse(localStorage.getItem('packageTemplates') || '[]');
+      
+      if (savedTemplates.length === 0) {
+        // 기본 템플릿이 없으면 기본값으로 설정
+        localStorage.setItem('packageTemplates', JSON.stringify(DEFAULT_PACKAGE_TEMPLATES));
+        setTemplateList(DEFAULT_PACKAGE_TEMPLATES);
+        
+        // 첫 번째 기본 템플릿을 패키지로 로드
+        if (DEFAULT_PACKAGE_TEMPLATES.length > 0) {
+          const defaultPackages = DEFAULT_PACKAGE_TEMPLATES[0].packages;
+          setPackages(defaultPackages);
+          if (onChange) {
+            onChange(defaultPackages);
+          }
+        }
+      } else {
+        setTemplateList(savedTemplates);
+      }
+    } catch (error) {
+      console.error('기본 템플릿 로드 오류:', error);
+    }
+  }, [onChange]);
 
-  const handleAddPackage = () => {
-    setEditingPackage({
+  // 패키지 추가
+  const handleAddPackage = useCallback(() => {
+    const newPackage = {
+      id: Date.now(),
       name: '',
       description: '',
-      salesPeriod: {
-        start: '',
-        end: ''
-      },
-      stayPeriod: {
-        start: '',
-        end: ''
-      },
+      salesPeriod: { start: '', end: '' },
+      stayPeriod: { start: '', end: '' },
       productComposition: '',
-      notes: []
-    });
-    setIsEditing(true);
-    setShowAddForm(true);
-  };
+      includes: [],
+      notes: [],
+      constraints: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    setEditingPackageData(newPackage);
+    setIsNewPackage(true);
+    setShowEditModal(true);
+  }, []);
 
-  const handleEditPackage = (packageData, index) => {
-    setEditingPackage({ ...packageData, index });
-    setIsEditing(true);
-    setShowAddForm(false);
-  };
+  // 패키지 편집
+  const handleEditPackage = useCallback((packageData) => {
+    setEditingPackageData(packageData);
+    setIsNewPackage(false);
+    setShowEditModal(true);
+  }, []);
 
-  const handleDeletePackage = (packageData, index) => {
-    const updatedPackages = packages.filter((_, i) => i !== index);
-    onChange(updatedPackages);
-  };
-
-  const handleSavePackage = () => {
-    try {
-      // 필수 필드 검증
-      if (!editingPackage?.name?.trim()) {
-        alert('패키지명을 입력해주세요.');
-        return;
+  // 패키지 삭제
+  const handleDeletePackage = useCallback((packageId) => {
+    if (confirm('정말로 이 패키지를 삭제하시겠습니까?')) {
+      const updatedPackages = packages.filter(pkg => pkg.id !== packageId);
+      setPackages(updatedPackages);
+      if (onChange) {
+        onChange(updatedPackages);
       }
+    }
+  }, [packages, onChange]);
 
+  // 패키지 저장
+  const handleSavePackage = useCallback((packageData) => {
+    try {
       let updatedPackages;
       
-      if (showAddForm) {
+      if (isNewPackage) {
         // 새 패키지 추가
         const newPackage = {
-          ...editingPackage,
-          id: Date.now().toString(),
-          createdAt: new Date().toISOString()
+          ...packageData,
+          id: Date.now(),
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         };
         updatedPackages = [...packages, newPackage];
-        alert('새 패키지가 성공적으로 저장되었습니다!');
+        alert('패키지가 성공적으로 추가되었습니다!');
       } else {
         // 기존 패키지 수정
-        updatedPackages = packages.map((pkg, index) => 
-          index === editingPackage.index ? { ...editingPackage, updatedAt: new Date().toISOString() } : pkg
+        updatedPackages = packages.map(pkg => 
+          pkg.id === packageData.id 
+            ? { ...packageData, updatedAt: new Date().toISOString() }
+            : pkg
         );
         alert('패키지가 성공적으로 수정되었습니다!');
       }
       
-      onChange(updatedPackages);
-      setIsEditing(false);
-      setEditingPackage(null);
-      setShowAddForm(false);
+      setPackages(updatedPackages);
+      if (onChange) {
+        onChange(updatedPackages);
+      }
+      
+      setShowEditModal(false);
+      setEditingPackageData(null);
+      setIsNewPackage(false);
       
       console.log('패키지 저장 완료:', updatedPackages);
     } catch (error) {
       console.error('패키지 저장 오류:', error);
       alert('패키지 저장에 실패했습니다: ' + error.message);
     }
-  };
-
-  const handleCancelEdit = () => {
-    setIsEditing(false);
-    setEditingPackage(null);
-    setShowAddForm(false);
-  };
-
-  const handleFieldChange = useCallback((field, value) => {
-    setEditingPackage(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  }, []);
-
-  const handleAddNote = useCallback((note) => {
-    if (note.trim()) {
-      setEditingPackage(prev => ({
-        ...prev,
-        notes: [...(prev.notes || []), note.trim()]
-      }));
-    }
-  }, []);
-
-  const handleRemoveNote = useCallback((index) => {
-    setEditingPackage(prev => ({
-      ...prev,
-      notes: prev.notes.filter((_, i) => i !== index)
-    }));
-  }, []);
+  }, [packages, onChange, isNewPackage]);
 
   // 패키지 템플릿 저장 함수
-  const savePackageTemplate = () => {
+  const savePackageTemplate = useCallback(() => {
     try {
       const templateName = prompt('템플릿 이름을 입력하세요:');
       if (!templateName) return;
@@ -450,7 +603,8 @@ export default function Package({ value = [], onChange }) {
         id: Date.now(),
         name: templateName.trim(),
         packages: packages,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       };
       
       const updatedTemplates = [...existingTemplates, newTemplate];
@@ -461,10 +615,10 @@ export default function Package({ value = [], onChange }) {
       console.error('템플릿 저장 오류:', error);
       alert('템플릿 저장에 실패했습니다: ' + error.message);
     }
-  };
+  }, [packages]);
 
   // 패키지 템플릿 목록 불러오기 함수
-  const fetchTemplateList = () => {
+  const fetchTemplateList = useCallback(() => {
     try {
       const savedTemplates = JSON.parse(localStorage.getItem('packageTemplates') || '[]');
       setTemplateList(savedTemplates);
@@ -473,13 +627,16 @@ export default function Package({ value = [], onChange }) {
       console.error('템플릿 목록 불러오기 오류:', error);
       alert('템플릿 목록을 불러올 수 없습니다: ' + error.message);
     }
-  };
+  }, []);
 
   // 선택된 템플릿 불러오기 함수
-  const loadSelectedTemplate = (template) => {
+  const loadSelectedTemplate = useCallback((template) => {
     try {
       if (template.packages && template.packages.length > 0) {
-        onChange(template.packages);
+        setPackages(template.packages);
+        if (onChange) {
+          onChange(template.packages);
+        }
         setIsTemplateListOpen(false);
         alert(`${template.name} 템플릿이 성공적으로 불러와졌습니다.`);
       } else {
@@ -489,7 +646,21 @@ export default function Package({ value = [], onChange }) {
       console.error('템플릿 불러오기 오류:', error);
       alert('템플릿을 불러올 수 없습니다: ' + error.message);
     }
-  };
+  }, [onChange]);
+
+  // 기본 템플릿 불러오기
+  const loadDefaultTemplate = useCallback(() => {
+    if (confirm('기본 템플릿을 불러오시겠습니까? 현재 패키지가 대체됩니다.')) {
+      if (DEFAULT_PACKAGE_TEMPLATES.length > 0) {
+        const defaultPackages = DEFAULT_PACKAGE_TEMPLATES[0].packages;
+        setPackages(defaultPackages);
+        if (onChange) {
+          onChange(defaultPackages);
+        }
+        alert('기본 템플릿이 성공적으로 불러와졌습니다.');
+      }
+    }
+  }, [onChange]);
 
   return (
     <div className="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -507,239 +678,63 @@ export default function Package({ value = [], onChange }) {
           </div>
         </div>
         
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-wrap gap-2 justify-end">
+          <Button
+            color="success"
+            variant="bordered"
+            onPress={() => {
+              console.log('패키지 생성 버튼 클릭됨');
+              console.log('현재 packages 데이터:', packages);
+              console.log('onChange 함수 존재 여부:', !!onChange);
+              
+              if (onChange) {
+                onChange(packages);
+                console.log('onChange 호출 완료');
+              } else {
+                console.log('onChange가 undefined입니다');
+              }
+              
+              alert('패키지가 미리보기에 생성되었습니다.');
+            }}
+            className="text-sm whitespace-nowrap"
+            startContent="✨"
+          >
+            생성
+          </Button>
           <Button
             color="primary"
             variant="bordered"
-            onPress={savePackageTemplate}
-            className="text-sm sm:text-base"
+            onPress={handleAddPackage}
+            className="text-sm whitespace-nowrap"
           >
-            패키지 템플릿 저장
+            + 추가
           </Button>
           <Button
             color="secondary"
             variant="bordered"
-            onPress={fetchTemplateList}
-            className="text-sm sm:text-base"
+            onPress={savePackageTemplate}
+            className="text-sm whitespace-nowrap"
           >
-            패키지 템플릿 목록
+            템플릿 저장
+          </Button>
+          <Button
+            color="warning"
+            variant="bordered"
+            onPress={fetchTemplateList}
+            className="text-sm whitespace-nowrap"
+          >
+            템플릿 목록
+          </Button>
+          <Button
+            color="default"
+            variant="bordered"
+            onPress={loadDefaultTemplate}
+            className="text-sm whitespace-nowrap"
+          >
+            기본 템플릿
           </Button>
         </div>
       </div>
-
-      {/* 편집 폼 */}
-      {isEditing && (
-        <div className="mb-6 p-4 sm:p-6 bg-blue-50 rounded-lg border-2 border-blue-200 relative z-10">
-          <h4 className="text-lg font-semibold text-blue-800 mb-4 sticky top-0 bg-blue-50 py-2">
-            {showAddForm ? '새 패키지 추가' : '패키지 편집'}
-          </h4>
-          
-          <div className="space-y-4 sm:space-y-6 overflow-y-auto max-h-[80vh]">
-            <Input
-              label="패키지명"
-              placeholder="패키지 이름을 입력하세요"
-              value={editingPackage?.name || ''}
-              onChange={(e) => handleFieldChange('name', e.target.value)}
-              classNames={{
-                input: "text-overlap-fix text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
-                label: "text-gray-700 font-medium mb-3 text-sm sm:text-base block",
-                inputWrapper: "h-10 sm:h-12"
-              }}
-            />
-            
-            <Textarea
-              label="패키지 설명"
-              placeholder="패키지에 대한 상세한 설명을 입력하세요"
-              value={editingPackage?.description || ''}
-              onChange={(e) => handleFieldChange('description', e.target.value)}
-              minRows={3}
-              classNames={{
-                input: "text-overlap-fix text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
-                label: "text-gray-700 font-medium mb-3 text-sm sm:text-base block",
-                inputWrapper: "min-h-[80px]"
-              }}
-            />
-            
-            {/* 가격 필드 제거됨 */}
-
-            {/* 판매기간 */}
-            <div className="mt-6">
-              <label className="text-sm font-medium text-gray-700 mb-3 block">판매기간</label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <Input
-                  type="text"
-                  placeholder="MMDD (예: 1031)"
-                  value={editingPackage?.salesPeriod?.start || ''}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
-                    console.log('판매기간 시작:', value); // 디버깅용
-                    handleFieldChange('salesPeriod', {
-                      ...editingPackage?.salesPeriod,
-                      start: value
-                    });
-                  }}
-                  classNames={{
-                    input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                    inputWrapper: "h-10 sm:h-12"
-                  }}
-                />
-                <Input
-                  type="text"
-                  placeholder="MMDD (예: 1102)"
-                  value={editingPackage?.salesPeriod?.end || ''}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
-                    console.log('판매기간 종료:', value); // 디버깅용
-                    handleFieldChange('salesPeriod', {
-                      ...editingPackage?.salesPeriod,
-                      end: value
-                    });
-                  }}
-                  classNames={{
-                    input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                    inputWrapper: "h-10 sm:h-12"
-                  }}
-                />
-              </div>
-              {/* 현재 입력된 값 표시 (디버깅용) */}
-              {editingPackage?.salesPeriod?.start || editingPackage?.salesPeriod?.end ? (
-                <div className="mt-2 text-xs text-gray-500">
-                  입력된 값: {editingPackage?.salesPeriod?.start || '없음'} ~ {editingPackage?.salesPeriod?.end || '없음'}
-                </div>
-              ) : null}
-            </div>
-
-            {/* 투숙기간 */}
-            <div className="mt-6">
-              <label className="text-sm font-medium text-gray-700 mb-3 block">투숙 적용기간</label>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                <Input
-                  type="text"
-                  placeholder="MMDD (예: 0824)"
-                  value={editingPackage?.stayPeriod?.start || ''}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
-                    handleFieldChange('stayPeriod', {
-                      ...editingPackage?.stayPeriod,
-                      start: value
-                    });
-                  }}
-                  classNames={{
-                    input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                    inputWrapper: "h-10 sm:h-12"
-                  }}
-                />
-                <Input
-                  type="text"
-                  placeholder="MMDD (예: 0930)"
-                  value={editingPackage?.stayPeriod?.end || ''}
-                  onChange={(e) => {
-                    const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
-                    handleFieldChange('stayPeriod', {
-                      ...editingPackage?.stayPeriod,
-                      end: value
-                    });
-                  }}
-                  classNames={{
-                    input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
-                    inputWrapper: "h-10 sm:h-12"
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* 상품구성 */}
-            <div className="mt-6">
-              <Textarea
-                label="상품구성"
-                placeholder="예: 객실 1박 + 조식 2인 + 스파 이용권"
-                value={editingPackage?.productComposition || ''}
-                onChange={(e) => handleFieldChange('productComposition', e.target.value)}
-                minRows={3}
-                classNames={{
-                  input: "text-overlap-fix text-gray-800 bg-white border-gray-300 text-sm sm:text-base",
-                  label: "text-gray-700 font-medium mb-3 text-sm sm:text-base block",
-                  inputWrapper: "min-h-[80px]"
-                }}
-              />
-            </div>
-
-            {/* 유의사항/참고사항 */}
-            <div className="mt-6">
-              <label className="text-sm font-medium text-gray-700 mb-3 block">
-                유의사항/참고사항
-              </label>
-              
-              {/* 기존 참고사항 표시 */}
-              {editingPackage?.notes?.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {editingPackage.notes.map((note, index) => (
-                    <Chip
-                      key={index}
-                      color="warning"
-                      variant="flat"
-                      onClose={() => handleRemoveNote(index)}
-                      className="h-8 text-gray-800 text-xs sm:text-sm"
-                    >
-                      {note}
-                    </Chip>
-                  ))}
-                </div>
-              )}
-
-              {/* 새 참고사항 추가 */}
-              <div className="flex flex-col sm:flex-row gap-2 mb-4">
-                <Input
-                  size="sm"
-                  placeholder="유의사항 입력"
-                  classNames={{
-                    input: "text-gray-800 bg-white border-gray-300 text-sm"
-                  }}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' && e.target.value.trim()) {
-                      handleAddNote(e.target.value);
-                      e.target.value = '';
-                    }
-                  }}
-                />
-                <Button
-                  size="sm"
-                  color="warning"
-                  className="h-10 w-full sm:w-auto"
-                  onPress={(e) => {
-                    const input = e.target.closest('div').querySelector('input');
-                    if (input.value.trim()) {
-                      handleAddNote(input.value);
-                      input.value = '';
-                    }
-                  }}
-                >
-                  추가
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 sticky bottom-0 bg-blue-50 pb-2">
-              <Button
-                color="primary"
-                onPress={handleSavePackage}
-                disabled={!editingPackage?.name?.trim()}
-                className="w-full sm:w-auto"
-              >
-                저장
-              </Button>
-              <Button
-                color="danger"
-                variant="light"
-                onPress={handleCancelEdit}
-                className="w-full sm:w-auto"
-              >
-                취소
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="mt-6 sm:mt-8">
         <PackageTable
@@ -749,6 +744,19 @@ export default function Package({ value = [], onChange }) {
           onAdd={handleAddPackage}
         />
       </div>
+
+      {/* 패키지 편집 모달 */}
+      <PackageEditModal
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setEditingPackageData(null);
+          setIsNewPackage(false);
+        }}
+        packageData={editingPackageData}
+        onSave={handleSavePackage}
+        isNew={isNewPackage}
+      />
 
       {/* 템플릿 목록 모달 */}
       <Modal
@@ -773,7 +781,7 @@ export default function Package({ value = [], onChange }) {
             {templateList.length > 0 ? (
               <div className="space-y-3 sm:space-y-4">
                 {templateList.map((template, index) => (
-                  <div key={index} className="border rounded-lg p-3 sm:p-4 hover:bg-gray-50">
+                  <div key={template.id || index} className="border rounded-lg p-3 sm:p-4 hover:bg-gray-50">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                       <div className="flex-1">
                         <h4 className="font-semibold text-sm sm:text-base">{template.name}</h4>
@@ -784,14 +792,31 @@ export default function Package({ value = [], onChange }) {
                           패키지 개수: {template.packages?.length || 0}개
                         </p>
                       </div>
-                      <Button
-                        color="primary"
-                        size="sm"
-                        onPress={() => loadSelectedTemplate(template)}
-                        className="w-full sm:w-auto"
-                      >
-                        불러오기
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          color="primary"
+                          size="sm"
+                          onPress={() => loadSelectedTemplate(template)}
+                          className="w-full sm:w-auto"
+                        >
+                          불러오기
+                        </Button>
+                        <Button
+                          color="danger"
+                          size="sm"
+                          variant="light"
+                          onPress={() => {
+                            if (confirm('정말로 이 템플릿을 삭제하시겠습니까?')) {
+                              const updatedTemplates = templateList.filter(t => t.id !== template.id);
+                              localStorage.setItem('packageTemplates', JSON.stringify(updatedTemplates));
+                              setTemplateList(updatedTemplates);
+                            }
+                          }}
+                          className="w-full sm:w-auto"
+                        >
+                          삭제
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 ))}

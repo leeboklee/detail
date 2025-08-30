@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Button, Input, Textarea, Select, SelectItem, Chip, Divider } from "@heroui/react";
 import { FaPlus, FaTrash, FaSave, FaTimes, FaDownload, FaUpload, FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import Labels from '@/src/shared/labels';
 
 const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
   const [editingIndex, setEditingIndex] = useState(null);
@@ -12,7 +13,7 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
   const [showSavePanel, setShowSavePanel] = useState(false);
   const [showLoadPanel, setShowLoadPanel] = useState(false);
 
-  const roomTypes = ['스탠다드', '디럭스', '스위트', '패밀리'];
+  const roomTypes = []; // 하드코딩 제거
   const amenityOptions = [
     '무료 Wi-Fi', '에어컨', 'TV', '미니바', '커피메이커', '헤어드라이어',
     '욕실용품', '금고', '옷장', '발코니', '오션뷰', '시티뷰'
@@ -22,7 +23,7 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
     setEditingIndex(index);
     setTempRoom(rooms[index] || {
       name: '',
-      type: '스탠다드',
+      type: '',
       structure: '',
       bedType: '',
       view: '',
@@ -60,7 +61,7 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
     setEditingIndex(rooms.length);
     setTempRoom({
       name: '',
-      type: '스탠다드',
+      type: '',
       structure: '',
       bedType: '',
       view: '',
@@ -218,8 +219,8 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
             </Button>
           </div>
           <Input
-            label="템플릿 이름"
-            placeholder="예: 스탠다드 객실, 디럭스 객실"
+            label={Labels.TEMPLATE_NAME}
+            placeholder={Labels.TEMPLATE_NAME_PLACEHOLDER}
             value={templateName}
             onChange={(e) => setTemplateName(e.target.value)}
             className="mb-3 text-contrast-fix"
@@ -278,35 +279,32 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
             (<div className="space-y-3 sm:space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
-                  label="객실명"
+                  label={Labels.ROOM_NAME}
                   value={tempRoom.name}
                   onChange={(e) => setTempRoom({ ...tempRoom, name: e.target.value })}
-                  placeholder="예: 스탠다드, 디럭스"
+                  placeholder={Labels.ROOM_NAME_PLACEHOLDER}
                   size="sm"
                   classNames={{
                     input: "text-gray-800 bg-white border-gray-300",
                     label: "text-gray-700 font-medium"
                   }}
                 />
-                <Select
-                  label="객실 유형"
-                  selectedKeys={[tempRoom.type]}
-                  onSelectionChange={(keys) => setTempRoom({ ...tempRoom, type: Array.from(keys)[0] })}
+                <Input
+                  label={Labels.ROOM_TYPE}
+                  value={tempRoom.type}
+                  onChange={(e) => setTempRoom({ ...tempRoom, type: e.target.value })}
+                  placeholder="객실 유형을 직접 입력하세요"
                   size="sm"
                   classNames={{
-                    trigger: "text-gray-800 bg-white border-gray-300",
+                    input: "text-gray-800 bg-white border-gray-300",
                     label: "text-gray-700 font-medium"
                   }}
-                >
-                  {roomTypes.map(type => (
-                    <SelectItem key={type} value={type}>{type}</SelectItem>
-                  ))}
-                </Select>
+                />
                 <Input
-                  label="구조"
+                  label={Labels.STRUCTURE}
                   value={tempRoom.structure}
                   onChange={(e) => setTempRoom({ ...tempRoom, structure: e.target.value })}
-                  placeholder="예: 원룸, 투룸"
+                  placeholder={Labels.ROOM_STRUCTURE_PLACEHOLDER}
                   size="sm"
                   classNames={{
                     input: "text-gray-800 bg-white border-gray-300",
@@ -314,10 +312,10 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
                   }}
                 />
                 <Input
-                  label="베드 타입"
+                  label={Labels.BED_TYPE}
                   value={tempRoom.bedType}
                   onChange={(e) => setTempRoom({ ...tempRoom, bedType: e.target.value })}
-                  placeholder="예: 퀸 베드 1개"
+                  placeholder={Labels.ROOM_BED_PLACEHOLDER}
                   size="sm"
                   classNames={{
                     input: "text-gray-800 bg-white border-gray-300",
@@ -325,10 +323,10 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
                   }}
                 />
                 <Input
-                  label="뷰"
+                  label={Labels.VIEW}
                   value={tempRoom.view}
                   onChange={(e) => setTempRoom({ ...tempRoom, view: e.target.value })}
-                  placeholder="예: 시티뷰, 오션뷰"
+                  placeholder={Labels.ROOM_VIEW_PLACEHOLDER}
                   size="sm"
                   classNames={{
                     input: "text-gray-800 bg-white border-gray-300",
@@ -338,7 +336,7 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
                 <div className="grid grid-cols-2 gap-2">
                   <Input
                     type="number"
-                    label="기본 수용인원"
+                    label={Labels.STANDARD_CAPACITY}
                     value={tempRoom.standardCapacity}
                     onChange={(e) => setTempRoom({ ...tempRoom, standardCapacity: parseInt(e.target.value) || 0 })}
                     classNames={{
@@ -348,7 +346,7 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
                   />
                   <Input
                     type="number"
-                    label="최대 수용인원"
+                    label={Labels.MAX_CAPACITY}
                     value={tempRoom.maxCapacity}
                     onChange={(e) => setTempRoom({ ...tempRoom, maxCapacity: parseInt(e.target.value) || 0 })}
                     classNames={{
@@ -359,28 +357,29 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
                 </div>
               </div>
               <Textarea
-                label="객실 설명"
+                label={Labels.DESCRIPTION}
                 value={tempRoom.description}
                 onChange={(e) => setTempRoom({ ...tempRoom, description: e.target.value })}
-                placeholder="객실에 대한 상세한 설명을 입력하세요"
+                placeholder={Labels.DESCRIPTION_PLACEHOLDER}
                 rows={3}
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
+                  input: "text-gray-800 bg-white border-gray-300 text-overlap-fix no-overlap",
+                  label: "text-gray-700 font-medium mb-2 block",
+                  inputWrapper: "no-overlap"
                 }}
               />
               <Input
-                label="객실 이미지 URL"
+                label={Labels.IMAGE_URL}
                 value={tempRoom.image}
                 onChange={(e) => setTempRoom({ ...tempRoom, image: e.target.value })}
-                placeholder="https://example.com/room-image.jpg"
+                placeholder={Labels.IMAGE_URL_PLACEHOLDER}
                 classNames={{
                   input: "text-gray-800 bg-white border-gray-300",
                   label: "text-gray-700 font-medium"
                 }}
               />
               <div>
-                <label className="block text-sm font-medium mb-2 text-gray-700">편의시설</label>
+                <label className="block text-sm font-medium mb-2 text-gray-700">{Labels.AMENITIES}</label>
                 <div className="flex flex-wrap gap-2">
                   {amenityOptions.map(amenity => (
                     <Chip
@@ -450,67 +449,68 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
           <div className="space-y-3 sm:space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <Input
-                label="객실명"
+                label={Labels.ROOM_NAME}
                 value={tempRoom.name}
                 onChange={(e) => setTempRoom({ ...tempRoom, name: e.target.value })}
-                placeholder="예: 스탠다드, 디럭스"
+                placeholder={Labels.ROOM_NAME_PLACEHOLDER}
+                size="sm"
+                classNames={{
+                  input: "text-gray-800 bg-white border-gray-300 text-overlap-fix",
+                  inputWrapper: "h-12",
+                  label: "text-gray-700 font-medium mb-2 block"
+                }}
+              />
+              <Input
+                label={Labels.ROOM_TYPE}
+                value={tempRoom.type}
+                onChange={(e) => setTempRoom({ ...tempRoom, type: e.target.value })}
+                placeholder="객실 유형을 직접 입력하세요"
                 size="sm"
                 classNames={{
                   input: "text-gray-800 bg-white border-gray-300",
                   label: "text-gray-700 font-medium"
                 }}
               />
-              <Select
-                label="객실 유형"
-                selectedKeys={[tempRoom.type]}
-                onSelectionChange={(keys) => setTempRoom({ ...tempRoom, type: Array.from(keys)[0] })}
-                size="sm"
-                classNames={{
-                  trigger: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
-                }}
-              >
-                {roomTypes.map(type => (
-                  <SelectItem key={type} value={type}>{type}</SelectItem>
-                ))}
-              </Select>
               <Input
-                label="구조"
+                label={Labels.STRUCTURE}
                 value={tempRoom.structure}
                 onChange={(e) => setTempRoom({ ...tempRoom, structure: e.target.value })}
-                placeholder="예: 원룸, 투룸"
+                placeholder={Labels.ROOM_STRUCTURE_PLACEHOLDER}
                 size="sm"
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
+                  input: "text-gray-800 bg-white border-gray-300 text-overlap-fix",
+                  inputWrapper: "h-12",
+                  label: "text-gray-700 font-medium mb-2 block"
                 }}
               />
               <Input
-                label="베드 타입"
+                label={Labels.BED_TYPE}
                 value={tempRoom.bedType}
                 onChange={(e) => setTempRoom({ ...tempRoom, bedType: e.target.value })}
-                placeholder="예: 퀸 베드 1개"
+                placeholder={Labels.ROOM_BED_PLACEHOLDER}
                 size="sm"
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
+                  input: "text-gray-800 bg-white border-gray-300 text-overlap-fix",
+                  inputWrapper: "h-12",
+                  label: "text-gray-700 font-medium mb-2 block"
                 }}
               />
               <Input
-                label="뷰"
+                label={Labels.VIEW}
                 value={tempRoom.view}
                 onChange={(e) => setTempRoom({ ...tempRoom, view: e.target.value })}
-                placeholder="예: 시티뷰, 오션뷰"
+                placeholder={Labels.ROOM_VIEW_PLACEHOLDER}
                 size="sm"
                 classNames={{
-                  input: "text-gray-800 bg-white border-gray-300",
-                  label: "text-gray-700 font-medium"
+                  input: "text-gray-800 bg-white border-gray-300 text-overlap-fix",
+                  inputWrapper: "h-12",
+                  label: "text-gray-700 font-medium mb-2 block"
                 }}
               />
               <div className="grid grid-cols-2 gap-2">
                 <Input
                   type="number"
-                  label="기본 수용인원"
+                  label={Labels.STANDARD_CAPACITY}
                   value={tempRoom.standardCapacity}
                   onChange={(e) => setTempRoom({ ...tempRoom, standardCapacity: parseInt(e.target.value) || 0 })}
                   size="sm"
@@ -521,7 +521,7 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
                 />
                 <Input
                   type="number"
-                  label="최대 수용인원"
+                  label={Labels.MAX_CAPACITY}
                   value={tempRoom.maxCapacity}
                   onChange={(e) => setTempRoom({ ...tempRoom, maxCapacity: parseInt(e.target.value) || 0 })}
                   size="sm"
@@ -534,22 +534,23 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
             </div>
             
             <Textarea
-              label="객실 설명"
+              label={Labels.DESCRIPTION}
               value={tempRoom.description}
               onChange={(e) => setTempRoom({ ...tempRoom, description: e.target.value })}
-              placeholder="객실에 대한 상세한 설명을 입력하세요"
+              placeholder={Labels.DESCRIPTION_PLACEHOLDER}
               rows={3}
-              classNames={{
-                input: "text-gray-800 bg-white border-gray-300",
-                label: "text-gray-700 font-medium"
-              }}
+                              classNames={{
+                  input: "text-gray-800 bg-white border-gray-300 text-overlap-fix no-overlap",
+                  label: "text-gray-700 font-medium mb-2 block",
+                  inputWrapper: "no-overlap"
+                }}
             />
             
             <Input
-              label="객실 이미지 URL"
+              label={Labels.IMAGE_URL}
               value={tempRoom.image}
               onChange={(e) => setTempRoom({ ...tempRoom, image: e.target.value })}
-              placeholder="https://example.com/room-image.jpg"
+              placeholder={Labels.IMAGE_URL_PLACEHOLDER}
               size="sm"
               classNames={{
                 input: "text-gray-800 bg-white border-gray-300",
@@ -558,7 +559,7 @@ const InlineRoomEditor = ({ rooms = [], onRoomsChange }) => {
             />
             
             <div>
-              <label className="block text-sm font-medium mb-2">편의시설</label>
+              <label className="block text-sm font-medium mb-2">{Labels.AMENITIES}</label>
               <div className="flex flex-wrap gap-2">
                 {amenityOptions.map(amenity => (
                   <Chip

@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Labels from '@/src/shared/labels';
 import { useAppContext } from '../AppContext.Context';
 
 const LayoutManager = () => {
@@ -149,9 +151,7 @@ const LayoutManager = () => {
         <h3 className="text-lg font-semibold text-gray-700 mb-4">색상 설정</h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              주요 색상
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{Labels.주요_색상}</label>
             <input
               type="color"
               value={layoutInfo.colors.primary}
@@ -160,9 +160,7 @@ const LayoutManager = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              보조 색상
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{Labels.보조_색상}</label>
             <input
               type="color"
               value={layoutInfo.colors.secondary}

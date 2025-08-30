@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+
+import Labels from '@/src/shared/labels';
 /**
  * 추가 요금 정보 관리 컴포넌트
  * @param {object} props
@@ -71,14 +73,14 @@ export default function ChargesInfo({ value: charges = {}, onChange: onChargesCh
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
-              placeholder="주말 할증 (예: 20%)"
+              placeholder={Labels["주말_할증_예_20_PH"]}
               value={charges.weekendSurcharge || ''}
               onChange={(e) => handleChargeChange('weekendSurcharge', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
             />
             <input
               type="text"
-              placeholder="성수기/공휴일 할증 (예: 30%)"
+              placeholder={Labels["성수기공휴일_할증_예_30_PH"]}
               value={charges.holidaySurcharge || ''}
               onChange={(e) => handleChargeChange('holidaySurcharge', e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -90,7 +92,7 @@ export default function ChargesInfo({ value: charges = {}, onChange: onChargesCh
         <div className="p-4 border rounded-md">
           <h3 className="text-lg font-semibold mb-2">계절별 특별 요금</h3>
           <textarea
-            placeholder="계절별 요금 정보를 입력하세요. (예: 여름 성수기 (7/15-8/15): 50% 할증)"
+            placeholder={Labels["계절별_요금_정보를_입력하세요_예_여름_성수기_715815_50_할증_PH"]}
             value={charges.seasonalRates || ''}
             onChange={(e) => handleChargeChange('seasonalRates', e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -114,21 +116,21 @@ export default function ChargesInfo({ value: charges = {}, onChange: onChargesCh
                 <div key={index} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-center bg-gray-50 p-4 rounded-lg">
                   <input
                     type="text"
-                    placeholder="항목명 (예: 인원 추가)"
+                    placeholder={Labels["항목명_예_인원_추가_PH"]}
                     value={item.name || ''}
                     onChange={(e) => handleItemChange(index, 'name', e.target.value)}
                     className="md:col-span-1 w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
                   <input
                     type="text"
-                    placeholder="가격 (예: 20000)"
+                    placeholder={Labels["가격_예_20000_PH"]}
                     value={item.price || ''}
                     onChange={(e) => handleItemChange(index, 'price', e.target.value)}
                     className="md:col-span-1 w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
                   <input
                     type="text"
-                    placeholder="설명 (예: 1인 기준)"
+                    placeholder={Labels["설명_예_1인_기준_PH"]}
                     value={item.description || ''}
                     onChange={(e) => handleItemChange(index, 'description', e.target.value)}
                     className="md:col-span-1 w-full px-3 py-2 border border-gray-300 rounded-md"

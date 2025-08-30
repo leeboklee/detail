@@ -77,6 +77,30 @@ export default function Error({ error, reset }) {
     }
   }
 
+  // 오류 로그를 클립보드에 복사
+  const copyErrorLog = async () => {
+    try {
+      const errorLog = `
+===== 오류 발생 정보 =====
+시간: ${new Date().toLocaleString('ko-KR')}
+URL: ${typeof window !== 'undefined' ? window.location.href : '알 수 없음'}
+사용자 에이전트: ${typeof navigator !== 'undefined' ? navigator.userAgent : '알 수 없음'}
+
+===== 오류 메시지 =====
+${error?.message || '알 수 없는 오류'}
+
+===== 오류 스택 =====
+${error?.stack || '스택 정보 없음'}
+      `.trim()
+
+      await navigator.clipboard.writeText(errorLog)
+      alert('오류 로그가 클립보드에 복사되었습니다.')
+    } catch (copyError) {
+      console.error('클립보드 복사 실패:', copyError)
+      alert('클립보드 복사에 실패했습니다.')
+    }
+  }
+
   function getOrCreateSessionId() {
     if (typeof window === 'undefined') return 'server'
     const key = 'detail_session_id'
@@ -116,6 +140,12 @@ export default function Error({ error, reset }) {
               className="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
             >
               페이지 새로고침
+            </button>
+            <button
+              onClick={copyErrorLog}
+              className="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+              로그 복사
             </button>
             <button
               onClick={handleSendAI}

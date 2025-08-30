@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+
+import Labels from '@/src/shared/labels';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale/ko';
@@ -77,7 +79,7 @@ const PeriodInfo = () => {
         <h4 className={styles.sectionTitle}>🛒 판매기간</h4>
         <div className={styles.grid}>
           <div className={styles.inputGroup}>
-            <label>판매 시작일</label>
+            <label>{Labels.판매_시작일}</label>
             <DatePicker
               selected={localData.saleStartDate}
               onChange={(date) => handleDateChange('saleStartDate', date)}
@@ -91,7 +93,7 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>판매 종료일</label>
+            <label>{Labels.판매_종료일}</label>
             <DatePicker
               selected={localData.saleEndDate}
               onChange={(date) => handleDateChange('saleEndDate', date)}
@@ -106,12 +108,12 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>얼리버드 할인</label>
+            <label>{Labels.얼리버드_할인}</label>
             <input
               type="text"
               value={localData.earlyBirdDiscount}
               onChange={(e) => handleInputChange('earlyBirdDiscount', e.target.value)}
-              placeholder="30일 전 예약 시 10% 할인"
+              placeholder={Labels["30일_전_예약_시_10_할인_PH"]}
               className={styles.input}
               autoComplete="off"
               style={{
@@ -122,12 +124,12 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>막판 할인</label>
+            <label>{Labels.막판_할인}</label>
             <input
               type="text"
               value={localData.lastMinuteDiscount}
               onChange={(e) => handleInputChange('lastMinuteDiscount', e.target.value)}
-              placeholder="당일 예약 시 20% 할인"
+              placeholder={Labels["당일_예약_시_20_할인_PH"]}
               className={styles.input}
               autoComplete="off"
               style={{
@@ -140,11 +142,11 @@ const PeriodInfo = () => {
         </div>
         
         <div className={styles.textareaGroup}>
-          <label>특별 혜택</label>
+          <label>{Labels.특별_혜택}</label>
           <textarea
             value={localData.specialBenefits}
             onChange={(e) => handleInputChange('specialBenefits', e.target.value)}
-            placeholder="조식 무료 제공, 스파 이용권 등"
+            placeholder={Labels["조식_무료_제공_스파_이용권_등_PH"]}
             className={styles.textarea}
             rows="3"
             autoComplete="off"
@@ -157,11 +159,11 @@ const PeriodInfo = () => {
         </div>
         
         <div className={styles.textareaGroup}>
-          <label>판매 제한사항</label>
+          <label>{Labels.판매_제한사항}</label>
           <textarea
             value={localData.saleRestrictions}
             onChange={(e) => handleInputChange('saleRestrictions', e.target.value)}
-            placeholder="1인 최대 2박, 중복 예약 불가 등"
+            placeholder={Labels["1인_최대_2박_중복_예약_불가_등_PH"]}
             className={styles.textarea}
             rows="3"
           />
@@ -173,7 +175,7 @@ const PeriodInfo = () => {
         <h4 className={styles.sectionTitle}>🏨 투숙일</h4>
         <div className={styles.grid}>
           <div className={styles.inputGroup}>
-            <label>투숙 시작일</label>
+            <label>{Labels.투숙_시작일}</label>
             <DatePicker
               selected={localData.stayStartDate}
               onChange={(date) => handleDateChange('stayStartDate', date)}
@@ -188,7 +190,7 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>투숙 종료일</label>
+            <label>{Labels.투숙_종료일}</label>
             <DatePicker
               selected={localData.stayEndDate}
               onChange={(date) => handleDateChange('stayEndDate', date)}
@@ -203,7 +205,7 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>체크인 시간</label>
+            <label>{Labels.체크인_시간_1}</label>
             <input
               type="time"
               value={localData.checkInTime}
@@ -212,7 +214,7 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>체크아웃 시간</label>
+            <label>{Labels.체크아웃_시간_1}</label>
             <input
               type="time"
               value={localData.checkOutTime}
@@ -221,7 +223,7 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>최소 숙박일</label>
+            <label>{Labels.최소_숙박일}</label>
             <input
               type="number"
               value={localData.minStayDays}
@@ -231,7 +233,7 @@ const PeriodInfo = () => {
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>최대 숙박일</label>
+            <label>{Labels.최대_숙박일}</label>
             <input
               type="number"
               value={localData.maxStayDays}
@@ -243,22 +245,22 @@ const PeriodInfo = () => {
         </div>
 
         <div className={styles.textareaGroup}>
-          <label>블랙아웃 날짜</label>
+          <label>{Labels.블랙아웃_날짜}</label>
           <textarea
             value={localData.blackoutDates}
             onChange={(e) => handleInputChange('blackoutDates', e.target.value)}
-            placeholder="2024-12-31, 2025-01-01 (예약 불가 날짜)"
+            placeholder={Labels["20241231_20250101_예약_불가_날짜_PH"]}
             className={styles.textarea}
             rows="2"
           />
         </div>
 
         <div className={styles.textareaGroup}>
-          <label>취소 정책</label>
+          <label>{Labels.취소_정책}</label>
           <textarea
             value={localData.cancellationPolicy}
             onChange={(e) => handleInputChange('cancellationPolicy', e.target.value)}
-            placeholder="체크인 3일 전까지 무료 취소, 당일 취소 시 100% 위약금"
+            placeholder={Labels["체크인_3일_전까지_무료_취소_당일_취소_시_100_위약금_PH"]}
             className={styles.textarea}
             rows="3"
           />
@@ -274,7 +276,7 @@ const PeriodInfo = () => {
             defaultChecked 
             className={styles.checkbox}
           />
-          <label htmlFor="autoSave">성공/실패 정보 자동 저장</label>
+          <label htmlFor="autoSave">{Labels.성공실패_정보_자동_저장}</label>
         </div>
       </div>
     </div>

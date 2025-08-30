@@ -45,6 +45,12 @@ const DraggableTabs = ({ tabs, activeTab, onTabClick, onOrderChange, mounted = f
     setDragOverIndex(null);
   };
 
+  const handleTabClick = (tab) => {
+    if (onTabClick && typeof onTabClick === 'function') {
+      onTabClick(tab.key);
+    }
+  };
+
   return (
     <div className="flex gap-1 overflow-x-auto">
       {tabs.map((tab, index) => (
@@ -71,7 +77,7 @@ const DraggableTabs = ({ tabs, activeTab, onTabClick, onOrderChange, mounted = f
                 ? 'border-blue-500 text-blue-600 bg-blue-50'
                 : 'border-transparent text-gray-600 hover:text-gray-900 hover:bg-gray-50'
             }`}
-            onClick={() => onTabClick(tab)}
+            onClick={() => handleTabClick(tab)}
           >
             <span className="text-lg">📋</span> {/* 드래그 핸들 아이콘 */}
             <span className="text-lg">{mounted ? tab.icon : '⏳'}</span>

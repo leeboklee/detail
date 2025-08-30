@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useMemo, useCallback } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Input, Button, Chip } from "@heroui/react";
 
 // 가상화된 테이블 컴포넌트
@@ -87,7 +89,7 @@ export const VirtualizedTable = ({
       {/* 검색 및 정렬 컨트롤 */}
       <div className="flex gap-4 items-center">
         <Input
-          placeholder="검색..."
+          placeholder={Labels["검색_PH"]}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="max-w-xs"

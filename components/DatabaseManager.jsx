@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { useAppContext } from './AppContext.Context';
 
 const DatabaseManager = ({ onClose }) => {
@@ -121,7 +123,7 @@ const DatabaseManager = ({ onClose }) => {
 
       <input
         type="text"
-        placeholder="템플릿 검색..."
+        placeholder={Labels["템플릿_검색_PH"]}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className="w-full p-2 border border-gray-300 rounded-lg mb-4"

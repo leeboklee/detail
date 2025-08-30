@@ -32,7 +32,7 @@ export const generateRoomsHtml = (rooms) => {
   
   const roomsHtml = rooms.map(room => `
     <div class="room-item">
-      <h3>${room.name || '객실명'}</h3>
+              <h3>${room.name || ''}</h3>
       <div class="room-details">
         <p><strong>타입:</strong> ${room.type || '타입 정보 없음'}</p>
         <p><strong>구조:</strong> ${room.structure || '구조 정보 없음'}</p>

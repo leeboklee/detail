@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { useAppContext } from './AppContext.Context';
 import { BOOKING_SECTION_STYLES } from './layout/LayoutStyles';
 
@@ -469,7 +471,7 @@ const Tabs = () => {
     <div className="w-full">
       {/* 모바일 반응형 탭 네비게이션 */}
       <div className="border-b border-gray-200 overflow-hidden">
-        <nav className="-mb-px flex overflow-x-auto scrollbar-hide" aria-label="Tabs">
+        <nav className="-mb-px flex overflow-x-auto scrollbar-hide" aria-label={Labels.TABS_1}>
           <div className="flex space-x-2 sm:space-x-4 min-w-max px-2 sm:px-0">
           {visibleSections.map((section) => (
             <button

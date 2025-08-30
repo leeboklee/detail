@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+
+import Labels from '@/src/shared/labels';
 import Image from 'next/image';
 
 // URL 유효성 검사 (간단 버전)
@@ -42,13 +44,13 @@ const RoomSpecEditor = ({ room, lodgeIndex, roomIndex, onUpdate, onRemove }) => 
             <div className="noImageSpec">이미지 없음</div>
           )}
           <div className="imageUrlInputSpec">
-            <label>이미지 URL</label>
+            <label>{Labels.이미지_URL}</label>
             <input
               type="text"
               value={room.imageUrl || ''}
               onChange={(e) => handleImageChange(e.target.value)}
               className="specInputFull"
-              placeholder="이미지 URL을 입력하세요"
+              placeholder={Labels["이미지_URL을_입력하세요_PH"]}
               autoComplete="off"
               style={{
                 pointerEvents: 'auto',
@@ -62,13 +64,13 @@ const RoomSpecEditor = ({ room, lodgeIndex, roomIndex, onUpdate, onRemove }) => 
         {/* 스펙 입력 섹션 (오른쪽 - 2열 Grid) */}
         <div className="roomSpecsGrid">
           <div className="specFieldInline">
-            <label>구조</label>
+            <label>{Labels.STRUCTURE}</label>
             <input 
               type="text" 
               value={room.specs?.structure || ''} 
               onChange={(e) => handleSpecChange('structure', e.target.value)} 
               className="specInputField"
-              placeholder="예: 원룸, 투룸"
+              placeholder={Labels.ROOM_STRUCTURE_PLACEHOLDER}
               autoComplete="off"
               style={{
                 pointerEvents: 'auto',
@@ -78,13 +80,13 @@ const RoomSpecEditor = ({ room, lodgeIndex, roomIndex, onUpdate, onRemove }) => 
             />
           </div>
           <div className="specFieldInline">
-            <label>베드타입</label>
+            <label>{Labels.베드타입}</label>
             <input 
               type="text" 
               value={room.specs?.bedType || ''} 
               onChange={(e) => handleSpecChange('bedType', e.target.value)} 
               className="specInputField"
-              placeholder="예: 더블, 트윈"
+              placeholder={Labels["예_더블_트윈_PH"]}
               autoComplete="off"
               style={{
                 pointerEvents: 'auto',
@@ -94,13 +96,13 @@ const RoomSpecEditor = ({ room, lodgeIndex, roomIndex, onUpdate, onRemove }) => 
             />
           </div>
           <div className="specFieldInline">
-            <label>기준정원</label>
+            <label>{Labels.기준정원}</label>
             <input 
               type="text" 
               value={room.specs?.capacity || ''} 
               onChange={(e) => handleSpecChange('capacity', e.target.value)} 
               className="specInputField"
-              placeholder="예: 2명"
+              placeholder={Labels["예_2명_PH"]}
               autoComplete="off"
               style={{
                 pointerEvents: 'auto',
@@ -110,13 +112,13 @@ const RoomSpecEditor = ({ room, lodgeIndex, roomIndex, onUpdate, onRemove }) => 
             />
           </div>
           <div className="specFieldInline">
-            <label>최대정원</label>
+            <label>{Labels.최대정원}</label>
             <input 
               type="text" 
               value={room.specs?.maxCapacity || ''} 
               onChange={(e) => handleSpecChange('maxCapacity', e.target.value)} 
               className="specInputField"
-              placeholder="예: 4명"
+              placeholder={Labels["예_4명_PH"]}
               autoComplete="off"
               style={{
                 pointerEvents: 'auto',
@@ -126,13 +128,13 @@ const RoomSpecEditor = ({ room, lodgeIndex, roomIndex, onUpdate, onRemove }) => 
             />
           </div>
           <div className="specFieldInline" style={{ gridColumn: 'span 2' }}>
-            <label>전망</label>
+            <label>{Labels.전망}</label>
             <input 
               type="text" 
               value={room.specs?.view || ''} 
               onChange={(e) => handleSpecChange('view', e.target.value)} 
               className="specInputFieldFullWidth"
-              placeholder="예: 오션뷰, 시티뷰"
+              placeholder={Labels["예_오션뷰_시티뷰_PH"]}
               autoComplete="off"
               style={{
                 pointerEvents: 'auto',

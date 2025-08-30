@@ -1,4 +1,6 @@
 import React, { Suspense, useState, useEffect } from 'react';
+
+import Labels from '@/src/shared/labels';
 import dynamic from 'next/dynamic';
 import { useAppContext } from './AppContext.Context';
 
@@ -153,7 +155,7 @@ export default function LazyComponents() {
     <div className="w-full h-full flex flex-col">
       {/* 탭 네비게이션 */}
       <div className="border-b border-gray-200 bg-white">
-        <nav className="-mb-px flex space-x-4 overflow-x-auto" aria-label="Tabs">
+        <nav className="-mb-px flex space-x-4 overflow-x-auto" aria-label={Labels.TABS}>
           {visibleSections.map((section) => (
             <button
               key={section.id}

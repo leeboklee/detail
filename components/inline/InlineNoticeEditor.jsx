@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Button, Input, Textarea, Chip, Divider, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/react";
 import { FaPlus, FaTrash, FaSave, FaTimes, FaDownload, FaUpload } from 'react-icons/fa';
 
@@ -168,10 +170,10 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
             // 편집 모드
             (<div className="space-y-4">
               <Input
-                label="제목"
+                label={Labels["제목"]}
                 value={tempNotice.title}
                 onChange={(e) => setTempNotice({ ...tempNotice, title: e.target.value })}
-                placeholder="공지사항 제목을 입력하세요"
+                placeholder={Labels["공지사항_제목을_입력하세요_PH"]}
                 size="sm"
                 classNames={{
                   input: "text-gray-800 bg-white border-gray-300",
@@ -179,10 +181,10 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
                 }}
               />
               <Textarea
-                label="내용"
+                label={Labels["내용"]}
                 value={tempNotice.content}
                 onChange={(e) => setTempNotice({ ...tempNotice, content: e.target.value })}
-                placeholder="공지사항 내용을 입력하세요"
+                placeholder={Labels["공지사항_내용을_입력하세요_PH"]}
                 rows={4}
                 classNames={{
                   input: "text-gray-800 bg-white border-gray-300",
@@ -191,7 +193,7 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
               />
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">우선순위</label>
+                  <label className="block text-sm font-medium mb-2">{Labels.우선순위}</label>
                   <select
                     value={tempNotice.priority}
                     onChange={(e) => setTempNotice({ ...tempNotice, priority: e.target.value })}
@@ -210,9 +212,7 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
                     onChange={(e) => setTempNotice({ ...tempNotice, isActive: e.target.checked })}
                     className="mr-2"
                   />
-                  <label htmlFor={`active-${index}`} className="text-sm">
-                    활성화
-                  </label>
+                  <label htmlFor={`active-${index}`} className="text-sm">{Labels.활성화}</label>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -265,10 +265,10 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
           <h3 className="font-semibold text-lg mb-4">새 공지사항 추가</h3>
           <div className="space-y-4">
             <Input
-              label="제목"
+              label={Labels["제목_1"]}
               value={tempNotice.title}
               onChange={(e) => setTempNotice({ ...tempNotice, title: e.target.value })}
-              placeholder="공지사항 제목을 입력하세요"
+              placeholder={Labels["공지사항_제목을_입력하세요_PH_1"]}
               size="sm"
               classNames={{
                 input: "text-gray-800 bg-white border-gray-300",
@@ -277,10 +277,10 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
             />
             
             <Textarea
-              label="내용"
+              label={Labels["내용_1"]}
               value={tempNotice.content}
               onChange={(e) => setTempNotice({ ...tempNotice, content: e.target.value })}
-              placeholder="공지사항 내용을 입력하세요"
+              placeholder={Labels["공지사항_내용을_입력하세요_PH_1"]}
               rows={4}
               classNames={{
                 input: "text-gray-800 bg-white border-gray-300",
@@ -290,7 +290,7 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">우선순위</label>
+                <label className="block text-sm font-medium mb-2">{Labels.우선순위_1}</label>
                 <select
                   value={tempNotice.priority}
                   onChange={(e) => setTempNotice({ ...tempNotice, priority: e.target.value })}
@@ -309,9 +309,7 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
                   onChange={(e) => setTempNotice({ ...tempNotice, isActive: e.target.checked })}
                   className="mr-2"
                 />
-                <label htmlFor="active-new" className="text-sm">
-                  활성화
-                </label>
+                <label htmlFor="active-new" className="text-sm">{Labels.활성화_1}</label>
               </div>
             </div>
             
@@ -338,8 +336,8 @@ const InlineNoticeEditor = ({ notices = [], onNoticesChange }) => {
           <ModalHeader>공지사항 템플릿 저장</ModalHeader>
           <ModalBody>
             <Input
-              label="템플릿 이름"
-              placeholder="예: 시즌 공지사항, 이벤트 공지사항"
+              label={Labels.TEMPLATE_NAME}
+              placeholder={Labels["예_시즌_공지사항_이벤트_공지사항_PH"]}
               value={templateName}
               onChange={(e) => setTemplateName(e.target.value)}
               size="sm"

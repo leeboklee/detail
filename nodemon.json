@@ -1,18 +1,37 @@
 {
-  "watch": ["."],
-  "ext": "js,jsx,ts,tsx,json",
+  "watch": ["app", "components", "lib", "src"],
+  "ext": "js,jsx,ts,tsx",
   "ignore": [
-    ".next",
-    "node_modules",
-    ".git",
+    ".next/**/*",
+    "node_modules/**/*",
+    ".git/**/*",
     "*.log",
     "dist",
-    "build"
+    "build",
+    "scripts/**/*",
+    "test-*",
+    "browser-*",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.svg",
+    "*.ico",
+    "*.pdf",
+    "*.zip",
+    "*.tar",
+    "*.gz"
   ],
-  "exec": "npx next dev -p 3900",
+  "exec": "npx next dev -H :: -p 3900",
   "restartable": "rs",
-  "verbose": true,
+  "verbose": false,
   "env": {
-    "NODE_ENV": "development"
-  }
+    "NODE_ENV": "development",
+    "PORT": "3900"
+  },
+  "cwd": "/home/rsvshop/projects/detail",
+  "delay": "3000",
+  "legacyWatch": false,
+  "polling": false,
+  "signal": "SIGTERM"
 }

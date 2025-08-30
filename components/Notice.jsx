@@ -1,6 +1,8 @@
 'use client'; // 클라이언트 컴포넌트로 지정
 
-import React from 'react'; // useState, useEffect 제거
+import React from 'react'; 
+import Labels from '@/src/shared/labels';
+// useState, useEffect 제거
 
 /**
  * 호텔 상세 페이지 생성기 - 공지사항 컴포넌트
@@ -96,15 +98,13 @@ export default function Notice({ data = { title: '', content: '' }, setData }) {
         <label 
           htmlFor="noticeTitle" 
           style={fallbackStyles.formLabel}
-        >
-          공지사항 제목
-        </label>
+        >{Labels.공지사항_제목}</label>
         <input
           type="text"
           id="noticeTitle"
           value={data.title || ''} 
           onChange={(e) => handleNoticeChange('title', e.target.value)}
-          placeholder="공지사항 제목"
+          placeholder={Labels["공지사항_제목_PH"]}
           className="formInput"
           style={fallbackStyles.formInput}
         />
@@ -114,14 +114,12 @@ export default function Notice({ data = { title: '', content: '' }, setData }) {
         <label 
           htmlFor="noticeContent"
           style={fallbackStyles.formLabel}
-        >
-          공지사항 내용
-        </label>
+        >{Labels.공지사항_내용}</label>
         <textarea
           id="noticeContent"
           value={data.content || ''} 
           onChange={(e) => handleNoticeChange('content', e.target.value)}
-          placeholder="공지사항 내용을 입력하세요. 각 항목은 줄바꿈으로 구분됩니다."
+          placeholder={Labels["공지사항_내용을_입력하세요_각_항목은_줄바꿈으로_구분됩니다_PH"]}
           className="formTextarea"
           rows="10"
           style={textareaStyle}

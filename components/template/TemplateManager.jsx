@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { useAppContext } from '../AppContext.Context';
 import styles from './TemplateManager.module.css';
 
@@ -135,7 +137,7 @@ export default function TemplateManager() {
       
       {/* 섹션 선택 */}
       <div className="mb-6">
-        <label className="block text-sm font-medium mb-2">영역 선택</label>
+        <label className="block text-sm font-medium mb-2">{Labels.영역_선택}</label>
         <select 
           value={selectedSection}
           onChange={(e) => setSelectedSection(e.target.value)}

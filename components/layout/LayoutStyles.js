@@ -1,13 +1,13 @@
 // 레이아웃 설정에 따른 CSS 변수 생성
 export const generateLayoutStyles = (layoutInfo) => {
   const {
-    template,
-    theme,
-    fontFamily,
-    spacing,
-    colors,
-    responsive
-  } = layoutInfo;
+    template = 'card',
+    theme = 'light',
+    fontFamily = 'sans',
+    spacing = 'normal',
+    colors = {},
+    responsive = false
+  } = layoutInfo || {};
 
   // 폰트 패밀리 매핑
   const fontFamilies = {
@@ -41,19 +41,19 @@ export const generateLayoutStyles = (layoutInfo) => {
       background: '#FFFFFF',
       text: '#1F2937',
       border: '#E5E7EB',
-      accent: colors.primary
+      accent: colors.primary || '#3B82F6'
     },
     dark: {
       background: '#1F2937',
       text: '#F9FAFB',
       border: '#374151',
-      accent: colors.primary
+      accent: colors.primary || '#3B82F6'
     },
     brand: {
-      background: colors.background,
-      text: colors.text,
-      border: colors.secondary,
-      accent: colors.primary
+      background: colors.background || '#FFFFFF',
+      text: colors.text || '#1F2937',
+      border: colors.secondary || '#6B7280',
+      accent: colors.primary || '#3B82F6'
     }
   };
 
@@ -62,16 +62,16 @@ export const generateLayoutStyles = (layoutInfo) => {
 
   // CSS 변수 생성
   const cssVariables = {
-    '--layout-font-family': fontFamilies[fontFamily],
-    '--layout-padding': currentSpacing.padding,
-    '--layout-margin': currentSpacing.margin,
-    '--layout-gap': currentSpacing.gap,
-    '--layout-background': currentTheme.background,
-    '--layout-text': currentTheme.text,
-    '--layout-border': currentTheme.border,
-    '--layout-accent': currentTheme.accent,
-    '--layout-primary': colors.primary,
-    '--layout-secondary': colors.secondary,
+    '--layout-font-family': fontFamilies[fontFamily] || fontFamilies.sans,
+    '--layout-padding': currentSpacing?.padding || '1rem',
+    '--layout-margin': currentSpacing?.margin || '0.5rem',
+    '--layout-gap': currentSpacing?.gap || '1rem',
+    '--layout-background': currentTheme?.background || '#FFFFFF',
+    '--layout-text': currentTheme?.text || '#1F2937',
+    '--layout-border': currentTheme?.border || '#E5E7EB',
+    '--layout-accent': currentTheme?.accent || '#3B82F6',
+    '--layout-primary': colors.primary || '#3B82F6',
+    '--layout-secondary': colors.secondary || '#6B7280',
     '--layout-responsive': responsive ? '1' : '0'
   };
 
@@ -107,13 +107,13 @@ export const getTemplateClasses = (template) => {
     }
   };
 
-  return templateClasses[template] || templateClasses.card;
+  return templateClasses[template || 'card'] || templateClasses.card;
 };
 
 // CSS 스타일 문자열 생성
 export const generateCSSString = (layoutInfo) => {
   const cssVars = generateLayoutStyles(layoutInfo);
-  const templateClasses = getTemplateClasses(layoutInfo.template);
+  const templateClasses = getTemplateClasses(layoutInfo?.template);
 
   const cssString = `
     :root {

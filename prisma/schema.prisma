@@ -1,5 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -73,7 +73,7 @@ model Package {
   hotelId       String
   title         String
   description   String?
-  price        Float
+  price         Float
   originalPrice Float?
   images        Json?     @default("[]")
   features      Json?     @default("[]")
@@ -111,7 +111,7 @@ model Notice {
 model PackageTemplate {
   id        String   @id @default(cuid())
   name      String
-  packages  Json     // 패키지 배열을 JSON으로 저장
+  packages  Json
   hotelId   String   @default("default")
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -125,7 +125,7 @@ model PackageTemplate {
 model RoomTemplate {
   id        String   @id @default(cuid())
   name      String
-  rooms     Json     // 객실 배열을 JSON으로 저장
+  rooms     Json
   hotelId   String   @default("default")
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -139,7 +139,7 @@ model RoomTemplate {
 model NoticeTemplate {
   id        String   @id @default(cuid())
   name      String
-  notices   Json     // 공지사항 배열을 JSON으로 저장
+  notices   Json
   hotelId   String   @default("default")
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -150,10 +150,26 @@ model NoticeTemplate {
   @@map("notice_templates")
 }
 
+model BookingInfo {
+  id              String   @id @default(cuid())
+  hotelId         String   @default("default")
+  title           String   @default("숙박권 구매안내")
+  purchaseGuide   String   // 숙박권 구매안내 내용
+  referenceNotes  String   // 참고사항 내용
+  kakaoChannel    String?  // 카톡 채널 정보
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([hotelId])
+  @@index([isActive])
+  @@map("booking_info")
+}
+
 model PriceTemplate {
   id        String   @id @default(cuid())
   name      String
-  template  Json     // 요금표 데이터를 JSON으로 저장
+  template  Json
   hotelId   String   @default("default")
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -163,8 +179,6 @@ model PriceTemplate {
   @@index([isActive])
   @@map("price_templates")
 }
-
-
 
 model Session {
   id          String    @id @default(cuid())

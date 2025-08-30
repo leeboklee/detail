@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+
+import Labels from '@/src/shared/labels';
 import styles from './CancellationPolicy.module.css';
 import useCancellationPolicyManager from '@/hooks/useCancellationPolicyManager';
 
@@ -29,7 +31,7 @@ export default function CancellationPolicy({ data = [], onChange }) {
                   className={s.policyInput || ''}
                   value={policy.content || ''}
                   onChange={e => handleUpdatePolicy(index, e.target.value)}
-                  placeholder="취소/환불 규정 내용"
+                  placeholder={Labels["취소환불_규정_내용_PH"]}
                 />
                 <button className={s.removeButton || ''} onClick={() => handleRemovePolicy(index)}>삭제</button>
               </div>
@@ -44,7 +46,7 @@ export default function CancellationPolicy({ data = [], onChange }) {
           value={''}
           onChange={() => {}}
           onKeyDown={handleKeyPress}
-          placeholder="새 규정 입력 (엔터로 추가)"
+          placeholder={Labels["새_규정_입력_엔터로_추가_PH"]}
         />
         <button className={s.addButton || ''} onClick={handleAddPolicy}>추가</button>
       </div>

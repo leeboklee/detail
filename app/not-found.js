@@ -35,6 +35,31 @@ export default function NotFound() {
     send404ErrorToServer();
   }, []);
 
+  // 404 오류 로그를 클립보드에 복사
+  const copyErrorLog = async () => {
+    try {
+      const errorLog = `
+===== 404 오류 발생 정보 =====
+시간: ${new Date().toLocaleString('ko-KR')}
+URL: ${typeof window !== 'undefined' ? window.location.href : '알 수 없음'}
+경로: ${typeof window !== 'undefined' ? window.location.pathname : '알 수 없음'}
+사용자 에이전트: ${typeof navigator !== 'undefined' ? navigator.userAgent : '알 수 없음'}
+
+===== 오류 메시지 =====
+페이지를 찾을 수 없습니다: ${typeof window !== 'undefined' ? window.location.pathname : '알 수 없음'}
+
+===== 오류 유형 =====
+404 Not Found
+      `.trim()
+
+      await navigator.clipboard.writeText(errorLog)
+      alert('404 오류 로그가 클립보드에 복사되었습니다.')
+    } catch (copyError) {
+      console.error('클립보드 복사 실패:', copyError)
+      alert('클립보드 복사에 실패했습니다.')
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6 text-center">
@@ -49,12 +74,20 @@ export default function NotFound() {
         </div>
         
         <div className="space-y-4">
-          <Link 
-            href="/"
-            className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-colors"
-          >
-            홈으로 돌아가기
-          </Link>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={copyErrorLog}
+              className="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+            >
+              로그 복사
+            </button>
+            <Link 
+              href="/"
+              className="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition-colors"
+            >
+              홈으로 돌아가기
+            </Link>
+          </div>
           
           <div className="text-sm text-gray-500">
             <p>문제가 지속되면 다음을 시도해보세요:</p>

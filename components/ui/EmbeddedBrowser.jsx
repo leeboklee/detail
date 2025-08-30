@@ -1,4 +1,6 @@
 import React, { useState, useCallback, useRef } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Button, Card, CardBody, Tabs, Tab, Input, Spinner, Chip } from "@heroui/react";
 
 const EmbeddedBrowser = ({ html, url = 'http://localhost:3900' }) => {
@@ -110,7 +112,7 @@ const EmbeddedBrowser = ({ html, url = 'http://localhost:3900' }) => {
             <Input
               value={customUrl}
               onChange={handleUrlChange}
-              placeholder="URL을 입력하세요..."
+              placeholder={Labels["URL을_입력하세요_PH_1"]}
               className="flex-1 text-xs sm:text-sm"
               onKeyPress={(e) => e.key === 'Enter' && handleNavigate()}
             />

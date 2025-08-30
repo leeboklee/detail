@@ -1,72 +1,54 @@
 import { useState, useCallback, useEffect } from 'react';
 
-// 초기 데이터
+// 초기 데이터 (하드코딩 제거: 전부 비어있는 기본값으로 시작)
 const INITIAL_DATA = {
   hotel: {
-    name: '샘플 호텔',
-    address: '서울시 강남구 테헤란로 123',
-    description: '편안하고 아늑한 도심 속 휴식공간입니다.',
-    phone: '02-1234-5678',
+    name: '',
+    address: '',
+    description: '',
+    phone: '',
     imageUrl: '',
     email: '',
     website: ''
   },
-  rooms: [
-    {
-      name: '스탠다드',
-      type: '스탠다드',
-      structure: '원룸',
-      bedType: '퀸 베드 1개',
-      view: '시티뷰',
-      standardCapacity: 2,
-      maxCapacity: 2,
-      description: '편안한 숙면을 위한 퀸 베드가 구비된 스탠다드 룸입니다.',
-      image: '',
-      amenities: ['무료 Wi-Fi', '에어컨', 'TV', '미니바']
-    }
-  ],
+  rooms: [],
   facilities: {
-    general: ['무료 Wi-Fi', '24시간 프런트 데스크', '엘리베이터'],
-    business: ['비즈니스 센터', '회의실'],
-    leisure: ['피트니스 센터', '사우나'],
-    dining: ['레스토랑', '카페', '룸서비스']
+    general: [],
+    business: [],
+    leisure: [],
+    dining: []
   },
   checkin: {
-    checkInTime: '15:00',
-    checkOutTime: '11:00',
-    earlyCheckIn: '추가 요금 발생',
-    lateCheckOut: '추가 요금 발생'
+    checkInTime: '',
+    checkOutTime: '',
+    earlyCheckIn: '',
+    lateCheckOut: '',
+    checkInLocation: '',
+    checkOutLocation: '',
+    specialInstructions: '',
+    requiredDocuments: '',
+    ageRestrictions: '',
+    petPolicy: ''
   },
-  packages: [{
-    name: '로맨틱 패키지',
-    description: '커플을 위한 특별한 패키지',
-    price: 150000,
-    includes: ['샴페인', '꽃다발', '늦은 체크아웃'],
-    salesPeriod: {
-      start: '2025.08.04',
-      end: '08.31'
-    },
-    stayPeriod: {
-      start: '2025.08.24',
-      end: '09.30'
-    },
-    productComposition: '객실 1박',
-    notes: ['투숙 시 제공되는 상품 세부 구성에 대한 부분 협의를 불가합니다.'],
-    constraints: ['성인 2명 기준', '추가 인원 시 별도 요금']
-  }],
+  packages: [],
   pricing: {
+    title: '',
+    priceTable: {
+      title: '추가요금표',
+      period: '08.24~09.30',
+      roomTypes: []
+    },
+    additionalInfo: {
+      paymentInfo: '',
+      additionalCharges: '',
+      availabilityInfo: ''
+    },
+    notes: [],
     lodges: [{
-      name: '샘플 호텔',
-      rooms: [{
-        roomType: '스탠다드',
-        view: '시티뷰',
-        prices: {
-          weekday: 100000,
-          friday: 120000,
-          saturday: 150000
-        }
-      }]
+      name: '',
+      rooms: []
     }],
+    // dayTypes는 시스템 분류 값이므로 유지
     dayTypes: [
       { id: 'weekday', name: '주중(월~목)', type: 'weekday' },
       { id: 'friday', name: '금요일', type: 'friday' },
@@ -74,22 +56,29 @@ const INITIAL_DATA = {
     ]
   },
   cancel: {
-    freeCancellation: '체크인 7일 전까지 무료 취소',
-    cancellationFee: '체크인 3일 전~당일: 첫날 요금의 100%',
-    noShow: '노쇼 시 전액 청구',
-    modificationPolicy: '날짜 변경은 체크인 3일 전까지 가능'
+    freeCancellation: '',
+    cancellationFee: '',
+    noShow: '',
+    modificationPolicy: '',
+    refundPolicy: '',
+    noticePeriod: ''
   },
   booking: {
-    reservationMethod: '온라인 예약 시스템',
-    paymentMethods: ['신용카드', '계좌이체', '현금'],
-    confirmationTime: '예약 후 24시간 이내 확인',
-    specialRequests: '체크인 시 요청사항 전달 가능'
+    reservationMethod: '',
+    paymentMethods: [],
+    confirmationTime: '',
+    specialRequests: '',
+    contactInfo: '',
+    operatingHours: '',
+    cancellationPolicy: ''
   },
-  notices: [{
-    title: '중요 안내',
-    content: '체크인 시 신분증을 지참해 주세요.',
-    type: 'important'
-  }]
+  notices: [],
+  bookingInfo: {
+    title: '',
+    purchaseGuide: '',
+    referenceNotes: '',
+    kakaoChannel: ''
+  }
 };
 
 export const useAppState = () => {
@@ -103,13 +92,37 @@ export const useAppState = () => {
 
   // 데이터 업데이트 함수
   const updateData = useCallback((key, newData) => {
-    console.log('🔧 updateData 호출:', { key, newData });
+    console.log('🔧 === updateData 호출 ===');
+    console.log('🔧 key:', key);
+    console.log('🔧 newData:', newData);
+    console.log('🔧 newData 타입:', typeof newData);
+    console.log('🔧 newData 키들:', newData ? Object.keys(newData) : 'undefined');
+    
     setData(prev => {
-      const updated = {
-        ...prev,
-        [key]: newData
-      };
+      console.log('🔧 이전 데이터:', prev);
+      console.log('🔧 이전 데이터의', key, ':', prev[key]);
+      
+      let updated;
+      if (key === 'hotel') {
+        // hotel 데이터의 경우 기존 데이터와 병합
+        updated = {
+          ...prev,
+          hotel: {
+            ...prev.hotel,
+            ...newData
+          }
+        };
+      } else {
+        updated = {
+          ...prev,
+          [key]: newData
+        };
+      }
+      
+      console.log('🔧 업데이트된 데이터:', updated);
+      console.log('🔧 업데이트된', key, ':', updated[key]);
       console.log('🔧 데이터 업데이트 완료:', { key, oldValue: prev[key], newValue: updated[key] });
+      
       return updated;
     });
   }, []);

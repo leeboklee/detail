@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+
+import Labels from '@/src/shared/labels';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ko } from 'date-fns/locale';
@@ -35,7 +37,7 @@ export default function SalePeriod({ period = {}, onPeriodChange }) {
       <h3 className={styles.sectionTitle}>판매기간 및 투숙일 정보</h3>
       <div className={styles.grid}>
         <div className={styles.gridItem}>
-          <label className={styles.label}>판매 시작일</label>
+          <label className={styles.label}>{Labels.판매_시작일_1}</label>
           <DatePicker
             selected={toDate(period.saleStartDate)}
             onChange={(date) => handleDateChange('saleStartDate', date)}
@@ -45,7 +47,7 @@ export default function SalePeriod({ period = {}, onPeriodChange }) {
           />
         </div>
         <div className={styles.gridItem}>
-          <label className={styles.label}>판매 종료일</label>
+          <label className={styles.label}>{Labels.판매_종료일_1}</label>
           <DatePicker
             selected={toDate(period.saleEndDate)}
             onChange={(date) => handleDateChange('saleEndDate', date)}
@@ -55,7 +57,7 @@ export default function SalePeriod({ period = {}, onPeriodChange }) {
           />
         </div>
         <div className={styles.gridItem}>
-          <label className={styles.label}>투숙 시작일</label>
+          <label className={styles.label}>{Labels.투숙_시작일_1}</label>
           <DatePicker
             selected={toDate(period.stayStartDate)}
             onChange={(date) => handleDateChange('stayStartDate', date)}
@@ -65,7 +67,7 @@ export default function SalePeriod({ period = {}, onPeriodChange }) {
           />
         </div>
         <div className={styles.gridItem}>
-          <label className={styles.label}>투숙 종료일</label>
+          <label className={styles.label}>{Labels.투숙_종료일_1}</label>
           <DatePicker
             selected={toDate(period.stayEndDate)}
             onChange={(date) => handleDateChange('stayEndDate', date)}
@@ -75,7 +77,7 @@ export default function SalePeriod({ period = {}, onPeriodChange }) {
           />
         </div>
         <div className={styles.gridItem}>
-          <label className={styles.label}>체크인 시간</label>
+          <label className={styles.label}>{Labels.체크인_시간}</label>
           <input
             type="time"
             className={styles.input}
@@ -84,7 +86,7 @@ export default function SalePeriod({ period = {}, onPeriodChange }) {
           />
         </div>
         <div className={styles.gridItem}>
-          <label className={styles.label}>체크아웃 시간</label>
+          <label className={styles.label}>{Labels.체크아웃_시간}</label>
           <input
             type="time"
             className={styles.input}

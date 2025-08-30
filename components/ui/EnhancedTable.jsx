@@ -1,6 +1,8 @@
 'use client';
 
 import React from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button, Chip, Tooltip } from "@heroui/react";
 
 // Joe Natoli UX 가이드 적용된 테이블 컴포넌트
@@ -35,7 +37,7 @@ export default function EnhancedTable({
       {/* 향상된 테이블 디자인 */}
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
         <Table 
-          aria-label="Enhanced data table"
+          aria-label={Labels.ENHANCED_DATA_TABLE}
           classNames={{
             wrapper: "shadow-none",
             th: "bg-gray-50 text-gray-600 text-xs font-medium uppercase tracking-wider border-b border-gray-200",
@@ -202,11 +204,35 @@ export function PackageTable({ packages = [], onEdit, onDelete, onAdd }) {
       )
     },
     {
-      key: 'price',
-      label: '가격',
+      key: 'salesPeriod',
+      label: '판매기간',
       render: (item) => (
-        <div className="font-semibold text-green-600">
-          ₩{item.price?.toLocaleString()}
+        <div className="text-sm text-gray-600">
+          {item.salesPeriod?.start && item.salesPeriod?.end 
+            ? `${item.salesPeriod.start}~${item.salesPeriod.end}`
+            : '-'
+          }
+        </div>
+      )
+    },
+    {
+      key: 'stayPeriod',
+      label: '투숙기간',
+      render: (item) => (
+        <div className="text-sm text-gray-600">
+          {item.stayPeriod?.start && item.stayPeriod?.end 
+            ? `${item.stayPeriod.start}~${item.stayPeriod.end}`
+            : '-'
+          }
+        </div>
+      )
+    },
+    {
+      key: 'productComposition',
+      label: '상품구성',
+      render: (item) => (
+        <div className="text-sm text-gray-600 max-w-xs truncate">
+          {item.productComposition || '-'}
         </div>
       )
     },

@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+
+import Labels from '@/src/shared/labels';
 import styles from './StayPeriod.module.css';
 
 /**
@@ -224,13 +226,13 @@ export default function StayPeriod({ data = {}, onChange }) {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-medium mb-2">투숙 시작일</label>
+            <label className="block text-sm font-medium mb-2">{Labels.투숙_시작일}</label>
             <input
               type="text"
               value={stayData.stayStartDate || ''}
               onChange={(e) => handleInputChange('stayStartDate', e.target.value)}
               className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="예: 2024-03-01 또는 2024년 3월 1일"
+              placeholder={Labels["예_20240301_또는_2024년_3월_1일_PH"]}
               style={{
                 color: '#000000',
                 backgroundColor: '#ffffff'
@@ -239,13 +241,13 @@ export default function StayPeriod({ data = {}, onChange }) {
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2">투숙 종료일</label>
+            <label className="block text-sm font-medium mb-2">{Labels.투숙_종료일}</label>
             <input
               type="text"
               value={stayData.stayEndDate || ''}
               onChange={(e) => handleInputChange('stayEndDate', e.target.value)}
               className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="예: 2024-03-31 또는 2024년 3월 31일"
+              placeholder={Labels["예_20240331_또는_2024년_3월_31일_PH"]}
               style={{
                 color: '#000000',
                 backgroundColor: '#ffffff'
@@ -256,13 +258,13 @@ export default function StayPeriod({ data = {}, onChange }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-medium mb-2">체크인 시간</label>
+            <label className="block text-sm font-medium mb-2">{Labels.체크인_시간_1}</label>
             <input
               type="text"
               value={stayData.checkInTime || ''}
               onChange={(e) => handleInputChange('checkInTime', e.target.value)}
               className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="예: 15:00 또는 오후 3시"
+              placeholder={Labels["예_1500_또는_오후_3시_PH"]}
               style={{
                 color: '#000000',
                 backgroundColor: '#ffffff'
@@ -271,13 +273,13 @@ export default function StayPeriod({ data = {}, onChange }) {
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2">체크아웃 시간</label>
+            <label className="block text-sm font-medium mb-2">{Labels.체크아웃_시간_1}</label>
             <input
               type="text"
               value={stayData.checkOutTime || ''}
               onChange={(e) => handleInputChange('checkOutTime', e.target.value)}
               className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="예: 11:00 또는 오전 11시"
+              placeholder={Labels["예_1100_또는_오전_11시_PH"]}
               style={{
                 color: '#000000',
                 backgroundColor: '#ffffff'
@@ -288,13 +290,13 @@ export default function StayPeriod({ data = {}, onChange }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-sm font-medium mb-2">최소 투숙일</label>
+            <label className="block text-sm font-medium mb-2">{Labels.최소_투숙일}</label>
             <input
               type="text"
               value={stayData.minimumStay || ''}
               onChange={(e) => handleInputChange('minimumStay', e.target.value)}
               className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="예: 1박 또는 2박 3일"
+              placeholder={Labels["예_1박_또는_2박_3일_PH"]}
               style={{
                 color: '#000000',
                 backgroundColor: '#ffffff'
@@ -303,13 +305,13 @@ export default function StayPeriod({ data = {}, onChange }) {
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2">최대 투숙일</label>
+            <label className="block text-sm font-medium mb-2">{Labels.최대_투숙일}</label>
             <input
               type="text"
               value={stayData.maximumStay || ''}
               onChange={(e) => handleInputChange('maximumStay', e.target.value)}
               className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="예: 7박 또는 제한 없음"
+              placeholder={Labels["예_7박_또는_제한_없음_PH"]}
               style={{
                 color: '#000000',
                 backgroundColor: '#ffffff'
@@ -319,13 +321,13 @@ export default function StayPeriod({ data = {}, onChange }) {
         </div>
         
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">블랙아웃 날짜</label>
+          <label className="block text-sm font-medium mb-2">{Labels.블랙아웃_날짜_1}</label>
           <textarea
             value={stayData.blackoutDates || ''}
             onChange={(e) => handleInputChange('blackoutDates', e.target.value)}
             className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             rows={2}
-            placeholder="투숙 불가 날짜를 입력하세요 (예: 2024-12-24~25, 2024-12-31~2025-01-01)"
+            placeholder={Labels["투숙_불가_날짜를_입력하세요_예_2024122425_2024123120250101_PH"]}
             style={{
               color: '#000000',
               backgroundColor: '#ffffff'
@@ -339,13 +341,13 @@ export default function StayPeriod({ data = {}, onChange }) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium mb-2">주말 추가요금</label>
+              <label className="block text-sm font-medium mb-2">{Labels.주말_추가요금}</label>
               <input
                 type="text"
                 value={stayData.weekendSurcharge || ''}
                 onChange={(e) => handleInputChange('weekendSurcharge', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 20% 또는 50,000원"
+                placeholder={Labels["예_20_또는_50000원_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -354,13 +356,13 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">성수기/공휴일 추가요금</label>
+              <label className="block text-sm font-medium mb-2">{Labels.성수기공휴일_추가요금}</label>
               <input
                 type="text"
                 value={stayData.holidaySurcharge || ''}
                 onChange={(e) => handleInputChange('holidaySurcharge', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 30% 또는 100,000원"
+                placeholder={Labels["예_30_또는_100000원_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -372,13 +374,13 @@ export default function StayPeriod({ data = {}, onChange }) {
           {/* 백업에서 복원된 추가 필드들 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium mb-2">얼리 체크인 요금</label>
+              <label className="block text-sm font-medium mb-2">{Labels.얼리_체크인_요금}</label>
               <input
                 type="text"
                 value={stayData.earlyCheckIn || ''}
                 onChange={(e) => handleInputChange('earlyCheckIn', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 20,000원 또는 시간당 10,000원"
+                placeholder={Labels["예_20000원_또는_시간당_10000원_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -387,13 +389,13 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">레이트 체크아웃 요금</label>
+              <label className="block text-sm font-medium mb-2">{Labels.레이트_체크아웃_요금}</label>
               <input
                 type="text"
                 value={stayData.lateCheckOut || ''}
                 onChange={(e) => handleInputChange('lateCheckOut', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 30,000원 또는 시간당 15,000원"
+                placeholder={Labels["예_30000원_또는_시간당_15000원_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -407,79 +409,79 @@ export default function StayPeriod({ data = {}, onChange }) {
             <h5 className="text-md font-semibold mb-3 text-purple-800">📅 요일별 추가요금</h5>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <div>
-                <label className="block text-xs font-medium mb-1">월요일</label>
+                <label className="block text-xs font-medium mb-1">{Labels.월요일}</label>
                 <input
                   type="text"
                   value={stayData.mondayRate || ''}
                   onChange={(e) => handleInputChange('mondayRate', e.target.value)}
                   className="w-full px-2 py-1 border rounded text-sm"
-                  placeholder="예: 5%"
+                  placeholder={Labels["예_5_PH"]}
                   style={{ color: '#000000', backgroundColor: '#ffffff' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1">화요일</label>
+                <label className="block text-xs font-medium mb-1">{Labels.화요일}</label>
                 <input
                   type="text"
                   value={stayData.tuesdayRate || ''}
                   onChange={(e) => handleInputChange('tuesdayRate', e.target.value)}
                   className="w-full px-2 py-1 border rounded text-sm"
-                  placeholder="예: 5%"
+                  placeholder={Labels["예_5_PH_1"]}
                   style={{ color: '#000000', backgroundColor: '#ffffff' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1">수요일</label>
+                <label className="block text-xs font-medium mb-1">{Labels.수요일}</label>
                 <input
                   type="text"
                   value={stayData.wednesdayRate || ''}
                   onChange={(e) => handleInputChange('wednesdayRate', e.target.value)}
                   className="w-full px-2 py-1 border rounded text-sm"
-                  placeholder="예: 5%"
+                  placeholder={Labels["예_5_PH"]}
                   style={{ color: '#000000', backgroundColor: '#ffffff' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1">목요일</label>
+                <label className="block text-xs font-medium mb-1">{Labels.목요일}</label>
                 <input
                   type="text"
                   value={stayData.thursdayRate || ''}
                   onChange={(e) => handleInputChange('thursdayRate', e.target.value)}
                   className="w-full px-2 py-1 border rounded text-sm"
-                  placeholder="예: 5%"
+                  placeholder={Labels["예_5_PH_1"]}
                   style={{ color: '#000000', backgroundColor: '#ffffff' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1">금요일</label>
+                <label className="block text-xs font-medium mb-1">{Labels.금요일}</label>
                 <input
                   type="text"
                   value={stayData.fridayRate || ''}
                   onChange={(e) => handleInputChange('fridayRate', e.target.value)}
                   className="w-full px-2 py-1 border rounded text-sm"
-                  placeholder="예: 15%"
+                  placeholder={Labels["예_15_PH"]}
                   style={{ color: '#000000', backgroundColor: '#ffffff' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1">토요일</label>
+                <label className="block text-xs font-medium mb-1">{Labels.토요일}</label>
                 <input
                   type="text"
                   value={stayData.saturdayRate || ''}
                   onChange={(e) => handleInputChange('saturdayRate', e.target.value)}
                   className="w-full px-2 py-1 border rounded text-sm"
-                  placeholder="예: 30%"
+                  placeholder={Labels["예_30_PH"]}
                   style={{ color: '#000000', backgroundColor: '#ffffff' }}
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium mb-1">일요일</label>
+                <label className="block text-xs font-medium mb-1">{Labels.일요일}</label>
                 <input
                   type="text"
                   value={stayData.sundayRate || ''}
                   onChange={(e) => handleInputChange('sundayRate', e.target.value)}
                   className="w-full px-2 py-1 border rounded text-sm"
-                  placeholder="예: 20%"
+                  placeholder={Labels["예_20_PH"]}
                   style={{ color: '#000000', backgroundColor: '#ffffff' }}
                 />
               </div>
@@ -511,7 +513,7 @@ export default function StayPeriod({ data = {}, onChange }) {
                     value={stayData[key] || ''}
                     onChange={(e) => handleInputChange(key, e.target.value)}
                     className="w-full px-2 py-1 border rounded text-sm"
-                    placeholder="예: 10%"
+                    placeholder={Labels["예_10_PH"]}
                     style={{ color: '#000000', backgroundColor: '#ffffff' }}
                   />
                 </div>
@@ -520,13 +522,13 @@ export default function StayPeriod({ data = {}, onChange }) {
           </div>
           
           <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">계절별 요금 정보</label>
+            <label className="block text-sm font-medium mb-2">{Labels.계절별_요금_정보}</label>
             <textarea
               value={stayData.seasonalRates || ''}
               onChange={(e) => handleInputChange('seasonalRates', e.target.value)}
               className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               rows={3}
-              placeholder="계절별 요금 변동 정보를 입력하세요"
+              placeholder={Labels["계절별_요금_변동_정보를_입력하세요_PH"]}
               style={{
                 color: '#000000',
                 backgroundColor: '#ffffff'
@@ -553,7 +555,7 @@ export default function StayPeriod({ data = {}, onChange }) {
                 type="text"
                 value={charge.name}
                 onChange={(e) => handleChargeChange(charge.id, 'name', e.target.value)}
-                placeholder="항목명 (예: 주차비)"
+                placeholder={Labels["항목명_예_주차비_PH"]}
                 className="flex-1 px-3 py-2 border rounded"
                 style={{ color: '#000000', backgroundColor: '#ffffff' }}
               />
@@ -561,7 +563,7 @@ export default function StayPeriod({ data = {}, onChange }) {
                 type="text"
                 value={charge.price}
                 onChange={(e) => handleChargeChange(charge.id, 'price', e.target.value)}
-                placeholder="가격 (예: 10,000원/일)"
+                placeholder={Labels["가격_예_10000원일_PH"]}
                 className="flex-1 px-3 py-2 border rounded"
                 style={{ color: '#000000', backgroundColor: '#ffffff' }}
               />
@@ -569,7 +571,7 @@ export default function StayPeriod({ data = {}, onChange }) {
                 type="text"
                 value={charge.description}
                 onChange={(e) => handleChargeChange(charge.id, 'description', e.target.value)}
-                placeholder="설명 (선택사항)"
+                placeholder={Labels["설명_선택사항_PH"]}
                 className="flex-1 px-3 py-2 border rounded"
                 style={{ color: '#000000', backgroundColor: '#ffffff' }}
               />
@@ -607,7 +609,7 @@ export default function StayPeriod({ data = {}, onChange }) {
                 type="text"
                 value={discount.name}
                 onChange={(e) => handleDiscountChange(discount.id, 'name', e.target.value)}
-                placeholder="할인명 (예: 장기투숙 할인)"
+                placeholder={Labels["할인명_예_장기투숙_할인_PH"]}
                 className="flex-1 px-3 py-2 border rounded"
                 style={{ color: '#000000', backgroundColor: '#ffffff' }}
               />
@@ -632,7 +634,7 @@ export default function StayPeriod({ data = {}, onChange }) {
                 type="text"
                 value={discount.condition}
                 onChange={(e) => handleDiscountChange(discount.id, 'condition', e.target.value)}
-                placeholder="조건 (예: 7박 이상)"
+                placeholder={Labels["조건_예_7박_이상_PH"]}
                 className="flex-1 px-3 py-2 border rounded"
                 style={{ color: '#000000', backgroundColor: '#ffffff' }}
               />
@@ -658,31 +660,31 @@ export default function StayPeriod({ data = {}, onChange }) {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium mb-2">세금율 (%)</label>
+              <label className="block text-sm font-medium mb-2">{Labels.세금율_}</label>
               <input
                 type="number"
                 value={stayData.priceCalculation.taxRate}
                 onChange={(e) => handlePriceCalculationChange('taxRate', parseFloat(e.target.value) || 0)}
                 className="w-full px-3 py-2 border rounded"
-                placeholder="10"
+                placeholder={Labels["10_PH"]}
                 style={{ color: '#000000', backgroundColor: '#ffffff' }}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">서비스료 (%)</label>
+              <label className="block text-sm font-medium mb-2">{Labels.서비스료_}</label>
               <input
                 type="number"
                 value={stayData.priceCalculation.serviceChargeRate}
                 onChange={(e) => handlePriceCalculationChange('serviceChargeRate', parseFloat(e.target.value) || 0)}
                 className="w-full px-3 py-2 border rounded"
-                placeholder="0"
+                placeholder={Labels["0_PH_1"]}
                 style={{ color: '#000000', backgroundColor: '#ffffff' }}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">반올림 규칙</label>
+              <label className="block text-sm font-medium mb-2">{Labels.반올림_규칙}</label>
               <select
                 value={stayData.priceCalculation.roundingRule}
                 onChange={(e) => handlePriceCalculationChange('roundingRule', e.target.value)}
@@ -698,13 +700,13 @@ export default function StayPeriod({ data = {}, onChange }) {
         </div>
         
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">취소 정책</label>
+          <label className="block text-sm font-medium mb-2">{Labels.취소_정책_1}</label>
           <textarea
             value={stayData.cancellationPolicy || ''}
             onChange={(e) => handleInputChange('cancellationPolicy', e.target.value)}
             className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             rows={3}
-            placeholder="취소 및 환불 정책을 입력하세요"
+            placeholder={Labels["취소_및_환불_정책을_입력하세요_PH"]}
             style={{
               color: '#000000',
               backgroundColor: '#ffffff'
@@ -718,13 +720,13 @@ export default function StayPeriod({ data = {}, onChange }) {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-2">사전 예약 할인</label>
+              <label className="block text-sm font-medium mb-2">{Labels.사전_예약_할인}</label>
               <input
                 type="text"
                 value={stayData.advanceBookingDiscount || ''}
                 onChange={(e) => handleInputChange('advanceBookingDiscount', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 30일 전 10% 할인"
+                placeholder={Labels["예_30일_전_10_할인_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -733,13 +735,13 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">단체 예약 할인</label>
+              <label className="block text-sm font-medium mb-2">{Labels.단체_예약_할인}</label>
               <input
                 type="text"
                 value={stayData.groupBookingDiscount || ''}
                 onChange={(e) => handleInputChange('groupBookingDiscount', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 10실 이상 15% 할인"
+                placeholder={Labels["예_10실_이상_15_할인_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -748,13 +750,13 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">멤버십 할인</label>
+              <label className="block text-sm font-medium mb-2">{Labels.멤버십_할인}</label>
               <input
                 type="text"
                 value={stayData.loyaltyMemberDiscount || ''}
                 onChange={(e) => handleInputChange('loyaltyMemberDiscount', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: VIP 회원 20% 할인"
+                placeholder={Labels["예_VIP_회원_20_할인_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -765,12 +767,12 @@ export default function StayPeriod({ data = {}, onChange }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-2">계절별 프로모션</label>
+              <label className="block text-sm font-medium mb-2">{Labels.계절별_프로모션}</label>
               <textarea
                 value={stayData.seasonalPromotions || ''}
                 onChange={(e) => handleInputChange('seasonalPromotions', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="봄: 벚꽃 시즌 특가&#10;여름: 휴가철 패키지&#10;가을: 단풍 시즌 할인&#10;겨울: 스키 패키지"
+                placeholder={Labels["봄_벚꽃_시즌_특가10여름_휴가철_패키지10가을_단풍_시즌_할인10겨울_스키_패키지_PH"]}
                 rows="4"
                 style={{
                   color: '#000000',
@@ -780,12 +782,12 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">한정 특가</label>
+              <label className="block text-sm font-medium mb-2">{Labels.한정_특가}</label>
               <textarea
                 value={stayData.limitedTimeOffers || ''}
                 onChange={(e) => handleInputChange('limitedTimeOffers', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="얼리버드 30% 할인&#10;막판 세일 40% 할인&#10;플래시 세일 50% 할인"
+                placeholder={Labels["얼리버드_30_할인10막판_세일_40_할인10플래시_세일_50_할인_PH"]}
                 rows="4"
                 style={{
                   color: '#000000',
@@ -797,12 +799,12 @@ export default function StayPeriod({ data = {}, onChange }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-2">패키지 딜</label>
+              <label className="block text-sm font-medium mb-2">{Labels.패키지_딜}</label>
               <textarea
                 value={stayData.packageDeals || ''}
                 onChange={(e) => handleInputChange('packageDeals', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="숙박+조식 패키지&#10;숙박+스파 패키지&#10;숙박+관광지 티켓"
+                placeholder={Labels["숙박조식_패키지10숙박스파_패키지10숙박관광지_티켓_PH"]}
                 rows="4"
                 style={{
                   color: '#000000',
@@ -812,12 +814,12 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">기업 할인율</label>
+              <label className="block text-sm font-medium mb-2">{Labels.기업_할인율}</label>
               <textarea
                 value={stayData.corporateRates || ''}
                 onChange={(e) => handleInputChange('corporateRates', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="대기업: 15% 할인&#10;중소기업: 10% 할인&#10;정부기관: 20% 할인"
+                placeholder={Labels["대기업_15_할인10중소기업_10_할인10정부기관_20_할인_PH"]}
                 rows="4"
                 style={{
                   color: '#000000',
@@ -829,13 +831,13 @@ export default function StayPeriod({ data = {}, onChange }) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-2">주중 프로모션</label>
+              <label className="block text-sm font-medium mb-2">{Labels.주중_프로모션}</label>
               <input
                 type="text"
                 value={stayData.weekdayPromotions || ''}
                 onChange={(e) => handleInputChange('weekdayPromotions', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 월-목 숙박 20% 할인"
+                placeholder={Labels["예_월목_숙박_20_할인_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -844,13 +846,13 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">주말 특가</label>
+              <label className="block text-sm font-medium mb-2">{Labels.주말_특가}</label>
               <input
                 type="text"
                 value={stayData.weekendSpecials || ''}
                 onChange={(e) => handleInputChange('weekendSpecials', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 금-일 숙박 패키지"
+                placeholder={Labels["예_금일_숙박_패키지_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -859,13 +861,13 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">연휴 요금</label>
+              <label className="block text-sm font-medium mb-2">{Labels.연휴_요금}</label>
               <input
                 type="text"
                 value={stayData.holidayRates || ''}
                 onChange={(e) => handleInputChange('holidayRates', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="예: 공휴일 30% 추가요금"
+                placeholder={Labels["예_공휴일_30_추가요금_PH"]}
                 style={{
                   color: '#000000',
                   backgroundColor: '#ffffff'
@@ -876,12 +878,12 @@ export default function StayPeriod({ data = {}, onChange }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
             <div>
-              <label className="block text-sm font-medium mb-2">취소 위약금</label>
+              <label className="block text-sm font-medium mb-2">{Labels.취소_위약금}</label>
               <textarea
                 value={stayData.cancellationPenalties || ''}
                 onChange={(e) => handleInputChange('cancellationPenalties', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="7일 전: 무료 취소&#10;3일 전: 1박 요금&#10;당일: 전액 위약금"
+                placeholder={Labels["7일_전_무료_취소103일_전_1박_요금10당일_전액_위약금_PH"]}
                 rows="3"
                 style={{
                   color: '#000000',
@@ -891,12 +893,12 @@ export default function StayPeriod({ data = {}, onChange }) {
             </div>
             
             <div>
-              <label className="block text-sm font-medium mb-2">변경 수수료</label>
+              <label className="block text-sm font-medium mb-2">{Labels.변경_수수료}</label>
               <textarea
                 value={stayData.modificationFees || ''}
                 onChange={(e) => handleInputChange('modificationFees', e.target.value)}
                 className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="날짜 변경: 10,000원&#10;객실 변경: 5,000원&#10;인원 변경: 무료"
+                placeholder={Labels["날짜_변경_10000원10객실_변경_5000원10인원_변경_무료_PH"]}
                 rows="3"
                 style={{
                   color: '#000000',

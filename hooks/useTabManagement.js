@@ -2,15 +2,16 @@ import { useState, useCallback, useEffect } from 'react';
 
 // 탭 설정
 const TAB_CONFIG = [
-  { key: 'hotel', label: '호텔 정보', icon: '🏠', displayType: 'modal' },
-  { key: 'rooms', label: '객실 정보', icon: '👥', displayType: 'modal' },
+  { key: 'hotel', label: '호텔 정보', icon: '🏠', displayType: 'inline' },
+  { key: 'rooms', label: '객실 정보', icon: '👥', displayType: 'inline' },
   { key: 'facilities', label: '시설 정보', icon: '⚙️', displayType: 'inline' },
   { key: 'checkin', label: '체크인/아웃', icon: '📅', displayType: 'inline' },
-  { key: 'packages', label: '패키지', icon: '📄', displayType: 'modal' },
-  { key: 'pricing', label: '요금표', icon: '💰', displayType: 'modal' },
+  { key: 'packages', label: '패키지', icon: '📄', displayType: 'inline' },
+  { key: 'pricing', label: '요금표', icon: '💰', displayType: 'inline' },
   { key: 'cancel', label: '취소규정', icon: '🛡️', displayType: 'inline' },
+  { key: 'common', label: '공통안내', icon: 'ℹ️', displayType: 'inline' },
   { key: 'booking', label: '예약안내', icon: '🗄️', displayType: 'inline' },
-  { key: 'notices', label: '공지사항', icon: '📄', displayType: 'modal' }
+  { key: 'notices', label: '공지사항', icon: '📄', displayType: 'inline' }
 ];
 
 export const useTabManagement = () => {
@@ -25,6 +26,10 @@ export const useTabManagement = () => {
       const savedActiveTab = localStorage.getItem('activeTab');
       if (savedActiveTab && TAB_CONFIG.some(tab => tab.key === savedActiveTab)) {
         setActiveTab(savedActiveTab);
+      } else {
+        // 저장된 값이 없거나 유효하지 않으면 기본값 사용
+        setActiveTab('hotel');
+        console.log('기본 탭으로 설정: hotel');
       }
 
       // tabOrder 복원
@@ -41,7 +46,12 @@ export const useTabManagement = () => {
           }
         } catch (error) {
           console.warn('탭 순서 복원 실패:', error);
+          // 기본 순서 설정
+          setTabOrder(TAB_CONFIG.map(tab => tab.key));
         }
+      } else {
+        // 저장된 순서가 없으면 기본 순서 설정
+        setTabOrder(TAB_CONFIG.map(tab => tab.key));
       }
     }
   }, []);

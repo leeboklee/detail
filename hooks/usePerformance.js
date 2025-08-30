@@ -33,7 +33,7 @@ export const usePerformance = (componentName = 'Component') => {
     if (process.env.NODE_ENV === 'development') {
       console.log(`📊 ${componentName} 렌더링 #${renderCount.current}: ${renderTime.toFixed(2)}ms`);
     }
-  });
+  }, [componentName]);
 
   return performanceMetrics;
 };
@@ -80,6 +80,27 @@ export const useDebounce = (value, delay = 500) => {
   }, [value, delay]);
 
   return debouncedValue;
+};
+
+// 콜백을 디바운스하여 반환 (입력 onChange 등에 사용)
+export const useDebouncedCallback = (callback, delay = 300) => {
+  const callbackRef = useRef(callback);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
+
+  return useCallback((...args) => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+    timerRef.current = setTimeout(() => {
+      if (callbackRef.current) {
+        callbackRef.current(...args);
+      }
+    }, delay);
+  }, [delay]);
 };
 
 // 쓰로틀 훅 (이벤트 최적화)

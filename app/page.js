@@ -1,14 +1,14 @@
 'use client'
 
-import React, { useState, useCallback, useEffect, Suspense, useRef, lazy } from 'react'
-import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Card, CardBody, Input, Textarea, Select, SelectItem, Chip, Divider, Spinner } from "@heroui/react"
+import React, { useState, useCallback, useEffect, Suspense, useRef } from 'react'
+import dynamic from 'next/dynamic'
+import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Select, SelectItem } from "@heroui/react"
 
 // 새로 분리된 컴포넌트들
 import MainLayout from '@/components/layout/MainLayout'
 import MonitoringDashboard from '@/components/layout/MonitoringDashboard'
 
 // 핵심 컴포넌트들은 즉시 로딩 (안정성 확보)
-import { HotelInfoSection } from '@/components/sections/HotelInfoSection'
 import DraggableTabs from '@/components/DraggableTabs'
 import ClientOnly from '@/components/ClientOnly'
 
@@ -16,25 +16,18 @@ import ClientOnly from '@/components/ClientOnly'
 import { useAppState } from '@/hooks/useAppState'
 import { useTabManagement } from '@/hooks/useTabManagement'
 
-// 안전한 lazy loading (에러 처리 포함)
-const ErrorCollectorComponent = lazy(() => import('@/components/ErrorCollector').catch(() => ({ default: () => null })))
-const RoomInfoEditor = lazy(() => import('@/components/room/RoomInfoEditor').catch(() => ({ default: () => ({ default: () => null }) })))
-const FacilitiesInfo = lazy(() => import('@/components/facilities/FacilitiesInfo').catch(() => ({ default: () => null })))
-const CheckInOutInfo = lazy(() => import('@/components/checkin/CheckInOutInfo').catch(() => ({ default: () => null })))
-const Package = lazy(() => import('@/components/package/Package').catch(() => ({ default: () => null })))
-const PriceTable = lazy(() => import('@/components/price/PriceTable').catch(() => ({ default: () => null })))
-const CancelPolicy = lazy(() => import('@/components/cancel/CancelPolicy').catch(() => ({ default: () => null })))
-const BookingConfirmation = lazy(() => import('@/components/policy/BookingConfirmation').catch(() => ({ default: () => null })))
-const Notice = lazy(() => import('@/components/notice/Notice').catch(() => ({ default: () => null })))
-const EmbeddedBrowser = lazy(() => import('@/components/ui/EmbeddedBrowser').catch(() => ({ default: () => null })))
-const DBStatusIndicator = lazy(() => import('@/components/DBStatusIndicator').catch(() => ({ default: () => null })))
-
-// 인라인 편집 컴포넌트
-const InlineRoomEditor = lazy(() => import('@/components/inline/InlineRoomEditor').catch(() => ({ default: () => null })))
-const InlineFacilitiesEditor = lazy(() => import('@/components/inline/InlineFacilitiesEditor').catch(() => ({ default: () => null })))
-const InlinePackageEditor = lazy(() => import('@/components/inline/InlinePackageEditor').catch(() => ({ default: () => null })))
-const InlineNoticeEditor = lazy(() => import('@/components/inline/InlineNoticeEditor').catch(() => ({ default: () => null })))
-const InlinePricingEditor = lazy(() => import('@/components/inline/InlinePricingEditor').catch(() => ({ default: () => null })))
+// 동적 임포트로 컴포넌트 로딩 최적화
+const HotelInfoSection = React.lazy(() => import('@/components/hotel/HotelInfo'));
+const RoomInfoEditor = React.lazy(() => import('@/components/room/RoomInfoEditor'));
+const FacilitiesInfo = React.lazy(() => import('@/components/facilities/FacilitiesInfo'));
+const CheckInOutInfo = React.lazy(() => import('@/components/checkin/CheckInOutInfo'));
+const Package = React.lazy(() => import('@/components/package/Package'));
+const PriceTable = React.lazy(() => import('@/components/price/PriceTable'));
+const CancelPolicy = React.lazy(() => import('@/components/cancel/CancelPolicy'));
+const BookingInfo = React.lazy(() => import('@/components/booking/BookingInfo'));
+const Notice = React.lazy(() => import('@/components/notice/Notice'));
+const CommonInfo = React.lazy(() => import('@/components/common/CommonInfo'));
+const Preview = React.lazy(() => import('@/components/Preview'));
 
 // 로딩 스피너 컴포넌트
 function LoadingSpinner({ size = "default" }) {
@@ -65,8 +58,10 @@ const getComponentForTab = (tabKey) => {
       return PriceTable
     case 'cancel':
       return CancelPolicy
+    case 'common':
+      return CommonInfo
     case 'booking':
-      return BookingConfirmation
+      return BookingInfo
     case 'notices':
       return Notice
     default:
@@ -74,7 +69,7 @@ const getComponentForTab = (tabKey) => {
   }
 }
 
-// 성능 최적화를 위한 메모이제이션
+  // 성능 최적화를 위한 메모이제이션
 const MemoizedHome = React.memo(function Home() {
   // 새로 분리된 훅들 사용
   const {
@@ -104,9 +99,25 @@ const MemoizedHome = React.memo(function Home() {
     isInlineTab
   } = useTabManagement()
 
+  // onChangeForTab 함수를 컴포넌트 레벨로 이동
+  const onChangeForTab = useCallback((updated) => {
+    console.log('=== onChangeForTab 호출됨 ===');
+    console.log('activeTab:', activeTab);
+    console.log('받은 데이터:', updated);
+    
+    if (activeTab === 'booking') {
+      console.log('예약안내 탭 - updateData 호출');
+      updateData('bookingInfo', updated);
+    } else {
+      console.log('다른 탭 - updateData 호출');
+      updateData(activeTab, updated);
+    }
+  }, [activeTab, updateData])
+
   const [mounted, setMounted] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedHtml, setGeneratedHtml] = useState('')
+  const [device, setDevice] = useState('desktop') // desktop, galaxy, iphone
   const [lastGenerated, setLastGenerated] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [notification, setNotification] = useState({ show: false, message: '', type: 'success' })
@@ -114,11 +125,13 @@ const MemoizedHome = React.memo(function Home() {
   const [showMonitoringDashboard, setShowMonitoringDashboard] = useState(false)
   const [monitoringErrors, setMonitoringErrors] = useState([])
   const monitoringWSRef = useRef(null)
+  const notificationTimeoutRef = useRef(null)
   
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure()
   const { isOpen: isPreviewOpen, onOpen: onPreviewOpen, onClose: onPreviewClose } = useDisclosure()
   const { isOpen: isSettingsOpen, onOpen: onSettingsOpen, onClose: onSettingsClose } = useDisclosure()
   const { isOpen: isHotelModalOpen, onOpen: onHotelModalOpen, onClose: onHotelModalClose } = useDisclosure()
+  const { isOpen: isBackupModalOpen, onOpen: onBackupOpen, onClose: onBackupClose } = useDisclosure()
 
   // 마운트 상태 초기화 (hydration 에러 방지)
   useEffect(() => {
@@ -127,35 +140,500 @@ const MemoizedHome = React.memo(function Home() {
 
   // 알림 표시 함수
   const showNotificationHandler = useCallback((message, type = 'success') => {
+    // 기존 타이머 정리
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current)
+      notificationTimeoutRef.current = null
+    }
+
     setNotification({
       show: true,
       message,
       type
     })
     
-    // 3초 후 자동 숨김
-    setTimeout(() => {
+    // 3초 후 자동 숨김 (ref에 저장)
+    notificationTimeoutRef.current = setTimeout(() => {
       setNotification(prev => ({
         ...prev,
         show: false
       }))
+      notificationTimeoutRef.current = null
     }, 3000)
   }, [])
 
   // 알림 숨기기 함수
   const hideNotificationHandler = useCallback(() => {
+    // timeout 정리
+    if (notificationTimeoutRef.current) {
+      clearTimeout(notificationTimeoutRef.current)
+      notificationTimeoutRef.current = null
+    }
+    
     setNotification(prev => ({
       ...prev,
       show: false
     }))
   }, [])
 
+  // cleanup 함수 등록
+  const registerCleanup = useCallback((cleanup) => {
+    // cleanup 함수를 즉시 실행하여 메모리 정리
+    if (typeof cleanup === 'function') {
+      try {
+        cleanup()
+      } catch (error) {
+        console.warn('Cleanup 함수 실행 중 오류:', error)
+      }
+    }
+  }, [])
+
   // HTML 생성 함수
   const generateHtml = useCallback(async () => {
     setIsGenerating(true)
     try {
-      // HTML 생성 로직 (기존 기능 유지)
-      const html = '<div>Generated HTML content</div>'
+      const html = `
+        <!DOCTYPE html>
+        <html lang="ko">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>${data.hotel?.name || '호텔 정보'} - 상세 정보</title>
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { 
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+              line-height: 1.6; 
+              color: #333; 
+              background: #f5f7fa;
+            }
+            .container { 
+              max-width: 1200px; 
+              margin: 0 auto; 
+              padding: 20px;
+            }
+            .hotel-header {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 40px;
+              border-radius: 20px;
+              margin-bottom: 30px;
+              text-align: center;
+              box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+            .hotel-header h1 {
+              color: white;
+              margin: 0;
+              font-size: 2.5em;
+              text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            }
+            .hotel-header p {
+              font-size: 1.3em;
+              opacity: 0.9;
+              margin: 15px 0 0 0;
+            }
+            .info-section { 
+              margin-bottom: 30px; 
+              padding: 30px; 
+              background: white;
+              border-radius: 15px; 
+              border-left: 5px solid #3498db;
+              box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            }
+            .info-section h2 { 
+              color: #2c3e50; 
+              margin-bottom: 25px; 
+              font-size: 1.8em;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            }
+            .info-item { 
+              margin: 15px 0; 
+              padding: 15px 0; 
+              border-bottom: 1px solid #ecf0f1;
+              display: flex;
+              align-items: center;
+            }
+            .info-label { 
+              font-weight: bold; 
+              color: #2c3e50; 
+              min-width: 140px;
+              font-size: 1.1em;
+            }
+            .info-value { 
+              color: #7f8c8d; 
+              margin-left: 20px;
+              flex: 1;
+              font-size: 1.1em;
+            }
+            .room-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+              gap: 20px;
+              margin-top: 20px;
+            }
+            .room-card {
+              background: #f8f9fa;
+              padding: 25px;
+              border-radius: 12px;
+              border: 2px solid #e9ecef;
+              transition: transform 0.2s, box-shadow 0.2s;
+            }
+            .room-card:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+            .room-name {
+              font-size: 1.3em;
+              font-weight: bold;
+              color: #2c3e50;
+              margin-bottom: 15px;
+              padding-bottom: 10px;
+              border-bottom: 2px solid #3498db;
+            }
+            .room-details {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              gap: 15px;
+              margin-bottom: 15px;
+            }
+            .room-detail {
+              font-size: 0.95em;
+            }
+            .room-detail strong {
+              color: #34495e;
+            }
+            .room-description {
+              background: white;
+              padding: 15px;
+              border-radius: 8px;
+              margin-top: 15px;
+              border-left: 3px solid #3498db;
+            }
+            .pricing-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 20px;
+              background: white;
+              border-radius: 8px;
+              overflow: hidden;
+              box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            }
+            .pricing-table th,
+            .pricing-table td {
+              padding: 15px;
+              text-align: left;
+              border-bottom: 1px solid #ecf0f1;
+            }
+            .pricing-table th {
+              background: #3498db;
+              color: white;
+              font-weight: bold;
+            }
+            .pricing-table tr:nth-child(even) {
+              background: #f8f9fa;
+            }
+            .pricing-table tr:hover {
+              background: #e3f2fd;
+            }
+            .policy-item {
+              background: #fff3cd;
+              border: 1px solid #ffeaa7;
+              border-radius: 8px;
+              padding: 20px;
+              margin: 15px 0;
+            }
+            .policy-title {
+              font-weight: bold;
+              color: #856404;
+              margin-bottom: 10px;
+              font-size: 1.1em;
+          }
+            .policy-content {
+              color: #856404;
+              line-height: 1.6;
+            }
+            .facility-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+              gap: 15px;
+              margin-top: 20px;
+            }
+            .facility-category {
+              background: #e8f5e8;
+              padding: 20px;
+              border-radius: 10px;
+              border: 2px solid #4caf50;
+            }
+            .facility-category h4 {
+              color: #2e7d32;
+              margin-bottom: 15px;
+              font-size: 1.2em;
+            }
+            .facility-list {
+              color: #388e3c;
+              line-height: 1.6;
+            }
+            .checkin-info {
+              background: #e3f2fd;
+              padding: 25px;
+              border-radius: 12px;
+              border: 2px solid #2196f3;
+            }
+            .checkin-info h4 {
+              color: #1565c0;
+              margin-bottom: 20px;
+              font-size: 1.3em;
+            }
+            .checkin-detail {
+              margin: 12px 0;
+              padding: 10px;
+              background: white;
+              border-radius: 6px;
+              border-left: 3px solid #2196f3;
+            }
+            .package-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+              gap: 20px;
+              margin-top: 20px;
+            }
+            .package-card {
+              background: #f3e5f5;
+              padding: 25px;
+              border-radius: 12px;
+              border: 2px solid #9c27b0;
+              transition: transform 0.2s;
+            }
+            .package-card:hover {
+              transform: translateY(-3px);
+            }
+            .package-title {
+              font-size: 1.2em;
+              font-weight: bold;
+              color: #6a1b9a;
+              margin-bottom: 15px;
+            }
+            .package-content {
+              color: #7b1fa2;
+              line-height: 1.6;
+            }
+            .generated-info {
+              background: #f8f9fa;
+              padding: 25px;
+              border-radius: 15px;
+              margin-top: 40px;
+              text-align: center;
+              border: 3px dashed #dee2e6;
+            }
+            .generated-info p {
+              margin: 8px 0;
+              color: #6c757d;
+              font-size: 1.1em;
+            }
+            @media (max-width: 768px) {
+              .container { padding: 15px; }
+              .hotel-header { padding: 30px 20px; }
+              .hotel-header h1 { font-size: 2em; }
+              .info-section { padding: 20px; }
+              .room-grid { grid-template-columns: 1fr; }
+              .room-details { grid-template-columns: 1fr; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <!-- 호텔 헤더 -->
+            <div class="hotel-header">
+              <h1>🏨 ${data.hotel?.name || '호텔 정보 관리 시스템'}</h1>
+              <p>${data.hotel?.description || '전문적인 호텔 정보 관리 서비스'}</p>
+              ${data.hotel?.address ? `<p>📍 ${data.hotel.address}</p>` : ''}
+              ${data.hotel?.phone ? `<p>📞 ${data.hotel.phone}</p>` : ''}
+              ${data.hotel?.email ? `<p>✉️ ${data.hotel.email}</p>` : ''}
+              ${data.hotel?.website ? `<p>🌐 ${data.hotel.website}</p>` : ''}
+              ${data.hotel?.category ? `<p>🏷️ ${data.hotel.category}</p>` : ''}
+              
+            </div>
+            
+            <!-- 객실 정보 섹션 -->
+            ${(() => {
+              const roomsArr = Array.isArray(data.rooms) ? data.rooms : Array.isArray(data.rooms?.rooms) ? data.rooms.rooms : [];
+              if (roomsArr.length > 0) {
+                return `
+                  <div class="info-section">
+                    <h2>🛏️ 객실 정보</h2>
+                    <div class="room-grid">
+                      ${roomsArr.map(room => `
+                        <div class="room-card">
+                          <div class="room-name">${room.name || '이름 없음'}</div>
+                          <div class="room-details">
+                            ${room.type ? `<div class="room-detail"><strong>타입:</strong> ${room.type}</div>` : ''}
+                            ${room.structure ? `<div class="room-detail"><strong>구조:</strong> ${room.structure}</div>` : ''}
+                            ${room.bedType ? `<div class="room-detail"><strong>베드:</strong> ${room.bedType}</div>` : ''}
+                            ${room.view ? `<div class="room-detail"><strong>전망:</strong> ${room.view}</div>` : ''}
+                            ${room.standardCapacity ? `<div class="room-detail"><strong>기본 인원:</strong> ${room.standardCapacity}명</div>` : ''}
+                            ${room.maxCapacity ? `<div class="room-detail"><strong>최대 인원:</strong> ${room.maxCapacity}명</div>` : ''}
+                          </div>
+                          ${room.description ? `<div class="room-description"><strong>설명:</strong> ${room.description}</div>` : ''}
+                        </div>
+                      `).join('')}
+                    </div>
+                  </div>
+                `;
+              }
+              return '';
+            })()}
+            
+            <!-- 요금표 섹션 -->
+            ${data.pricing ? `
+              <div class="info-section">
+                <h2>💰 요금표</h2>
+                ${data.pricing.roomTypes && data.pricing.roomTypes.length > 0 ? `
+                  <table class="pricing-table">
+                    <thead>
+                      <tr>
+                        <th>객실 타입</th>
+                        <th>기간</th>
+                        <th>요금</th>
+                        <th>비고</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${data.pricing.roomTypes.map(roomType => 
+                        roomType.periods ? roomType.periods.map(period => `
+                          <tr>
+                            <td>${roomType.name || '이름 없음'}</td>
+                            <td>${period.startDate || ''} ~ ${period.endDate || ''}</td>
+                            <td>${period.price ? period.price.toLocaleString() + '원' : '가격 미정'}</td>
+                            <td>${period.note || ''}</td>
+                          </tr>
+                        `).join('') : ''
+                      ).join('')}
+                    </tbody>
+                  </table>
+                ` : '<p>등록된 요금 정보가 없습니다.</p>'}
+              </div>
+            ` : ''}
+            
+            <!-- 취소 정책 섹션 -->
+            ${data.cancelPolicies && data.cancelPolicies.length > 0 ? `
+              <div class="info-section">
+                <h2>📋 취소 정책</h2>
+                ${data.cancelPolicies.map(policy => `
+                  <div class="policy-item">
+                    <div class="policy-title">${policy.policyType || '정책'}</div>
+                    <div class="policy-content">
+                      ${policy.description || ''}
+                      ${policy.cancellationFee ? `<br><strong>취소 수수료:</strong> ${policy.cancellationFee}` : ''}
+                      ${policy.refundRate ? `<br><strong>환불 비율:</strong> ${policy.refundRate}%` : ''}
+                      ${policy.noticePeriod ? `<br><strong>사전 통보 기간:</strong> ${policy.noticePeriod}` : ''}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+            
+            <!-- 시설 정보 섹션 -->
+            ${data.facilities && Object.keys(data.facilities).length > 0 ? `
+              <div class="info-section">
+                <h2>✨ 시설 정보</h2>
+                <div class="facility-grid">
+                  ${Object.entries(data.facilities).map(([category, items]) => `
+                    <div class="facility-category">
+                      <h4>${category === 'general' ? '일반' : category === 'business' ? '비즈니스' : category === 'leisure' ? '레저' : category === 'dining' ? '식음료' : category}</h4>
+                      <div class="facility-list">
+                        ${Array.isArray(items) && items.length > 0 ? items.join(', ') : '시설 정보 없음'}
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            <!-- 체크인/아웃 정보 섹션 -->
+            ${data.checkin ? `
+              <div class="info-section">
+                <h2>🕐 체크인/아웃 정보</h2>
+                <div class="checkin-info">
+                  ${data.checkin.checkInTime ? `<div class="checkin-detail"><strong>체크인:</strong> ${data.checkin.checkInTime}</div>` : ''}
+                  ${data.checkin.checkOutTime ? `<div class="checkin-detail"><strong>체크아웃:</strong> ${data.checkin.checkOutTime}</div>` : ''}
+                  ${data.checkin.earlyCheckIn ? `<div class="checkin-detail"><strong>얼리체크인:</strong> ${data.checkin.earlyCheckIn}</div>` : ''}
+                  ${data.checkin.lateCheckOut ? `<div class="checkin-detail"><strong>레이트체크아웃:</strong> ${data.checkin.lateCheckOut}</div>` : ''}
+                  ${data.checkin.checkInLocation ? `<div class="checkin-detail"><strong>체크인장소:</strong> ${data.checkin.checkInLocation}</div>` : ''}
+                  ${data.checkin.checkOutLocation ? `<div class="checkin-detail"><strong>체크아웃장소:</strong> ${data.checkin.checkOutLocation}</div>` : ''}
+                  ${data.checkin.specialInstructions ? `<div class="checkin-detail"><strong>특별안내:</strong> ${data.checkin.specialInstructions}</div>` : ''}
+                  ${data.checkin.requiredDocuments ? `<div class="checkin-detail"><strong>필요서류:</strong> ${data.checkin.requiredDocuments}</div>` : ''}
+                  ${data.checkin.ageRestrictions ? `<div class="checkin-detail"><strong>연령제한:</strong> ${data.checkin.ageRestrictions}</div>` : ''}
+                  ${data.checkin.petPolicy ? `<div class="checkin-detail"><strong>반려동물:</strong> ${data.checkin.petPolicy}</div>` : ''}
+                </div>
+              </div>
+            ` : ''}
+            
+            <!-- 패키지 정보 섹션 -->
+            ${data.packages && Array.isArray(data.packages) && data.packages.length > 0 ? `
+              <div class="info-section">
+                <h2>🎁 패키지 정보</h2>
+                <div class="package-grid">
+                  ${data.packages.map(pkg => `
+                    <div class="package-card">
+                      <div class="package-title">${pkg.name || '패키지명'}</div>
+                      <div class="package-content">
+                        ${pkg.description || ''}
+                        ${pkg.price ? `<br><strong>가격:</strong> ${pkg.price.toLocaleString()}원` : ''}
+                        ${pkg.duration ? `<br><strong>기간:</strong> ${pkg.duration}` : ''}
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            <!-- 예약안내 섹션 -->
+            ${data.bookingInfo ? `
+              <div class="info-section">
+                <h2>📞 ${data.bookingInfo.title || '예약안내'}</h2>
+                <div class="booking-content">
+                  <div class="purchase-guide-section">
+                    <h3 style="color: #0c4a6e; margin-bottom: 15px; font-size: 1.2em;">📋 숙박권 구매안내</h3>
+                    <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; border-left: 4px solid #0ea5e9; margin-bottom: 20px;">
+                      <div style="white-space: pre-line; line-height: 1.8; color: #0c4a6e;">
+                        ${data.bookingInfo.purchaseGuide || ''}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="reference-notes-section">
+                    <h3 style="color: #92400e; margin-bottom: 15px; font-size: 1.2em;">📋 참고사항</h3>
+                    <div style="background: #fef3c7; padding: 20px; border-radius: 8px; border-left: 4px solid #f59e0b; margin-bottom: 20px;">
+                      <div style="white-space: pre-line; line-height: 1.8; color: #92400e;">
+                        ${data.bookingInfo.referenceNotes || ''}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  ${data.bookingInfo.kakaoChannel ? `
+                    <div class="kakao-channel-section" style="text-align: center; margin-top: 20px;">
+                      <div style="background: #fbbf24; padding: 12px 24px; border-radius: 8px; color: #92400e; font-weight: 600; display: inline-block;">
+                        💬 ${data.bookingInfo.kakaoChannel}
+                      </div>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+            ` : ''}
+            
+            <!-- 생성 정보 -->
+            <div class="generated-info">
+              <p><strong>생성일시:</strong> ${new Date().toLocaleString('ko-KR')}</p>
+              <p><strong>시스템:</strong> 호텔 정보 관리 시스템</p>
+              <p><strong>버전:</strong> 1.0.0</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `
+      
       setGeneratedHtml(html)
       setLastGenerated(new Date())
       showNotificationHandler('HTML이 성공적으로 생성되었습니다.', 'success')
@@ -165,7 +643,7 @@ const MemoizedHome = React.memo(function Home() {
     } finally {
       setIsGenerating(false)
     }
-  }, [showNotificationHandler])
+  }, [data, showNotificationHandler])
 
   // HTML 복사 함수
   const copyHtml = useCallback(async () => {
@@ -180,25 +658,137 @@ const MemoizedHome = React.memo(function Home() {
 
   // HTML 다운로드 함수
   const downloadHtml = useCallback(() => {
+    let url = null
+    let cleanup = null
+    
     try {
       const blob = new Blob([generatedHtml], { type: 'text/html' })
-      const url = URL.createObjectURL(blob)
+      url = URL.createObjectURL(blob)
+      
       const a = document.createElement('a')
       a.href = url
       a.download = `hotel-page-${new Date().toISOString().split('T')[0]}.html`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
-      URL.revokeObjectURL(url)
+      
       showNotificationHandler('HTML이 성공적으로 다운로드되었습니다.', 'success')
+      
+      // cleanup 함수 등록
+      cleanup = () => {
+        if (url) {
+          URL.revokeObjectURL(url)
+          url = null
+        }
+      }
+      registerCleanup(cleanup)
+      
     } catch (error) {
       console.error('다운로드 실패:', error)
       showNotificationHandler('다운로드에 실패했습니다.', 'error')
+      
+      // 오류 발생 시에도 cleanup
+      if (url) {
+        URL.revokeObjectURL(url)
+      }
     }
-  }, [generatedHtml, showNotificationHandler])
+  }, [generatedHtml, showNotificationHandler, registerCleanup])
+
+  // 활성 탭 데이터 변경 핸들러 메모이제이션
+  const handleActiveTabChange = useCallback(
+    (newData) => {
+      updateData(activeTab, newData)
+    },
+    [activeTab, updateData]
+  )
+
+  // 컴포넌트 언마운트 시 cleanup
+  useEffect(() => {
+    return () => {
+      // 메모리 정리
+      if (monitoringWSRef.current) {
+        monitoringWSRef.current.close()
+        monitoringWSRef.current = null
+      }
+      // 알림 timeout 정리
+      if (notificationTimeoutRef.current) {
+        clearTimeout(notificationTimeoutRef.current)
+        notificationTimeoutRef.current = null
+      }
+      setNotification({ show: false, message: '', type: 'success' })
+      // HTML blob URL 정리
+      if (generatedHtml) {
+        setGeneratedHtml('')
+      }
+    }
+  }, [generatedHtml])
+
+  // 자동 디버깅 시스템
+  const autoDebug = useCallback(() => {
+    console.log('🔍 === 자동 디버깅 시스템 시작 ===');
+    
+    // 현재 상태 분석
+    const debugInfo = {
+      activeTab,
+      dataKeys: Object.keys(data),
+      dataValues: data,
+      hasData: Object.keys(data).length > 0,
+      currentTabData: data[activeTab],
+      currentTabDataKeys: data[activeTab] ? Object.keys(data[activeTab]) : [],
+      currentTabDataLength: data[activeTab] ? Object.keys(data[activeTab]).length : 0
+    };
+    
+    console.log('🔍 디버깅 정보:', debugInfo);
+    
+    // 문제점 자동 감지
+    const issues = [];
+    
+    if (!activeTab) {
+      issues.push('❌ activeTab이 설정되지 않음');
+    }
+    
+    if (!data[activeTab]) {
+      issues.push(`❌ ${activeTab} 탭의 데이터가 없음`);
+    } else if (Object.keys(data[activeTab]).length === 0) {
+      issues.push(`❌ ${activeTab} 탭의 데이터가 비어있음`);
+    }
+    
+    if (issues.length > 0) {
+      console.log('🔍 발견된 문제점들:');
+      issues.forEach(issue => console.log(issue));
+    } else {
+      console.log('✅ 모든 상태가 정상입니다');
+    }
+    
+    return { debugInfo, issues };
+  }, [activeTab, data]);
+  
+  // 컴포넌트 마운트 시 자동 디버깅 실행
+  useEffect(() => {
+    if (mounted) {
+      console.log('🚀 컴포넌트 마운트됨, 자동 디버깅 실행');
+      autoDebug();
+    }
+  }, [mounted, autoDebug]);
+  
+  // activeTab 변경 시 자동 디버깅 실행
+  useEffect(() => {
+    if (mounted && activeTab) {
+      console.log(`🔄 탭 변경됨: ${activeTab}, 자동 디버깅 실행`);
+      autoDebug();
+    }
+  }, [activeTab, mounted, autoDebug]);
 
   // 현재 활성 탭의 컴포넌트 렌더링
   const renderActiveTabContent = () => {
+    // 디버그: 현재 activeTab과 해당 데이터 출력
+    if (typeof window !== 'undefined') {
+      try {
+        console.debug('[Preview Debug] renderActiveTabContent activeTab:', activeTab, 'dataForTab:', data?.[activeTab])
+      } catch (e) {
+        console.debug('[Preview Debug] renderActiveTabContent error reading data')
+      }
+    }
     const Component = getComponentForTab(activeTab)
     
     if (!Component) {
@@ -224,11 +814,26 @@ const MemoizedHome = React.memo(function Home() {
       )
     }
 
+    const valueForTab = activeTab === 'hotel'
+      ? data.hotel
+      : activeTab === 'booking'
+        ? data.bookingInfo
+        : data[activeTab]
+
+
+
+    console.log('=== renderActiveTabContent 디버깅 ===');
+    console.log('activeTab:', activeTab);
+    console.log('valueForTab:', valueForTab);
+    console.log('onChangeForTab 함수:', onChangeForTab);
+    console.log('Component:', Component);
+
     return (
       <Suspense fallback={<LoadingSpinner size="large" />}>
         <Component
-          value={data[activeTab]}
-          onChange={(newData) => updateData(activeTab, newData)}
+          value={valueForTab}
+          onChange={onChangeForTab}
+          displayMode={false}
         />
       </Suspense>
     )
@@ -240,11 +845,18 @@ const MemoizedHome = React.memo(function Home() {
     
     if (!Component) return null
 
+    const valueForTab = activeTab === 'hotel'
+      ? data.hotel
+      : activeTab === 'booking'
+        ? data.bookingInfo
+        : data[activeTab]
+
     return (
       <Suspense fallback={<LoadingSpinner />}>
         <Component
-          value={data[activeTab]}
-          onChange={(newData) => updateData(activeTab, newData)}
+          value={valueForTab}
+          onChange={onChangeForTab}
+          displayMode={false}
         />
       </Suspense>
     )
@@ -255,7 +867,16 @@ const MemoizedHome = React.memo(function Home() {
   }
 
   return (
-    <MainLayout>
+    <MainLayout 
+      onGenerateHtml={generateHtml}
+      isGenerating={isGenerating}
+      generatedHtml={generatedHtml}
+      lastGenerated={lastGenerated}
+      onExportData={exportData}
+      onImportData={importData}
+      data={data}
+      activeTab={activeTab}
+    >
       {/* 알림 표시 */}
       {notification.show && (
         <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
@@ -289,23 +910,14 @@ const MemoizedHome = React.memo(function Home() {
           <div className="flex gap-2">
             <MonitoringDashboard />
             
+            {/* 백업/복원 버튼 추가 */}
             <Button
               size="sm"
-              color="secondary"
+              color="warning"
               variant="flat"
-              onPress={onPreviewOpen}
+              onPress={() => setShowBackupModal(true)}
             >
-              미리보기
-            </Button>
-            
-            <Button
-              size="sm"
-              color="success"
-              variant="flat"
-              onPress={generateHtml}
-              isLoading={isGenerating}
-            >
-              HTML 생성
+              💾 백업/복원
             </Button>
           </div>
         </div>
@@ -315,16 +927,52 @@ const MemoizedHome = React.memo(function Home() {
           <DraggableTabs
             tabs={getOrderedTabs()}
             activeTab={activeTab}
-            onTabChange={activateTab}
-            onTabMove={moveTab}
-            isDragMode={isDragMode}
-            onDragModeToggle={toggleDragMode}
+            onTabClick={activateTab}
+            onOrderChange={moveTab}
+            mounted={mounted}
           />
         </ClientOnly>
 
-        {/* 탭 콘텐츠 */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          {renderActiveTabContent()}
+        {/* 2단 레이아웃: 왼쪽 편집, 오른쪽 미리보기 */}
+        <div className="flex gap-6">
+          {/* 왼쪽: 탭 콘텐츠 */}
+          <div className="flex-1 bg-white rounded-lg shadow-sm border border-gray-200 p-6 min-w-0">
+            {renderActiveTabContent()}
+          </div>
+          
+          {/* 오른쪽: 미리보기 (모바일 사이즈) */}
+          <div className="w-[375px] flex-shrink-0 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">미리보기</h3>
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  color="secondary"
+                  variant="flat"
+                  onPress={onPreviewOpen}
+                >
+                  전체화면
+                </Button>
+                <Button
+                  size="sm"
+                  color="primary"
+                  variant="flat"
+                  onPress={() => {
+                    // 복사 기능
+                    navigator.clipboard.writeText(JSON.stringify(data[activeTab], null, 2));
+                    showNotificationHandler('데이터가 클립보드에 복사되었습니다.');
+                  }}
+                >
+                  복사
+                </Button>
+              </div>
+            </div>
+            <div className="border rounded-lg p-3 bg-gray-100 min-h-[400px] overflow-hidden">
+              <Suspense fallback={<LoadingSpinner size="small" />}>
+                <Preview />
+              </Suspense>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -349,14 +997,14 @@ const MemoizedHome = React.memo(function Home() {
       </Modal>
 
       {/* 미리보기 모달 */}
-      <Modal isOpen={isPreviewOpen} onClose={onPreviewClose} size="5xl">
-        <ModalContent>
+      <Modal isOpen={isPreviewOpen} onClose={onPreviewClose} size="4xl">
+        <ModalContent className="max-w-6xl mx-auto">
           <ModalHeader>HTML 미리보기</ModalHeader>
           <ModalBody>
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-600">
-                  {lastGenerated && `마지막 생성: ${lastGenerated.toLocaleString()}`}
+                  {lastGenerated ? `마지막 생성: ${lastGenerated.toLocaleString()}` : 'HTML이 자동으로 생성되었습니다.'}
                 </div>
                 <div className="flex space-x-2">
                   <Button
@@ -364,6 +1012,7 @@ const MemoizedHome = React.memo(function Home() {
                     color="secondary"
                     variant="flat"
                     onPress={copyHtml}
+                    isDisabled={!generatedHtml || isGenerating}
                   >
                     복사
                   </Button>
@@ -372,18 +1021,89 @@ const MemoizedHome = React.memo(function Home() {
                     color="primary"
                     variant="flat"
                     onPress={downloadHtml}
+                    isDisabled={!generatedHtml || isGenerating}
                   >
                     다운로드
                   </Button>
                 </div>
               </div>
               
-              <div className="border rounded-lg p-4 bg-gray-50">
-                <div className="text-sm text-gray-600 mb-2">생성된 HTML:</div>
-                <pre className="text-xs overflow-auto max-h-96 bg-white p-4 rounded border">
-                  {generatedHtml || 'HTML을 생성해주세요.'}
-                </pre>
+              {/* 디바이스 선택 */}
+              <div className="flex justify-center space-x-4">
+                <Button
+                  size="sm"
+                  variant={device === 'desktop' ? 'solid' : 'flat'}
+                  color={device === 'desktop' ? 'primary' : 'default'}
+                  onPress={() => setDevice('desktop')}
+                >
+                  🖥️ Desktop (1200px)
+                </Button>
+                <Button
+                  size="sm"
+                  variant={device === 'tablet' ? 'solid' : 'flat'}
+                  color={device === 'tablet' ? 'primary' : 'default'}
+                  onPress={() => setDevice('tablet')}
+                >
+                  📱 Tablet (768px)
+                </Button>
+                <Button
+                  size="sm"
+                  variant={device === 'mobile' ? 'solid' : 'flat'}
+                  color={device === 'mobile' ? 'primary' : 'default'}
+                  onPress={() => setDevice('mobile')}
+                >
+                  📱 Mobile (375px)
+                </Button>
               </div>
+              
+              {/* HTML 생성 중 로딩 상태 */}
+              {isGenerating && (
+                <div className="text-center py-8">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                  <p className="text-gray-600">HTML을 생성하고 있습니다...</p>
+                </div>
+              )}
+              
+              {/* 전체 페이지 미리보기 */}
+              {generatedHtml && !isGenerating ? (
+                <div className="border rounded-lg overflow-hidden bg-white">
+                  <div className="bg-gray-100 px-4 py-2 border-b text-sm text-gray-600">
+                    <span className="font-medium">현재 탭:</span> {getActiveTabInfo()?.label || '알 수 없음'} | 
+                    <span className="font-medium ml-2">디바이스:</span> {
+                      device === 'desktop' ? 'Desktop (1200px)' :
+                      device === 'tablet' ? 'Tablet (768px)' :
+                      'Mobile (375px)'
+                    }
+                  </div>
+                  <div className="flex justify-center bg-gray-200 p-4">
+                    <div 
+                      className="bg-white shadow-lg overflow-hidden"
+                      style={{
+                        width: device === 'desktop' ? '100%' : 
+                               device === 'tablet' ? '768px' : '375px',
+                        maxWidth: '100%'
+                      }}
+                    >
+                      <iframe
+                        title="html-preview"
+                        srcDoc={generatedHtml}
+                        sandbox="allow-same-origin allow-popups allow-forms allow-scripts"
+                        className="w-full"
+                        style={{ 
+                          height: device === 'desktop' ? '70vh' : 
+                                   device === 'tablet' ? '80vh' : '90vh',
+                          border: 'none'
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ) : !isGenerating ? (
+                <div className="text-center text-gray-500 py-16">
+                  <p className="mb-2">HTML 생성에 실패했습니다.</p>
+                  <p className="text-sm">다시 시도해주세요.</p>
+                </div>
+              ) : null}
             </div>
           </ModalBody>
           <ModalFooter>
@@ -444,7 +1164,7 @@ const MemoizedHome = React.memo(function Home() {
         </ModalContent>
       </Modal>
     </MainLayout>
-  )
-})
+  );
+});
 
-export default MemoizedHome
+export default MemoizedHome;

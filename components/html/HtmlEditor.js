@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, memo } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Button, Textarea, Card, CardBody, CardHeader, CardFooter, Divider } from "@heroui/react";
 
 /**
@@ -84,7 +86,7 @@ const HtmlEditor = memo(({ initialHtml = '', onSave }) => {
               <Textarea
                 value={htmlCode}
                 onChange={handleCodeChange}
-                placeholder="HTML 코드를 입력하세요..."
+                placeholder={Labels["HTML_코드를_입력하세요_PH"]}
                 className="w-full font-mono text-sm"
                 minRows={15}
                 style={{ fontFamily: 'monospace', resize: 'vertical' }}

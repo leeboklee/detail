@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { eventEmitter } from './ui-event.js';
 
 const FormManager = () => {
@@ -103,7 +105,7 @@ const FormManager = () => {
         const newInput = document.createElement('div');
         newInput.className = 'url-input-item flex gap-2 mb-2';
         newInput.innerHTML = `
-          <input type="url" class="form-input flex-1" placeholder="URL을 입력하세요">
+          <input type="url" class="form-input flex-1" placeholder={Labels["URL을_입력하세요_PH"]}>
           <button type="button" class="btn btn-error btn-sm remove-url-btn">
             <span>🗑️</span>
           </button>

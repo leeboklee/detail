@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+
+import Labels from '@/src/shared/labels';
 import { Button, Input, Chip, Divider } from "@heroui/react";
 import { FaPlus, FaTrash, FaSave, FaTimes } from 'react-icons/fa';
 
@@ -93,7 +95,7 @@ const InlineFacilitiesEditor = ({ facilities = {}, onFacilitiesChange }) => {
                     <Input
                       value={facility}
                       onChange={(e) => updateFacility(category, index, e.target.value)}
-                      placeholder="시설명을 입력하세요"
+                      placeholder={Labels["시설명을_입력하세요_PH"]}
                       className="flex-1"
                     />
                     <Button

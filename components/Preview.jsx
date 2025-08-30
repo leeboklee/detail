@@ -19,11 +19,16 @@
 'use client'; // 클라이언트 컴포넌트로 지정
 
 import React, { useMemo, useCallback, useEffect, useRef, useState } from 'react';
-import { useAppContext } from './AppContext.Context';
+import { useAppState } from '../hooks/useAppState';
 import { applyLayoutStyles, getTemplateClasses } from './layout/LayoutStyles';
 
 const Preview = React.memo(() => {
-  const { hotelInfo, selectedTemplate, templates, layoutInfo } = useAppContext();
+  const { data } = useAppState();
+  const hotelInfo = data.hotel;
+  const bookingInfo = data.bookingInfo;
+  const selectedTemplate = 'default';
+  const templates = {};
+  const layoutInfo = {};
   const previewRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -96,9 +101,63 @@ const Preview = React.memo(() => {
             ` : ''}
             
             ${hotelInfo.description ? `
-              <div>
+              <div style="margin-bottom: 20px;">
                 <h3 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 1.1em; font-weight: 600;">📝 소개</h3>
                 <p style="color: #34495e; margin: 0; line-height: 1.6; font-size: 1em;">${hotelInfo.description}</p>
+              </div>
+            ` : ''}
+            
+            ${hotelInfo.rooms && Array.isArray(hotelInfo.rooms) && hotelInfo.rooms.length > 0 ? `
+              <div style="margin-bottom: 20px;">
+                <h3 style="color: #2c3e50; margin: 0 0 15px 0; font-size: 1.1em; font-weight: 600;">🛏️ 객실 정보</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px;">
+                  ${hotelInfo.rooms.map((room, index) => `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px solid #e9ecef;">
+                      <h4 style="color: #2c3e50; margin: 0 0 10px 0; font-size: 1em; font-weight: 600;">${room.name || `객실 ${index + 1}`}</h4>
+                      <div style="font-size: 0.9em; color: #34495e; line-height: 1.5;">
+                        ${room.type ? `<div style="margin-bottom: 5px;"><strong>타입:</strong> ${room.type}</div>` : ''}
+                        ${room.structure ? `<div style="margin-bottom: 5px;"><strong>구조:</strong> ${room.structure}</div>` : ''}
+                        ${room.bedType ? `<div style="margin-bottom: 5px;"><strong>베드:</strong> ${room.bedType}</div>` : ''}
+                        ${room.view ? `<div style="margin-bottom: 5px;"><strong>전망:</strong> ${room.view}</div>` : ''}
+                        ${room.standardCapacity ? `<div style="margin-bottom: 5px;"><strong>기본 인원:</strong> ${room.standardCapacity}명</div>` : ''}
+                        ${room.maxCapacity ? `<div style="margin-bottom: 5px;"><strong>최대 인원:</strong> ${room.maxCapacity}명</div>` : ''}
+                        ${room.description ? `<div style="margin-bottom: 5px;"><strong>설명:</strong> ${room.description}</div>` : ''}
+                        ${room.amenities && Array.isArray(room.amenities) && room.amenities.length > 0 ? `<div style="margin-bottom: 5px;"><strong>편의시설:</strong> ${room.amenities.join(', ')}</div>` : ''}
+                      </div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+            
+            ${bookingInfo && (bookingInfo.title || bookingInfo.purchaseGuide || bookingInfo.referenceNotes) ? `
+              <div style="margin-bottom: 20px;">
+                <h3 style="color: #2c3e50; margin: 0 0 15px 0; font-size: 1.1em; font-weight: 600;">📞 예약 안내</h3>
+                ${bookingInfo.title ? `
+                  <div style="background: #dbeafe; padding: 15px; border-radius: 8px; border: 1px solid #93c5fd; margin-bottom: 15px;">
+                    <h4 style="color: #1e40af; margin: 0 0 10px 0; font-size: 1em; font-weight: 600;">${bookingInfo.title}</h4>
+                    ${bookingInfo.purchaseGuide ? `
+                      <div style="color: #1e40af; line-height: 1.6; font-size: 0.9em; white-space: pre-line;">
+                        ${bookingInfo.purchaseGuide}
+                      </div>
+                    ` : ''}
+                  </div>
+                ` : ''}
+                ${bookingInfo.referenceNotes ? `
+                  <div style="background: #fef3c7; padding: 15px; border-radius: 8px; border: 1px solid #fbbf24; margin-bottom: 15px;">
+                    <h4 style="color: #92400e; margin: 0 0 10px 0; font-size: 1em; font-weight: 600;">📋 참고사항</h4>
+                    <div style="color: #92400e; line-height: 1.6; font-size: 0.9em; white-space: pre-line;">
+                      ${bookingInfo.referenceNotes}
+                    </div>
+                  </div>
+                ` : ''}
+                ${bookingInfo.kakaoChannel ? `
+                  <div style="text-align: center; margin-top: 15px;">
+                    <span style="display: inline-block; background: #fbbf24; color: #92400e; padding: 8px 16px; border-radius: 6px; font-weight: 600; font-size: 0.9em;">
+                      💬 ${bookingInfo.kakaoChannel}
+                    </div>
+                  </div>
+                ` : ''}
               </div>
             ` : ''}
           </div>
@@ -110,7 +169,7 @@ const Preview = React.memo(() => {
       `,
       hasContent: true
     };
-  }, [hotelInfo, selectedTemplate, templates]);
+  }, [hotelInfo, selectedTemplate, templates, bookingInfo]);
 
   // 레이아웃 스타일 적용
   useEffect(() => {
