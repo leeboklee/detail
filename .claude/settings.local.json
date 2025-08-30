@@ -15,7 +15,12 @@
       "Bash(where playwright)",
       "Bash(npx playwright:*)",
       "Bash(ls:*)",
-      "WebFetch(domain:docs.anthropic.com)"
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(git checkout:*)",
+      "Bash(git push:*)",
+      "Bash(gh repo view:*)",
+      "Bash(git branch:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
