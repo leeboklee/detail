@@ -64,7 +64,7 @@
     "docker:compose:logs": "docker-compose logs -f",
     "docker:compose:restart": "docker-compose restart",
     "dev:debug": "cross-env NODE_OPTIONS=\"--max-old-space-size=2048 --inspect\" next dev -p 3900",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "build:analyze": "cross-env ANALYZE=true next build",
     "start": "next start -p 3900",
     "lint": "next lint --fix",
