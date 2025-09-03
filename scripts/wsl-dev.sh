@@ -78,7 +78,7 @@ if [[ -f "scripts/kill-port-safe.sh" ]]; then
 else
   echo "[WSL] kill-port-safe.sh not found, using direct port kill (if sudo available)"
   if sudo -n true 2>/dev/null; then
-    sudo -n fuser -k 3900/tcp 3901/tcp 4900/tcp 2>/dev/null || true
+    sudo -n fuser -k 3900/tcp 2>/dev/null || true
   fi
 fi
 

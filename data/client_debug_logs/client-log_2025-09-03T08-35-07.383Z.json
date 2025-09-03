@@ -1,0 +1,21 @@
+{
+  "timestamp": 1756888507300,
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+  "clientIP": "::1",
+  "tag": "preview-update",
+  "hasData": true,
+  "keys": [
+    "package1_id",
+    "package1_name",
+    "package1_description",
+    "package1_salesPeriod",
+    "package1_stayPeriod",
+    "package1_productComposition",
+    "package1_includes",
+    "package1_notes",
+    "package1_constraints",
+    "package1_createdAt",
+    "package1_updatedAt"
+  ],
+  "activeTab": "checkin"
+}

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback, useEffect, Suspense, useRef } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Input, Select, SelectItem } from "@heroui/react"
 
@@ -16,18 +16,19 @@ import ClientOnly from '@/components/ClientOnly'
 import { useAppState } from '@/hooks/useAppState'
 import { useTabManagement } from '@/hooks/useTabManagement'
 
-// 동적 임포트로 컴포넌트 로딩 최적화
-const HotelInfoSection = React.lazy(() => import('@/components/hotel/HotelInfo'));
-const RoomInfoEditor = React.lazy(() => import('@/components/room/RoomInfoEditor'));
-const FacilitiesInfo = React.lazy(() => import('@/components/facilities/FacilitiesInfo'));
-const CheckInOutInfo = React.lazy(() => import('@/components/checkin/CheckInOutInfo'));
-const Package = React.lazy(() => import('@/components/package/Package'));
-const PriceTable = React.lazy(() => import('@/components/price/PriceTable'));
-const CancelPolicy = React.lazy(() => import('@/components/cancel/CancelPolicy'));
-const BookingInfo = React.lazy(() => import('@/components/booking/BookingInfo'));
-const Notice = React.lazy(() => import('@/components/notice/Notice'));
-const CommonInfo = React.lazy(() => import('@/components/common/CommonInfo'));
-const Preview = React.lazy(() => import('@/components/Preview'));
+// 일반 임포트로 컴포넌트 로딩 (청크 오류 방지)
+import HotelInfoSection from '@/components/hotel/HotelInfo';
+import RoomInfoEditor from '@/components/room/RoomInfoEditor';
+import FacilitiesInfo from '@/components/facilities/FacilitiesInfo';
+import CheckInOutInfo from '@/components/checkin/CheckInOutInfo';
+import Package from '@/components/package/Package';
+import PriceTable from '@/components/price/PriceTable';
+import CancelPolicy from '@/components/cancel/CancelPolicy';
+import BookingInfo from '@/components/booking/BookingInfo';
+import Notice from '@/components/notice/Notice';
+import CommonInfo from '@/components/common/CommonInfo';
+import Preview from '@/components/Preview';
+import TemplateManager from '@/components/TemplateManager';
 
 // 로딩 스피너 컴포넌트
 function LoadingSpinner({ size = "default" }) {
@@ -115,6 +116,7 @@ const MemoizedHome = React.memo(function Home() {
   }, [activeTab, updateData])
 
   const [mounted, setMounted] = useState(false)
+  const [previewRefreshKey, setPreviewRefreshKey] = useState(0)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedHtml, setGeneratedHtml] = useState('')
   const [device, setDevice] = useState('desktop') // desktop, galaxy, iphone
@@ -198,14 +200,42 @@ const MemoizedHome = React.memo(function Home() {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${data.hotel?.name || '호텔 정보'} - 상세 정보</title>
+          <title>${data.hotel?.name || '호텔 정보'} - 🛍️ 쇼핑몰 스타일 상세페이지</title>
           <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body { 
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+              font-family: 'Pretendard', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
               line-height: 1.6; 
-              color: #333; 
-              background: #f5f7fa;
+              color: #2d3748; 
+              background: #ffffff;
+            }
+            
+            /* 쇼핑몰 스타일 헤더 */
+            .ecommerce-header {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 2rem;
+              margin-bottom: 0;
+              position: sticky;
+              top: 0;
+              z-index: 100;
+              box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            }
+            .ecommerce-header .header-content {
+              max-width: 1200px;
+              margin: 0 auto;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            .ecommerce-header h1 {
+              font-size: 1.8rem;
+              font-weight: 700;
+            }
+            .ecommerce-header .hotel-rating {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
             }
             .container { 
               max-width: 1200px; 
@@ -443,17 +473,51 @@ const MemoizedHome = React.memo(function Home() {
           </style>
         </head>
         <body>
+          <!-- 쇼핑몰 스타일 헤더 -->
+          <header class="ecommerce-header">
+            <div class="header-content">
+              <h1>🏨 ${data.hotel?.name || '프리미엄 호텔'}</h1>
+              <div class="hotel-rating">
+                <span>⭐⭐⭐⭐⭐</span>
+                <span>5.0</span>
+              </div>
+            </div>
+          </header>
+
+          <!-- 메인 상품 정보 영역 -->
           <div class="container">
-            <!-- 호텔 헤더 -->
-            <div class="hotel-header">
-              <h1>🏨 ${data.hotel?.name || '호텔 정보 관리 시스템'}</h1>
-              <p>${data.hotel?.description || '전문적인 호텔 정보 관리 서비스'}</p>
-              ${data.hotel?.address ? `<p>📍 ${data.hotel.address}</p>` : ''}
-              ${data.hotel?.phone ? `<p>📞 ${data.hotel.phone}</p>` : ''}
-              ${data.hotel?.email ? `<p>✉️ ${data.hotel.email}</p>` : ''}
-              ${data.hotel?.website ? `<p>🌐 ${data.hotel.website}</p>` : ''}
-              ${data.hotel?.category ? `<p>🏷️ ${data.hotel.category}</p>` : ''}
-              
+            <!-- 호텔 메인 정보 카드 -->
+            <div class="product-hero" style="background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 2rem 0; padding: 2rem;">
+              <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; align-items: start;">
+                <div>
+                  <div class="product-badge" style="display: inline-block; background: #e53e3e; color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem;">
+                    🔥 인기 상품
+                  </div>
+                  <h2 style="font-size: 1.75rem; font-weight: 700; color: #2d3748; margin-bottom: 1rem; line-height: 1.2;">
+                    ${data.hotel?.name || '럭셔리 호텔'}
+                  </h2>
+                  <div style="color: #718096; font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6;">
+                    ${data.hotel?.description || '최고의 서비스와 편안한 휴식을 제공하는 프리미엄 호텔입니다.'}
+                  </div>
+                  <div class="hotel-features" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
+                    ${data.hotel?.address ? `<div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: #f7fafc; border-radius: 8px;"><span>📍</span><span style="color: #4a5568; font-size: 0.9rem;">${data.hotel.address}</span></div>` : ''}
+                    ${data.hotel?.phone ? `<div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: #f7fafc; border-radius: 8px;"><span>📞</span><span style="color: #4a5568; font-size: 0.9rem;">${data.hotel.phone}</span></div>` : ''}
+                  </div>
+                </div>
+                <div class="price-section" style="background: #f8f9fa; padding: 1.5rem; border-radius: 12px; border: 2px solid #e2e8f0;">
+                  <div style="text-align: center;">
+                    <div style="color: #e53e3e; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem;">특가 할인</div>
+                    <div style="font-size: 1.75rem; font-weight: 700; color: #2d3748; margin-bottom: 0.5rem;">₩150,000~</div>
+                    <div style="color: #718096; font-size: 0.85rem; text-decoration: line-through; margin-bottom: 1rem;">₩200,000</div>
+                    <button style="width: 100%; background: #3182ce; color: white; padding: 0.75rem 1rem; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-bottom: 0.5rem;">
+                      🛒 예약하기
+                    </button>
+                    <button style="width: 100%; background: transparent; color: #3182ce; padding: 0.75rem 1rem; border: 2px solid #3182ce; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                      💝 찜하기
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
             
             <!-- 객실 정보 섹션 -->
@@ -464,20 +528,20 @@ const MemoizedHome = React.memo(function Home() {
                   <div class="info-section">
                     <h2>🛏️ 객실 정보</h2>
                     <div class="room-grid">
-                      ${roomsArr.map(room => `
-                        <div class="room-card">
-                          <div class="room-name">${room.name || '이름 없음'}</div>
-                          <div class="room-details">
-                            ${room.type ? `<div class="room-detail"><strong>타입:</strong> ${room.type}</div>` : ''}
-                            ${room.structure ? `<div class="room-detail"><strong>구조:</strong> ${room.structure}</div>` : ''}
-                            ${room.bedType ? `<div class="room-detail"><strong>베드:</strong> ${room.bedType}</div>` : ''}
-                            ${room.view ? `<div class="room-detail"><strong>전망:</strong> ${room.view}</div>` : ''}
-                            ${room.standardCapacity ? `<div class="room-detail"><strong>기본 인원:</strong> ${room.standardCapacity}명</div>` : ''}
-                            ${room.maxCapacity ? `<div class="room-detail"><strong>최대 인원:</strong> ${room.maxCapacity}명</div>` : ''}
-                          </div>
-                          ${room.description ? `<div class="room-description"><strong>설명:</strong> ${room.description}</div>` : ''}
-                        </div>
-                      `).join('')}
+                      ${roomsArr.map(room => (
+                        '<div class="room-card">' +
+                          '<div class="room-name">' + (room.name || '이름 없음') + '</div>' +
+                          '<div class="room-details">' +
+                            (room.type ? '<div class="room-detail"><strong>타입:</strong> ' + room.type + '</div>' : '') +
+                            (room.structure ? '<div class="room-detail"><strong>구조:</strong> ' + room.structure + '</div>' : '') +
+                            (room.bedType ? '<div class="room-detail"><strong>베드:</strong> ' + room.bedType + '</div>' : '') +
+                            (room.view ? '<div class="room-detail"><strong>전망:</strong> ' + room.view + '</div>' : '') +
+                            (room.standardCapacity ? '<div class="room-detail"><strong>기본 인원:</strong> ' + room.standardCapacity + '명</div>' : '') +
+                            (room.maxCapacity ? '<div class="room-detail"><strong>최대 인원:</strong> ' + room.maxCapacity + '</div>' : '') +
+                          '</div>' +
+                          (room.description ? '<div class="room-description"><strong>설명:</strong> ' + room.description + '</div>' : '') +
+                        '</div>'
+                      )).join('')}
                     </div>
                   </div>
                 `;
@@ -501,14 +565,14 @@ const MemoizedHome = React.memo(function Home() {
                     </thead>
                     <tbody>
                       ${data.pricing.roomTypes.map(roomType => 
-                        roomType.periods ? roomType.periods.map(period => `
-                          <tr>
-                            <td>${roomType.name || '이름 없음'}</td>
-                            <td>${period.startDate || ''} ~ ${period.endDate || ''}</td>
-                            <td>${period.price ? period.price.toLocaleString() + '원' : '가격 미정'}</td>
-                            <td>${period.note || ''}</td>
-                          </tr>
-                        `).join('') : ''
+                        roomType.periods ? roomType.periods.map(period => 
+                          '<tr>' +
+                            '<td>' + (roomType.name || '이름 없음') + '</td>' +
+                            '<td>' + (period.startDate || '') + ' ~ ' + (period.endDate || '') + '</td>' +
+                            '<td>' + (period.price ? period.price.toLocaleString() + '원' : '가격 미정') + '</td>' +
+                            '<td>' + (period.note || '') + '</td>' +
+                          '</tr>'
+                        ).join('') : ''
                       ).join('')}
                     </tbody>
                   </table>
@@ -520,17 +584,17 @@ const MemoizedHome = React.memo(function Home() {
             ${data.cancelPolicies && data.cancelPolicies.length > 0 ? `
               <div class="info-section">
                 <h2>📋 취소 정책</h2>
-                ${data.cancelPolicies.map(policy => `
-                  <div class="policy-item">
-                    <div class="policy-title">${policy.policyType || '정책'}</div>
-                    <div class="policy-content">
-                      ${policy.description || ''}
-                      ${policy.cancellationFee ? `<br><strong>취소 수수료:</strong> ${policy.cancellationFee}` : ''}
-                      ${policy.refundRate ? `<br><strong>환불 비율:</strong> ${policy.refundRate}%` : ''}
-                      ${policy.noticePeriod ? `<br><strong>사전 통보 기간:</strong> ${policy.noticePeriod}` : ''}
-                    </div>
-                  </div>
-                `).join('')}
+                ${data.cancelPolicies.map(policy => 
+                  '<div class="policy-item">' +
+                    '<div class="policy-title">' + (policy.policyType || '정책') + '</div>' +
+                    '<div class="policy-content">' +
+                      (policy.description || '') +
+                      (policy.cancellationFee ? '<br><strong>취소 수수료:</strong> ' + policy.cancellationFee : '') +
+                      (policy.refundRate ? '<br><strong>환불 비율:</strong> ' + policy.refundRate + '%' : '') +
+                      (policy.noticePeriod ? '<br><strong>사전 통보 기간:</strong> ' + policy.noticePeriod : '') +
+                    '</div>' +
+                  '</div>'
+                ).join('')}
               </div>
             ` : ''}
             
@@ -539,14 +603,14 @@ const MemoizedHome = React.memo(function Home() {
               <div class="info-section">
                 <h2>✨ 시설 정보</h2>
                 <div class="facility-grid">
-                  ${Object.entries(data.facilities).map(([category, items]) => `
-                    <div class="facility-category">
-                      <h4>${category === 'general' ? '일반' : category === 'business' ? '비즈니스' : category === 'leisure' ? '레저' : category === 'dining' ? '식음료' : category}</h4>
-                      <div class="facility-list">
-                        ${Array.isArray(items) && items.length > 0 ? items.join(', ') : '시설 정보 없음'}
-                      </div>
-                    </div>
-                  `).join('')}
+                  ${Object.entries(data.facilities).map(([category, items]) => 
+                    '<div class="facility-category">' +
+                      '<h4>' + (category === 'general' ? '일반' : category === 'business' ? '비즈니스' : category === 'leisure' ? '레저' : category === 'dining' ? '식음료' : category) + '</h4>' +
+                      '<div class="facility-list">' +
+                        (Array.isArray(items) && items.length > 0 ? items.join(', ') : '시설 정보 없음') +
+                      '</div>' +
+                    '</div>'
+                  ).join('')}
                 </div>
               </div>
             ` : ''}
@@ -556,16 +620,16 @@ const MemoizedHome = React.memo(function Home() {
               <div class="info-section">
                 <h2>🕐 체크인/아웃 정보</h2>
                 <div class="checkin-info">
-                  ${data.checkin.checkInTime ? `<div class="checkin-detail"><strong>체크인:</strong> ${data.checkin.checkInTime}</div>` : ''}
-                  ${data.checkin.checkOutTime ? `<div class="checkin-detail"><strong>체크아웃:</strong> ${data.checkin.checkOutTime}</div>` : ''}
-                  ${data.checkin.earlyCheckIn ? `<div class="checkin-detail"><strong>얼리체크인:</strong> ${data.checkin.earlyCheckIn}</div>` : ''}
-                  ${data.checkin.lateCheckOut ? `<div class="checkin-detail"><strong>레이트체크아웃:</strong> ${data.checkin.lateCheckOut}</div>` : ''}
-                  ${data.checkin.checkInLocation ? `<div class="checkin-detail"><strong>체크인장소:</strong> ${data.checkin.checkInLocation}</div>` : ''}
-                  ${data.checkin.checkOutLocation ? `<div class="checkin-detail"><strong>체크아웃장소:</strong> ${data.checkin.checkOutLocation}</div>` : ''}
-                  ${data.checkin.specialInstructions ? `<div class="checkin-detail"><strong>특별안내:</strong> ${data.checkin.specialInstructions}</div>` : ''}
-                  ${data.checkin.requiredDocuments ? `<div class="checkin-detail"><strong>필요서류:</strong> ${data.checkin.requiredDocuments}</div>` : ''}
-                  ${data.checkin.ageRestrictions ? `<div class="checkin-detail"><strong>연령제한:</strong> ${data.checkin.ageRestrictions}</div>` : ''}
-                  ${data.checkin.petPolicy ? `<div class="checkin-detail"><strong>반려동물:</strong> ${data.checkin.petPolicy}</div>` : ''}
+                  ${data.checkin.checkInTime ? '<div class="checkin-detail"><strong>체크인:</strong> ' + data.checkin.checkInTime + '</div>' : ''}
+                  ${data.checkin.checkOutTime ? '<div class="checkin-detail"><strong>체크아웃:</strong> ' + data.checkin.checkOutTime + '</div>' : ''}
+                  ${data.checkin.earlyCheckIn ? '<div class="checkin-detail"><strong>얼리체크인:</strong> ' + data.checkin.earlyCheckIn + '</div>' : ''}
+                  ${data.checkin.lateCheckOut ? '<div class="checkin-detail"><strong>레이트체크아웃:</strong> ' + data.checkin.lateCheckOut + '</div>' : ''}
+                  ${data.checkin.checkInLocation ? '<div class="checkin-detail"><strong>체크인장소:</strong> ' + data.checkin.checkInLocation + '</div>' : ''}
+                  ${data.checkin.checkOutLocation ? '<div class="checkin-detail"><strong>체크아웃장소:</strong> ' + data.checkin.checkOutLocation + '</div>' : ''}
+                  ${data.checkin.specialInstructions ? '<div class="checkin-detail"><strong>특별안내:</strong> ' + data.checkin.specialInstructions + '</div>' : ''}
+                  ${data.checkin.requiredDocuments ? '<div class="checkin-detail"><strong>필요서류:</strong> ' + data.checkin.requiredDocuments + '</div>' : ''}
+                  ${data.checkin.ageRestrictions ? '<div class="checkin-detail"><strong>연령제한:</strong> ' + data.checkin.ageRestrictions + '</div>' : ''}
+                  ${data.checkin.petPolicy ? '<div class="checkin-detail"><strong>반려동물:</strong> ' + data.checkin.petPolicy + '</div>' : ''}
                 </div>
               </div>
             ` : ''}
@@ -575,16 +639,16 @@ const MemoizedHome = React.memo(function Home() {
               <div class="info-section">
                 <h2>🎁 패키지 정보</h2>
                 <div class="package-grid">
-                  ${data.packages.map(pkg => `
-                    <div class="package-card">
-                      <div class="package-title">${pkg.name || '패키지명'}</div>
-                      <div class="package-content">
-                        ${pkg.description || ''}
-                        ${pkg.price ? `<br><strong>가격:</strong> ${pkg.price.toLocaleString()}원` : ''}
-                        ${pkg.duration ? `<br><strong>기간:</strong> ${pkg.duration}` : ''}
-                      </div>
-                    </div>
-                  `).join('')}
+                  ${data.packages.map(pkg => 
+                    '<div class="package-card">' +
+                      '<div class="package-title">' + (pkg.name || '패키지명') + '</div>' +
+                      '<div class="package-content">' +
+                        (pkg.description || '') +
+                        (pkg.price ? '<br><strong>가격:</strong> ' + pkg.price.toLocaleString() + '원' : '') +
+                        (pkg.duration ? '<br><strong>기간:</strong> ' + pkg.duration : '') +
+                      '</div>' +
+                    '</div>'
+                  ).join('')}
                 </div>
               </div>
             ` : ''}
@@ -770,6 +834,17 @@ const MemoizedHome = React.memo(function Home() {
       autoDebug();
     }
   }, [mounted, autoDebug]);
+
+  // 글로벌 트리거 함수: 섹션별 미리보기 생성 트리거
+  useEffect(() => {
+    window.triggerPreview = (sectionType) => {
+      console.log('[App] triggerPreview called for', sectionType);
+      setPreviewRefreshKey(Date.now());
+    };
+    return () => {
+      try { delete window.triggerPreview } catch (e) {}
+    };
+  }, []);
   
   // activeTab 변경 시 자동 디버깅 실행
   useEffect(() => {
@@ -829,13 +904,11 @@ const MemoizedHome = React.memo(function Home() {
     console.log('Component:', Component);
 
     return (
-      <Suspense fallback={<LoadingSpinner size="large" />}>
-        <Component
-          value={valueForTab}
-          onChange={onChangeForTab}
-          displayMode={false}
-        />
-      </Suspense>
+      <Component
+        value={valueForTab}
+        onChange={onChangeForTab}
+        displayMode={false}
+      />
     )
   }
 
@@ -852,13 +925,11 @@ const MemoizedHome = React.memo(function Home() {
         : data[activeTab]
 
     return (
-      <Suspense fallback={<LoadingSpinner />}>
-        <Component
-          value={valueForTab}
-          onChange={onChangeForTab}
-          displayMode={false}
-        />
-      </Suspense>
+      <Component
+        value={valueForTab}
+        onChange={onChangeForTab}
+        displayMode={false}
+      />
     )
   }
 
@@ -901,24 +972,59 @@ const MemoizedHome = React.memo(function Home() {
       {/* 메인 콘텐츠 */}
       <div className="space-y-6">
         {/* 헤더 섹션 */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">호텔 정보 관리</h1>
             <p className="text-gray-600 mt-2">현재 탭: {getActiveTabInfo()?.label}</p>
+            <p className="text-sm text-blue-600 mt-1">모든 정보를 입력한 후 상단의 생성 버튼을 클릭하세요</p>
           </div>
           
-          <div className="flex gap-2">
-            <MonitoringDashboard />
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-2">
+              <MonitoringDashboard />
+              
+              {/* 통합 생성 버튼 */}
+              <Button
+                size="lg"
+                color="primary"
+                variant="solid"
+                onPress={generateHtml}
+                isLoading={isGenerating}
+                className="font-bold px-6"
+              >
+                🎯 전체 미리보기 생성
+              </Button>
+              
+              {/* 템플릿 관리 버튼 */}
+              <TemplateManager 
+                onLoadTemplate={(templateData) => {
+                  // 템플릿 데이터를 현재 상태에 로드
+                  Object.keys(templateData).forEach(key => {
+                    updateData(key, templateData[key]);
+                  });
+                }}
+                onSaveTemplate={(savedTemplate) => {
+                  console.log('템플릿 저장 완료:', savedTemplate);
+                }}
+              />
+              
+              {/* 백업/복원 버튼 추가 */}
+              <Button
+                size="sm"
+                color="warning"
+                variant="flat"
+                onPress={() => setShowBackupModal(true)}
+              >
+                💾 백업/복원
+              </Button>
+            </div>
             
-            {/* 백업/복원 버튼 추가 */}
-            <Button
-              size="sm"
-              color="warning"
-              variant="flat"
-              onPress={() => setShowBackupModal(true)}
-            >
-              💾 백업/복원
-            </Button>
+            {/* 생성 버튼 설명 */}
+            <div className="text-center p-2 bg-blue-50 rounded-lg border border-blue-200">
+              <p className="text-xs text-blue-700">
+                💡 모든 탭의 정보를 입력한 후 이 버튼을 클릭하면 전체 HTML 미리보기가 생성됩니다
+              </p>
+            </div>
           </div>
         </div>
 
@@ -943,7 +1049,7 @@ const MemoizedHome = React.memo(function Home() {
           {/* 오른쪽: 미리보기 (모바일 사이즈) */}
           <div className="w-[375px] flex-shrink-0 bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">미리보기</h3>
+              <h3 className="text-lg font-semibold text-gray-900">개별 미리보기</h3>
               <div className="flex gap-2">
                 <Button
                   size="sm"
@@ -968,9 +1074,7 @@ const MemoizedHome = React.memo(function Home() {
               </div>
             </div>
             <div className="border rounded-lg p-3 bg-gray-100 min-h-[400px] overflow-hidden">
-              <Suspense fallback={<LoadingSpinner size="small" />}>
-                <Preview />
-              </Suspense>
+              <Preview data={data} activeTab={activeTab} />
             </div>
           </div>
         </div>

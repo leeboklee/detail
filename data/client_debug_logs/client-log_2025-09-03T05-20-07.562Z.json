@@ -1,0 +1,25 @@
+{
+  "timestamp": 1756876807184,
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+  "clientIP": "::1",
+  "tag": "preview-update",
+  "hasData": true,
+  "keys": [
+    "hotel_name",
+    "hotel_address",
+    "hotel_description",
+    "hotel_imageUrl",
+    "room1_name",
+    "room1_type",
+    "room1_structure",
+    "room1_bedType",
+    "room1_view",
+    "room1_standardCapacity",
+    "room1_maxCapacity",
+    "room1_description",
+    "facility_general",
+    "booking_purchaseGuide",
+    "booking_referenceNotes"
+  ],
+  "activeTab": "pricing"
+}

@@ -201,12 +201,10 @@ const RoomInfoEditor = ({ value = { rooms: [] }, onChange, displayMode = false }
     if (!onChange) return
     // 이벤트 루프 다음 틱으로 미룸
     setTimeout(() => {
-      onChange({
-        ...value,
-        rooms: updatedRooms
-      })
+      // rooms 배열을 직접 전달 (useAppState의 구조에 맞게)
+      onChange(updatedRooms)
     }, 0)
-  }, [onChange, value])
+  }, [onChange])
 
   const addRoom = useCallback(() => {
     const amenities = newAmenitiesText
@@ -368,6 +366,50 @@ const RoomInfoEditor = ({ value = { rooms: [] }, onChange, displayMode = false }
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-900">객실 정보 관리</h2>
         <div className="flex gap-2">
+          {/* 섹션별 생성 버튼: 현재 객실 데이터를 미리보기로 생성 */}
+          <Button
+            color="success"
+            variant="bordered"
+            onPress={() => {
+              // 현재 입력 폼에 데이터가 있으면 먼저 추가
+              if (newRoomData.name || newRoomData.type || newRoomData.description) {
+                const amenities = newAmenitiesText
+                  .split(',')
+                  .map((s) => s.trim())
+                  .filter(Boolean);
+                const newRoom = { ...newRoomData, amenities };
+                const updatedRooms = [...rooms, newRoom];
+                setRooms(updatedRooms);
+                notifyParentRooms(updatedRooms);
+                
+                // 폼 초기화
+                setNewRoomData({
+                  name: '',
+                  type: '',
+                  structure: '',
+                  bedType: '',
+                  view: '',
+                  standardCapacity: 0,
+                  maxCapacity: 0,
+                  description: '',
+                  image: '',
+                  amenities: []
+                });
+                setNewAmenitiesText('');
+              } else {
+                // 기존 rooms 데이터로 미리보기 생성
+                notifyParentRooms(rooms);
+              }
+              
+              // 전역 트리거가 있으면 해당 섹션만 리프레시
+              if (typeof window !== 'undefined' && window.triggerPreview) {
+                window.triggerPreview('rooms');
+              }
+            }}
+            startContent="✨"
+          >
+            생성
+          </Button>
           <Button
             color="secondary"
             variant="bordered"
@@ -535,11 +577,12 @@ const RoomInfoEditor = ({ value = { rooms: [] }, onChange, displayMode = false }
 
           <Input
             className="mt-4"
-            label={Labels["이미지_URL_1"]}
+            label="이미지 URL"
             value={newRoomData.image}
             onChange={(e) => handleNewRoomChange('image', e.target.value)}
-            placeholder={Labels["객실_이미지_URL을_입력하세요_PH"]}
+            placeholder="객실 이미지 URL을 입력하세요"
             labelPlacement="outside"
+            type="url"
           />
 
           <Input
@@ -639,11 +682,12 @@ const RoomInfoEditor = ({ value = { rooms: [] }, onChange, displayMode = false }
                 />
                 
                 <Input
-                  label={Labels["이미지_URL_1"]}
+                  label="이미지 URL"
                   value={room.image}
                   onChange={(e) => updateRoom(index, 'image', e.target.value)}
-                  placeholder={Labels["객실_이미지_URL을_입력하세요_PH"]}
+                  placeholder="객실 이미지 URL을 입력하세요"
                   labelPlacement="outside"
+                  type="url"
                 />
 
                 {/* 편의시설 관리 */}
@@ -763,6 +807,14 @@ const RoomInfoEditor = ({ value = { rooms: [] }, onChange, displayMode = false }
             <p className="text-sm mt-1">객실 추가 버튼을 클릭하여 첫 번째 객실을 등록하세요.</p>
           </div>
         )}
+      </div>
+
+      {/* 객실 정보 미리보기 안내 */}
+      <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg border border-green-200">
+        <div className="text-center">
+          <h4 className="font-medium text-green-900 mb-2">객실 정보 미리보기</h4>
+          <p className="text-sm text-green-600">상단의 "🎯 전체 미리보기 생성" 버튼을 클릭하여 전체 미리보기를 생성하세요</p>
+        </div>
       </div>
     </div>
   );

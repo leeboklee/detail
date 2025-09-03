@@ -48,3 +48,5 @@ baseline-screenshots/
 
 # Local environment variables
 .env.local
+
+.vercel

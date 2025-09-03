@@ -12,7 +12,7 @@ echo "🔒 프로젝트 격리 시작: $PROJECT_NAME"
 # 1. 다른 프로젝트의 프로세스 정리
 echo "🧹 다른 프로젝트 프로세스 정리 중..."
 pkill -f "/home/rsvshop/projects/rsvshop" 2>/dev/null || true
-pkill -f "port 4900" 2>/dev/null || true
+# pkill -f "port 4900" 2>/dev/null || true
 
 # 2. 현재 프로젝트 디렉토리로 이동
 cd "$PROJECT_DIR" || exit 1

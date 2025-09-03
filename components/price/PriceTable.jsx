@@ -266,6 +266,8 @@ const PriceTable = memo(function PriceTable({ value = {}, onChange, displayMode 
       syncingRef.current = false;
       return;
     }
+    
+    console.log('요금표 데이터 변경됨, onChange 호출:', pricingData);
     onChange(pricingData);
   }, [pricingData, onChange]);
 
@@ -641,19 +643,23 @@ const PriceTable = memo(function PriceTable({ value = {}, onChange, displayMode 
   // 데이터 초기화 및 로딩 (부모 value → 내부 상태 동기화, 루프 방지)
   useEffect(() => {
     try {
+      console.log('요금표 데이터 초기화 시작, value:', value);
+      
       if (value && Object.keys(value).length > 0) {
         const current = pricingData;
         const changed = JSON.stringify(current) !== JSON.stringify(value);
         if (changed) {
+          console.log('요금표 데이터 변경 감지, 동기화 중...');
           syncingRef.current = true;
           setPricingData(value);
         }
       } else {
+        console.log('요금표 기본 템플릿 로드 중...');
         // 기본 템플릿 로드
         loadDefaultTemplates();
       }
     } catch (error) {
-      console.error('데이터 초기화 실패:', error);
+      console.error('요금표 데이터 초기화 실패:', error);
       loadDefaultTemplates();
     } finally {
       setIsLoading(false);
@@ -664,10 +670,13 @@ const PriceTable = memo(function PriceTable({ value = {}, onChange, displayMode 
   // 기본 템플릿 로드
   const loadDefaultTemplates = useCallback(() => {
     try {
+      console.log('요금표 기본 템플릿 로드 시작');
+      
       // 로컬 스토리지에서 기본 템플릿 확인
       const savedTemplates = JSON.parse(localStorage.getItem('priceTemplates') || '[]');
       
       if (savedTemplates.length === 0) {
+        console.log('기본 템플릿이 없음, 새로 생성');
         // 기본 템플릿이 없으면 기본값으로 설정
         localStorage.setItem('priceTemplates', JSON.stringify(DEFAULT_PRICING_TEMPLATES));
         setTemplateList(DEFAULT_PRICING_TEMPLATES);
@@ -675,19 +684,29 @@ const PriceTable = memo(function PriceTable({ value = {}, onChange, displayMode 
         // 첫 번째 기본 템플릿을 요금표로 로드
         if (DEFAULT_PRICING_TEMPLATES.length > 0) {
           const defaultData = DEFAULT_PRICING_TEMPLATES[0].data;
+          console.log('기본 데이터 로드:', defaultData);
           setPricingData(defaultData);
           if (onChange) {
             onChange(defaultData);
+            console.log('기본 데이터 onChange 호출 완료');
           }
         }
       } else {
+        console.log('저장된 템플릿 사용');
         setTemplateList(savedTemplates);
         // 기본 데이터 로드
         setPricingData(DEFAULT_PRICING_DATA);
+        if (onChange) {
+          onChange(DEFAULT_PRICING_DATA);
+          console.log('기본 데이터 onChange 호출 완료');
+        }
       }
     } catch (error) {
       console.error('기본 템플릿 로드 오류:', error);
       setPricingData(DEFAULT_PRICING_DATA);
+      if (onChange) {
+        onChange(DEFAULT_PRICING_DATA);
+      }
     }
   }, [onChange]);
 
@@ -729,9 +748,22 @@ const PriceTable = memo(function PriceTable({ value = {}, onChange, displayMode 
               color="success" 
               variant="bordered"
               onPress={() => {
-                if (onChange) {
+                console.log('요금표 생성 버튼 클릭됨');
+                console.log('현재 pricingData:', pricingData);
+                console.log('onChange 함수 존재 여부:', !!onChange);
+                
+                if (onChange && pricingData) {
                   onChange(pricingData);
+                  console.log('요금표 onChange 호출 완료');
+                  
+                  // 전역 미리보기 트리거
+                  if (typeof window !== 'undefined' && window.triggerPreview) {
+                    window.triggerPreview('pricing');
+                  }
+                } else {
+                  console.log('onChange가 undefined이거나 pricingData가 없습니다');
                 }
+                
                 alert('요금표가 미리보기에 생성되었습니다.');
               }}
               startContent="✨"

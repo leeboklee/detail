@@ -35,13 +35,13 @@ class WSLPortManager {
   async cleanWindowsProcesses() {
     try {
       // 윈도우에서 해당 포트 사용하는 프로세스 확인
-      const { stdout } = await execAsync('netstat -ano | findstr :3900', { shell: 'cmd.exe' });
+      const { stdout } = await execAsync(`netstat -ano | findstr :${this.port}`, { shell: 'cmd.exe' });
       
       if (stdout.trim()) {
-        console.log('🪟 윈도우에서 포트 3900 사용 프로세스 발견, 정리 중...');
+        console.log(`🪟 윈도우에서 포트 ${this.port} 사용 프로세스 발견, 정리 중...`);
         
         // 윈도우 프로세스 종료 (관리자 권한 필요)
-        await execAsync('powershell -Command "Get-NetTCPConnection -LocalPort 3900 | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }"', { shell: 'cmd.exe' });
+        await execAsync(`powershell -Command "Get-NetTCPConnection -LocalPort ${this.port} | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force }"`, { shell: 'cmd.exe' });
       }
     } catch (error) {
       // 윈도우 명령어 실패 시 무시 (WSL2에서 실행 중일 수 있음)

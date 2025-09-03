@@ -4,7 +4,7 @@ set -euo pipefail
 # 다중 포트 안전 정리 스크립트 (WSL 친화)
 # - 우선 fuser, 보조로 ss/lsof를 사용하여 좀비/잔여 리스너를 제거
 
-PORTS=(3900 4900 3901)
+PORTS=(3900)
 CURRENT_PID=$$
 
 echo "[kill-port-safe] clearing: ${PORTS[*]}"

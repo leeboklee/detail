@@ -263,7 +263,9 @@ const HotelInfo = React.memo(({ value, onChange, displayMode = false }) => {
               if (onChange) {
                 onChange(hotelInfo);
               }
-              alert('호텔 정보가 미리보기에 생성되었습니다.');
+              if (typeof window !== 'undefined' && window.triggerPreview) {
+                window.triggerPreview('hotel');
+              }
             }}
             startContent="✨"
           >
@@ -364,6 +366,14 @@ const HotelInfo = React.memo(({ value, onChange, displayMode = false }) => {
             />
           </div>
         )}
+      </div>
+
+      {/* 호텔 정보 미리보기 안내 */}
+      <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+        <div className="text-center">
+          <h4 className="font-medium text-blue-900 mb-2">호텔 정보 미리보기</h4>
+          <p className="text-sm text-blue-600">상단의 "🛍️ 전체보기" 버튼을 클릭하여 전체 미리보기를 생성하세요</p>
+        </div>
       </div>
 
       {/* 템플릿 불러오기 모달 */}

@@ -79,6 +79,10 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
   const handleSave = useCallback(() => {
     onSave(formData);
     onClose();
+    // 미리보기 트리거
+    if (typeof window !== 'undefined' && window.triggerPreview) {
+      window.triggerPreview('packages');
+    }
   }, [formData, onSave, onClose]);
 
   const handleAddInclude = useCallback(() => {
@@ -139,81 +143,100 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
       size="lg" 
       scrollBehavior="inside"
       classNames={{
-        base: "max-w-4xl mx-auto w-[95vw] sm:w-full z-[9999]",
-        wrapper: "p-4 sm:p-6 z-[9998]",
+        base: "max-w-4xl mx-auto w-[95vw] sm:w-full z-[99999]",
+        wrapper: "p-4 sm:p-6 z-[99998]",
         body: "p-4 sm:p-6 overflow-y-auto max-h-[80vh]",
         header: "border-b border-gray-200 pb-4",
         footer: "border-t border-gray-200 pt-4"
       }}
-      backdrop="blur"
+      backdrop="opaque"
       isDismissable={true}
       isKeyboardDismissDisabled={false}
     >
-      <ModalContent className="overflow-hidden">
-        <ModalHeader className="text-lg sm:text-xl font-semibold text-gray-900 bg-white sticky top-0 z-10">
+      <ModalContent className="overflow-hidden bg-white">
+        <ModalHeader className="text-lg sm:text-xl font-bold text-black bg-white sticky top-0 z-[99999] border-b border-gray-200">
           {isNew ? '새 패키지 추가' : '패키지 편집'}
         </ModalHeader>
-        <ModalBody className="overflow-y-auto max-h-[70vh] px-4 sm:px-6 py-4">
+        <ModalBody className="overflow-y-auto max-h-[70vh] px-4 sm:px-6 py-4 bg-white">
           <div className="space-y-4 sm:space-y-6">
-            <Input
-              label={Labels["패키지명"]}
-              placeholder={Labels["패키지_이름을_입력하세요_PH"]}
-              value={formData.name}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                name: e.target.value
-              }))}
-              classNames={{
-                input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500",
-                label: "text-gray-800 font-semibold mb-2 text-sm sm:text-base",
-                inputWrapper: "h-10 sm:h-12 bg-white shadow-sm"
-              }}
-            />
+            <div>
+              <label className="block text-sm font-bold text-black mb-2">패키지명 *</label>
+              <p className="text-xs text-gray-600 mb-3">패키지의 이름을 입력하세요 (예: 로맨틱 패키지, 가족 패키지)</p>
+              <Input
+                placeholder="패키지 이름을 입력하세요"
+                value={formData.name}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  name: e.target.value
+                }))}
+                classNames={{
+                  input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500 font-medium",
+                  inputWrapper: "h-10 sm:h-12 bg-white shadow-sm border-2"
+                }}
+                style={{
+                  color: '#000000 !important',
+                  backgroundColor: '#ffffff !important'
+                }}
+              />
+            </div>
             
-            <Textarea
-              label={Labels["패키지_설명"]}
-              placeholder={Labels["패키지에_대한_상세한_설명을_입력하세요_PH"]}
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                description: e.target.value
-              }))}
-              minRows={3}
-              classNames={{
-                input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500",
-                label: "text-gray-800 font-semibold mb-2 text-sm sm:text-base",
-                inputWrapper: "min-h-[80px] bg-white shadow-sm"
-              }}
-            />
+            <div>
+              <label className="block text-sm font-bold text-black mb-2">패키지 설명 *</label>
+              <p className="text-xs text-gray-600 mb-3">패키지에 대한 상세한 설명을 입력하세요 (예: 2박 3일 로맨틱 여행 패키지)</p>
+              <Textarea
+                placeholder="패키지에 대한 상세한 설명을 입력하세요"
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  description: e.target.value
+                }))}
+                minRows={3}
+                classNames={{
+                  input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500 font-medium",
+                  inputWrapper: "min-h-[80px] bg-white shadow-sm border-2"
+                }}
+                style={{
+                  color: '#000000 !important',
+                  backgroundColor: '#ffffff !important'
+                }}
+              />
+            </div>
             
-            <Input
-              label={Labels["가격"]}
-              type="number"
-              placeholder={Labels["0_PH"]}
-              value={formData.price}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                price: parseInt(e.target.value) || 0
-              }))}
-              startContent={
-                <div className="pointer-events-none flex items-center">
-                  <span className="text-gray-700 text-small font-medium">₩</span>
-                </div>
-              }
-              classNames={{
-                input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500",
-                label: "text-gray-800 font-semibold mb-2 text-sm sm:text-base",
-                inputWrapper: "h-10 sm:h-12 bg-white shadow-sm"
-              }}
-            />
+            <div>
+              <label className="block text-sm font-bold text-black mb-2">가격 *</label>
+              <p className="text-xs text-gray-600 mb-3">패키지의 가격을 원화로 입력하세요 (예: 150000)</p>
+              <Input
+                type="number"
+                placeholder="0"
+                value={formData.price}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  price: parseInt(e.target.value) || 0
+                }))}
+                startContent={
+                  <div className="pointer-events-none flex items-center">
+                    <span className="text-gray-700 text-small font-medium">₩</span>
+                  </div>
+                }
+                classNames={{
+                  input: "text-black bg-white border-gray-400 text-sm sm:text-base placeholder:text-gray-500 font-medium",
+                  inputWrapper: "h-10 sm:h-12 bg-white shadow-sm border-2"
+                }}
+                style={{
+                  color: '#000000 !important',
+                  backgroundColor: '#ffffff !important'
+                }}
+              />
+            </div>
 
             {/* 판매기간 */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.판매기간}</label>
+              <label className="block text-sm font-bold text-black mb-2">판매기간</label>
+              <p className="text-xs text-gray-600 mb-3">패키지 판매 가능한 기간을 입력하세요 (MMDD 형식)</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   type="text"
-                  placeholder={Labels["MMDD_예_0804_PH"]}
+                  placeholder="시작일 (예: 0804)"
                   value={formData.salesPeriod.start}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -226,10 +249,14 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                     input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
                     inputWrapper: "h-10 sm:h-12"
                   }}
+                  style={{
+                    color: '#000000 !important',
+                    backgroundColor: '#ffffff !important'
+                  }}
                 />
                 <Input
                   type="text"
-                  placeholder={Labels["MMDD_예_0831_PH"]}
+                  placeholder="종료일 (예: 0831)"
                   value={formData.salesPeriod.end}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -242,17 +269,22 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                     input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
                     inputWrapper: "h-10 sm:h-12"
                   }}
+                  style={{
+                    color: '#000000 !important',
+                    backgroundColor: '#ffffff !important'
+                  }}
                 />
               </div>
             </div>
 
             {/* 투숙기간 */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.투숙_적용기간}</label>
+              <label className="block text-sm font-bold text-black mb-2">투숙기간</label>
+              <p className="text-xs text-gray-600 mb-3">실제 투숙 가능한 기간을 입력하세요 (MMDD 형식)</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <Input
                   type="text"
-                  placeholder={Labels["MMDD_예_0824_PH"]}
+                  placeholder="시작일 (예: 0824)"
                   value={formData.stayPeriod.start}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -265,10 +297,14 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                     input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
                     inputWrapper: "h-10 sm:h-12"
                   }}
+                  style={{
+                    color: '#000000 !important',
+                    backgroundColor: '#ffffff !important'
+                  }}
                 />
                 <Input
                   type="text"
-                  placeholder={Labels["MMDD_예_0930_PH"]}
+                  placeholder="종료일 (예: 0930)"
                   value={formData.stayPeriod.end}
                   onChange={(e) => {
                     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
@@ -281,30 +317,41 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                     input: "text-gray-800 bg-white border-gray-300 text-sm text-center font-mono",
                     inputWrapper: "h-10 sm:h-12"
                   }}
+                  style={{
+                    color: '#000000 !important',
+                    backgroundColor: '#ffffff !important'
+                  }}
                 />
               </div>
             </div>
 
             {/* 상품구성 */}
-            <Textarea
-              label={Labels["상품구성"]}
-              placeholder={Labels["예_객실_1박__조식_2인__스파_이용권_PH"]}
-              value={formData.productComposition}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                productComposition: e.target.value
-              }))}
-              minRows={3}
-              classNames={{
-                input: "text-black bg-white border-gray-300 text-sm sm:text-base",
-                label: "text-gray-700 font-medium mb-2 text-sm sm:text-base",
-                inputWrapper: "min-h-[80px]"
-              }}
-            />
+            <div>
+              <label className="block text-sm font-bold text-black mb-2">상품구성</label>
+              <p className="text-xs text-gray-600 mb-3">패키지에 포함된 상품들을 상세히 입력하세요 (예: 객실 1박, 조식 2인, 스파 이용권)</p>
+              <Textarea
+                placeholder="예: 객실 1박, 조식 2인, 스파 이용권"
+                value={formData.productComposition}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  productComposition: e.target.value
+                }))}
+                minRows={3}
+                classNames={{
+                  input: "text-black bg-white border-gray-300 text-sm sm:text-base",
+                  inputWrapper: "min-h-[80px]"
+                }}
+                style={{
+                  color: '#000000 !important',
+                  backgroundColor: '#ffffff !important'
+                }}
+              />
+            </div>
 
             {/* 포함사항 */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.포함사항 || '포함사항'}</label>
+              <label className="block text-sm font-bold text-black mb-2">포함사항</label>
+              <p className="text-xs text-gray-600 mb-3">패키지에 포함된 항목들을 하나씩 추가하세요 (예: 조식, 와이파이, 주차장)</p>
               
               {/* 기존 포함사항 표시 */}
               {formData.includes.length > 0 && (
@@ -334,6 +381,10 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                     input: "text-black bg-white border-gray-400 text-sm placeholder:text-gray-500",
                     inputWrapper: "bg-white shadow-sm"
                   }}
+                  style={{
+                    color: '#000000 !important',
+                    backgroundColor: '#ffffff !important'
+                  }}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' && e.target.value.trim()) {
                       handleAddInclude();
@@ -353,7 +404,8 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
 
             {/* 유의사항/참고사항 */}
             <div>
-              <label className="text-sm font-medium text-gray-700 mb-3 block">{Labels.유의사항참고사항 || '유의사항/참고사항'}</label>
+              <label className="block text-sm font-bold text-black mb-2">유의사항/참고사항</label>
+              <p className="text-xs text-gray-600 mb-3">고객이 알아야 할 주의사항이나 참고사항을 하나씩 추가하세요</p>
               
               {/* 기존 참고사항 표시 */}
               {formData.notes.length > 0 && (
@@ -382,6 +434,10 @@ function PackageEditModal({ isOpen, onClose, packageData, onSave, isNew = false 
                   classNames={{
                     input: "text-black bg-white border-gray-400 text-sm placeholder:text-gray-500",
                     inputWrapper: "bg-white shadow-sm"
+                  }}
+                  style={{
+                    color: '#000000 !important',
+                    backgroundColor: '#ffffff !important'
                   }}
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' && e.target.value.trim()) {
@@ -548,6 +604,10 @@ export default function Package({ value = [], onChange }) {
       if (onChange) {
         onChange(updatedPackages);
       }
+      // 미리보기 트리거
+      if (typeof window !== 'undefined' && window.triggerPreview) {
+        window.triggerPreview('packages');
+      }
     }
   }, [packages, onChange]);
 
@@ -584,6 +644,11 @@ export default function Package({ value = [], onChange }) {
       setShowEditModal(false);
       setEditingPackageData(null);
       setIsNewPackage(false);
+      
+      // 미리보기 트리거
+      if (typeof window !== 'undefined' && window.triggerPreview) {
+        window.triggerPreview('packages');
+      }
       
       console.log('패키지 저장 완료:', updatedPackages);
     } catch (error) {
@@ -834,6 +899,14 @@ export default function Package({ value = [], onChange }) {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      {/* 패키지 정보 미리보기 안내 */}
+      <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-200">
+        <div className="text-center">
+          <h4 className="font-medium text-purple-900 mb-2">패키지 정보 미리보기</h4>
+          <p className="text-sm text-purple-600">상단의 "🎯 전체 미리보기 생성" 버튼을 클릭하여 전체 미리보기를 생성하세요</p>
+        </div>
+      </div>
     </div>
   );
 } 

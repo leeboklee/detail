@@ -290,25 +290,7 @@ export const MainLayout = ({ children, onGenerateHtml, isGenerating, generatedHt
 
               
 
-              <Button
 
-                size="sm"
-
-                color="success"
-
-                variant="flat"
-
-                onPress={onGenerateHtml}
-
-                isLoading={isGenerating}
-
-                startContent={Icons.refresh}
-
-              >
-
-                HTML 생성
-
-              </Button>
 
             </div>
 

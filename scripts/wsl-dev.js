@@ -6,9 +6,9 @@ const { spawn } = require('child_process');
 
 class WSL2DevServer {
   constructor(port = 3900) {
-    this.port = port;
+    this.port = port || 3900; // 기본값 3900으로 강제
     this.optimizer = new WSL2Optimizer();
-    this.portManager = new WSLPortManager(port);
+    this.portManager = new WSLPortManager(this.port);
     this.serverProcess = null;
   }
 
@@ -57,7 +57,8 @@ class WSL2DevServer {
       this.serverProcess = spawn('npx', args, {
         stdio: 'inherit',
         shell: true,
-        env: env
+        env: env,
+        cwd: process.cwd()
       });
 
       this.serverProcess.on('error', (error) => {
@@ -74,7 +75,8 @@ class WSL2DevServer {
       // 서버가 준비될 때까지 대기
       setTimeout(() => {
         console.log(`✅ WSL2 최적화 서버가 포트 ${this.port}에서 시작되었습니다.`);
-        console.log(`🌐 브라우저에서 http://localhost:${this.port} 접속`);
+        console.log(`🌐 WSL 내부 접속: http://localhost:${this.port}`);
+        console.log(`🌐 Windows 브라우저 접속: http://172.19.254.74:${this.port}`);
         console.log(`🔒 포트 ${this.port}는 WSL2에서 전용으로 사용됩니다.`);
         resolve();
       }, 8000); // WSL2에서는 조금 더 기다림
@@ -103,7 +105,14 @@ class WSL2DevServer {
 }
 
 async function main() {
-  const port = parseInt(process.argv[2]) || 3900;
+  // 환경변수에서 포트 우선, 그 다음 명령행 인수, 마지막 기본값 3900
+  const port = parseInt(process.env.PORT) || parseInt(process.argv[2]) || 3900;
+  
+  // 포트가 3900이 아닌 경우 경고
+  if (port !== 3900) {
+    console.log(`⚠️  포트 ${port}로 실행 중 (권장: 3900)`);
+  }
+  
   const server = new WSL2DevServer(port);
   
   try {
